@@ -148,8 +148,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final boolean commonAxisUsed) {
+    public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(final boolean commonAxisUsed) {
         super(commonAxisUsed);
     }
 
@@ -161,8 +160,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(commonAxisUsed, listener);
     }
 
@@ -176,8 +174,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -192,8 +189,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
     }
@@ -284,8 +280,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed) {
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed) {
         super(biasX, biasY, biasZ, commonAxisUsed);
     }
 
@@ -303,8 +298,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(biasX, biasY, biasZ, commonAxisUsed, listener);
     }
@@ -326,8 +320,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed) {
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed) {
         super(measurements, biasX, biasY, biasZ, commonAxisUsed);
     }
 
@@ -349,8 +342,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);
     }
@@ -442,8 +434,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
-            final boolean commonAxisUsed,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(biasX, biasY, biasZ, commonAxisUsed, listener);
     }
@@ -482,8 +473,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
-            final boolean commonAxisUsed,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);
     }
@@ -494,8 +484,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @param bias known accelerometer bias.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final double[] bias) {
+    public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(final double[] bias) {
         super(bias);
     }
 
@@ -508,8 +497,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final double[] bias,
-            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+            final double[] bias, final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(bias, listener);
     }
 
@@ -523,8 +511,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double[] bias) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final double[] bias) {
         super(measurements, bias);
     }
 
@@ -539,8 +526,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double[] bias,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final double[] bias,
             final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(measurements, bias, listener);
     }
@@ -553,8 +539,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final double[] bias, final boolean commonAxisUsed) {
+    public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(final double[] bias, final boolean commonAxisUsed) {
         super(bias, commonAxisUsed);
     }
 
@@ -585,8 +570,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double[] bias,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final double[] bias,
             final boolean commonAxisUsed) {
         super(measurements, bias, commonAxisUsed);
     }
@@ -604,9 +588,8 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double[] bias, final boolean commonAxisUsed,
-            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final double[] bias,
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(measurements, bias, commonAxisUsed, listener);
     }
 
@@ -616,8 +599,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @param bias known accelerometer bias.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final Matrix bias) {
+    public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(final Matrix bias) {
         super(bias);
     }
 
@@ -630,8 +612,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final Matrix bias,
-            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+            final Matrix bias, final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(bias, listener);
     }
 
@@ -645,8 +626,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final Matrix bias) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final Matrix bias) {
         super(measurements, bias);
     }
 
@@ -661,8 +641,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final Matrix bias,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final Matrix bias,
             final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(measurements, bias, listener);
     }
@@ -675,8 +654,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final Matrix bias, final boolean commonAxisUsed) {
+    public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(final Matrix bias, final boolean commonAxisUsed) {
         super(bias, commonAxisUsed);
     }
 
@@ -707,8 +685,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final Matrix bias,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final Matrix bias,
             final boolean commonAxisUsed) {
         super(measurements, bias, commonAxisUsed);
     }
@@ -726,9 +703,8 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public LMedSRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final Matrix bias, final boolean commonAxisUsed,
-            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final Matrix bias,
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(measurements, bias, commonAxisUsed, listener);
     }
 
@@ -806,7 +782,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
         }
 
         final LMedSRobustEstimator<Matrix> innerEstimator =
-                new LMedSRobustEstimator<>(new LMedSRobustEstimatorListener<Matrix>() {
+                new LMedSRobustEstimator<>(new LMedSRobustEstimatorListener<>() {
                     @Override
                     public int getTotalSamples() {
                         return mMeasurements.size();
@@ -818,15 +794,12 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
                     }
 
                     @Override
-                    public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List<Matrix> solutions) {
+                    public void estimatePreliminarSolutions(final int[] samplesIndices, final List<Matrix> solutions) {
                         computePreliminarySolutions(samplesIndices, solutions);
                     }
 
                     @Override
-                    public double computeResidual(
-                            final Matrix currentEstimation, final int i) {
+                    public double computeResidual(final Matrix currentEstimation, final int i) {
                         return computeError(mMeasurements.get(i), currentEstimation);
                     }
 
@@ -846,9 +819,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
                     }
 
                     @Override
-                    public void onEstimateNextIteration(
-                            final RobustEstimator<Matrix> estimator,
-                            final int iteration) {
+                    public void onEstimateNextIteration(final RobustEstimator<Matrix> estimator, final int iteration) {
                         if (mListener != null) {
                             mListener.onCalibrateNextIteration(
                                     LMedSRobustKnownBiasAndFrameAccelerometerCalibrator.this, iteration);
@@ -856,9 +827,8 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
                     }
 
                     @Override
-                    public void onEstimateProgressChange(
-                            final RobustEstimator<Matrix> estimator,
-                            final float progress) {
+                    public void onEstimateProgressChange(final RobustEstimator<Matrix> estimator,
+                                                         final float progress) {
                         if (mListener != null) {
                             mListener.onCalibrateProgressChange(
                                     LMedSRobustKnownBiasAndFrameAccelerometerCalibrator.this, progress);
@@ -905,7 +875,7 @@ public class LMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.LMedS;
+        return RobustEstimatorMethod.LMEDS;
     }
 
     /**

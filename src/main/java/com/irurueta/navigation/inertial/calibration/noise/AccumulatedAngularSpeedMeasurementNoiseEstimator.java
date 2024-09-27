@@ -43,8 +43,7 @@ import com.irurueta.units.AngularSpeedUnit;
 public class AccumulatedAngularSpeedMeasurementNoiseEstimator extends
         AccumulatedMeasurementNoiseEstimator<AngularSpeedUnit, AngularSpeed,
                 AccumulatedAngularSpeedMeasurementNoiseEstimator,
-                AccumulatedAngularSpeedMeasurementNoiseEstimatorListener>
-        implements GyroscopeNoiseRootPsdSource {
+                AccumulatedAngularSpeedMeasurementNoiseEstimatorListener> implements GyroscopeNoiseRootPsdSource {
 
     /**
      * Constructor.
@@ -93,8 +92,7 @@ public class AccumulatedAngularSpeedMeasurementNoiseEstimator extends
      */
     @Override
     protected double convertToDefaultUnit(final AngularSpeed value) {
-        return AngularSpeedConverter.convert(value.getValue().doubleValue(),
-                value.getUnit(), getDefaultUnit());
+        return AngularSpeedConverter.convert(value.getValue().doubleValue(), value.getUnit(), getDefaultUnit());
     }
 
     /**

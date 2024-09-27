@@ -100,10 +100,8 @@ public class EulerQuaternionStepIntegratorTest {
             final Quaternion result1 = new Quaternion(initialAttitude);
             final Quaternion result2 = new Quaternion(initialAttitude);
             for (int i = 0; i < NUM_SAMPLES; i++) {
-                EulerQuaternionStepIntegrator.integrationStep(result1, wx, wy, wz,
-                        TIME_INTERVAL, result1);
-                integrator.integrate(result2, wx, wy, wz, wx, wy, wz, TIME_INTERVAL,
-                        result2);
+                EulerQuaternionStepIntegrator.integrationStep(result1, wx, wy, wz, TIME_INTERVAL, result1);
+                integrator.integrate(result2, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result2);
             }
 
             assertEquals(result1, result2);
@@ -112,8 +110,8 @@ public class EulerQuaternionStepIntegratorTest {
             final double[] expectedEulerAngles = expectedResult.toEulerAngles();
             final double[] diffAngles = ArrayUtils.subtractAndReturnNew(
                     expectedEulerAngles, resultEulerAngles);
-            Logger.getLogger(EulerQuaternionStepIntegratorTest.class.getName())
-                    .log(Level.INFO, "Error euler angles: " + Arrays.toString(diffAngles));
+            Logger.getLogger(EulerQuaternionStepIntegratorTest.class.getName()).log(Level.INFO,
+                    String.format("Error euler angles: %s", Arrays.toString(diffAngles)));
 
             if (!expectedResult.equals(result1, ABSOLUTE_ERROR)) {
                 continue;
@@ -144,21 +142,16 @@ public class EulerQuaternionStepIntegratorTest {
             final Quaternion expectedResult = initialAttitude.combineAndReturnNew(delta);
             expectedResult.normalize();
 
-            final EulerQuaternionStepIntegrator eulerIntegrator =
-                    new EulerQuaternionStepIntegrator();
-            final MidPointQuaternionStepIntegrator midPointIntegrator =
-                    new MidPointQuaternionStepIntegrator();
-            final RungeKuttaQuaternionStepIntegrator rungeKuttaIntegrator =
-                    new RungeKuttaQuaternionStepIntegrator();
+            final EulerQuaternionStepIntegrator eulerIntegrator = new EulerQuaternionStepIntegrator();
+            final MidPointQuaternionStepIntegrator midPointIntegrator = new MidPointQuaternionStepIntegrator();
+            final RungeKuttaQuaternionStepIntegrator rungeKuttaIntegrator = new RungeKuttaQuaternionStepIntegrator();
             final Quaternion result1 = new Quaternion(initialAttitude);
             final Quaternion result2 = new Quaternion(initialAttitude);
             final Quaternion result3 = new Quaternion(initialAttitude);
             for (int i = 0; i < NUM_SAMPLES; i++) {
                 eulerIntegrator.integrate(result1, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result1);
-                midPointIntegrator.integrate(result2, wx, wy, wz, wx, wy, wz, TIME_INTERVAL,
-                        result2);
-                rungeKuttaIntegrator.integrate(result3, wx, wy, wz, wx, wy, wz, TIME_INTERVAL,
-                        result3);
+                midPointIntegrator.integrate(result2, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result2);
+                rungeKuttaIntegrator.integrate(result3, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result3);
             }
 
             final double[] resultEulerAngles = result1.toEulerAngles();
@@ -178,11 +171,11 @@ public class EulerQuaternionStepIntegratorTest {
             final double error3 = Utils.normF(diffAngles3);
 
             Logger.getLogger(EulerQuaternionStepIntegratorTest.class.getName())
-                    .log(Level.INFO, "Euler error: " + error1 + " radians");
+                    .log(Level.INFO, String.format("Euler error: %f radians", error1));
             Logger.getLogger(EulerQuaternionStepIntegratorTest.class.getName())
-                    .log(Level.INFO, "Mid-point error: " + error2 + " radians");
+                    .log(Level.INFO, String.format("Mid-point error: %f radians", error2));
             Logger.getLogger(EulerQuaternionStepIntegratorTest.class.getName())
-                    .log(Level.INFO, "Runge-Kutta error: " + error3 + " radians");
+                    .log(Level.INFO, String.format("Runge-Kutta error: %f radians", error3));
 
             if (error1 < error2 || error1 < error3) {
                 continue;

@@ -15,6 +15,7 @@
  */
 package com.irurueta.navigation.inertial;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -28,6 +29,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -61,8 +63,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      *
      * @param magneticFluxDensity body magnetic flux density.
      */
-    public BodyKinematicsAndMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity) {
+    public BodyKinematicsAndMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {
         mMagneticFluxDensity = magneticFluxDensity;
     }
 
@@ -74,8 +75,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * @param magneticFluxDensity body magnetic flux density.
      */
     public BodyKinematicsAndMagneticFluxDensity(
-            final BodyKinematics kinematics,
-            final BodyMagneticFluxDensity magneticFluxDensity) {
+            final BodyKinematics kinematics, final BodyMagneticFluxDensity magneticFluxDensity) {
         mKinematics = kinematics;
         mMagneticFluxDensity = magneticFluxDensity;
     }
@@ -85,8 +85,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      *
      * @param input instance to copy data from.
      */
-    public BodyKinematicsAndMagneticFluxDensity(
-            final BodyKinematicsAndMagneticFluxDensity input) {
+    public BodyKinematicsAndMagneticFluxDensity(final BodyKinematicsAndMagneticFluxDensity input) {
         copyFrom(input);
     }
 
@@ -123,8 +122,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      *
      * @param magneticFluxDensity body magnetic flux density.
      */
-    public void setMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity) {
+    public void setMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {
         mMagneticFluxDensity = magneticFluxDensity;
     }
 
@@ -146,8 +144,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
 
         if (input.mMagneticFluxDensity != null) {
             if (mMagneticFluxDensity == null) {
-                mMagneticFluxDensity = new BodyMagneticFluxDensity(
-                        input.mMagneticFluxDensity);
+                mMagneticFluxDensity = new BodyMagneticFluxDensity(input.mMagneticFluxDensity);
             } else {
                 mMagneticFluxDensity.copyFrom(input.mMagneticFluxDensity);
             }
@@ -196,8 +193,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * @return true if both instances are considered to be equal (up to provided
      * threshold), false otherwise.
      */
-    public boolean equals(final BodyKinematicsAndMagneticFluxDensity other,
-                          final double threshold) {
+    public boolean equals(final BodyKinematicsAndMagneticFluxDensity other, final double threshold) {
         if (other == null) {
             return false;
         }

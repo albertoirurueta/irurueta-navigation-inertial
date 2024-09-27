@@ -18,11 +18,13 @@ package com.irurueta.navigation.inertial.calibration.gyroscope;
 import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Quaternion;
+import com.irurueta.geometry.Rotation3D;
 import com.irurueta.geometry.RotationException;
 
 /**
  * Computes an integration step of a quaternion using Euler's method.
- * More information available here: https://en.wikipedia.org/wiki/Euler_method
+ * More information available here:
+ * <a href="https://en.wikipedia.org/wiki/Euler_method">https://en.wikipedia.org/wiki/Euler_method</a>
  */
 public class EulerQuaternionStepIntegrator extends QuaternionStepIntegrator {
 
@@ -57,7 +59,7 @@ public class EulerQuaternionStepIntegrator extends QuaternionStepIntegrator {
      */
     public EulerQuaternionStepIntegrator() {
         try {
-            mOmega0 = new Matrix(Quaternion.INHOM_COORDS, 1);
+            mOmega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);
             mQuat = new Matrix(Quaternion.N_PARAMS, 1);
             mQuatResult = new Matrix(Quaternion.N_PARAMS, 1);
             mK1 = new Matrix(Quaternion.N_PARAMS, 1);
@@ -79,7 +81,8 @@ public class EulerQuaternionStepIntegrator extends QuaternionStepIntegrator {
 
     /**
      * Performs an integration step using Euler's method.
-     * More information available here: https://en.wikipedia.org/wiki/Euler_method
+     * More information available here:
+     * <a href="https://en.wikipedia.org/wiki/Euler_method">https://en.wikipedia.org/wiki/Euler_method</a>
      *
      * @param initialAttitude initial attitude.
      * @param initialWx       initial x-coordinate rotation velocity at initial timestamp expressed
@@ -110,10 +113,11 @@ public class EulerQuaternionStepIntegrator extends QuaternionStepIntegrator {
 
     /**
      * Performs an integration step using Euler's method.
-     * More information available here: https://en.wikipedia.org/wiki/Euler_method
+     * More information available here:
+     * <a href="https://en.wikipedia.org/wiki/Euler_method">https://en.wikipedia.org/wiki/Euler_method</a>
      * This method should only be used sporadically. For better performance, if this method needs
      * to be called very frequently, a new instance of {@link EulerQuaternionStepIntegrator} should
-     * be used and the non static method should be used instead.
+     * be used and the non-static method should be used instead.
      *
      * @param initialAttitude initial attitude.
      * @param initialWx       end x-coordinate rotation velocity at current timestamp expressed in
@@ -132,7 +136,7 @@ public class EulerQuaternionStepIntegrator extends QuaternionStepIntegrator {
             final double dt, final Quaternion result) throws RotationException {
 
         try {
-            final Matrix omega0 = new Matrix(Quaternion.INHOM_COORDS, 1);
+            final Matrix omega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);
             final Matrix quat = new Matrix(Quaternion.N_PARAMS, 1);
             final Matrix quatResult = new Matrix(Quaternion.N_PARAMS, 1);
             final Matrix k1 = new Matrix(Quaternion.N_PARAMS, 1);
@@ -168,11 +172,9 @@ public class EulerQuaternionStepIntegrator extends QuaternionStepIntegrator {
      * @throws RotationException if a numerical error occurs.
      */
     private static void integrationStep(
-            final Quaternion initialAttitude,
-            final double initialWx, final double initialWy, final double initialWz,
+            final Quaternion initialAttitude, final double initialWx, final double initialWy, final double initialWz,
             final double dt, final Quaternion result, final Matrix omega0, final Matrix quat,
-            final Matrix quatResult, final Matrix k1, final Matrix omegaSkew)
-            throws RotationException {
+            final Matrix quatResult, final Matrix k1, final Matrix omegaSkew) throws RotationException {
         try {
             // normalize and copy initial attitude into matrix form
             initialAttitude.normalize();

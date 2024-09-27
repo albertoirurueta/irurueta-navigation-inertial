@@ -79,11 +79,10 @@ import java.util.List;
  * - ftrue is ground-truth specific force. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
-public abstract class RobustEasyGyroscopeCalibrator implements
-        GyroscopeNonLinearCalibrator, UnknownBiasGyroscopeCalibrator,
-        GyroscopeCalibrationSource, GyroscopeBiasUncertaintySource,
-        OrderedBodyKinematicsSequenceGyroscopeCalibrator,
-        QualityScoredGyroscopeCalibrator, AccelerometerDependentGyroscopeCalibrator {
+public abstract class RobustEasyGyroscopeCalibrator implements GyroscopeNonLinearCalibrator,
+        UnknownBiasGyroscopeCalibrator, GyroscopeCalibrationSource, GyroscopeBiasUncertaintySource,
+        OrderedBodyKinematicsSequenceGyroscopeCalibrator, QualityScoredGyroscopeCalibrator,
+        AccelerometerDependentGyroscopeCalibrator {
 
     /**
      * Indicates whether by default a common z-axis is assumed for both the accelerometer
@@ -100,8 +99,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     /**
      * Default robust estimator method when none is provided.
      */
-    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD =
-            RobustEstimatorMethod.LMedS;
+    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD = RobustEstimatorMethod.LMEDS;
 
     /**
      * Indicates that result is refined by default using a non-linear calibrator
@@ -438,8 +436,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     /**
      * Size of subsets to be checked during robust estimation.
      */
-    protected int mPreliminarySubsetSize = EasyGyroscopeCalibrator
-            .MINIMUM_SEQUENCES_GENERAL_AND_CROSS_BIASES;
+    protected int mPreliminarySubsetSize = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_GENERAL_AND_CROSS_BIASES;
 
     /**
      * Indicates whether covariance must be kept after refining result.
@@ -450,29 +447,25 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     /**
      * Inner non-robust calibrator.
      */
-    private final EasyGyroscopeCalibrator mInnerCalibrator =
-            new EasyGyroscopeCalibrator();
+    private final EasyGyroscopeCalibrator mInnerCalibrator = new EasyGyroscopeCalibrator();
 
     /**
      * Contains normalized start gravity coordinates.
      * This is reused when computing error residuals.
      */
-    private final InhomogeneousPoint3D mStartPoint =
-            new InhomogeneousPoint3D();
+    private final InhomogeneousPoint3D mStartPoint = new InhomogeneousPoint3D();
 
     /**
      * Contains estimated normalized end gravity coordinates.
      * This is reused when computing error residuals.
      */
-    private final InhomogeneousPoint3D mEndPoint =
-            new InhomogeneousPoint3D();
+    private final InhomogeneousPoint3D mEndPoint = new InhomogeneousPoint3D();
 
     /**
      * Contains expected normalized end gravity coordinates.
      * This is reused when computing error residuals.
      */
-    private final InhomogeneousPoint3D mExpectedEndPoint =
-            new InhomogeneousPoint3D();
+    private final InhomogeneousPoint3D mExpectedEndPoint = new InhomogeneousPoint3D();
 
     /**
      * Contains amount of rotation for a given sequence and preliminary
@@ -485,51 +478,44 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * Array containing measured specific force coordinates.
      * This is reused when computing error residuals.
      */
-    private final double[] mMeasuredSpecificForce = new double[
-            BodyKinematics.COMPONENTS];
+    private final double[] mMeasuredSpecificForce = new double[BodyKinematics.COMPONENTS];
 
     /**
      * Array containing fixed specific force coordinates.
      * This is reused when computing error residuals.
      */
-    private final double[] mFixedSpecificForce = new double[
-            BodyKinematics.COMPONENTS];
+    private final double[] mFixedSpecificForce = new double[BodyKinematics.COMPONENTS];
 
     /**
      * Array containing measured angular rate coordinates.
      * This is reused when computing error residuals.
      */
-    private final double[] mMeasuredAngularRate = new double[
-            BodyKinematics.COMPONENTS];
+    private final double[] mMeasuredAngularRate = new double[BodyKinematics.COMPONENTS];
 
     /**
      * Array containing fixed angular rate coordinates.
      * This is reused when computing error residuals.
      */
-    private final double[] mFixedAngularRate = new double[
-            BodyKinematics.COMPONENTS];
+    private final double[] mFixedAngularRate = new double[BodyKinematics.COMPONENTS];
 
     /**
      * An acceleration fixer.
      * This is reused when computing error residuals.
      */
-    private final AccelerationFixer mAccelerationFixer =
-            new AccelerationFixer();
+    private final AccelerationFixer mAccelerationFixer = new AccelerationFixer();
 
     /**
      * An angular rate fixer.
      * This is reused when computing error residuals.
      */
-    private final AngularRateFixer mAngularRateFixer =
-            new AngularRateFixer();
+    private final AngularRateFixer mAngularRateFixer = new AngularRateFixer();
 
     /**
      * Constructor.
      */
     protected RobustEasyGyroscopeCalibrator() {
         try {
-            mInitialGg = new Matrix(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            mInitialGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         } catch (final WrongSizeException ignore) {
             // never happens
         }
@@ -553,9 +539,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     protected RobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg) {
         this();
         mSequences = sequences;
         try {
@@ -587,9 +571,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     protected RobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg,
             final RobustEasyGyroscopeCalibratorListener listener) {
         this(sequences, initialBias, initialMg, initialGg);
         mListener = listener;
@@ -613,9 +595,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     protected RobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg) {
         this();
         mSequences = sequences;
         try {
@@ -647,9 +627,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     protected RobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
             final RobustEasyGyroscopeCalibratorListener listener) {
         this(sequences, initialBias, initialMg, initialGg);
         mListener = listener;
@@ -679,11 +657,8 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     protected RobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa) {
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
+            final double[] accelerometerBias, final Matrix accelerometerMa) {
         this(sequences, initialBias, initialMg, initialGg);
         try {
             setAccelerometerBias(accelerometerBias);
@@ -719,14 +694,10 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     protected RobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
+            final double[] accelerometerBias, final Matrix accelerometerMa,
             final RobustEasyGyroscopeCalibratorListener listener) {
-        this(sequences, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+        this(sequences, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
         mListener = listener;
     }
 
@@ -753,10 +724,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     protected RobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
         this(sequences, initialBias, initialMg, initialGg);
         try {
@@ -792,14 +760,9 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     protected RobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEasyGyroscopeCalibratorListener listener) {
-        this(sequences, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustEasyGyroscopeCalibratorListener listener) {
+        this(sequences, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
         mListener = listener;
     }
 
@@ -827,11 +790,8 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     protected RobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg) {
         this(sequences, initialBias, initialMg, initialGg);
         mCommonAxisUsed = commonAxisUsed;
         mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
@@ -863,14 +823,9 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     protected RobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustEasyGyroscopeCalibratorListener listener) {
-        this(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                initialBias, initialMg, initialGg);
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final RobustEasyGyroscopeCalibratorListener listener) {
+        this(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
         mListener = listener;
     }
 
@@ -898,11 +853,8 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     protected RobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg) {
         this(sequences, initialBias, initialMg, initialGg);
         mCommonAxisUsed = commonAxisUsed;
         mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
@@ -934,14 +886,9 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     protected RobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustEasyGyroscopeCalibratorListener listener) {
-        this(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                initialBias, initialMg, initialGg);
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final RobustEasyGyroscopeCalibratorListener listener) {
+        this(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
         mListener = listener;
     }
 
@@ -976,15 +923,10 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     protected RobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-        this(sequences, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+        this(sequences, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
         mCommonAxisUsed = commonAxisUsed;
         mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
     }
@@ -1022,17 +964,11 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     protected RobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEasyGyroscopeCalibratorListener listener) {
-        this(sequences, commonAxisUsed,
-                estimateGDependentCrossBiases, initialBias, initialMg,
-                initialGg, accelerometerBias, accelerometerMa);
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
+            final Matrix accelerometerMa, final RobustEasyGyroscopeCalibratorListener listener) {
+        this(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
         mListener = listener;
     }
 
@@ -1067,15 +1003,10 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     protected RobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-        this(sequences, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+        this(sequences, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
         mCommonAxisUsed = commonAxisUsed;
         mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
     }
@@ -1113,17 +1044,11 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     protected RobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEasyGyroscopeCalibratorListener listener) {
-        this(sequences, commonAxisUsed,
-                estimateGDependentCrossBiases, initialBias, initialMg,
-                initialGg, accelerometerBias, accelerometerMa);
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustEasyGyroscopeCalibratorListener listener) {
+        this(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
         mListener = listener;
     }
 
@@ -1150,8 +1075,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerBiasX(final double accelerometerBiasX)
-            throws LockedException {
+    public void setAccelerometerBiasX(final double accelerometerBiasX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1181,8 +1105,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerBiasY(final double accelerometerBiasY)
-            throws LockedException {
+    public void setAccelerometerBiasY(final double accelerometerBiasY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1212,8 +1135,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerBiasZ(final double accelerometerBiasZ)
-            throws LockedException {
+    public void setAccelerometerBiasZ(final double accelerometerBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1229,8 +1151,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public Acceleration getAccelerometerBiasXAsAcceleration() {
-        return new Acceleration(mAccelerometerBiasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mAccelerometerBiasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1255,8 +1176,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerBiasX(final Acceleration accelerometerBiasX)
-            throws LockedException {
+    public void setAccelerometerBiasX(final Acceleration accelerometerBiasX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1272,8 +1192,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public Acceleration getAccelerometerBiasYAsAcceleration() {
-        return new Acceleration(mAccelerometerBiasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mAccelerometerBiasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1298,8 +1217,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerBiasY(final Acceleration accelerometerBiasY)
-            throws LockedException {
+    public void setAccelerometerBiasY(final Acceleration accelerometerBiasY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1315,8 +1233,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public Acceleration getAccelerometerBiasZAsAcceleration() {
-        return new Acceleration(mAccelerometerBiasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mAccelerometerBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1341,8 +1258,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerBiasZ(final Acceleration accelerometerBiasZ)
-            throws LockedException {
+    public void setAccelerometerBiasZ(final Acceleration accelerometerBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1361,9 +1277,8 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerBias(
-            final double accelerometerBiasX,
-            final double accelerometerBiasY,
-            final double accelerometerBiasZ) throws LockedException {
+            final double accelerometerBiasX, final double accelerometerBiasY, final double accelerometerBiasZ)
+            throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1384,8 +1299,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerBias(
-            final Acceleration accelerometerBiasX,
-            final Acceleration accelerometerBiasY,
+            final Acceleration accelerometerBiasX, final Acceleration accelerometerBiasY,
             final Acceleration accelerometerBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -1441,8 +1355,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      *                                  length 3.
      */
     @Override
-    public void setAccelerometerBias(final double[] accelerometerBias)
-            throws LockedException {
+    public void setAccelerometerBias(final double[] accelerometerBias) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1486,8 +1399,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public void getAccelerometerBiasAsMatrix(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mAccelerometerBiasX);
@@ -1505,13 +1417,11 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     @Override
-    public void setAccelerometerBias(final Matrix accelerometerBias)
-            throws LockedException {
+    public void setAccelerometerBias(final Matrix accelerometerBias) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
-        if (accelerometerBias.getRows() != BodyKinematics.COMPONENTS
-                || accelerometerBias.getColumns() != 1) {
+        if (accelerometerBias.getRows() != BodyKinematics.COMPONENTS || accelerometerBias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -1539,8 +1449,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerSx(final double accelerometerSx)
-            throws LockedException {
+    public void setAccelerometerSx(final double accelerometerSx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1566,8 +1475,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerSy(final double accelerometerSy)
-            throws LockedException {
+    public void setAccelerometerSy(final double accelerometerSy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1593,8 +1501,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerSz(final double accelerometerSz)
-            throws LockedException {
+    public void setAccelerometerSz(final double accelerometerSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1622,8 +1529,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerMxy(final double accelerometerMxy)
-            throws LockedException {
+    public void setAccelerometerMxy(final double accelerometerMxy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1651,8 +1557,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerMxz(final double accelerometerMxz)
-            throws LockedException {
+    public void setAccelerometerMxz(final double accelerometerMxz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1681,8 +1586,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerMyx(final double accelerometerMyx)
-            throws LockedException {
+    public void setAccelerometerMyx(final double accelerometerMyx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1711,8 +1615,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerMyz(final double accelerometerMyz)
-            throws LockedException {
+    public void setAccelerometerMyz(final double accelerometerMyz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1741,8 +1644,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerMzx(final double accelerometerMzx)
-            throws LockedException {
+    public void setAccelerometerMzx(final double accelerometerMzx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1771,8 +1673,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerMzy(final double accelerometerMzy)
-            throws LockedException {
+    public void setAccelerometerMzy(final double accelerometerMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1791,8 +1692,8 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerScalingFactors(
-            final double accelerometerSx, final double accelerometerSy,
-            final double accelerometerSz) throws LockedException {
+            final double accelerometerSx, final double accelerometerSy, final double accelerometerSz)
+            throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1824,8 +1725,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public void setAccelerometerCrossCouplingErrors(
             final double accelerometerMxy, final double accelerometerMxz,
             final double accelerometerMyx, final double accelerometerMyz,
-            final double accelerometerMzx, final double accelerometerMzy)
-            throws LockedException {
+            final double accelerometerMzx, final double accelerometerMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1861,20 +1761,16 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerScalingFactorsAndCrossCouplingErrors(
-            final double accelerometerSx, final double accelerometerSy,
-            final double accelerometerSz, final double accelerometerMxy,
-            final double accelerometerMxz, final double accelerometerMyx,
-            final double accelerometerMyz, final double accelerometerMzx,
-            final double accelerometerMzy) throws LockedException {
+            final double accelerometerSx, final double accelerometerSy, final double accelerometerSz,
+            final double accelerometerMxy, final double accelerometerMxz, final double accelerometerMyx,
+            final double accelerometerMyz, final double accelerometerMzx, final double accelerometerMzy)
+            throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
-        setAccelerometerScalingFactors(accelerometerSx, accelerometerSy,
-                accelerometerSz);
-        setAccelerometerCrossCouplingErrors(accelerometerMxy,
-                accelerometerMxz, accelerometerMyx,
-                accelerometerMyz, accelerometerMzx,
-                accelerometerMzy);
+        setAccelerometerScalingFactors(accelerometerSx, accelerometerSy, accelerometerSz);
+        setAccelerometerCrossCouplingErrors(accelerometerMxy, accelerometerMxz, accelerometerMyx,
+                accelerometerMyz, accelerometerMzx, accelerometerMzy);
     }
 
     /**
@@ -1907,8 +1803,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public void getAccelerometerMa(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS ||
-                result.getColumns() != BodyKinematics.COMPONENTS) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mAccelerometerSx);
@@ -1934,8 +1829,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if provided matrix is not 3x3.
      */
     @Override
-    public void setAccelerometerMa(final Matrix accelerometerMa)
-            throws LockedException {
+    public void setAccelerometerMa(final Matrix accelerometerMa) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1976,8 +1870,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @param initialBiasX initial x-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasX(final double initialBiasX)
-            throws LockedException {
+    public void setInitialBiasX(final double initialBiasX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2003,8 +1896,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @param initialBiasY initial y-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasY(final double initialBiasY)
-            throws LockedException {
+    public void setInitialBiasY(final double initialBiasY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2030,8 +1922,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @param initialBiasZ initial z-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasZ(final double initialBiasZ)
-            throws LockedException {
+    public void setInitialBiasZ(final double initialBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2045,8 +1936,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @return initial x-coordinate of gyroscope bias.
      */
     public AngularSpeed getInitialBiasAngularSpeedX() {
-        return new AngularSpeed(mInitialBiasX,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mInitialBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2067,8 +1957,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @param initialBiasX initial x-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasX(final AngularSpeed initialBiasX)
-            throws LockedException {
+    public void setInitialBiasX(final AngularSpeed initialBiasX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2082,8 +1971,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @return initial y-coordinate of gyroscope bias.
      */
     public AngularSpeed getInitialBiasAngularSpeedY() {
-        return new AngularSpeed(mInitialBiasY,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mInitialBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2104,8 +1992,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @param initialBiasY initial y-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasY(final AngularSpeed initialBiasY)
-            throws LockedException {
+    public void setInitialBiasY(final AngularSpeed initialBiasY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2119,8 +2006,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @return initial z-coordinate of gyroscope bias.
      */
     public AngularSpeed getInitialBiasAngularSpeedZ() {
-        return new AngularSpeed(mInitialBiasZ,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mInitialBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2141,8 +2027,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @param initialBiasZ initial z-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasZ(final AngularSpeed initialBiasZ)
-            throws LockedException {
+    public void setInitialBiasZ(final AngularSpeed initialBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2159,8 +2044,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     public void setInitialBias(
-            final double initialBiasX, final double initialBiasY,
-            final double initialBiasZ) throws LockedException {
+            final double initialBiasX, final double initialBiasY, final double initialBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2178,9 +2062,8 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     public void setInitialBias(
-            final AngularSpeed initialBiasX,
-            final AngularSpeed initialBiasY,
-            final AngularSpeed initialBiasZ) throws LockedException {
+            final AngularSpeed initialBiasX, final AngularSpeed initialBiasY, final AngularSpeed initialBiasZ)
+            throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2206,8 +2089,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSx(final double initialSx)
-            throws LockedException {
+    public void setInitialSx(final double initialSx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2231,8 +2113,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSy(final double initialSy)
-            throws LockedException {
+    public void setInitialSy(final double initialSy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2256,8 +2137,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSz(final double initialSz)
-            throws LockedException {
+    public void setInitialSz(final double initialSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2281,8 +2161,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMxy(final double initialMxy)
-            throws LockedException {
+    public void setInitialMxy(final double initialMxy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2306,8 +2185,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMxz(final double initialMxz)
-            throws LockedException {
+    public void setInitialMxz(final double initialMxz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2331,8 +2209,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMyx(final double initialMyx)
-            throws LockedException {
+    public void setInitialMyx(final double initialMyx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2356,8 +2233,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMyz(final double initialMyz)
-            throws LockedException {
+    public void setInitialMyz(final double initialMyz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2381,8 +2257,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMzx(final double initialMzx)
-            throws LockedException {
+    public void setInitialMzx(final double initialMzx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2406,8 +2281,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMzy(final double initialMzy)
-            throws LockedException {
+    public void setInitialMzy(final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2424,8 +2298,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx, final double initialSy,
-            final double initialSz) throws LockedException {
+            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2448,8 +2321,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     @Override
     public void setInitialCrossCouplingErrors(
             final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy)
-            throws LockedException {
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2480,14 +2352,12 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public void setInitialScalingFactorsAndCrossCouplingErrors(
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy)
-            throws LockedException {
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
+        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
     }
 
     /**
@@ -2529,8 +2399,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public void setInitialBias(final double[] initialBias)
-            throws LockedException {
+    public void setInitialBias(final double[] initialBias) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2572,8 +2441,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public void getInitialBiasAsMatrix(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mInitialBiasX);
@@ -2593,8 +2461,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
         if (mRunning) {
             throw new LockedException();
         }
-        if (initialBias.getRows() != BodyKinematics.COMPONENTS
-                || initialBias.getColumns() != 1) {
+        if (initialBias.getRows() != BodyKinematics.COMPONENTS || initialBias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -2609,8 +2476,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @return initial bias coordinates.
      */
     public AngularSpeedTriad getInitialBiasAsTriad() {
-        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,
-                mInitialBiasX, mInitialBiasY, mInitialBiasZ);
+        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND, mInitialBiasX, mInitialBiasY, mInitialBiasZ);
     }
 
     /**
@@ -2619,8 +2485,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @param result instance where result will be stored.
      */
     public void getInitialBiasAsTriad(AngularSpeedTriad result) {
-        result.setValueCoordinatesAndUnit(
-                mInitialBiasX, mInitialBiasY, mInitialBiasZ,
+        result.setValueCoordinatesAndUnit(mInitialBiasX, mInitialBiasY, mInitialBiasZ,
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -2635,12 +2500,9 @@ public abstract class RobustEasyGyroscopeCalibrator implements
             throw new LockedException();
         }
 
-        mInitialBiasX = convertAngularSpeed(
-                initialBias.getValueX(), initialBias.getUnit());
-        mInitialBiasY = convertAngularSpeed(
-                initialBias.getValueY(), initialBias.getUnit());
-        mInitialBiasZ = convertAngularSpeed(
-                initialBias.getValueZ(), initialBias.getUnit());
+        mInitialBiasX = convertAngularSpeed(initialBias.getValueX(), initialBias.getUnit());
+        mInitialBiasY = convertAngularSpeed(initialBias.getValueY(), initialBias.getUnit());
+        mInitialBiasZ = convertAngularSpeed(initialBias.getValueZ(), initialBias.getUnit());
     }
 
     /**
@@ -2654,8 +2516,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public Matrix getInitialMg() {
         Matrix result;
         try {
-            result = new Matrix(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            result = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             getInitialMg(result);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -2673,8 +2534,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public void getInitialMg(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS ||
-                result.getColumns() != BodyKinematics.COMPONENTS) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mInitialSx);
@@ -2702,8 +2562,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
         if (mRunning) {
             throw new LockedException();
         }
-        if (initialMg.getRows() != BodyKinematics.COMPONENTS ||
-                initialMg.getColumns() != BodyKinematics.COMPONENTS) {
+        if (initialMg.getRows() != BodyKinematics.COMPONENTS || initialMg.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -2741,8 +2600,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     @Override
     public void getInitialGg(final Matrix result) {
 
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != BodyKinematics.COMPONENTS) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -2763,8 +2621,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
             throw new LockedException();
         }
 
-        if (initialGg.getRows() != BodyKinematics.COMPONENTS
-                || initialGg.getColumns() != BodyKinematics.COMPONENTS) {
+        if (initialGg.getRows() != BodyKinematics.COMPONENTS || initialGg.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -2795,8 +2652,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public void setSequences(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences)
-            throws LockedException {
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2877,9 +2733,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      *                                      false otherwise.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setGDependentCrossBiasesEstimated(
-            final boolean estimateGDependentCrossBiases)
-            throws LockedException {
+    public void setGDependentCrossBiasesEstimated(final boolean estimateGDependentCrossBiases) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2902,9 +2756,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @param listener listener to handle events raised by this estimator.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setListener(
-            final RobustEasyGyroscopeCalibratorListener listener)
-            throws LockedException {
+    public void setListener(final RobustEasyGyroscopeCalibratorListener listener) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2921,15 +2773,13 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public int getMinimumRequiredMeasurementsOrSequences() {
         if (mCommonAxisUsed) {
             if (mEstimateGDependentCrossBiases) {
-                return EasyGyroscopeCalibrator
-                        .MINIMUM_SEQUENCES_COMMON_Z_AXIS_AND_CROSS_BIASES;
+                return EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS_AND_CROSS_BIASES;
             } else {
                 return EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
             }
         } else {
             if (mEstimateGDependentCrossBiases) {
-                return EasyGyroscopeCalibrator
-                        .MINIMUM_SEQUENCES_GENERAL_AND_CROSS_BIASES;
+                return EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_GENERAL_AND_CROSS_BIASES;
             } else {
                 return EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_GENERAL;
             }
@@ -2943,8 +2793,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public boolean isReady() {
-        return mSequences != null
-                && mSequences.size() >= getMinimumRequiredMeasurementsOrSequences();
+        return mSequences != null && mSequences.size() >= getMinimumRequiredMeasurementsOrSequences();
     }
 
     /**
@@ -2977,13 +2826,11 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if progress delta is less than zero or greater than 1.
      * @throws LockedException          if calibrator is currently running.
      */
-    public void setProgressDelta(final float progressDelta)
-            throws LockedException {
+    public void setProgressDelta(final float progressDelta) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
-        if (progressDelta < MIN_PROGRESS_DELTA ||
-                progressDelta > MAX_PROGRESS_DELTA) {
+        if (progressDelta < MIN_PROGRESS_DELTA || progressDelta > MAX_PROGRESS_DELTA) {
             throw new IllegalArgumentException();
         }
         mProgressDelta = progressDelta;
@@ -3011,8 +2858,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if provided value is not between 0.0 and 1.0.
      * @throws LockedException          if calibrator is currently running.
      */
-    public void setConfidence(final double confidence)
-            throws LockedException {
+    public void setConfidence(final double confidence) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3042,8 +2888,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if provided value is less than 1.
      * @throws LockedException          if calibrator is currently running.
      */
-    public void setMaxIterations(final int maxIterations)
-            throws LockedException {
+    public void setMaxIterations(final int maxIterations) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3079,8 +2924,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      *                     estimator without further refining.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setResultRefined(final boolean refineResult)
-            throws LockedException {
+    public void setResultRefined(final boolean refineResult) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3105,8 +2949,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      *                       false otherwise.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setCovarianceKept(final boolean keepCovariance)
-            throws LockedException {
+    public void setCovarianceKept(final boolean keepCovariance) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3138,21 +2981,8 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setQualityScores(final double[] qualityScores)
-            throws LockedException {
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
     }
-
-    /**
-     * Estimates gyroscope calibration parameters containing bias, scale factors,
-     * cross-coupling errors and G-dependent coupling.
-     *
-     * @throws LockedException      if calibrator is currently running.
-     * @throws NotReadyException    if calibrator is not ready.
-     * @throws CalibrationException if estimation fails for numerical reasons.
-     */
-    @Override
-    public abstract void calibrate() throws LockedException, NotReadyException,
-            CalibrationException;
 
     /**
      * Gets array containing x,y,z components of estimated gyroscope biases
@@ -3176,8 +3006,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     @Override
     public boolean getEstimatedBiases(final double[] result) {
         if (mEstimatedBiases != null) {
-            System.arraycopy(mEstimatedBiases, 0, result,
-                    0, mEstimatedBiases.length);
+            System.arraycopy(mEstimatedBiases, 0, result, 0, mEstimatedBiases.length);
             return true;
         } else {
             return false;
@@ -3205,8 +3034,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws WrongSizeException if provided result instance has invalid size.
      */
     @Override
-    public boolean getEstimatedBiasesAsMatrix(final Matrix result)
-            throws WrongSizeException {
+    public boolean getEstimatedBiasesAsMatrix(final Matrix result) throws WrongSizeException {
         if (mEstimatedBiases != null) {
             result.fromArray(mEstimatedBiases);
             return true;
@@ -3256,8 +3084,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     @Override
     public AngularSpeed getEstimatedBiasAngularSpeedX() {
         return mEstimatedBiases != null ?
-                new AngularSpeed(mEstimatedBiases[0],
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+                new AngularSpeed(mEstimatedBiases[0], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -3285,8 +3112,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     @Override
     public AngularSpeed getEstimatedBiasAngularSpeedY() {
         return mEstimatedBiases != null ?
-                new AngularSpeed(mEstimatedBiases[1],
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+                new AngularSpeed(mEstimatedBiases[1], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -3314,8 +3140,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     @Override
     public AngularSpeed getEstimatedBiasAngularSpeedZ() {
         return mEstimatedBiases != null ?
-                new AngularSpeed(mEstimatedBiases[2],
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+                new AngularSpeed(mEstimatedBiases[2], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -3358,8 +3183,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public boolean getEstimatedBiasAsTriad(final AngularSpeedTriad result) {
         if (mEstimatedBiases != null) {
             result.setValueCoordinatesAndUnit(
-                    mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2],
-                    AngularSpeedUnit.RADIANS_PER_SECOND);
+                    mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2], AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
         } else {
             return false;
@@ -3421,8 +3245,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(0, 0) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 0) : null;
     }
 
     /**
@@ -3433,8 +3256,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(1, 1) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 1) : null;
     }
 
     /**
@@ -3445,8 +3267,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(2, 2) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 2) : null;
     }
 
     /**
@@ -3457,8 +3278,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(0, 1) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 1) : null;
     }
 
     /**
@@ -3469,8 +3289,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(0, 2) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 2) : null;
     }
 
     /**
@@ -3481,8 +3300,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(1, 0) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 0) : null;
     }
 
     /**
@@ -3493,8 +3311,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(1, 2) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 2) : null;
     }
 
     /**
@@ -3505,8 +3322,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(2, 0) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 0) : null;
     }
 
     /**
@@ -3517,8 +3333,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(2, 1) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 1) : null;
     }
 
     /**
@@ -3595,8 +3410,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public AngularSpeed getEstimatedBiasXStandardDeviationAsAngularSpeed() {
         return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasXStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) :
-                null;
+                new AngularSpeed(getEstimatedBiasXStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -3645,8 +3459,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public AngularSpeed getEstimatedBiasYStandardDeviationAsAngularSpeed() {
         return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasYStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) :
-                null;
+                new AngularSpeed(getEstimatedBiasYStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -3695,8 +3508,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public AngularSpeed getEstimatedBiasZStandardDeviationAsAngularSpeed() {
         return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasZStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) :
-                null;
+                new AngularSpeed(getEstimatedBiasZStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -3758,8 +3570,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public Double getEstimatedBiasStandardDeviationAverage() {
         return mEstimatedCovariance != null ?
-                (getEstimatedBiasXStandardDeviation() +
-                        getEstimatedBiasYStandardDeviation() +
+                (getEstimatedBiasXStandardDeviation() + getEstimatedBiasYStandardDeviation() +
                         getEstimatedBiasZStandardDeviation()) / 3.0 : null;
     }
 
@@ -3817,8 +3628,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public AngularSpeed getEstimatedBiasStandardDeviationNormAsAngularSpeed() {
         return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasStandardDeviationNorm(),
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+                new AngularSpeed(getEstimatedBiasStandardDeviationNorm(), AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -3859,8 +3669,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if provided value is less than
      *                                  {@link #getMinimumRequiredMeasurementsOrSequences}.
      */
-    public void setPreliminarySubsetSize(
-            final int preliminarySubsetSize) throws LockedException {
+    public void setPreliminarySubsetSize(final int preliminarySubsetSize) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3884,21 +3693,14 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @param method robust estimator method.
      * @return a robust gyroscope calibrator.
      */
-    public static RobustEasyGyroscopeCalibrator create(
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator();
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator();
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator();
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator();
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator();
-        }
+    public static RobustEasyGyroscopeCalibrator create(final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator();
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator();
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator();
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator();
+            default -> new PROMedSRobustEasyGyroscopeCalibrator();
+        };
     }
 
     /**
@@ -3921,28 +3723,15 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg);
+        };
     }
 
     /**
@@ -3967,34 +3756,20 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustEasyGyroscopeCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        listener);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        listener);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        listener);
-        }
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg,
+            final RobustEasyGyroscopeCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    listener);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    listener);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    listener);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    listener);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    listener);
+        };
     }
 
     /**
@@ -4017,28 +3792,15 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg);
+        };
     }
 
     /**
@@ -4063,34 +3825,20 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustEasyGyroscopeCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        listener);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        listener);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        listener);
-        }
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
+            final RobustEasyGyroscopeCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    listener);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    listener);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    listener);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    listener);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    listener);
+        };
     }
 
     /**
@@ -4119,35 +3867,20 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa);
-        }
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
+            final double[] accelerometerBias, final Matrix accelerometerMa, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa);
+        };
     }
 
     /**
@@ -4178,36 +3911,21 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEasyGyroscopeCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa, listener);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa, listener);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa, listener);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa, listener);
-        }
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
+            final double[] accelerometerBias, final Matrix accelerometerMa,
+            final RobustEasyGyroscopeCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa, listener);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa, listener);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa, listener);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa, listener);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa, listener);
+        };
     }
 
     /**
@@ -4235,33 +3953,24 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEstimatorMethod method) {
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustEstimatorMethod method) {
         switch (method) {
             case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
+                return new RANSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
                         accelerometerBias, accelerometerMa);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
+            case LMEDS:
+                return new LMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
                         accelerometerBias, accelerometerMa);
             case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
+                return new MSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
                         accelerometerBias, accelerometerMa);
             case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
+                return new PROSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
                         accelerometerBias, accelerometerMa);
-            case PROMedS:
+            case PROMEDS:
             default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
+                return new PROMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
                         accelerometerBias, accelerometerMa);
         }
     }
@@ -4293,36 +4002,21 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEasyGyroscopeCalibratorListener listener,
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustEasyGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa, listener);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa, listener);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa, listener);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa, listener);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa, listener);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa, listener);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa, listener);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa, listener);
+        };
     }
 
     /**
@@ -4351,35 +4045,20 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg);
-        }
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(
+                    sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(
+                    sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(
+                    sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(
+                    sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(
+                    sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+        };
     }
 
     /**
@@ -4410,41 +4089,21 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustEasyGyroscopeCalibratorListener listener,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final RobustEasyGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, listener);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, listener);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, listener);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+        };
     }
 
     /**
@@ -4473,35 +4132,20 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg);
-        }
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+        };
     }
 
     /**
@@ -4532,36 +4176,21 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustEasyGyroscopeCalibratorListener listener,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final RobustEasyGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, listener);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, listener);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, listener);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+        };
     }
 
     /**
@@ -4597,42 +4226,26 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-        }
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
+            final Matrix accelerometerMa, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa);
+        };
     }
 
     /**
@@ -4670,43 +4283,27 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEasyGyroscopeCalibratorListener listener,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
+            final Matrix accelerometerMa, final RobustEasyGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+        };
     }
 
     /**
@@ -4742,47 +4339,26 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-        }
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa);
+        };
     }
 
     /**
@@ -4820,43 +4396,27 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEasyGyroscopeCalibratorListener listener,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustEasyGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+        };
     }
 
     /**
@@ -4871,23 +4431,14 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      *                                  is smaller than 10.
      */
     public static RobustEasyGyroscopeCalibrator create(
-            final double[] qualityScores,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator();
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator();
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator();
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        qualityScores);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        qualityScores);
-        }
+            final double[] qualityScores, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator();
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator();
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator();
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(qualityScores);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(qualityScores);
+        };
     }
 
     /**
@@ -4916,30 +4467,17 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public static RobustEasyGyroscopeCalibrator create(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, initialBias, initialMg,
-                        initialGg);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, initialBias, initialMg,
-                        initialGg);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, initialBias, initialMg,
+                    initialGg);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(qualityScores, sequences, initialBias, initialMg,
+                    initialGg);
+        };
     }
 
     /**
@@ -4970,34 +4508,20 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public static RobustEasyGyroscopeCalibrator create(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustEasyGyroscopeCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        listener);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        listener);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, initialBias,
-                        initialMg, initialGg, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, initialBias,
-                        initialMg, initialGg, listener);
-        }
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg,
+            final RobustEasyGyroscopeCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    listener);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    listener);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    listener);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, initialBias, initialMg,
+                    initialGg, listener);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(qualityScores, sequences, initialBias, initialMg,
+                    initialGg, listener);
+        };
     }
 
     /**
@@ -5026,30 +4550,17 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public static RobustEasyGyroscopeCalibrator create(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, initialBias,
-                        initialMg, initialGg);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, initialBias,
-                        initialMg, initialGg);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, initialBias, initialMg,
+                    initialGg);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(qualityScores, sequences, initialBias, initialMg,
+                    initialGg);
+        };
     }
 
     /**
@@ -5080,34 +4591,20 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public static RobustEasyGyroscopeCalibrator create(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustEasyGyroscopeCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        listener);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        listener);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, initialBias,
-                        initialMg, initialGg, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, initialBias,
-                        initialMg, initialGg, listener);
-        }
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
+            final RobustEasyGyroscopeCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    listener);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    listener);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    listener);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, initialBias, initialMg,
+                    initialGg, listener);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(qualityScores, sequences, initialBias, initialMg,
+                    initialGg, listener);
+        };
     }
 
     /**
@@ -5142,37 +4639,20 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public static RobustEasyGyroscopeCalibrator create(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-        }
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
+            final double[] accelerometerBias, final Matrix accelerometerMa, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, initialBias, initialMg,
+                    initialGg, accelerometerBias, accelerometerMa);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(qualityScores, sequences, initialBias, initialMg,
+                    initialGg, accelerometerBias, accelerometerMa);
+        };
     }
 
     /**
@@ -5209,41 +4689,21 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public static RobustEasyGyroscopeCalibrator create(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEasyGyroscopeCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg,
-                        initialGg, accelerometerBias, accelerometerMa,
-                        listener);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg,
-                        initialGg, accelerometerBias, accelerometerMa,
-                        listener);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg,
-                        initialGg, accelerometerBias, accelerometerMa,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, initialBias, initialMg,
-                        initialGg, accelerometerBias, accelerometerMa,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, initialBias, initialMg,
-                        initialGg, accelerometerBias, accelerometerMa,
-                        listener);
-        }
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
+            final double[] accelerometerBias, final Matrix accelerometerMa,
+            final RobustEasyGyroscopeCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa, listener);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa, listener);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa, listener);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, initialBias, initialMg,
+                    initialGg, accelerometerBias, accelerometerMa, listener);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(qualityScores, sequences, initialBias, initialMg,
+                    initialGg, accelerometerBias, accelerometerMa, listener);
+        };
     }
 
     /**
@@ -5277,37 +4737,20 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public static RobustEasyGyroscopeCalibrator create(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-        }
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, initialBias, initialMg,
+                    initialGg, accelerometerBias, accelerometerMa);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(qualityScores, sequences, initialBias, initialMg,
+                    initialGg, accelerometerBias, accelerometerMa);
+        };
     }
 
     /**
@@ -5343,38 +4786,21 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public static RobustEasyGyroscopeCalibrator create(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEasyGyroscopeCalibratorListener listener,
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustEasyGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa, listener);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa, listener);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, initialBias, initialMg, initialGg,
-                        accelerometerBias, accelerometerMa, listener);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, initialBias, initialMg,
-                        initialGg, accelerometerBias, accelerometerMa,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, initialBias, initialMg,
-                        initialGg, accelerometerBias, accelerometerMa,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa, listener);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa, listener);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, initialBias, initialMg, initialGg,
+                    accelerometerBias, accelerometerMa, listener);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, initialBias, initialMg,
+                    initialGg, accelerometerBias, accelerometerMa, listener);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(qualityScores, sequences, initialBias, initialMg,
+                    initialGg, accelerometerBias, accelerometerMa, listener);
+        };
     }
 
     /**
@@ -5409,40 +4835,20 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public static RobustEasyGyroscopeCalibrator create(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg);
-        }
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(qualityScores, sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+        };
     }
 
     /**
@@ -5479,41 +4885,21 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public static RobustEasyGyroscopeCalibrator create(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustEasyGyroscopeCalibratorListener listener,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final RobustEasyGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, listener);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, listener);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, listener);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(qualityScores, sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+        };
     }
 
     /**
@@ -5548,40 +4934,20 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public static RobustEasyGyroscopeCalibrator create(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg);
-        }
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(qualityScores, sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+        };
     }
 
     /**
@@ -5618,41 +4984,21 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public static RobustEasyGyroscopeCalibrator create(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustEasyGyroscopeCalibratorListener listener,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final RobustEasyGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, listener);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, listener);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, listener);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(qualityScores, sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+        };
     }
 
     /**
@@ -5694,45 +5040,30 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public static RobustEasyGyroscopeCalibrator create(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEstimatorMethod method) {
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
+            final Matrix accelerometerMa, final RobustEstimatorMethod method) {
         switch (method) {
             case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
+                return new RANSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                        estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
                         accelerometerMa);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
+            case LMEDS:
+                return new LMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                        estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
                         accelerometerMa);
             case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
+                return new MSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                        estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
                         accelerometerMa);
             case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
+                return new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, commonAxisUsed,
+                        estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
                         accelerometerMa);
-            case PROMedS:
+            case PROMEDS:
             default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
+                return new PROMedSRobustEasyGyroscopeCalibrator(qualityScores, sequences, commonAxisUsed,
+                        estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
                         accelerometerMa);
         }
     }
@@ -5778,48 +5109,27 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public static RobustEasyGyroscopeCalibrator create(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEasyGyroscopeCalibratorListener listener,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
+            final Matrix accelerometerMa, final RobustEasyGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(qualityScores, sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+        };
     }
 
     /**
@@ -5861,44 +5171,26 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public static RobustEasyGyroscopeCalibrator create(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                        initialBias, initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa);
-        }
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(qualityScores, sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa);
+        };
     }
 
     /**
@@ -5942,48 +5234,27 @@ public abstract class RobustEasyGyroscopeCalibrator implements
     public static RobustEasyGyroscopeCalibrator create(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEasyGyroscopeCalibratorListener listener,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustEasyGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-            case LMedS:
-                return new LMedSRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-            case MSAC:
-                return new MSACRobustEasyGyroscopeCalibrator(
-                        sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-            case PROSAC:
-                return new PROSACRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustEasyGyroscopeCalibrator(
-                        qualityScores, sequences, commonAxisUsed,
-                        estimateGDependentCrossBiases, initialBias,
-                        initialMg, initialGg, accelerometerBias,
-                        accelerometerMa, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+            case LMEDS -> new LMedSRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+            case MSAC -> new MSACRobustEasyGyroscopeCalibrator(sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+            case PROSAC -> new PROSACRobustEasyGyroscopeCalibrator(qualityScores, sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+            default -> new PROMedSRobustEasyGyroscopeCalibrator(qualityScores, sequences, commonAxisUsed,
+                    estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias,
+                    accelerometerMa, listener);
+        };
     }
 
     /**
@@ -6014,11 +5285,8 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
-        return create(sequences, initialBias, initialMg, initialGg,
-                DEFAULT_ROBUST_METHOD);
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg) {
+        return create(sequences, initialBias, initialMg, initialGg, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6042,12 +5310,9 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg,
             final RobustEasyGyroscopeCalibratorListener listener) {
-        return create(sequences, initialBias, initialMg, initialGg,
-                listener, DEFAULT_ROBUST_METHOD);
+        return create(sequences, initialBias, initialMg, initialGg, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6069,11 +5334,8 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
-        return create(sequences, initialBias, initialMg, initialGg,
-                DEFAULT_ROBUST_METHOD);
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg) {
+        return create(sequences, initialBias, initialMg, initialGg, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6097,444 +5359,388 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
             final RobustEasyGyroscopeCalibratorListener listener) {
-        return create(sequences, initialBias, initialMg, initialGg,
+        return create(sequences, initialBias, initialMg, initialGg, listener, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust gyroscope calibrator using default robust method.
+     *
+     * @param sequences         collection of sequences containing timestamped body
+     *                          kinematics measurements.
+     * @param initialBias       initial gyroscope bias to be used to find a
+     *                          solution. This must have length 3 and is expressed
+     *                          in radians per second (rad/s).
+     * @param initialMg         initial gyroscope scale factors and cross coupling
+     *                          errors matrix. Must be 3x3.
+     * @param initialGg         initial gyroscope G-dependent cross biases
+     *                          introduced on the gyroscope by the specific forces
+     *                          sensed by the accelerometer. Must be 3x3.
+     * @param accelerometerBias known accelerometer bias. This must
+     *                          have length 3 and is expressed in
+     *                          meters per squared second
+     *                          (m/s^2).
+     * @param accelerometerMa   known accelerometer scale factors and
+     *                          cross coupling matrix. Must be 3x3.
+     * @return a robust gyroscope calibrator.
+     * @throws IllegalArgumentException if any of the provided values does
+     *                                  not have proper size.
+     */
+    public static RobustEasyGyroscopeCalibrator create(
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
+            final double[] accelerometerBias, final Matrix accelerometerMa) {
+        return create(sequences, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust gyroscope calibrator using default robust method.
+     *
+     * @param sequences         collection of sequences containing timestamped body
+     *                          kinematics measurements.
+     * @param initialBias       initial gyroscope bias to be used to find a
+     *                          solution. This must have length 3 and is expressed
+     *                          in radians per second (rad/s).
+     * @param initialMg         initial gyroscope scale factors and cross coupling
+     *                          errors matrix. Must be 3x3.
+     * @param initialGg         initial gyroscope G-dependent cross biases
+     *                          introduced on the gyroscope by the specific forces
+     *                          sensed by the accelerometer. Must be 3x3.
+     * @param accelerometerBias known accelerometer bias. This must
+     *                          have length 3 and is expressed in
+     *                          meters per squared second
+     *                          (m/s^2).
+     * @param accelerometerMa   known accelerometer scale factors and
+     *                          cross coupling matrix. Must be 3x3.
+     * @param listener          listener to handle events raised by this
+     *                          calibrator.
+     * @return a robust gyroscope calibrator.
+     * @throws IllegalArgumentException if any of the provided values does
+     *                                  not have proper size.
+     */
+    public static RobustEasyGyroscopeCalibrator create(
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
+            final double[] accelerometerBias, final Matrix accelerometerMa,
+            final RobustEasyGyroscopeCalibratorListener listener) {
+        return create(sequences, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, listener,
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust gyroscope calibrator using default robust method.
+     *
+     * @param sequences         collection of sequences containing timestamped body
+     *                          kinematics measurements.
+     * @param initialBias       initial gyroscope bias to be used to find a
+     *                          solution. This must be 3x1 and is expressed
+     *                          in radians per second (rad/s).
+     * @param initialMg         initial gyroscope scale factors and cross coupling
+     *                          errors matrix. Must be 3x3.
+     * @param initialGg         initial gyroscope G-dependent cross biases
+     *                          introduced on the gyroscope by the specific forces
+     *                          sensed by the accelerometer. Must be 3x3.
+     * @param accelerometerBias known accelerometer bias. This must be 3x1
+     *                          and is expressed in meters per squared
+     *                          second (m/s^2).
+     * @param accelerometerMa   known accelerometer scale factors and
+     *                          cross coupling matrix. Must be 3x3.
+     * @return a robust gyroscope calibrator.
+     * @throws IllegalArgumentException if any of the provided values does
+     *                                  not have proper size.
+     */
+    public static RobustEasyGyroscopeCalibrator create(
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa) {
+        return create(sequences, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust gyroscope calibrator using default robust method.
+     *
+     * @param sequences         collection of sequences containing timestamped body
+     *                          kinematics measurements.
+     * @param initialBias       initial gyroscope bias to be used to find a
+     *                          solution. This must be 3x1 and is expressed
+     *                          in radians per second (rad/s).
+     * @param initialMg         initial gyroscope scale factors and cross coupling
+     *                          errors matrix. Must be 3x3.
+     * @param initialGg         initial gyroscope G-dependent cross biases
+     *                          introduced on the gyroscope by the specific forces
+     *                          sensed by the accelerometer. Must be 3x3.
+     * @param accelerometerBias known accelerometer bias. This must be 3x1
+     *                          and is expressed in meters per squared
+     *                          second (m/s^2).
+     * @param accelerometerMa   known accelerometer scale factors and
+     *                          cross coupling matrix. Must be 3x3.
+     * @param listener          listener to handle events raised by this
+     *                          calibrator.
+     * @return a robust gyroscope calibrator.
+     * @throws IllegalArgumentException if any of the provided values does
+     *                                  not have proper size.
+     */
+    public static RobustEasyGyroscopeCalibrator create(
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustEasyGyroscopeCalibratorListener listener) {
+        return create(sequences, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, listener,
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust gyroscope calibrator using default robust method.
+     *
+     * @param sequences                     collection of sequences containing timestamped body
+     *                                      kinematics measurements.
+     * @param commonAxisUsed                indicates whether z-axis is
+     *                                      assumed to be common for
+     *                                      accelerometer and gyroscope.
+     * @param estimateGDependentCrossBiases true if G-dependent cross biases
+     *                                      will be estimated, false
+     *                                      otherwise.
+     * @param initialBias                   initial gyroscope bias to be used to find a
+     *                                      solution. This must be 3x1 and is expressed
+     *                                      in radians per second (rad/s).
+     * @param initialMg                     initial gyroscope scale factors and cross coupling
+     *                                      errors matrix. Must be 3x3.
+     * @param initialGg                     initial gyroscope G-dependent cross biases
+     *                                      introduced on the gyroscope by the specific forces
+     *                                      sensed by the accelerometer. Must be 3x3.
+     * @return a robust gyroscope calibrator.
+     * @throws IllegalArgumentException if any of the provided values does
+     *                                  not have proper size.
+     */
+    public static RobustEasyGyroscopeCalibrator create(
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg) {
+        return create(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg,
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust gyroscope calibrator using default robust method.
+     *
+     * @param sequences                     collection of sequences containing timestamped body
+     *                                      kinematics measurements.
+     * @param commonAxisUsed                indicates whether z-axis is
+     *                                      assumed to be common for
+     *                                      accelerometer and gyroscope.
+     * @param estimateGDependentCrossBiases true if G-dependent cross biases
+     *                                      will be estimated, false
+     *                                      otherwise.
+     * @param initialBias                   initial gyroscope bias to be used to find a
+     *                                      solution. This must be 3x1 and is expressed
+     *                                      in radians per second (rad/s).
+     * @param initialMg                     initial gyroscope scale factors and cross coupling
+     *                                      errors matrix. Must be 3x3.
+     * @param initialGg                     initial gyroscope G-dependent cross biases
+     *                                      introduced on the gyroscope by the specific forces
+     *                                      sensed by the accelerometer. Must be 3x3.
+     * @param listener                      listener to handle events raised by this
+     *                                      calibrator.
+     * @return a robust gyroscope calibrator.
+     * @throws IllegalArgumentException if any of the provided values does
+     *                                  not have proper size.
+     */
+    public static RobustEasyGyroscopeCalibrator create(
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final RobustEasyGyroscopeCalibratorListener listener) {
+        return create(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg,
                 listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
      * Creates a robust gyroscope calibrator using default robust method.
      *
-     * @param sequences         collection of sequences containing timestamped body
-     *                          kinematics measurements.
-     * @param initialBias       initial gyroscope bias to be used to find a
-     *                          solution. This must have length 3 and is expressed
-     *                          in radians per second (rad/s).
-     * @param initialMg         initial gyroscope scale factors and cross coupling
-     *                          errors matrix. Must be 3x3.
-     * @param initialGg         initial gyroscope G-dependent cross biases
-     *                          introduced on the gyroscope by the specific forces
-     *                          sensed by the accelerometer. Must be 3x3.
-     * @param accelerometerBias known accelerometer bias. This must
-     *                          have length 3 and is expressed in
-     *                          meters per squared second
-     *                          (m/s^2).
-     * @param accelerometerMa   known accelerometer scale factors and
-     *                          cross coupling matrix. Must be 3x3.
+     * @param sequences                     collection of sequences containing timestamped body
+     *                                      kinematics measurements.
+     * @param commonAxisUsed                indicates whether z-axis is
+     *                                      assumed to be common for
+     *                                      accelerometer and gyroscope.
+     * @param estimateGDependentCrossBiases true if G-dependent cross biases
+     *                                      will be estimated, false
+     *                                      otherwise.
+     * @param initialBias                   initial gyroscope bias to be used to find a
+     *                                      solution. This must have length 3 and is expressed
+     *                                      in radians per second (rad/s).
+     * @param initialMg                     initial gyroscope scale factors and cross coupling
+     *                                      errors matrix. Must be 3x3.
+     * @param initialGg                     initial gyroscope G-dependent cross biases
+     *                                      introduced on the gyroscope by the specific forces
+     *                                      sensed by the accelerometer. Must be 3x3.
      * @return a robust gyroscope calibrator.
      * @throws IllegalArgumentException if any of the provided values does
      *                                  not have proper size.
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa) {
-        return create(sequences, initialBias, initialMg,
-                initialGg, accelerometerBias,
-                accelerometerMa, DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust gyroscope calibrator using default robust method.
-     *
-     * @param sequences         collection of sequences containing timestamped body
-     *                          kinematics measurements.
-     * @param initialBias       initial gyroscope bias to be used to find a
-     *                          solution. This must have length 3 and is expressed
-     *                          in radians per second (rad/s).
-     * @param initialMg         initial gyroscope scale factors and cross coupling
-     *                          errors matrix. Must be 3x3.
-     * @param initialGg         initial gyroscope G-dependent cross biases
-     *                          introduced on the gyroscope by the specific forces
-     *                          sensed by the accelerometer. Must be 3x3.
-     * @param accelerometerBias known accelerometer bias. This must
-     *                          have length 3 and is expressed in
-     *                          meters per squared second
-     *                          (m/s^2).
-     * @param accelerometerMa   known accelerometer scale factors and
-     *                          cross coupling matrix. Must be 3x3.
-     * @param listener          listener to handle events raised by this
-     *                          calibrator.
-     * @return a robust gyroscope calibrator.
-     * @throws IllegalArgumentException if any of the provided values does
-     *                                  not have proper size.
-     */
-    public static RobustEasyGyroscopeCalibrator create(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEasyGyroscopeCalibratorListener listener) {
-        return create(sequences, initialBias, initialMg,
-                initialGg, accelerometerBias, accelerometerMa, listener,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg) {
+        return create(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg,
                 DEFAULT_ROBUST_METHOD);
     }
 
     /**
      * Creates a robust gyroscope calibrator using default robust method.
      *
-     * @param sequences         collection of sequences containing timestamped body
-     *                          kinematics measurements.
-     * @param initialBias       initial gyroscope bias to be used to find a
-     *                          solution. This must be 3x1 and is expressed
-     *                          in radians per second (rad/s).
-     * @param initialMg         initial gyroscope scale factors and cross coupling
-     *                          errors matrix. Must be 3x3.
-     * @param initialGg         initial gyroscope G-dependent cross biases
-     *                          introduced on the gyroscope by the specific forces
-     *                          sensed by the accelerometer. Must be 3x3.
-     * @param accelerometerBias known accelerometer bias. This must be 3x1
-     *                          and is expressed in meters per squared
-     *                          second (m/s^2).
-     * @param accelerometerMa   known accelerometer scale factors and
-     *                          cross coupling matrix. Must be 3x3.
+     * @param sequences                     collection of sequences containing timestamped body
+     *                                      kinematics measurements.
+     * @param commonAxisUsed                indicates whether z-axis is
+     *                                      assumed to be common for
+     *                                      accelerometer and gyroscope.
+     * @param estimateGDependentCrossBiases true if G-dependent cross biases
+     *                                      will be estimated, false
+     *                                      otherwise.
+     * @param initialBias                   initial gyroscope bias to be used to find a
+     *                                      solution. This must have length 3 and is expressed
+     *                                      in radians per second (rad/s).
+     * @param initialMg                     initial gyroscope scale factors and cross coupling
+     *                                      errors matrix. Must be 3x3.
+     * @param initialGg                     initial gyroscope G-dependent cross biases
+     *                                      introduced on the gyroscope by the specific forces
+     *                                      sensed by the accelerometer. Must be 3x3.
+     * @param listener                      listener to handle events raised by this
+     *                                      calibrator.
      * @return a robust gyroscope calibrator.
      * @throws IllegalArgumentException if any of the provided values does
      *                                  not have proper size.
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final RobustEasyGyroscopeCalibratorListener listener) {
+        return create(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg,
+                listener, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust gyroscope calibrator using default robust method.
+     *
+     * @param sequences                     collection of sequences containing timestamped body
+     *                                      kinematics measurements.
+     * @param commonAxisUsed                indicates whether z-axis is
+     *                                      assumed to be common for
+     *                                      accelerometer and gyroscope.
+     * @param estimateGDependentCrossBiases true if G-dependent cross biases
+     *                                      will be estimated, false
+     *                                      otherwise.
+     * @param initialBias                   initial gyroscope bias to be used to find a
+     *                                      solution. This must have length 3 and is expressed
+     *                                      in radians per second (rad/s).
+     * @param initialMg                     initial gyroscope scale factors and cross coupling
+     *                                      errors matrix. Must be 3x3.
+     * @param initialGg                     initial gyroscope G-dependent cross biases
+     *                                      introduced on the gyroscope by the specific forces
+     *                                      sensed by the accelerometer. Must be 3x3.
+     * @param accelerometerBias             known accelerometer bias. This
+     *                                      must have length 3 and is
+     *                                      expressed in meters per squared
+     *                                      second (m/s^2).
+     * @param accelerometerMa               known accelerometer scale factors
+     *                                      and cross coupling matrix. Must
+     *                                      be 3x3.
+     * @return a robust gyroscope calibrator.
+     * @throws IllegalArgumentException if any of the provided values does
+     *                                  not have proper size.
+     */
+    public static RobustEasyGyroscopeCalibrator create(
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-        return create(sequences, initialBias, initialMg, initialGg,
+        return create(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg,
+                initialGg, accelerometerBias, accelerometerMa, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust gyroscope calibrator using default robust method.
+     *
+     * @param sequences                     collection of sequences containing timestamped body
+     *                                      kinematics measurements.
+     * @param commonAxisUsed                indicates whether z-axis is
+     *                                      assumed to be common for
+     *                                      accelerometer and gyroscope.
+     * @param estimateGDependentCrossBiases true if G-dependent cross biases
+     *                                      will be estimated, false
+     *                                      otherwise.
+     * @param initialBias                   initial gyroscope bias to be used to find a
+     *                                      solution. This must have length 3 and is expressed
+     *                                      in radians per second (rad/s).
+     * @param initialMg                     initial gyroscope scale factors and cross coupling
+     *                                      errors matrix. Must be 3x3.
+     * @param initialGg                     initial gyroscope G-dependent cross biases
+     *                                      introduced on the gyroscope by the specific forces
+     *                                      sensed by the accelerometer. Must be 3x3.
+     * @param accelerometerBias             known accelerometer bias. This
+     *                                      must have length 3 and is
+     *                                      expressed in meters per squared
+     *                                      second (m/s^2).
+     * @param accelerometerMa               known accelerometer scale factors
+     *                                      and cross coupling matrix. Must
+     *                                      be 3x3.
+     * @param listener                      listener to handle events raised by this
+     *                                      calibrator.
+     * @return a robust gyroscope calibrator.
+     * @throws IllegalArgumentException if any of the provided values does
+     *                                  not have proper size.
+     */
+    public static RobustEasyGyroscopeCalibrator create(
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
+            final Matrix accelerometerMa, final RobustEasyGyroscopeCalibratorListener listener) {
+        return create(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg,
+                initialGg, accelerometerBias, accelerometerMa, listener, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust gyroscope calibrator using default robust method.
+     *
+     * @param sequences                     collection of sequences containing timestamped body
+     *                                      kinematics measurements.
+     * @param commonAxisUsed                indicates whether z-axis is
+     *                                      assumed to be common for
+     *                                      accelerometer and gyroscope.
+     * @param estimateGDependentCrossBiases true if G-dependent cross biases
+     *                                      will be estimated, false
+     *                                      otherwise.
+     * @param initialBias                   initial gyroscope bias to be used to find a
+     *                                      solution. This must be 3x1 and is expressed
+     *                                      in radians per second (rad/s).
+     * @param initialMg                     initial gyroscope scale factors and cross coupling
+     *                                      errors matrix. Must be 3x3.
+     * @param initialGg                     initial gyroscope G-dependent cross biases
+     *                                      introduced on the gyroscope by the specific forces
+     *                                      sensed by the accelerometer. Must be 3x3.
+     * @param accelerometerBias             known accelerometer bias. This
+     *                                      must have length 3 and is
+     *                                      expressed in meters per squared
+     *                                      second (m/s^2).
+     * @param accelerometerMa               known accelerometer scale factors
+     *                                      and cross coupling matrix. Must
+     *                                      be 3x3.
+     * @return a robust gyroscope calibrator.
+     * @throws IllegalArgumentException if any of the provided values does
+     *                                  not have proper size.
+     */
+    public static RobustEasyGyroscopeCalibrator create(
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa) {
+        return create(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg,
                 accelerometerBias, accelerometerMa, DEFAULT_ROBUST_METHOD);
     }
 
     /**
      * Creates a robust gyroscope calibrator using default robust method.
      *
-     * @param sequences         collection of sequences containing timestamped body
-     *                          kinematics measurements.
-     * @param initialBias       initial gyroscope bias to be used to find a
-     *                          solution. This must be 3x1 and is expressed
-     *                          in radians per second (rad/s).
-     * @param initialMg         initial gyroscope scale factors and cross coupling
-     *                          errors matrix. Must be 3x3.
-     * @param initialGg         initial gyroscope G-dependent cross biases
-     *                          introduced on the gyroscope by the specific forces
-     *                          sensed by the accelerometer. Must be 3x3.
-     * @param accelerometerBias known accelerometer bias. This must be 3x1
-     *                          and is expressed in meters per squared
-     *                          second (m/s^2).
-     * @param accelerometerMa   known accelerometer scale factors and
-     *                          cross coupling matrix. Must be 3x3.
-     * @param listener          listener to handle events raised by this
-     *                          calibrator.
-     * @return a robust gyroscope calibrator.
-     * @throws IllegalArgumentException if any of the provided values does
-     *                                  not have proper size.
-     */
-    public static RobustEasyGyroscopeCalibrator create(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEasyGyroscopeCalibratorListener listener) {
-        return create(sequences, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, listener,
-                DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust gyroscope calibrator using default robust method.
-     *
-     * @param sequences                     collection of sequences containing timestamped body
-     *                                      kinematics measurements.
-     * @param commonAxisUsed                indicates whether z-axis is
-     *                                      assumed to be common for
-     *                                      accelerometer and gyroscope.
-     * @param estimateGDependentCrossBiases true if G-dependent cross biases
-     *                                      will be estimated, false
-     *                                      otherwise.
-     * @param initialBias                   initial gyroscope bias to be used to find a
-     *                                      solution. This must be 3x1 and is expressed
-     *                                      in radians per second (rad/s).
-     * @param initialMg                     initial gyroscope scale factors and cross coupling
-     *                                      errors matrix. Must be 3x3.
-     * @param initialGg                     initial gyroscope G-dependent cross biases
-     *                                      introduced on the gyroscope by the specific forces
-     *                                      sensed by the accelerometer. Must be 3x3.
-     * @return a robust gyroscope calibrator.
-     * @throws IllegalArgumentException if any of the provided values does
-     *                                  not have proper size.
-     */
-    public static RobustEasyGyroscopeCalibrator create(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
-        return create(sequences, commonAxisUsed,
-                estimateGDependentCrossBiases, initialBias, initialMg,
-                initialGg, DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust gyroscope calibrator using default robust method.
-     *
-     * @param sequences                     collection of sequences containing timestamped body
-     *                                      kinematics measurements.
-     * @param commonAxisUsed                indicates whether z-axis is
-     *                                      assumed to be common for
-     *                                      accelerometer and gyroscope.
-     * @param estimateGDependentCrossBiases true if G-dependent cross biases
-     *                                      will be estimated, false
-     *                                      otherwise.
-     * @param initialBias                   initial gyroscope bias to be used to find a
-     *                                      solution. This must be 3x1 and is expressed
-     *                                      in radians per second (rad/s).
-     * @param initialMg                     initial gyroscope scale factors and cross coupling
-     *                                      errors matrix. Must be 3x3.
-     * @param initialGg                     initial gyroscope G-dependent cross biases
-     *                                      introduced on the gyroscope by the specific forces
-     *                                      sensed by the accelerometer. Must be 3x3.
-     * @param listener                      listener to handle events raised by this
-     *                                      calibrator.
-     * @return a robust gyroscope calibrator.
-     * @throws IllegalArgumentException if any of the provided values does
-     *                                  not have proper size.
-     */
-    public static RobustEasyGyroscopeCalibrator create(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustEasyGyroscopeCalibratorListener listener) {
-        return create(sequences, commonAxisUsed,
-                estimateGDependentCrossBiases, initialBias, initialMg,
-                initialGg, listener, DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust gyroscope calibrator using default robust method.
-     *
-     * @param sequences                     collection of sequences containing timestamped body
-     *                                      kinematics measurements.
-     * @param commonAxisUsed                indicates whether z-axis is
-     *                                      assumed to be common for
-     *                                      accelerometer and gyroscope.
-     * @param estimateGDependentCrossBiases true if G-dependent cross biases
-     *                                      will be estimated, false
-     *                                      otherwise.
-     * @param initialBias                   initial gyroscope bias to be used to find a
-     *                                      solution. This must have length 3 and is expressed
-     *                                      in radians per second (rad/s).
-     * @param initialMg                     initial gyroscope scale factors and cross coupling
-     *                                      errors matrix. Must be 3x3.
-     * @param initialGg                     initial gyroscope G-dependent cross biases
-     *                                      introduced on the gyroscope by the specific forces
-     *                                      sensed by the accelerometer. Must be 3x3.
-     * @return a robust gyroscope calibrator.
-     * @throws IllegalArgumentException if any of the provided values does
-     *                                  not have proper size.
-     */
-    public static RobustEasyGyroscopeCalibrator create(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
-        return create(sequences, commonAxisUsed,
-                estimateGDependentCrossBiases, initialBias, initialMg,
-                initialGg, DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust gyroscope calibrator using default robust method.
-     *
-     * @param sequences                     collection of sequences containing timestamped body
-     *                                      kinematics measurements.
-     * @param commonAxisUsed                indicates whether z-axis is
-     *                                      assumed to be common for
-     *                                      accelerometer and gyroscope.
-     * @param estimateGDependentCrossBiases true if G-dependent cross biases
-     *                                      will be estimated, false
-     *                                      otherwise.
-     * @param initialBias                   initial gyroscope bias to be used to find a
-     *                                      solution. This must have length 3 and is expressed
-     *                                      in radians per second (rad/s).
-     * @param initialMg                     initial gyroscope scale factors and cross coupling
-     *                                      errors matrix. Must be 3x3.
-     * @param initialGg                     initial gyroscope G-dependent cross biases
-     *                                      introduced on the gyroscope by the specific forces
-     *                                      sensed by the accelerometer. Must be 3x3.
-     * @param listener                      listener to handle events raised by this
-     *                                      calibrator.
-     * @return a robust gyroscope calibrator.
-     * @throws IllegalArgumentException if any of the provided values does
-     *                                  not have proper size.
-     */
-    public static RobustEasyGyroscopeCalibrator create(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustEasyGyroscopeCalibratorListener listener) {
-        return create(sequences, commonAxisUsed,
-                estimateGDependentCrossBiases, initialBias, initialMg,
-                initialGg, listener, DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust gyroscope calibrator using default robust method.
-     *
-     * @param sequences                     collection of sequences containing timestamped body
-     *                                      kinematics measurements.
-     * @param commonAxisUsed                indicates whether z-axis is
-     *                                      assumed to be common for
-     *                                      accelerometer and gyroscope.
-     * @param estimateGDependentCrossBiases true if G-dependent cross biases
-     *                                      will be estimated, false
-     *                                      otherwise.
-     * @param initialBias                   initial gyroscope bias to be used to find a
-     *                                      solution. This must have length 3 and is expressed
-     *                                      in radians per second (rad/s).
-     * @param initialMg                     initial gyroscope scale factors and cross coupling
-     *                                      errors matrix. Must be 3x3.
-     * @param initialGg                     initial gyroscope G-dependent cross biases
-     *                                      introduced on the gyroscope by the specific forces
-     *                                      sensed by the accelerometer. Must be 3x3.
-     * @param accelerometerBias             known accelerometer bias. This
-     *                                      must have length 3 and is
-     *                                      expressed in meters per squared
-     *                                      second (m/s^2).
-     * @param accelerometerMa               known accelerometer scale factors
-     *                                      and cross coupling matrix. Must
-     *                                      be 3x3.
-     * @return a robust gyroscope calibrator.
-     * @throws IllegalArgumentException if any of the provided values does
-     *                                  not have proper size.
-     */
-    public static RobustEasyGyroscopeCalibrator create(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa) {
-        return create(sequences, commonAxisUsed,
-                estimateGDependentCrossBiases, initialBias, initialMg,
-                initialGg, accelerometerBias, accelerometerMa,
-                DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust gyroscope calibrator using default robust method.
-     *
-     * @param sequences                     collection of sequences containing timestamped body
-     *                                      kinematics measurements.
-     * @param commonAxisUsed                indicates whether z-axis is
-     *                                      assumed to be common for
-     *                                      accelerometer and gyroscope.
-     * @param estimateGDependentCrossBiases true if G-dependent cross biases
-     *                                      will be estimated, false
-     *                                      otherwise.
-     * @param initialBias                   initial gyroscope bias to be used to find a
-     *                                      solution. This must have length 3 and is expressed
-     *                                      in radians per second (rad/s).
-     * @param initialMg                     initial gyroscope scale factors and cross coupling
-     *                                      errors matrix. Must be 3x3.
-     * @param initialGg                     initial gyroscope G-dependent cross biases
-     *                                      introduced on the gyroscope by the specific forces
-     *                                      sensed by the accelerometer. Must be 3x3.
-     * @param accelerometerBias             known accelerometer bias. This
-     *                                      must have length 3 and is
-     *                                      expressed in meters per squared
-     *                                      second (m/s^2).
-     * @param accelerometerMa               known accelerometer scale factors
-     *                                      and cross coupling matrix. Must
-     *                                      be 3x3.
-     * @param listener                      listener to handle events raised by this
-     *                                      calibrator.
-     * @return a robust gyroscope calibrator.
-     * @throws IllegalArgumentException if any of the provided values does
-     *                                  not have proper size.
-     */
-    public static RobustEasyGyroscopeCalibrator create(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEasyGyroscopeCalibratorListener listener) {
-        return create(sequences, commonAxisUsed,
-                estimateGDependentCrossBiases, initialBias, initialMg,
-                initialGg, accelerometerBias, accelerometerMa, listener,
-                DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust gyroscope calibrator using default robust method.
-     *
-     * @param sequences                     collection of sequences containing timestamped body
-     *                                      kinematics measurements.
-     * @param commonAxisUsed                indicates whether z-axis is
-     *                                      assumed to be common for
-     *                                      accelerometer and gyroscope.
-     * @param estimateGDependentCrossBiases true if G-dependent cross biases
-     *                                      will be estimated, false
-     *                                      otherwise.
-     * @param initialBias                   initial gyroscope bias to be used to find a
-     *                                      solution. This must be 3x1 and is expressed
-     *                                      in radians per second (rad/s).
-     * @param initialMg                     initial gyroscope scale factors and cross coupling
-     *                                      errors matrix. Must be 3x3.
-     * @param initialGg                     initial gyroscope G-dependent cross biases
-     *                                      introduced on the gyroscope by the specific forces
-     *                                      sensed by the accelerometer. Must be 3x3.
-     * @param accelerometerBias             known accelerometer bias. This
-     *                                      must have length 3 and is
-     *                                      expressed in meters per squared
-     *                                      second (m/s^2).
-     * @param accelerometerMa               known accelerometer scale factors
-     *                                      and cross coupling matrix. Must
-     *                                      be 3x3.
-     * @return a robust gyroscope calibrator.
-     * @throws IllegalArgumentException if any of the provided values does
-     *                                  not have proper size.
-     */
-    public static RobustEasyGyroscopeCalibrator create(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa) {
-        return create(sequences, commonAxisUsed,
-                estimateGDependentCrossBiases, initialBias, initialMg,
-                initialGg, accelerometerBias, accelerometerMa,
-                DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust gyroscope calibrator using default robust method.
-     *
      * @param sequences                     collection of sequences containing timestamped body
      *                                      kinematics measurements.
      * @param commonAxisUsed                indicates whether z-axis is
@@ -6566,18 +5772,11 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      */
     public static RobustEasyGyroscopeCalibrator create(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEasyGyroscopeCalibratorListener listener) {
-        return create(sequences, commonAxisUsed,
-                estimateGDependentCrossBiases, initialBias, initialMg,
-                initialGg, accelerometerBias, accelerometerMa, listener,
-                DEFAULT_ROBUST_METHOD);
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustEasyGyroscopeCalibratorListener listener) {
+        return create(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg,
+                initialGg, accelerometerBias, accelerometerMa, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6604,10 +5803,8 @@ public abstract class RobustEasyGyroscopeCalibrator implements
 
         try {
             mAngularRateFixer.setBias(preliminaryResult.mEstimatedBiases);
-            mAngularRateFixer.setCrossCouplingErrors(
-                    preliminaryResult.mEstimatedMg);
-            mAngularRateFixer.setGDependantCrossBias(
-                    preliminaryResult.mEstimatedGg);
+            mAngularRateFixer.setCrossCouplingErrors(preliminaryResult.mEstimatedMg);
+            mAngularRateFixer.setGDependantCrossBias(preliminaryResult.mEstimatedGg);
 
             // copy measured sequence as it will be used to fix kinematics values
             // using preliminary gyroscope parameters
@@ -6622,10 +5819,8 @@ public abstract class RobustEasyGyroscopeCalibrator implements
                 final StandardDeviationTimedBodyKinematics measuredItem = measuredItems.get(j);
                 final StandardDeviationTimedBodyKinematics fixedItem = fixedItems.get(j);
 
-                final BodyKinematics measuredKinematics = measuredItem
-                        .getKinematics();
-                final BodyKinematics fixedKinematics = fixedItem
-                        .getKinematics();
+                final BodyKinematics measuredKinematics = measuredItem.getKinematics();
+                final BodyKinematics fixedKinematics = fixedItem.getKinematics();
                 fixKinematics(measuredKinematics, fixedKinematics);
             }
 
@@ -6636,8 +5831,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
             mMeasuredSpecificForce[0] = sequence.getBeforeMeanFx();
             mMeasuredSpecificForce[1] = sequence.getBeforeMeanFy();
             mMeasuredSpecificForce[2] = sequence.getBeforeMeanFz();
-            mAccelerationFixer.fix(mMeasuredSpecificForce,
-                    mFixedSpecificForce);
+            mAccelerationFixer.fix(mMeasuredSpecificForce, mFixedSpecificForce);
 
             // normalize coordinates
             ArrayUtils.normalize(mFixedSpecificForce);
@@ -6651,8 +5845,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
             mMeasuredSpecificForce[0] = sequence.getAfterMeanFx();
             mMeasuredSpecificForce[1] = sequence.getAfterMeanFy();
             mMeasuredSpecificForce[2] = sequence.getAfterMeanFz();
-            mAccelerationFixer.fix(mMeasuredSpecificForce,
-                    mFixedSpecificForce);
+            mAccelerationFixer.fix(mMeasuredSpecificForce, mFixedSpecificForce);
 
             // normalize coordinates
             ArrayUtils.normalize(mFixedSpecificForce);
@@ -6674,10 +5867,9 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @param samplesIndices indices of samples picked by the robust estimator.
      * @param solutions      list where estimated preliminary solution will be stored.
      */
-    protected void computePreliminarySolutions(final int[] samplesIndices,
-                                               final List<PreliminaryResult> solutions) {
-        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences =
-                new ArrayList<>();
+    protected void computePreliminarySolutions(
+            final int[] samplesIndices, final List<PreliminaryResult> solutions) {
+        final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences = new ArrayList<>();
 
         for (final int samplesIndex : samplesIndices) {
             sequences.add(mSequences.get(samplesIndex));
@@ -6696,9 +5888,8 @@ public abstract class RobustEasyGyroscopeCalibrator implements
             mInnerCalibrator.setAccelerometerBias(mAccelerometerBiasX, mAccelerometerBiasY, mAccelerometerBiasZ);
             mInnerCalibrator.setAccelerometerScalingFactorsAndCrossCouplingErrors(
                     mAccelerometerSx, mAccelerometerSy, mAccelerometerSz,
-                    mAccelerometerMxy, mAccelerometerMxz,
-                    mAccelerometerMyx, mAccelerometerMyz,
-                    mAccelerometerMzx, mAccelerometerMzy);
+                    mAccelerometerMxy, mAccelerometerMxz, mAccelerometerMyx,
+                    mAccelerometerMyz, mAccelerometerMzx, mAccelerometerMzy);
             mInnerCalibrator.setCommonAxisUsed(mCommonAxisUsed);
             mInnerCalibrator.setSequences(sequences);
             mInnerCalibrator.calibrate();
@@ -6753,9 +5944,8 @@ public abstract class RobustEasyGyroscopeCalibrator implements
                 mInnerCalibrator.setAccelerometerBias(mAccelerometerBiasX, mAccelerometerBiasY, mAccelerometerBiasZ);
                 mInnerCalibrator.setAccelerometerScalingFactorsAndCrossCouplingErrors(
                         mAccelerometerSx, mAccelerometerSy, mAccelerometerSz,
-                        mAccelerometerMxy, mAccelerometerMxz,
-                        mAccelerometerMyx, mAccelerometerMyz,
-                        mAccelerometerMzx, mAccelerometerMzy);
+                        mAccelerometerMxy, mAccelerometerMxz, mAccelerometerMyx,
+                        mAccelerometerMyz, mAccelerometerMzx, mAccelerometerMzy);
                 mInnerCalibrator.setCommonAxisUsed(mCommonAxisUsed);
                 mInnerCalibrator.setSequences(inlierSequences);
                 mInnerCalibrator.calibrate();
@@ -6814,8 +6004,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @return converted value.
      */
     private static double convertAngularSpeed(final AngularSpeed angularSpeed) {
-        return convertAngularSpeed(angularSpeed.getValue().doubleValue(),
-                angularSpeed.getUnit());
+        return convertAngularSpeed(angularSpeed.getValue().doubleValue(), angularSpeed.getUnit());
     }
 
     /**
@@ -6826,30 +6015,21 @@ public abstract class RobustEasyGyroscopeCalibrator implements
      * @throws AlgebraException if accelerometer or gyroscope parameters
      *                          contain numerical instabilities.
      */
-    private void fixKinematics(
-            final BodyKinematics measuredKinematics,
-            final BodyKinematics result) throws AlgebraException {
+    private void fixKinematics(final BodyKinematics measuredKinematics, final BodyKinematics result)
+            throws AlgebraException {
 
         mMeasuredSpecificForce[0] = measuredKinematics.getFx();
         mMeasuredSpecificForce[1] = measuredKinematics.getFy();
         mMeasuredSpecificForce[2] = measuredKinematics.getFz();
-        mAccelerationFixer.fix(mMeasuredSpecificForce,
-                mFixedSpecificForce);
+        mAccelerationFixer.fix(mMeasuredSpecificForce, mFixedSpecificForce);
 
         mMeasuredAngularRate[0] = measuredKinematics.getAngularRateX();
         mMeasuredAngularRate[1] = measuredKinematics.getAngularRateY();
         mMeasuredAngularRate[2] = measuredKinematics.getAngularRateZ();
-        mAngularRateFixer.fix(mMeasuredAngularRate,
-                mFixedSpecificForce, mFixedAngularRate);
+        mAngularRateFixer.fix(mMeasuredAngularRate, mFixedSpecificForce, mFixedAngularRate);
 
-        result.setSpecificForceCoordinates(
-                mFixedSpecificForce[0],
-                mFixedSpecificForce[1],
-                mFixedSpecificForce[2]);
-        result.setAngularRateCoordinates(
-                mFixedAngularRate[0],
-                mFixedAngularRate[1],
-                mFixedAngularRate[2]);
+        result.setSpecificForceCoordinates(mFixedSpecificForce[0], mFixedSpecificForce[1], mFixedSpecificForce[2]);
+        result.setAngularRateCoordinates(mFixedAngularRate[0], mFixedAngularRate[1], mFixedAngularRate[2]);
     }
 
     /**

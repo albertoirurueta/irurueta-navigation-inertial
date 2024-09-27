@@ -131,10 +131,8 @@ public class BuildInfo {
             final Properties props = new Properties();
             props.load(stream);
 
-            final String buildTimestampString = props.getProperty(
-                    BUILD_TIMESTAMP_KEY);
-            final SimpleDateFormat format = new SimpleDateFormat(TIMESTAMP_FORMAT,
-                    Locale.ENGLISH);
+            final String buildTimestampString = props.getProperty(BUILD_TIMESTAMP_KEY);
+            final SimpleDateFormat format = new SimpleDateFormat(TIMESTAMP_FORMAT, Locale.ENGLISH);
             mBuildTimestamp = format.parse(buildTimestampString);
 
             mGroupId = props.getProperty(GROUP_ID_KEY);

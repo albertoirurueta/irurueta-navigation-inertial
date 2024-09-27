@@ -75,9 +75,8 @@ public class FrameBodyKinematicsTest {
         assertNull(frameBodyKinematics.getPreviousFrame());
         assertNull(frameBodyKinematics.getPreviousNedFrame());
         assertFalse(frameBodyKinematics.getPreviousNedFrame(null));
-        assertEquals(frameBodyKinematics.getTimeInterval(), 0.0, 0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(0.0, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(), new Time(0.0, TimeUnit.SECOND));
         Time timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
@@ -87,39 +86,36 @@ public class FrameBodyKinematicsTest {
         frameBodyKinematics = new FrameBodyKinematics(kinematics);
 
         // check default values
-        assertSame(frameBodyKinematics.getKinematics(), kinematics);
+        assertSame(kinematics, frameBodyKinematics.getKinematics());
         assertNull(frameBodyKinematics.getFrame());
         assertNull(frameBodyKinematics.getNedFrame());
         assertFalse(frameBodyKinematics.getNedFrame(null));
         assertNull(frameBodyKinematics.getPreviousFrame());
         assertNull(frameBodyKinematics.getPreviousNedFrame());
         assertFalse(frameBodyKinematics.getPreviousNedFrame(null));
-        assertEquals(frameBodyKinematics.getTimeInterval(), 0.0, 0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(0.0, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
 
         // test constructor with ECEF frame
         final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
         frameBodyKinematics = new FrameBodyKinematics(ecefFrame);
 
         // check default values
         assertNull(frameBodyKinematics.getKinematics());
-        assertSame(frameBodyKinematics.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getNedFrame(), nedFrame);
+        assertSame(ecefFrame, frameBodyKinematics.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
         NEDFrame nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
         assertNull(frameBodyKinematics.getPreviousFrame());
         assertNull(frameBodyKinematics.getPreviousNedFrame());
         assertFalse(frameBodyKinematics.getPreviousNedFrame(null));
-        assertEquals(frameBodyKinematics.getTimeInterval(), 0.0, 0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(0.0, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
@@ -129,25 +125,23 @@ public class FrameBodyKinematicsTest {
 
         // check default values
         assertNull(frameBodyKinematics.getKinematics());
-        assertEquals(frameBodyKinematics.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getNedFrame(), nedFrame);
+        assertEquals(ecefFrame, frameBodyKinematics.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
         assertNull(frameBodyKinematics.getPreviousFrame());
         assertNull(frameBodyKinematics.getPreviousNedFrame());
         assertFalse(frameBodyKinematics.getPreviousNedFrame(null));
-        assertEquals(frameBodyKinematics.getTimeInterval(), 0.0, 0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(0.0, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), timeInterval);
 
         // test constructor with time interval seconds
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeIntervalSeconds = randomizer.nextDouble(
-                MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final double timeIntervalSeconds = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
         frameBodyKinematics = new FrameBodyKinematics(timeIntervalSeconds);
         assertNull(frameBodyKinematics.getKinematics());
@@ -157,22 +151,14 @@ public class FrameBodyKinematicsTest {
         assertNull(frameBodyKinematics.getPreviousFrame());
         assertNull(frameBodyKinematics.getPreviousNedFrame());
         assertFalse(frameBodyKinematics.getPreviousNedFrame(null));
-        assertEquals(frameBodyKinematics.getTimeInterval(), timeIntervalSeconds,
-                0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(timeIntervalSeconds, TimeUnit.SECOND));
+        assertEquals(timeIntervalSeconds, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(timeIntervalSeconds, TimeUnit.SECOND));
+        assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), timeInterval);
 
         // Force IllegalArgumentException
-        frameBodyKinematics = null;
-        try {
-            frameBodyKinematics = new FrameBodyKinematics(-1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(frameBodyKinematics);
+        assertThrows(IllegalArgumentException.class, () -> new FrameBodyKinematics(-1.0));
 
         // test constructor with time interval
         final Time timeInterval2 = new Time(timeIntervalSeconds, TimeUnit.SECOND);
@@ -185,455 +171,363 @@ public class FrameBodyKinematicsTest {
         assertNull(frameBodyKinematics.getPreviousFrame());
         assertNull(frameBodyKinematics.getPreviousNedFrame());
         assertFalse(frameBodyKinematics.getPreviousNedFrame(null));
-        assertEquals(frameBodyKinematics.getTimeInterval(), timeIntervalSeconds,
-                0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(), timeInterval2);
+        assertEquals(timeIntervalSeconds, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(timeInterval2, frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(timeInterval, timeInterval2);
 
         // Force IllegalArgumentException
         final Time wrongTimeInterval = new Time(-1.0, TimeUnit.SECOND);
-        frameBodyKinematics = null;
-        try {
-            frameBodyKinematics = new FrameBodyKinematics(wrongTimeInterval);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(frameBodyKinematics);
+        assertThrows(IllegalArgumentException.class, () -> new FrameBodyKinematics(wrongTimeInterval));
 
         // test constructor with current and previous ECEF frame
         final NEDFrame previousNedFrame = new NEDFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(previousNedFrame);
+        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
         frameBodyKinematics = new FrameBodyKinematics(ecefFrame, previousEcefFrame);
 
         // check default values
         assertNull(frameBodyKinematics.getKinematics());
-        assertSame(frameBodyKinematics.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getNedFrame(), nedFrame);
+        assertSame(ecefFrame, frameBodyKinematics.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getPreviousFrame(), previousEcefFrame);
-        assertEquals(frameBodyKinematics.getPreviousNedFrame(), previousNedFrame);
+        assertEquals(previousEcefFrame, frameBodyKinematics.getPreviousFrame());
+        assertEquals(previousNedFrame, frameBodyKinematics.getPreviousNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getPreviousNedFrame(nedFrame2));
         assertEquals(previousNedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getTimeInterval(), 0.0, 0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(0.0, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), timeInterval);
 
         // test constructor with current and previous NED frame
         frameBodyKinematics = new FrameBodyKinematics(nedFrame, previousNedFrame);
 
         // check default values
         assertNull(frameBodyKinematics.getKinematics());
-        assertEquals(frameBodyKinematics.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getNedFrame(), nedFrame);
+        assertEquals(ecefFrame, frameBodyKinematics.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getPreviousFrame(), previousEcefFrame);
-        assertEquals(frameBodyKinematics.getPreviousNedFrame(), previousNedFrame);
+        assertEquals(previousEcefFrame, frameBodyKinematics.getPreviousFrame());
+        assertEquals(previousNedFrame, frameBodyKinematics.getPreviousNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getPreviousNedFrame(nedFrame2));
         assertEquals(previousNedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getTimeInterval(), 0.0, 0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(0.0, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), timeInterval);
 
         // test constructor with current and previous ECEF frame and time interval seconds
-        frameBodyKinematics = new FrameBodyKinematics(ecefFrame, previousEcefFrame,
-                timeIntervalSeconds);
+        frameBodyKinematics = new FrameBodyKinematics(ecefFrame, previousEcefFrame, timeIntervalSeconds);
 
         // check default values
         assertNull(frameBodyKinematics.getKinematics());
-        assertSame(frameBodyKinematics.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getNedFrame(), nedFrame);
+        assertSame(ecefFrame, frameBodyKinematics.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getPreviousFrame(), previousEcefFrame);
-        assertEquals(frameBodyKinematics.getPreviousNedFrame(), previousNedFrame);
+        assertEquals(previousEcefFrame, frameBodyKinematics.getPreviousFrame());
+        assertEquals(previousNedFrame, frameBodyKinematics.getPreviousNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getPreviousNedFrame(nedFrame2));
         assertEquals(previousNedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getTimeInterval(), timeIntervalSeconds,
-                0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(timeIntervalSeconds, TimeUnit.SECOND));
+        assertEquals(timeIntervalSeconds, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(timeIntervalSeconds, TimeUnit.SECOND));
+        assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), timeInterval);
 
         // Force IllegalArgumentException
-        frameBodyKinematics = null;
-        try {
-            frameBodyKinematics = new FrameBodyKinematics(ecefFrame, previousEcefFrame,
-                    -1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(frameBodyKinematics);
+        assertThrows(IllegalArgumentException.class, () -> new FrameBodyKinematics(ecefFrame, previousEcefFrame,
+                -1.0));
 
         // test constructor with current and previous ECEF frame and time interval
-        frameBodyKinematics = new FrameBodyKinematics(ecefFrame, previousEcefFrame,
-                timeInterval2);
+        frameBodyKinematics = new FrameBodyKinematics(ecefFrame, previousEcefFrame, timeInterval2);
 
         // check default values
         assertNull(frameBodyKinematics.getKinematics());
-        assertSame(frameBodyKinematics.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getNedFrame(), nedFrame);
+        assertSame(ecefFrame, frameBodyKinematics.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getPreviousFrame(), previousEcefFrame);
-        assertEquals(frameBodyKinematics.getPreviousNedFrame(), previousNedFrame);
+        assertEquals(previousEcefFrame, frameBodyKinematics.getPreviousFrame());
+        assertEquals(previousNedFrame, frameBodyKinematics.getPreviousNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getPreviousNedFrame(nedFrame2));
         assertEquals(previousNedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getTimeInterval(), timeIntervalSeconds,
-                0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(timeIntervalSeconds, TimeUnit.SECOND));
+        assertEquals(timeIntervalSeconds, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(timeInterval, new Time(timeIntervalSeconds, TimeUnit.SECOND));
 
         // Force IllegalArgumentException
-        frameBodyKinematics = null;
-        try {
-            frameBodyKinematics = new FrameBodyKinematics(ecefFrame, previousEcefFrame,
-                    wrongTimeInterval);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(frameBodyKinematics);
+        assertThrows(IllegalArgumentException.class, () -> new FrameBodyKinematics(ecefFrame, previousEcefFrame,
+                wrongTimeInterval));
 
         // test constructor with current and previous NED frame and time interval seconds
-        frameBodyKinematics = new FrameBodyKinematics(nedFrame, previousNedFrame,
-                timeIntervalSeconds);
+        frameBodyKinematics = new FrameBodyKinematics(nedFrame, previousNedFrame, timeIntervalSeconds);
 
         // check default values
         assertNull(frameBodyKinematics.getKinematics());
-        assertEquals(frameBodyKinematics.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getNedFrame(), nedFrame);
+        assertEquals(ecefFrame, frameBodyKinematics.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getPreviousFrame(), previousEcefFrame);
-        assertEquals(frameBodyKinematics.getPreviousNedFrame(), previousNedFrame);
+        assertEquals(previousEcefFrame, frameBodyKinematics.getPreviousFrame());
+        assertEquals(previousNedFrame, frameBodyKinematics.getPreviousNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getPreviousNedFrame(nedFrame2));
         assertEquals(previousNedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getTimeInterval(), timeIntervalSeconds,
-                0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(timeIntervalSeconds, TimeUnit.SECOND));
+        assertEquals(timeIntervalSeconds, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(timeIntervalSeconds, TimeUnit.SECOND));
+        assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), timeInterval);
 
         // Force IllegalArgumentException
-        frameBodyKinematics = null;
-        try {
-            frameBodyKinematics = new FrameBodyKinematics(nedFrame, previousNedFrame,
-                    -1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(frameBodyKinematics);
+        assertThrows(IllegalArgumentException.class, () -> new FrameBodyKinematics(nedFrame, previousNedFrame,
+                -1.0));
 
         // test constructor with current and previous NED frame and time interval
-        frameBodyKinematics = new FrameBodyKinematics(nedFrame, previousNedFrame,
-                timeInterval2);
+        frameBodyKinematics = new FrameBodyKinematics(nedFrame, previousNedFrame, timeInterval2);
 
         // check default values
         assertNull(frameBodyKinematics.getKinematics());
-        assertEquals(frameBodyKinematics.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getNedFrame(), nedFrame);
+        assertEquals(ecefFrame, frameBodyKinematics.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getPreviousFrame(), previousEcefFrame);
-        assertEquals(frameBodyKinematics.getPreviousNedFrame(), previousNedFrame);
+        assertEquals(previousEcefFrame, frameBodyKinematics.getPreviousFrame());
+        assertEquals(previousNedFrame, frameBodyKinematics.getPreviousNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getPreviousNedFrame(nedFrame2));
         assertEquals(previousNedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getTimeInterval(), timeIntervalSeconds,
-                0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(timeIntervalSeconds, TimeUnit.SECOND));
+        assertEquals(timeIntervalSeconds, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(timeIntervalSeconds, TimeUnit.SECOND));
+        assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), timeInterval);
 
         // Force IllegalArgumentException
-        frameBodyKinematics = null;
-        try {
-            frameBodyKinematics = new FrameBodyKinematics(nedFrame, previousNedFrame,
-                    wrongTimeInterval);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(frameBodyKinematics);
+        assertThrows(IllegalArgumentException.class, () -> new FrameBodyKinematics(nedFrame, previousNedFrame,
+                wrongTimeInterval));
 
         // test constructor with body kinematics and ECEF frame
         frameBodyKinematics = new FrameBodyKinematics(kinematics, ecefFrame);
 
         // check default values
-        assertSame(frameBodyKinematics.getKinematics(), kinematics);
-        assertSame(frameBodyKinematics.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getNedFrame(), nedFrame);
+        assertSame(kinematics, frameBodyKinematics.getKinematics());
+        assertSame(ecefFrame, frameBodyKinematics.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
         assertNull(frameBodyKinematics.getPreviousFrame());
         assertNull(frameBodyKinematics.getPreviousNedFrame());
         assertFalse(frameBodyKinematics.getPreviousNedFrame(null));
-        assertEquals(frameBodyKinematics.getTimeInterval(), 0.0, 0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(0.0, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), timeInterval);
 
         // test constructor with body kinematics and NED frame
         frameBodyKinematics = new FrameBodyKinematics(kinematics, nedFrame);
 
         // check default values
-        assertSame(frameBodyKinematics.getKinematics(), kinematics);
-        assertEquals(frameBodyKinematics.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getNedFrame(), nedFrame);
+        assertSame(kinematics, frameBodyKinematics.getKinematics());
+        assertEquals(ecefFrame, frameBodyKinematics.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
         assertNull(frameBodyKinematics.getPreviousFrame());
         assertNull(frameBodyKinematics.getPreviousNedFrame());
         assertFalse(frameBodyKinematics.getPreviousNedFrame(null));
-        assertEquals(frameBodyKinematics.getTimeInterval(), 0.0, 0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(0.0, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), timeInterval);
 
         // test constructor with body kinematics, current and previous ECEF frame
-        frameBodyKinematics = new FrameBodyKinematics(kinematics, ecefFrame,
-                previousEcefFrame);
+        frameBodyKinematics = new FrameBodyKinematics(kinematics, ecefFrame, previousEcefFrame);
 
         // check default values
-        assertSame(frameBodyKinematics.getKinematics(), kinematics);
-        assertSame(frameBodyKinematics.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getNedFrame(), nedFrame);
+        assertSame(kinematics, frameBodyKinematics.getKinematics());
+        assertSame(ecefFrame, frameBodyKinematics.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getPreviousFrame(), previousEcefFrame);
-        assertEquals(frameBodyKinematics.getPreviousNedFrame(), previousNedFrame);
+        assertEquals(previousEcefFrame, frameBodyKinematics.getPreviousFrame());
+        assertEquals(previousNedFrame, frameBodyKinematics.getPreviousNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getPreviousNedFrame(nedFrame2));
         assertEquals(previousNedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getTimeInterval(), 0.0, 0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(0.0, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), timeInterval);
 
         // test constructor with body kinematics, current and previous NED frame
-        frameBodyKinematics = new FrameBodyKinematics(kinematics, nedFrame,
-                previousNedFrame);
+        frameBodyKinematics = new FrameBodyKinematics(kinematics, nedFrame, previousNedFrame);
 
         // check default values
-        assertSame(frameBodyKinematics.getKinematics(), kinematics);
-        assertEquals(frameBodyKinematics.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getNedFrame(), nedFrame);
+        assertSame(kinematics, frameBodyKinematics.getKinematics());
+        assertEquals(ecefFrame, frameBodyKinematics.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getPreviousFrame(), previousEcefFrame);
-        assertEquals(frameBodyKinematics.getPreviousNedFrame(), previousNedFrame);
+        assertEquals(previousEcefFrame, frameBodyKinematics.getPreviousFrame());
+        assertEquals(previousNedFrame, frameBodyKinematics.getPreviousNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getPreviousNedFrame(nedFrame2));
         assertEquals(previousNedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getTimeInterval(), 0.0, 0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(0.0, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), timeInterval);
 
         // test constructor with body kinematics, current and previous ECEF frame and
         // time interval seconds
-        frameBodyKinematics = new FrameBodyKinematics(kinematics, ecefFrame,
-                previousEcefFrame, timeIntervalSeconds);
+        frameBodyKinematics = new FrameBodyKinematics(kinematics, ecefFrame, previousEcefFrame, timeIntervalSeconds);
 
         // check default values
-        assertSame(frameBodyKinematics.getKinematics(), kinematics);
-        assertSame(frameBodyKinematics.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getNedFrame(), nedFrame);
+        assertSame(kinematics, frameBodyKinematics.getKinematics());
+        assertSame(ecefFrame, frameBodyKinematics.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getPreviousFrame(), previousEcefFrame);
-        assertEquals(frameBodyKinematics.getPreviousNedFrame(), previousNedFrame);
+        assertEquals(previousEcefFrame, frameBodyKinematics.getPreviousFrame());
+        assertEquals(previousNedFrame, frameBodyKinematics.getPreviousNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getPreviousNedFrame(nedFrame2));
         assertEquals(previousNedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getTimeInterval(), timeIntervalSeconds,
-                0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(timeIntervalSeconds, TimeUnit.SECOND));
+        assertEquals(timeIntervalSeconds, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(timeIntervalSeconds, TimeUnit.SECOND));
+        assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), timeInterval);
 
         // Force IllegalArgumentException
-        frameBodyKinematics = null;
-        try {
-            frameBodyKinematics = new FrameBodyKinematics(kinematics, ecefFrame,
-                    previousEcefFrame, -1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(frameBodyKinematics);
+        assertThrows(IllegalArgumentException.class, () -> new FrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, -1.0));
 
         // test constructor with body kinematics, current and previous ECEF frame and
         // time interval
-        frameBodyKinematics = new FrameBodyKinematics(kinematics, ecefFrame,
-                previousEcefFrame, timeInterval2);
+        frameBodyKinematics = new FrameBodyKinematics(kinematics, ecefFrame, previousEcefFrame, timeInterval2);
 
         // check default values
-        assertSame(frameBodyKinematics.getKinematics(), kinematics);
-        assertSame(frameBodyKinematics.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getNedFrame(), nedFrame);
+        assertSame(kinematics, frameBodyKinematics.getKinematics());
+        assertSame(ecefFrame, frameBodyKinematics.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getPreviousFrame(), previousEcefFrame);
-        assertEquals(frameBodyKinematics.getPreviousNedFrame(), previousNedFrame);
+        assertEquals(previousEcefFrame, frameBodyKinematics.getPreviousFrame());
+        assertEquals(previousNedFrame, frameBodyKinematics.getPreviousNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getPreviousNedFrame(nedFrame2));
         assertEquals(previousNedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getTimeInterval(), timeIntervalSeconds,
-                0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(timeIntervalSeconds, TimeUnit.SECOND));
+        assertEquals(timeIntervalSeconds, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(timeInterval, new Time(timeIntervalSeconds, TimeUnit.SECOND));
 
         // Force IllegalArgumentException
-        frameBodyKinematics = null;
-        try {
-            frameBodyKinematics = new FrameBodyKinematics(kinematics, ecefFrame,
-                    previousEcefFrame, wrongTimeInterval);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(frameBodyKinematics);
+        assertThrows(IllegalArgumentException.class, () -> new FrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, wrongTimeInterval));
 
         // test constructor with body kinematics, current and previous NED frame and
         // time interval seconds
-        frameBodyKinematics = new FrameBodyKinematics(kinematics, nedFrame,
-                previousNedFrame, timeIntervalSeconds);
+        frameBodyKinematics = new FrameBodyKinematics(kinematics, nedFrame, previousNedFrame, timeIntervalSeconds);
 
         // check default values
-        assertSame(frameBodyKinematics.getKinematics(), kinematics);
-        assertEquals(frameBodyKinematics.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getNedFrame(), nedFrame);
+        assertSame(kinematics, frameBodyKinematics.getKinematics());
+        assertEquals(ecefFrame, frameBodyKinematics.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getPreviousFrame(), previousEcefFrame);
-        assertEquals(frameBodyKinematics.getPreviousNedFrame(), previousNedFrame);
+        assertEquals(previousEcefFrame, frameBodyKinematics.getPreviousFrame());
+        assertEquals(previousNedFrame, frameBodyKinematics.getPreviousNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getPreviousNedFrame(nedFrame2));
         assertEquals(previousNedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getTimeInterval(), timeIntervalSeconds,
-                0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(timeIntervalSeconds, TimeUnit.SECOND));
+        assertEquals(timeIntervalSeconds, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(timeIntervalSeconds, TimeUnit.SECOND));
+        assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), timeInterval);
 
         // Force IllegalArgumentException
-        frameBodyKinematics = null;
-        try {
-            frameBodyKinematics = new FrameBodyKinematics(kinematics, nedFrame,
-                    previousNedFrame, -1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(frameBodyKinematics);
+        assertThrows(IllegalArgumentException.class, () -> new FrameBodyKinematics(kinematics, nedFrame,
+                previousNedFrame, -1.0));
 
         // test constructor with body kinematics, current and previous NED frame and
         // time interval seconds
-        frameBodyKinematics = new FrameBodyKinematics(kinematics, nedFrame,
-                previousNedFrame, timeInterval2);
+        frameBodyKinematics = new FrameBodyKinematics(kinematics, nedFrame, previousNedFrame, timeInterval2);
 
         // check default values
-        assertSame(frameBodyKinematics.getKinematics(), kinematics);
-        assertEquals(frameBodyKinematics.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getNedFrame(), nedFrame);
+        assertSame(kinematics, frameBodyKinematics.getKinematics());
+        assertEquals(ecefFrame, frameBodyKinematics.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getPreviousFrame(), previousEcefFrame);
-        assertEquals(frameBodyKinematics.getPreviousNedFrame(), previousNedFrame);
+        assertEquals(previousEcefFrame, frameBodyKinematics.getPreviousFrame());
+        assertEquals(previousNedFrame, frameBodyKinematics.getPreviousNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics.getPreviousNedFrame(nedFrame2));
         assertEquals(previousNedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics.getTimeInterval(), timeIntervalSeconds,
-                0.0);
-        assertEquals(frameBodyKinematics.getTimeIntervalAsTime(),
-                new Time(timeIntervalSeconds, TimeUnit.SECOND));
+        assertEquals(timeIntervalSeconds, frameBodyKinematics.getTimeInterval(), 0.0);
+        assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), frameBodyKinematics.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(timeIntervalSeconds, TimeUnit.SECOND));
+        assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), timeInterval);
 
         // Force IllegalArgumentException
-        frameBodyKinematics = null;
-        try {
-            frameBodyKinematics = new FrameBodyKinematics(kinematics, nedFrame,
-                    previousNedFrame, wrongTimeInterval);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(frameBodyKinematics);
+        assertThrows(IllegalArgumentException.class, () -> new FrameBodyKinematics(kinematics, nedFrame,
+                previousNedFrame, wrongTimeInterval));
 
         // test copy constructor
-        frameBodyKinematics = new FrameBodyKinematics(kinematics, nedFrame,
-                previousNedFrame, timeIntervalSeconds);
+        frameBodyKinematics = new FrameBodyKinematics(kinematics, nedFrame, previousNedFrame, timeIntervalSeconds);
 
-        final FrameBodyKinematics frameBodyKinematics2 =
-                new FrameBodyKinematics(frameBodyKinematics);
+        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(frameBodyKinematics);
 
-        assertEquals(frameBodyKinematics2.getKinematics(), kinematics);
-        assertEquals(frameBodyKinematics2.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics2.getNedFrame(), nedFrame);
-        assertEquals(frameBodyKinematics.getPreviousFrame(), previousEcefFrame);
-        assertEquals(frameBodyKinematics.getPreviousNedFrame(), previousNedFrame);
+        assertEquals(kinematics, frameBodyKinematics2.getKinematics());
+        assertEquals(ecefFrame, frameBodyKinematics2.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics2.getNedFrame());
+        assertEquals(previousEcefFrame, frameBodyKinematics.getPreviousFrame());
+        assertEquals(previousNedFrame, frameBodyKinematics.getPreviousNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyKinematics2.getPreviousNedFrame(nedFrame2));
         assertEquals(previousNedFrame, nedFrame2);
-        assertEquals(frameBodyKinematics2.getTimeInterval(), timeIntervalSeconds,
-                0.0);
-        assertEquals(frameBodyKinematics2.getTimeIntervalAsTime(),
-                new Time(timeIntervalSeconds, TimeUnit.SECOND));
+        assertEquals(timeIntervalSeconds, frameBodyKinematics2.getTimeInterval(), 0.0);
+        assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), frameBodyKinematics2.getTimeIntervalAsTime());
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics2.getTimeIntervalAsTime(timeInterval);
-        assertEquals(timeInterval, new Time(timeIntervalSeconds, TimeUnit.SECOND));
+        assertEquals(new Time(timeIntervalSeconds, TimeUnit.SECOND), timeInterval);
     }
 
     @Test
@@ -648,7 +542,7 @@ public class FrameBodyKinematicsTest {
         frameBodyKinematics.setKinematics(bodyKinematics);
 
         // check
-        assertSame(frameBodyKinematics.getKinematics(), bodyKinematics);
+        assertSame(bodyKinematics, frameBodyKinematics.getKinematics());
     }
 
     @Test
@@ -661,14 +555,13 @@ public class FrameBodyKinematicsTest {
 
         // set new value
         final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         frameBodyKinematics.setFrame(ecefFrame);
 
         // check
-        assertSame(frameBodyKinematics.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getNedFrame(), nedFrame);
+        assertSame(ecefFrame, frameBodyKinematics.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
         final NEDFrame nedFrame2 = new NEDFrame();
         frameBodyKinematics.getNedFrame(nedFrame2);
         assertEquals(nedFrame, nedFrame2);
@@ -684,14 +577,13 @@ public class FrameBodyKinematicsTest {
 
         // set new value
         final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         frameBodyKinematics.setNedFrame(nedFrame);
 
         // check
-        assertEquals(frameBodyKinematics.getFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getNedFrame(), nedFrame);
+        assertEquals(ecefFrame, frameBodyKinematics.getFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getNedFrame());
         final NEDFrame nedFrame2 = new NEDFrame();
         frameBodyKinematics.getNedFrame(nedFrame2);
         assertEquals(nedFrame, nedFrame2);
@@ -707,14 +599,13 @@ public class FrameBodyKinematicsTest {
 
         // set new value
         final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         frameBodyKinematics.setPreviousFrame(ecefFrame);
 
         // check
-        assertSame(frameBodyKinematics.getPreviousFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getPreviousNedFrame(), nedFrame);
+        assertSame(ecefFrame, frameBodyKinematics.getPreviousFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getPreviousNedFrame());
         final NEDFrame nedFrame2 = new NEDFrame();
         frameBodyKinematics.getPreviousNedFrame(nedFrame2);
         assertEquals(nedFrame, nedFrame2);
@@ -730,14 +621,13 @@ public class FrameBodyKinematicsTest {
 
         // set new value
         final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         frameBodyKinematics.setPreviousNedFrame(nedFrame);
 
         // check
-        assertEquals(frameBodyKinematics.getPreviousFrame(), ecefFrame);
-        assertEquals(frameBodyKinematics.getPreviousNedFrame(), nedFrame);
+        assertEquals(ecefFrame, frameBodyKinematics.getPreviousFrame());
+        assertEquals(nedFrame, frameBodyKinematics.getPreviousNedFrame());
         final NEDFrame nedFrame2 = new NEDFrame();
         frameBodyKinematics.getPreviousNedFrame(nedFrame2);
         assertEquals(nedFrame, nedFrame2);
@@ -748,23 +638,18 @@ public class FrameBodyKinematicsTest {
         final FrameBodyKinematics frameBodyKinematics = new FrameBodyKinematics();
 
         // check default value
-        assertEquals(frameBodyKinematics.getTimeInterval(), 0.0, 0.0);
+        assertEquals(0.0, frameBodyKinematics.getTimeInterval(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(
-                MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
         frameBodyKinematics.setTimeInterval(timeInterval);
 
         // check
-        assertEquals(frameBodyKinematics.getTimeInterval(), timeInterval, 0.0);
+        assertEquals(timeInterval, frameBodyKinematics.getTimeInterval(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            frameBodyKinematics.setTimeInterval(-1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> frameBodyKinematics.setTimeInterval(-1.0));
     }
 
     @Test
@@ -773,13 +658,13 @@ public class FrameBodyKinematicsTest {
 
         // check default value
         final Time timeInterval1 = frameBodyKinematics.getTimeIntervalAsTime();
-        assertEquals(timeInterval1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(timeInterval1.getUnit(), TimeUnit.SECOND);
+        assertEquals(0.0, timeInterval1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, timeInterval1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final Time timeInterval2 = new Time(randomizer
-                .nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL), TimeUnit.SECOND);
+        final Time timeInterval2 = new Time(randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL),
+                TimeUnit.SECOND);
         frameBodyKinematics.setTimeInterval(timeInterval2);
 
         // check
@@ -797,20 +682,16 @@ public class FrameBodyKinematicsTest {
         final BodyKinematics kinematics = createBodyKinematics();
 
         final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(previousNedFrame);
+        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(
-                MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final FrameBodyKinematics frameBodyKinematics1 =
-                new FrameBodyKinematics(kinematics, ecefFrame, previousEcefFrame,
-                        timeInterval);
+        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval);
         final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics();
 
         frameBodyKinematics2.copyFrom(frameBodyKinematics1);
@@ -826,8 +707,7 @@ public class FrameBodyKinematicsTest {
     public void testCopyFromWhenOnlyBodyKinematicsAreAvailableAtSourceAndDestinationIsEmpty() {
         final BodyKinematics kinematics = createBodyKinematics();
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(
-                kinematics);
+        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(kinematics);
         final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics();
 
         frameBodyKinematics2.copyFrom(frameBodyKinematics1);
@@ -841,11 +721,9 @@ public class FrameBodyKinematicsTest {
     public void testCopyFromWhenOnlyFrameIsAvailableAtSourceAndDestinationIsEmpty()
             throws InvalidSourceAndDestinationFrameTypeException {
         final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(
-                ecefFrame);
+        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(ecefFrame);
         final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics();
 
         frameBodyKinematics2.copyFrom(frameBodyKinematics1);
@@ -859,15 +737,12 @@ public class FrameBodyKinematicsTest {
     public void testCopyFromWhenOnlyCurrentAndPreviousFrameIsAvailableAtSourceAndDestinationIsEmpty()
             throws InvalidSourceAndDestinationFrameTypeException {
         final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(previousNedFrame);
+        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(
-                ecefFrame, previousEcefFrame);
+        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(ecefFrame, previousEcefFrame);
         final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics();
 
         frameBodyKinematics2.copyFrom(frameBodyKinematics1);
@@ -882,20 +757,17 @@ public class FrameBodyKinematicsTest {
             throws InvalidSourceAndDestinationFrameTypeException {
         final BodyKinematics kinematics = createBodyKinematics();
         final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(previousNedFrame);
+        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(
-                MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
         final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics();
-        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval);
+        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval);
 
         frameBodyKinematics2.copyFrom(frameBodyKinematics1);
 
@@ -903,7 +775,7 @@ public class FrameBodyKinematicsTest {
         assertNull(frameBodyKinematics2.getKinematics());
         assertNull(frameBodyKinematics2.getFrame());
         assertNull(frameBodyKinematics2.getPreviousFrame());
-        assertEquals(frameBodyKinematics2.getTimeInterval(), 0.0, 0.0);
+        assertEquals(0.0, frameBodyKinematics2.getTimeInterval(), 0.0);
     }
 
     @Test
@@ -913,36 +785,30 @@ public class FrameBodyKinematicsTest {
 
         final BodyKinematics kinematics1 = createBodyKinematics();
         final NEDFrame nedFrame1 = createNedFrame();
-        final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame1);
+        final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
         final NEDFrame previousNedFrame1 = createNedFrame();
-        final ECEFFrame previousEcefFrame1 = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(previousNedFrame1);
-        final double timeInterval1 = randomizer.nextDouble(
-                MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final ECEFFrame previousEcefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame1);
+        final double timeInterval1 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
         final BodyKinematics kinematics2 = createBodyKinematics();
         final NEDFrame nedFrame2 = createNedFrame();
-        final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame2);
+        final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
         final NEDFrame previousNedFrame2 = createNedFrame();
-        final ECEFFrame previousEcefFrame2 = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(previousNedFrame2);
-        final double timeInterval2 = randomizer.nextDouble(
-                MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final ECEFFrame previousEcefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame2);
+        final double timeInterval2 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(
-                kinematics1, ecefFrame1, previousEcefFrame1, timeInterval1);
-        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(
-                kinematics2, ecefFrame2, previousEcefFrame2, timeInterval2);
+        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(kinematics1, ecefFrame1,
+                previousEcefFrame1, timeInterval1);
+        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(kinematics2, ecefFrame2,
+                previousEcefFrame2, timeInterval2);
 
         frameBodyKinematics2.copyFrom(frameBodyKinematics1);
 
         // check
-        assertEquals(frameBodyKinematics2.getKinematics(), kinematics1);
-        assertEquals(frameBodyKinematics2.getFrame(), ecefFrame1);
-        assertEquals(frameBodyKinematics2.getPreviousFrame(), previousEcefFrame1);
-        assertEquals(frameBodyKinematics2.getTimeInterval(), timeInterval1, 0.0);
+        assertEquals(kinematics1, frameBodyKinematics2.getKinematics());
+        assertEquals(ecefFrame1, frameBodyKinematics2.getFrame());
+        assertEquals(previousEcefFrame1, frameBodyKinematics2.getPreviousFrame());
+        assertEquals(timeInterval1, frameBodyKinematics2.getTimeInterval(), 0.0);
     }
 
     @Test
@@ -951,56 +817,47 @@ public class FrameBodyKinematicsTest {
 
         final BodyKinematics kinematics1 = createBodyKinematics();
         final NEDFrame nedFrame1 = createNedFrame();
-        final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame1);
+        final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
         final NEDFrame previousNedFrame1 = createNedFrame();
-        final ECEFFrame previousEcefFrame1 = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(previousNedFrame1);
-        final double timeInterval1 = randomizer.nextDouble(
-                MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final ECEFFrame previousEcefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame1);
+        final double timeInterval1 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
         final BodyKinematics kinematics2 = createBodyKinematics();
         final NEDFrame nedFrame2 = createNedFrame();
-        final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame2);
+        final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
         final NEDFrame previousNedFrame2 = createNedFrame();
-        final ECEFFrame previousEcefFrame2 = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(previousNedFrame2);
-        final double timeInterval2 = randomizer.nextDouble(
-                MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final ECEFFrame previousEcefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame2);
+        final double timeInterval2 = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(
-                kinematics1, ecefFrame1, previousEcefFrame1, timeInterval1);
-        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(
-                kinematics2, ecefFrame2, previousEcefFrame2, timeInterval2);
+        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(kinematics1, ecefFrame1,
+                previousEcefFrame1, timeInterval1);
+        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(kinematics2, ecefFrame2,
+                previousEcefFrame2, timeInterval2);
 
         frameBodyKinematics1.copyTo(frameBodyKinematics2);
 
         // check
-        assertEquals(frameBodyKinematics2.getKinematics(), kinematics1);
-        assertEquals(frameBodyKinematics2.getFrame(), ecefFrame1);
-        assertEquals(frameBodyKinematics2.getPreviousFrame(), previousEcefFrame1);
-        assertEquals(frameBodyKinematics2.getTimeInterval(), timeInterval1, 0.0);
+        assertEquals(kinematics1, frameBodyKinematics2.getKinematics());
+        assertEquals(ecefFrame1, frameBodyKinematics2.getFrame());
+        assertEquals(previousEcefFrame1, frameBodyKinematics2.getPreviousFrame());
+        assertEquals(timeInterval1, frameBodyKinematics2.getTimeInterval(), 0.0);
     }
 
     @Test
     public void testHashCode() throws InvalidSourceAndDestinationFrameTypeException {
         final BodyKinematics kinematics = createBodyKinematics();
         final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
         final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(previousNedFrame);
+        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(
-                MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval);
-        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval);
+        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval);
+        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval);
         final FrameBodyKinematics frameBodyKinematics3 = new FrameBodyKinematics();
 
         assertEquals(frameBodyKinematics1.hashCode(), frameBodyKinematics2.hashCode());
@@ -1011,20 +868,17 @@ public class FrameBodyKinematicsTest {
     public void testEquals() throws InvalidSourceAndDestinationFrameTypeException {
         final BodyKinematics kinematics = createBodyKinematics();
         final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
         final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(previousNedFrame);
+        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(
-                MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval);
-        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval);
+        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval);
+        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval);
         final FrameBodyKinematics frameBodyKinematics3 = new FrameBodyKinematics();
 
         //noinspection ConstantConditions,SimplifiableJUnitAssertion
@@ -1034,31 +888,27 @@ public class FrameBodyKinematicsTest {
         assertTrue(frameBodyKinematics1.equals(frameBodyKinematics2));
         assertFalse(frameBodyKinematics1.equals(frameBodyKinematics3));
         //noinspection SimplifiableJUnitAssertion,ConstantConditions
-        assertFalse(frameBodyKinematics1.equals((Object) null));
+        assertNotEquals(frameBodyKinematics1, null);
         assertFalse(frameBodyKinematics1.equals(null));
         //noinspection SimplifiableJUnitAssertion
-        assertFalse(frameBodyKinematics1.equals(new Object()));
+        assertNotEquals(frameBodyKinematics1, new Object());
     }
 
     @Test
-    public void testEqualsWithThreshold()
-            throws InvalidSourceAndDestinationFrameTypeException {
+    public void testEqualsWithThreshold() throws InvalidSourceAndDestinationFrameTypeException {
         final BodyKinematics kinematics = createBodyKinematics();
         final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
         final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(previousNedFrame);
+        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(
-                MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval);
-        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval);
+        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval);
+        final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval);
         final FrameBodyKinematics frameBodyKinematics3 = new FrameBodyKinematics();
 
         assertTrue(frameBodyKinematics1.equals(frameBodyKinematics1, THRESHOLD));
@@ -1068,22 +918,18 @@ public class FrameBodyKinematicsTest {
     }
 
     @Test
-    public void testClone() throws InvalidSourceAndDestinationFrameTypeException,
-            CloneNotSupportedException {
+    public void testClone() throws InvalidSourceAndDestinationFrameTypeException, CloneNotSupportedException {
         final BodyKinematics kinematics = createBodyKinematics();
         final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
         final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(previousNedFrame);
+        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(
-                MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval);
+        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval);
 
         final Object frameBodyKinematics2 = frameBodyKinematics1.clone();
 
@@ -1096,18 +942,15 @@ public class FrameBodyKinematicsTest {
             InvalidSourceAndDestinationFrameTypeException {
         final BodyKinematics kinematics = createBodyKinematics();
         final NEDFrame nedFrame = createNedFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
         final NEDFrame previousNedFrame = createNedFrame();
-        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(previousNedFrame);
+        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double timeInterval = randomizer.nextDouble(
-                MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+        final double timeInterval = randomizer.nextDouble(MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
 
-        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(
-                kinematics, ecefFrame, previousEcefFrame, timeInterval);
+        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(kinematics, ecefFrame,
+                previousEcefFrame, timeInterval);
 
         final byte[] bytes = SerializationHelper.serialize(frameBodyKinematics1);
         final FrameBodyKinematics frameBodyKinematics2 = SerializationHelper.deserialize(bytes);
@@ -1124,45 +967,36 @@ public class FrameBodyKinematicsTest {
         assertEquals(0L, field.get(null));
     }
 
-    private BodyKinematics createBodyKinematics() {
+    private static BodyKinematics createBodyKinematics() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
         final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
         final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
-                MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
-                MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
-                MAX_ANGULAR_RATE_VALUE);
+        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
-        return new BodyKinematics(fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        return new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
-    private NEDFrame createNedFrame() throws InvalidSourceAndDestinationFrameTypeException {
+    private static NEDFrame createNedFrame() throws InvalidSourceAndDestinationFrameTypeException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-        final double latitude = Math.toRadians(randomizer.nextDouble(
-                MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(
-                MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
         final double vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
         final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
         final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double roll = Math.toDegrees(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toDegrees(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toDegrees(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double roll = Math.toDegrees(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toDegrees(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw = Math.toDegrees(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw,
-                FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                FrameType.LOCAL_NAVIGATION_FRAME);
 
         return new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
     }

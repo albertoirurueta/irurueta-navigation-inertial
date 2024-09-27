@@ -306,8 +306,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      */
     protected TriadStaticIntervalDetector(
             final WindowedTriadNoiseEstimator<U, M, T, ?, ?> windowedNoiseEstimator,
-            final AccumulatedTriadNoiseEstimator<U, M, T, ?, ?> accumulatedNoiseEstimator,
-            final L listener) {
+            final AccumulatedTriadNoiseEstimator<U, M, T, ?, ?> accumulatedNoiseEstimator, final L listener) {
         this(windowedNoiseEstimator, accumulatedNoiseEstimator);
         mListener = listener;
     }
@@ -359,8 +358,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * @throws LockedException          if detector is busy.
      * @throws IllegalArgumentException if provided value is less than {@link #MINIMUM_INITIAL_STATIC_SAMPLES}
      */
-    public void setInitialStaticSamples(final int initialStaticSamples)
-            throws LockedException {
+    public void setInitialStaticSamples(final int initialStaticSamples) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -392,8 +390,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * @throws LockedException          if detector is busy.
      * @throws IllegalArgumentException if provided value is zero or negative.
      */
-    public void setThresholdFactor(final double thresholdFactor)
-            throws LockedException {
+    public void setThresholdFactor(final double thresholdFactor) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -527,8 +524,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
             throw new LockedException();
         }
 
-        setBaseNoiseLevelAbsoluteThreshold(
-                convertMeasurement(baseNoiseLevelAbsoluteThreshold));
+        setBaseNoiseLevelAbsoluteThreshold(convertMeasurement(baseNoiseLevelAbsoluteThreshold));
     }
 
     /**
@@ -1006,8 +1002,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * period.
      */
     public T getAccumulatedStdTriad() {
-        return createTriad(mAccumulatedStdX, mAccumulatedStdY, mAccumulatedStdZ,
-                getDefaultUnit());
+        return createTriad(mAccumulatedStdX, mAccumulatedStdY, mAccumulatedStdZ, getDefaultUnit());
     }
 
     /**
@@ -1019,9 +1014,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * @param result instance where result will be stored.
      */
     public void getAccumulatedStdTriad(final T result) {
-        result.setValueCoordinatesAndUnit(
-                mAccumulatedStdX, mAccumulatedStdY, mAccumulatedStdZ,
-                getDefaultUnit());
+        result.setValueCoordinatesAndUnit(mAccumulatedStdX, mAccumulatedStdY, mAccumulatedStdZ, getDefaultUnit());
     }
 
     /**
@@ -1149,9 +1142,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * @return windowed average of measurements for each processed triad.
      */
     public T getInstantaneousAvgTriad() {
-        return createTriad(
-                mInstantaneousAvgX, mInstantaneousAvgY, mInstantaneousAvgZ,
-                getDefaultUnit());
+        return createTriad(mInstantaneousAvgX, mInstantaneousAvgY, mInstantaneousAvgZ, getDefaultUnit());
     }
 
     /**
@@ -1162,8 +1153,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * @param result instance where result will be stored.
      */
     public void getInstantaneousAvgTriad(final T result) {
-        result.setValueCoordinatesAndUnit(
-                mInstantaneousAvgX, mInstantaneousAvgY, mInstantaneousAvgZ,
+        result.setValueCoordinatesAndUnit(mInstantaneousAvgX, mInstantaneousAvgY, mInstantaneousAvgZ,
                 getDefaultUnit());
     }
 
@@ -1299,9 +1289,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * triad.
      */
     public T getInstantaneousStdTriad() {
-        return createTriad(
-                mInstantaneousStdX, mInstantaneousStdY, mInstantaneousStdZ,
-                getDefaultUnit());
+        return createTriad(mInstantaneousStdX, mInstantaneousStdY, mInstantaneousStdZ, getDefaultUnit());
     }
 
     /**
@@ -1312,8 +1300,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * @param result instance where result will be stored.
      */
     public void getInstantaneousStdTriad(final T result) {
-        result.setValueCoordinatesAndUnit(
-                mInstantaneousStdX, mInstantaneousStdY, mInstantaneousStdZ,
+        result.setValueCoordinatesAndUnit(mInstantaneousStdX, mInstantaneousStdY, mInstantaneousStdZ,
                 getDefaultUnit());
     }
 
@@ -1345,9 +1332,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      */
     public boolean process(final M valueX, final M valueY, final M valueZ)
             throws LockedException {
-        return process(convertMeasurement(valueX),
-                convertMeasurement(valueY),
-                convertMeasurement(valueZ));
+        return process(convertMeasurement(valueX), convertMeasurement(valueY), convertMeasurement(valueZ));
     }
 
     /**
@@ -1363,9 +1348,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * samples.
      * @throws LockedException if detector is busy processing a previous sample.
      */
-    public boolean process(final double valueX,
-                           final double valueY,
-                           final double valueZ) throws LockedException {
+    public boolean process(final double valueX, final double valueY, final double valueZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1398,16 +1381,14 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
         mInstantaneousStdY = mWindowedNoiseEstimator.getStandardDeviationY();
         mInstantaneousStdZ = mWindowedNoiseEstimator.getStandardDeviationZ();
 
-        final double windowedStdNorm = mWindowedNoiseEstimator
-                .getStandardDeviationNorm();
+        final double windowedStdNorm = mWindowedNoiseEstimator.getStandardDeviationNorm();
 
         final boolean filledWindow = mWindowedNoiseEstimator.isWindowFilled();
 
         if (mStatus == Status.INITIALIZING) {
             // process sample during initialization
             mAccumulatedNoiseEstimator.addTriad(valueX, valueY, valueZ);
-            final double accumulatedStdNorm = mAccumulatedNoiseEstimator
-                    .getStandardDeviationNorm();
+            final double accumulatedStdNorm = mAccumulatedNoiseEstimator.getStandardDeviationNorm();
 
             if (mProcessedSamples < mInitialStaticSamples) {
                 if (filledWindow && (windowedStdNorm / accumulatedStdNorm > mInstantaneousNoiseLevelFactor)) {
@@ -1417,8 +1398,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
                     // notify error
                     if (mListener != null) {
                         //noinspection unchecked
-                        mListener.onError((D) this, accumulatedStdNorm,
-                                windowedStdNorm,
+                        mListener.onError((D) this, accumulatedStdNorm, windowedStdNorm,
                                 ErrorReason.SUDDEN_EXCESSIVE_MOVEMENT_DETECTED);
                     }
                 }
@@ -1450,8 +1430,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
                     // notify error
                     if (mListener != null) {
                         //noinspection unchecked
-                        mListener.onError((D) this, accumulatedStdNorm,
-                                windowedStdNorm,
+                        mListener.onError((D) this, accumulatedStdNorm, windowedStdNorm,
                                 ErrorReason.OVERALL_EXCESSIVE_MOVEMENT_DETECTED);
                     }
 
@@ -1461,8 +1440,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
 
                     if (mListener != null) {
                         //noinspection unchecked
-                        mListener.onInitializationCompleted(
-                                (D) this, mBaseNoiseLevel);
+                        mListener.onInitializationCompleted((D) this, mBaseNoiseLevel);
                     }
                 }
 
@@ -1560,8 +1538,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * @return converted value.
      */
     protected double convertMeasurement(M measurement) {
-        return convertMeasurement(measurement.getValue().doubleValue(),
-                measurement.getUnit());
+        return convertMeasurement(measurement.getValue().doubleValue(), measurement.getUnit());
     }
 
     /**
@@ -1600,8 +1577,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
      * @param unit   unit of values.
      * @return created triad.
      */
-    protected abstract T createTriad(
-            final double valueX, final double valueY, final double valueZ, final U unit);
+    protected abstract T createTriad(final double valueX, final double valueY, final double valueZ, final U unit);
 
     /**
      * Possible detector status values.

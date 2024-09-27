@@ -27,27 +27,26 @@ import com.irurueta.units.DistanceUnit;
  * Calculates gravitational acceleration resolved about ECI-frame axes.
  * This implementation is based on the equations defined in "Principles of GNSS, Inertial, and Multisensor
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
- * https://github.com/ymjdz/MATLAB-Codes/blob/master/Gravitation_ECI.m
+ * <a href="https://github.com/ymjdz/MATLAB-Codes/blob/master/Gravitation_ECI.m">
+ *     https://github.com/ymjdz/MATLAB-Codes/blob/master/Gravitation_ECI.m
+ * </a>
  */
 public class ECIGravitationEstimator {
 
     /**
      * The equatorial radius of WGS84 ellipsoid (6378137 m) defining Earth's shape.
      */
-    public static final double EARTH_EQUATORIAL_RADIUS_WGS84 =
-            Constants.EARTH_EQUATORIAL_RADIUS_WGS84;
+    public static final double EARTH_EQUATORIAL_RADIUS_WGS84 = Constants.EARTH_EQUATORIAL_RADIUS_WGS84;
 
     /**
      * WGS84 Earth gravitational constant expressed in m^3 * s^-2
      */
-    public static final double EARTH_GRAVITATIONAL_CONSTANT =
-            Constants.EARTH_GRAVITATIONAL_CONSTANT;
+    public static final double EARTH_GRAVITATIONAL_CONSTANT = Constants.EARTH_GRAVITATIONAL_CONSTANT;
 
     /**
      * WGS84 Earth's second gravitational constant.
      */
-    public static final double EARTH_SECOND_GRAVITATIONAL_CONSTANT =
-            Constants.EARTH_SECOND_GRAVITATIONAL_CONSTANT;
+    public static final double EARTH_SECOND_GRAVITATIONAL_CONSTANT = Constants.EARTH_SECOND_GRAVITATIONAL_CONSTANT;
 
     /**
      * Estimates gravitational acceleration resolved about ECI-frame axes.
@@ -135,8 +134,7 @@ public class ECIGravitationEstimator {
      *               ECI-frame axes.
      * @param result instance where estimated acceleration due to gravity will be stored.
      */
-    public void estimate(final Distance x, final Distance y, final Distance z,
-                         final ECIGravitation result) {
+    public void estimate(final Distance x, final Distance y, final Distance z, final ECIGravitation result) {
         estimateGravitation(x, y, z, result);
     }
 
@@ -262,10 +260,9 @@ public class ECIGravitationEstimator {
      *               ECI-frame axes.
      * @param result instance where estimated acceleration due to gravity will be stored.
      */
-    public static void estimateGravitation(final Distance x, final Distance y,
-                                           final Distance z, final ECIGravitation result) {
-        estimateGravitation(convertToMeters(x), convertToMeters(y), convertToMeters(z),
-                result);
+    public static void estimateGravitation(
+            final Distance x, final Distance y, final Distance z, final ECIGravitation result) {
+        estimateGravitation(convertToMeters(x), convertToMeters(y), convertToMeters(z), result);
     }
 
     /**
@@ -280,9 +277,7 @@ public class ECIGravitationEstimator {
      *          ECI-frame axes.
      * @return a new gravitation instance containing estimated acceleration due to gravity.
      */
-    public static ECIGravitation estimateGravitationAndReturnNew(final Distance x,
-                                                                 final Distance y,
-                                                                 final Distance z) {
+    public static ECIGravitation estimateGravitationAndReturnNew(final Distance x, final Distance y, final Distance z) {
         final ECIGravitation result = new ECIGravitation();
         estimateGravitation(x, y, z, result);
         return result;
@@ -295,7 +290,6 @@ public class ECIGravitationEstimator {
      * @return converted distance expressed in meters.
      */
     private static double convertToMeters(final Distance distance) {
-        return DistanceConverter.convert(distance.getValue().doubleValue(),
-                distance.getUnit(), DistanceUnit.METER);
+        return DistanceConverter.convert(distance.getValue().doubleValue(), distance.getUnit(), DistanceUnit.METER);
     }
 }

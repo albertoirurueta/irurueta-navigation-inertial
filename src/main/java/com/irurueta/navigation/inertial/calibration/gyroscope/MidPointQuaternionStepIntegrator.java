@@ -18,11 +18,13 @@ package com.irurueta.navigation.inertial.calibration.gyroscope;
 import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Quaternion;
+import com.irurueta.geometry.Rotation3D;
 import com.irurueta.geometry.RotationException;
 
 /**
  * Computes an integration step of a quaternion using mid-point algorithm.
- * More information available here: https://en.wikipedia.org/wiki/Midpoint_method
+ * More information available here:
+ * <a href="https://en.wikipedia.org/wiki/Midpoint_method">https://en.wikipedia.org/wiki/Midpoint_method</a>
  */
 public class MidPointQuaternionStepIntegrator extends QuaternionStepIntegrator {
 
@@ -77,9 +79,9 @@ public class MidPointQuaternionStepIntegrator extends QuaternionStepIntegrator {
      */
     public MidPointQuaternionStepIntegrator() {
         try {
-            mOmega0 = new Matrix(Quaternion.INHOM_COORDS, 1);
-            mOmega1 = new Matrix(Quaternion.INHOM_COORDS, 1);
-            mOmega01 = new Matrix(Quaternion.INHOM_COORDS, 1);
+            mOmega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            mOmega1 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            mOmega01 = new Matrix(Rotation3D.INHOM_COORDS, 1);
             mQuat = new Matrix(Quaternion.N_PARAMS, 1);
             mQuatResult = new Matrix(Quaternion.N_PARAMS, 1);
             mTmpQ = new Matrix(Quaternion.N_PARAMS, 1);
@@ -103,7 +105,8 @@ public class MidPointQuaternionStepIntegrator extends QuaternionStepIntegrator {
 
     /**
      * Performs a mid-point integration step.
-     * More information available here: https://en.wikipedia.org/wiki/Midpoint_method
+     * More information available here:
+     * <a href="https://en.wikipedia.org/wiki/Midpoint_method">https://en.wikipedia.org/wiki/Midpoint_method</a>
      *
      * @param initialAttitude initial attitude.
      * @param initialWx       initial x-coordinate rotation velocity at initial timestamp expressed
@@ -134,7 +137,8 @@ public class MidPointQuaternionStepIntegrator extends QuaternionStepIntegrator {
 
     /**
      * Performs a mid-point integration step.
-     * More information available here: https://en.wikipedia.org/wiki/Midpoint_method
+     * More information available here:
+     * <a href="https://en.wikipedia.org/wiki/Midpoint_method">https://en.wikipedia.org/wiki/Midpoint_method</a>
      *
      * @param initialAttitude initial attitude.
      * @param initialWx       initial x-coordinate rotation velocity at initial timestamp expressed
@@ -159,9 +163,9 @@ public class MidPointQuaternionStepIntegrator extends QuaternionStepIntegrator {
             final double currentWx, final double currentWy, final double currentWz,
             final double dt, final Quaternion result) throws RotationException {
         try {
-            final Matrix omega0 = new Matrix(Quaternion.INHOM_COORDS, 1);
-            final Matrix omega1 = new Matrix(Quaternion.INHOM_COORDS, 1);
-            final Matrix omega01 = new Matrix(Quaternion.INHOM_COORDS, 1);
+            final Matrix omega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            final Matrix omega1 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            final Matrix omega01 = new Matrix(Rotation3D.INHOM_COORDS, 1);
             final Matrix quat = new Matrix(Quaternion.N_PARAMS, 1);
             final Matrix quatResult = new Matrix(Quaternion.N_PARAMS, 1);
             final Matrix tmpQ = new Matrix(Quaternion.N_PARAMS, 1);

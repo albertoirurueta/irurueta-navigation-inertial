@@ -43,8 +43,7 @@ public interface AccelerometerAndGyroscopeMeasurementsGeneratorListener {
      *                                    in meters per squared second (m/s^2).
      */
     void onInitializationCompleted(
-            final AccelerometerAndGyroscopeMeasurementsGenerator generator,
-            final double accelerometerBaseNoiseLevel);
+            final AccelerometerAndGyroscopeMeasurementsGenerator generator, final double accelerometerBaseNoiseLevel);
 
     /**
      * Called when an error is detected during initialization because there has been
@@ -62,16 +61,14 @@ public interface AccelerometerAndGyroscopeMeasurementsGeneratorListener {
      *
      * @param generator generator that raised the event.
      */
-    void onStaticIntervalDetected(
-            final AccelerometerAndGyroscopeMeasurementsGenerator generator);
+    void onStaticIntervalDetected(final AccelerometerAndGyroscopeMeasurementsGenerator generator);
 
     /**
      * Called when a dynamic interval has been detected after initialization.
      *
      * @param generator generator that raised the event.
      */
-    void onDynamicIntervalDetected(
-            final AccelerometerAndGyroscopeMeasurementsGenerator generator);
+    void onDynamicIntervalDetected(final AccelerometerAndGyroscopeMeasurementsGenerator generator);
 
     /**
      * Called when a detected static interval is skipped because there are not
@@ -79,8 +76,7 @@ public interface AccelerometerAndGyroscopeMeasurementsGeneratorListener {
      *
      * @param generator generator that raised the event.
      */
-    void onStaticIntervalSkipped(
-            final AccelerometerAndGyroscopeMeasurementsGenerator generator);
+    void onStaticIntervalSkipped(final AccelerometerAndGyroscopeMeasurementsGenerator generator);
 
     /**
      * Called when a detected static interval is skipped because it has too
@@ -88,8 +84,7 @@ public interface AccelerometerAndGyroscopeMeasurementsGeneratorListener {
      *
      * @param generator generator that raised the event.
      */
-    void onDynamicIntervalSkipped(
-            final AccelerometerAndGyroscopeMeasurementsGenerator generator);
+    void onDynamicIntervalSkipped(final AccelerometerAndGyroscopeMeasurementsGenerator generator);
 
     /**
      * Called when a new measurement for accelerometer calibration is generated.
@@ -116,6 +111,5 @@ public interface AccelerometerAndGyroscopeMeasurementsGeneratorListener {
      *
      * @param generator generator that raised the event.
      */
-    void onReset(
-            final AccelerometerAndGyroscopeMeasurementsGenerator generator);
+    void onReset(final AccelerometerAndGyroscopeMeasurementsGenerator generator);
 }

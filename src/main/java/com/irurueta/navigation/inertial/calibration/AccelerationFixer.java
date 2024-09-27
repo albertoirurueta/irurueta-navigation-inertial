@@ -57,8 +57,7 @@ public class AccelerationFixer {
     /**
      * Measured specific force array to be reused.
      */
-    private final double[] mMeasuredF =
-            new double[BodyKinematics.COMPONENTS];
+    private final double[] mMeasuredF = new double[BodyKinematics.COMPONENTS];
 
     /**
      * Array containing result values to be reused.
@@ -80,18 +79,14 @@ public class AccelerationFixer {
      */
     public AccelerationFixer() {
         try {
-            mIdentity = Matrix.identity(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
-            mTmp1 = Matrix.identity(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
-            mTmp2 = Matrix.identity(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            mIdentity = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            mTmp1 = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            mTmp2 = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             mDiff = new Matrix(BodyKinematics.COMPONENTS, 1);
             mTmp3 = new Matrix(BodyKinematics.COMPONENTS, 1);
 
             mBias = new Matrix(BodyKinematics.COMPONENTS, 1);
-            mCrossCouplingErrors = new Matrix(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            mCrossCouplingErrors = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         } catch (final WrongSizeException ignore) {
             // never happens
         }
@@ -287,8 +282,7 @@ public class AccelerationFixer {
      * @param biasY y-coordinate of bias.
      * @param biasZ z-coordinate of bias.
      */
-    public void setBias(
-            final double biasX, final double biasY, final double biasZ) {
+    public void setBias(final double biasX, final double biasY, final double biasZ) {
         setBiasX(biasX);
         setBiasY(biasY);
         setBiasZ(biasZ);
@@ -300,8 +294,7 @@ public class AccelerationFixer {
      * @return x-coordinate of bias.
      */
     public Acceleration getBiasXAsAcceleration() {
-        return new Acceleration(getBiasX(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(getBiasX(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -329,8 +322,7 @@ public class AccelerationFixer {
      * @return y-coordinate of bias.
      */
     public Acceleration getBiasYAsAcceleration() {
-        return new Acceleration(getBiasY(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(getBiasY(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -358,8 +350,7 @@ public class AccelerationFixer {
      * @return z-coordinate of bias.
      */
     public Acceleration getBiasZAsAcceleration() {
-        return new Acceleration(getBiasZ(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(getBiasZ(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -388,10 +379,7 @@ public class AccelerationFixer {
      * @param biasY y-coordinate of bias.
      * @param biasZ z-coordinate of bias.
      */
-    public void setBias(
-            final Acceleration biasX,
-            final Acceleration biasY,
-            final Acceleration biasZ) {
+    public void setBias(final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ) {
         setBiasX(biasX);
         setBiasY(biasY);
         setBiasZ(biasZ);
@@ -422,8 +410,7 @@ public class AccelerationFixer {
      * @throws AlgebraException         if provided matrix cannot be inverted.
      * @throws IllegalArgumentException if provided matrix is not 3x3.
      */
-    public void setCrossCouplingErrors(final Matrix crossCouplingErrors)
-            throws AlgebraException {
+    public void setCrossCouplingErrors(final Matrix crossCouplingErrors) throws AlgebraException {
         if (crossCouplingErrors.getRows() != BodyKinematics.COMPONENTS
                 || crossCouplingErrors.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
@@ -453,8 +440,7 @@ public class AccelerationFixer {
      *                          non invertible.
      */
     public void setSx(final double sx) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AccelerationTriad.COMPONENTS, AccelerationTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(0, 0, sx);
         setCrossCouplingErrors(m);
@@ -477,8 +463,7 @@ public class AccelerationFixer {
      *                          non invertible.
      */
     public void setSy(final double sy) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AccelerationTriad.COMPONENTS, AccelerationTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(1, 1, sy);
         setCrossCouplingErrors(m);
@@ -501,8 +486,7 @@ public class AccelerationFixer {
      *                          non invertible.
      */
     public void setSz(final double sz) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AccelerationTriad.COMPONENTS, AccelerationTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(2, 2, sz);
         setCrossCouplingErrors(m);
@@ -525,8 +509,7 @@ public class AccelerationFixer {
      *                          non invertible.
      */
     public void setMxy(final double mxy) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AccelerationTriad.COMPONENTS, AccelerationTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(0, 1, mxy);
         setCrossCouplingErrors(m);
@@ -549,8 +532,7 @@ public class AccelerationFixer {
      *                          non invertible.
      */
     public void setMxz(final double mxz) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AccelerationTriad.COMPONENTS, AccelerationTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(0, 2, mxz);
         setCrossCouplingErrors(m);
@@ -573,8 +555,7 @@ public class AccelerationFixer {
      *                          non invertible.
      */
     public void setMyx(final double myx) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AccelerationTriad.COMPONENTS, AccelerationTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(1, 0, myx);
         setCrossCouplingErrors(m);
@@ -597,8 +578,7 @@ public class AccelerationFixer {
      *                          non invertible.
      */
     public void setMyz(final double myz) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AccelerationTriad.COMPONENTS, AccelerationTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(1, 2, myz);
         setCrossCouplingErrors(m);
@@ -621,8 +601,7 @@ public class AccelerationFixer {
      *                          non invertible.
      */
     public void setMzx(final double mzx) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AccelerationTriad.COMPONENTS, AccelerationTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(2, 0, mzx);
         setCrossCouplingErrors(m);
@@ -645,8 +624,7 @@ public class AccelerationFixer {
      *                          non invertible.
      */
     public void setMzy(final double mzy) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AccelerationTriad.COMPONENTS, AccelerationTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(2, 1, mzy);
         setCrossCouplingErrors(m);
@@ -661,11 +639,8 @@ public class AccelerationFixer {
      * @throws AlgebraException if provided values make cross coupling matrix
      *                          non invertible.
      */
-    public void setScalingFactors(
-            final double sx, final double sy, final double sz)
-            throws AlgebraException {
-        final Matrix m = new Matrix(
-                AccelerationTriad.COMPONENTS, AccelerationTriad.COMPONENTS);
+    public void setScalingFactors(final double sx, final double sy, final double sz) throws AlgebraException {
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(0, 0, sx);
         m.setElementAt(1, 1, sy);
@@ -686,11 +661,9 @@ public class AccelerationFixer {
      *                          non invertible.
      */
     public void setCrossCouplingErrors(
-            final double mxy, final double mxz,
-            final double myx, final double myz,
-            final double mzx, final double mzy) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AccelerationTriad.COMPONENTS, AccelerationTriad.COMPONENTS);
+            final double mxy, final double mxz, final double myx,
+            final double myz, final double mzx, final double mzy) throws AlgebraException {
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(0, 1, mxy);
         m.setElementAt(0, 2, mxz);
@@ -718,11 +691,9 @@ public class AccelerationFixer {
      */
     public void setScalingFactorsAndCrossCouplingErrors(
             final double sx, final double sy, final double sz,
-            final double mxy, final double mxz,
-            final double myx, final double myz,
-            final double mzx, final double mzy) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AccelerationTriad.COMPONENTS, AccelerationTriad.COMPONENTS);
+            final double mxy, final double mxz, final double myx,
+            final double myz, final double mzx, final double mzy) throws AlgebraException {
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(0, 0, sx);
         m.setElementAt(1, 1, sy);
@@ -749,18 +720,14 @@ public class AccelerationFixer {
      * @throws IllegalArgumentException if length of provided result array is
      *                                  not 3.
      */
-    public void fix(final AccelerationTriad measuredF,
-                    final double[] result) throws AlgebraException {
-        if (result.length != AccelerationTriad.COMPONENTS) {
+    public void fix(final AccelerationTriad measuredF, final double[] result) throws AlgebraException {
+        if (result.length != Triad.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
-        final double measuredFx = convertAcceleration(measuredF.getValueX(),
-                measuredF.getUnit());
-        final double measuredFy = convertAcceleration(measuredF.getValueY(),
-                measuredF.getUnit());
-        final double measuredFz = convertAcceleration(measuredF.getValueZ(),
-                measuredF.getUnit());
+        final double measuredFx = convertAcceleration(measuredF.getValueX(), measuredF.getUnit());
+        final double measuredFy = convertAcceleration(measuredF.getValueY(), measuredF.getUnit());
+        final double measuredFz = convertAcceleration(measuredF.getValueZ(), measuredF.getUnit());
         fix(measuredFx, measuredFy, measuredFz, result);
     }
 
@@ -776,10 +743,8 @@ public class AccelerationFixer {
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if result matrix is not 3x1.
      */
-    public void fix(final AccelerationTriad measuredF,
-                    final Matrix result) throws AlgebraException {
-        if (result.getRows() != AccelerationTriad.COMPONENTS
-                || result.getColumns() != 1) {
+    public void fix(final AccelerationTriad measuredF, final Matrix result) throws AlgebraException {
+        if (result.getRows() != Triad.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -796,8 +761,7 @@ public class AccelerationFixer {
      * @param result    instance where restored true specific force will be stored.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    public void fix(final AccelerationTriad measuredF,
-                    final AccelerationTriad result) throws AlgebraException {
+    public void fix(final AccelerationTriad measuredF, final AccelerationTriad result) throws AlgebraException {
         fix(measuredF, mResult);
         result.setValueCoordinates(mResult);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
@@ -816,9 +780,7 @@ public class AccelerationFixer {
      *                   will be stored.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    public void fix(final Acceleration measuredFx,
-                    final Acceleration measuredFy,
-                    final Acceleration measuredFz,
+    public void fix(final Acceleration measuredFx, final Acceleration measuredFy, final Acceleration measuredFz,
                     final AccelerationTriad result) throws AlgebraException {
         final double fx = convertAcceleration(measuredFx);
         final double fy = convertAcceleration(measuredFy);
@@ -842,8 +804,7 @@ public class AccelerationFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(final double[] measuredF, final double[] result)
-            throws AlgebraException {
+    public void fix(final double[] measuredF, final double[] result) throws AlgebraException {
         if (measuredF.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
@@ -863,8 +824,7 @@ public class AccelerationFixer {
         // Hence:
         // ftrue = (I + Ma)^-1 * (fmeas - ba)
         for (int i = 0; i < BodyKinematics.COMPONENTS; i++) {
-            mDiff.setElementAtIndex(i,
-                    measuredF[i] - mBias.getElementAtIndex(i));
+            mDiff.setElementAtIndex(i, measuredF[i] - mBias.getElementAtIndex(i));
         }
 
         mTmp2.multiply(mDiff, mTmp3);
@@ -886,11 +846,9 @@ public class AccelerationFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(final Matrix measuredF, final double[] result)
-            throws AlgebraException {
+    public void fix(final Matrix measuredF, final double[] result) throws AlgebraException {
 
-        if (measuredF.getRows() != BodyKinematics.COMPONENTS
-                || measuredF.getColumns() != 1) {
+        if (measuredF.getRows() != BodyKinematics.COMPONENTS || measuredF.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -911,8 +869,7 @@ public class AccelerationFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(final Matrix measuredF, final Matrix result)
-            throws AlgebraException {
+    public void fix(final Matrix measuredF, final Matrix result) throws AlgebraException {
 
         if (result.getRows() != BodyKinematics.COMPONENTS
                 || result.getColumns() != 1) {
@@ -943,8 +900,7 @@ public class AccelerationFixer {
      * @throws IllegalArgumentException if provided result array does not have
      *                                  length 3.
      */
-    public void fix(
-            final double measuredFx, final double measuredFy, final double measuredFz,
+    public void fix(final double measuredFx, final double measuredFy, final double measuredFz,
             final double[] result) throws AlgebraException {
 
         mMeasuredF[0] = measuredFx;
@@ -975,11 +931,10 @@ public class AccelerationFixer {
      * @throws IllegalArgumentException if provided result matrix is not 3x1.
      */
     public void fix(
-            final double measuredFx, final double measuredFy, final double measuredFz,
-            final Matrix result) throws AlgebraException {
+            final double measuredFx, final double measuredFy, final double measuredFz, final Matrix result)
+            throws AlgebraException {
 
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -1004,8 +959,7 @@ public class AccelerationFixer {
      *                                  not have proper size.
      */
     public void fix(
-            final double[] measuredF, final Matrix bias,
-            final Matrix crossCouplingErrors, final double[] result)
+            final double[] measuredF, final Matrix bias, final Matrix crossCouplingErrors, final double[] result)
             throws AlgebraException {
         if (measuredF.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
@@ -1037,8 +991,7 @@ public class AccelerationFixer {
         Utils.inverse(mTmp1, mTmp2);
 
         for (int i = 0; i < BodyKinematics.COMPONENTS; i++) {
-            mDiff.setElementAtIndex(i,
-                    measuredF[i] - bias.getElementAtIndex(i));
+            mDiff.setElementAtIndex(i, measuredF[i] - bias.getElementAtIndex(i));
         }
 
         mTmp2.multiply(mDiff, mTmp3);
@@ -1062,13 +1015,10 @@ public class AccelerationFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(
-            final Matrix measuredF, final Matrix bias,
-            final Matrix crossCouplingErrors, final double[] result)
+    public void fix(final Matrix measuredF, final Matrix bias, final Matrix crossCouplingErrors, final double[] result)
             throws AlgebraException {
 
-        if (measuredF.getRows() != BodyKinematics.COMPONENTS
-                || measuredF.getColumns() != 1) {
+        if (measuredF.getRows() != BodyKinematics.COMPONENTS || measuredF.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -1092,13 +1042,10 @@ public class AccelerationFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(
-            final Matrix measuredF, final Matrix bias,
-            final Matrix crossCouplingErrors, final Matrix result)
+    public void fix(final Matrix measuredF, final Matrix bias, final Matrix crossCouplingErrors, final Matrix result)
             throws AlgebraException {
 
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -1134,8 +1081,7 @@ public class AccelerationFixer {
      */
     public void fix(
             final double measuredFx, final double measuredFy, final double measuredFz,
-            final double biasX, final double biasY, final double biasZ,
-            final Matrix crossCouplingErrors,
+            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrors,
             final double[] result) throws AlgebraException {
 
         mMeasuredF[0] = measuredFx;
@@ -1178,17 +1124,14 @@ public class AccelerationFixer {
      */
     public void fix(
             final double measuredFx, final double measuredFy, final double measuredFz,
-            final double biasX, final double biasY, final double biasZ,
-            final Matrix crossCouplingErrors, final Matrix result)
-            throws AlgebraException {
+            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrors,
+            final Matrix result) throws AlgebraException {
 
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredFx, measuredFy, measuredFz, biasX, biasY, biasZ, crossCouplingErrors,
-                result.getBuffer());
+        fix(measuredFx, measuredFy, measuredFz, biasX, biasY, biasZ, crossCouplingErrors, result.getBuffer());
     }
 
     /**
@@ -1228,11 +1171,8 @@ public class AccelerationFixer {
     public void fix(
             final double measuredFx, final double measuredFy, final double measuredFz,
             final double biasX, final double biasY, final double biasZ,
-            final double sx, final double sy, final double sz,
-            final double mxy, final double mxz,
-            final double myx, final double myz,
-            final double mzx, final double mzy,
-            final double[] result) throws AlgebraException {
+            final double sx, final double sy, final double sz, final double mxy, final double mxz, final double myx,
+            final double myz, final double mzx, final double mzy, final double[] result) throws AlgebraException {
 
         mCrossCouplingErrors.setElementAt(0, 0, sx);
         mCrossCouplingErrors.setElementAt(1, 1, sy);
@@ -1244,8 +1184,7 @@ public class AccelerationFixer {
         mCrossCouplingErrors.setElementAt(2, 0, mzx);
         mCrossCouplingErrors.setElementAt(2, 1, mzy);
 
-        fix(measuredFx, measuredFy, measuredFz, biasX, biasY, biasZ,
-                mCrossCouplingErrors, result);
+        fix(measuredFx, measuredFy, measuredFz, biasX, biasY, biasZ, mCrossCouplingErrors, result);
     }
 
     /**
@@ -1286,18 +1225,15 @@ public class AccelerationFixer {
             final double measuredFx, final double measuredFy, final double measuredFz,
             final double biasX, final double biasY, final double biasZ,
             final double sx, final double sy, final double sz,
-            final double mxy, final double mxz,
-            final double myx, final double myz,
-            final double mzx, final double mzy,
-            final Matrix result) throws AlgebraException {
+            final double mxy, final double mxz, final double myx,
+            final double myz, final double mzx, final double mzy, final Matrix result) throws AlgebraException {
 
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredFx, measuredFy, measuredFz, biasX, biasY, biasZ,
-                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, result.getBuffer());
+        fix(measuredFx, measuredFy, measuredFz, biasX, biasY, biasZ, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
+                result.getBuffer());
     }
 
     /**
@@ -1309,8 +1245,7 @@ public class AccelerationFixer {
      * @return restored true specific force.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    public AccelerationTriad fixAndReturnNew(final AccelerationTriad measuredF)
-            throws AlgebraException {
+    public AccelerationTriad fixAndReturnNew(final AccelerationTriad measuredF) throws AlgebraException {
         final AccelerationTriad result = new AccelerationTriad();
         fix(measuredF, result);
         return result;
@@ -1329,9 +1264,8 @@ public class AccelerationFixer {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public AccelerationTriad fixAndReturnNew(
-            final Acceleration measuredFx,
-            final Acceleration measuredFy,
-            final Acceleration measuredFz) throws AlgebraException {
+            final Acceleration measuredFx, final Acceleration measuredFy, final Acceleration measuredFz)
+            throws AlgebraException {
         final AccelerationTriad result = new AccelerationTriad();
         fix(measuredFx, measuredFy, measuredFz, result);
         return result;
@@ -1349,8 +1283,7 @@ public class AccelerationFixer {
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public double[] fixAndReturnNew(
-            final double[] measuredF) throws AlgebraException {
+    public double[] fixAndReturnNew(final double[] measuredF) throws AlgebraException {
 
         final double[] result = new double[BodyKinematics.COMPONENTS];
         fix(measuredF, result);
@@ -1370,8 +1303,7 @@ public class AccelerationFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public double[] fixAndReturnNew(final Matrix measuredF)
-            throws AlgebraException {
+    public double[] fixAndReturnNew(final Matrix measuredF) throws AlgebraException {
 
         final double[] result = new double[BodyKinematics.COMPONENTS];
         fix(measuredF, result);
@@ -1391,11 +1323,9 @@ public class AccelerationFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public Matrix fixAndReturnNewMatrix(final Matrix measuredF)
-            throws AlgebraException {
+    public Matrix fixAndReturnNewMatrix(final Matrix measuredF) throws AlgebraException {
 
-        final Matrix result = new Matrix(
-                BodyKinematics.COMPONENTS, 1);
+        final Matrix result = new Matrix(BodyKinematics.COMPONENTS, 1);
         fix(measuredF, result);
         return result;
     }
@@ -1419,8 +1349,7 @@ public class AccelerationFixer {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public double[] fixAndReturnNew(
-            final double measuredFx, final double measuredFy, final double measuredFz)
-            throws AlgebraException {
+            final double measuredFx, final double measuredFy, final double measuredFz) throws AlgebraException {
         final double[] result = new double[BodyKinematics.COMPONENTS];
         fix(measuredFx, measuredFy, measuredFz, result);
         return result;
@@ -1445,10 +1374,8 @@ public class AccelerationFixer {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public Matrix fixAndReturnNewMatrix(
-            final double measuredFx, final double measuredFy, final double measuredFz)
-            throws AlgebraException {
-        final Matrix result = new Matrix(
-                BodyKinematics.COMPONENTS, 1);
+            final double measuredFx, final double measuredFy, final double measuredFz) throws AlgebraException {
+        final Matrix result = new Matrix(BodyKinematics.COMPONENTS, 1);
         fix(measuredFx, measuredFy, measuredFz, result);
         return result;
     }
@@ -1471,8 +1398,7 @@ public class AccelerationFixer {
      *                                  not have proper size.
      */
     public double[] fixAndReturnNew(
-            final double[] measuredF, final Matrix bias,
-            final Matrix crossCouplingErrors) throws AlgebraException {
+            final double[] measuredF, final Matrix bias, final Matrix crossCouplingErrors) throws AlgebraException {
 
         final double[] result = new double[BodyKinematics.COMPONENTS];
         fix(measuredF, bias, crossCouplingErrors, result);
@@ -1497,8 +1423,7 @@ public class AccelerationFixer {
      *                                  not have proper size.
      */
     public double[] fixAndReturnNew(
-            final Matrix measuredF, final Matrix bias,
-            final Matrix crossCouplingErrors) throws AlgebraException {
+            final Matrix measuredF, final Matrix bias, final Matrix crossCouplingErrors) throws AlgebraException {
 
         final double[] result = new double[BodyKinematics.COMPONENTS];
         fix(measuredF, bias, crossCouplingErrors, result);
@@ -1524,11 +1449,9 @@ public class AccelerationFixer {
      *                                  not have proper size.
      */
     public Matrix fixAndReturnNewMatrix(
-            final Matrix measuredF, final Matrix bias,
-            final Matrix crossCouplingErrors) throws AlgebraException {
+            final Matrix measuredF, final Matrix bias, final Matrix crossCouplingErrors) throws AlgebraException {
 
-        final Matrix result = new Matrix(
-                BodyKinematics.COMPONENTS, 1);
+        final Matrix result = new Matrix(BodyKinematics.COMPONENTS, 1);
         fix(measuredF, bias, crossCouplingErrors, result);
         return result;
     }
@@ -1562,12 +1485,11 @@ public class AccelerationFixer {
      */
     public double[] fixAndReturnNew(
             final double measuredFx, final double measuredFy, final double measuredFz,
-            final double biasX, final double biasY, final double biasZ,
-            final Matrix crossCouplingErrors) throws AlgebraException {
+            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrors)
+            throws AlgebraException {
 
         final double[] result = new double[BodyKinematics.COMPONENTS];
-        fix(measuredFx, measuredFy, measuredFz,
-                biasX, biasY, biasZ, crossCouplingErrors, result);
+        fix(measuredFx, measuredFy, measuredFz, biasX, biasY, biasZ, crossCouplingErrors, result);
         return result;
     }
 
@@ -1601,14 +1523,11 @@ public class AccelerationFixer {
      */
     public Matrix fixAndReturnNewMatrix(
             final double measuredFx, final double measuredFy, final double measuredFz,
-            final double biasX, final double biasY, final double biasZ,
-            final Matrix crossCouplingErrors) throws AlgebraException {
+            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrors)
+            throws AlgebraException {
 
-        final Matrix result = new Matrix(
-                BodyKinematics.COMPONENTS, 1);
-        fix(measuredFx, measuredFy, measuredFz,
-                biasX, biasY, biasZ,
-                crossCouplingErrors, result);
+        final Matrix result = new Matrix(BodyKinematics.COMPONENTS, 1);
+        fix(measuredFx, measuredFy, measuredFz, biasX, biasY, biasZ, crossCouplingErrors, result);
         return result;
     }
 
@@ -1650,17 +1569,11 @@ public class AccelerationFixer {
             final double measuredFx, final double measuredFy, final double measuredFz,
             final double biasX, final double biasY, final double biasZ,
             final double sx, final double sy, final double sz,
-            final double mxy, final double mxz,
-            final double myx, final double myz,
-            final double mzx, final double mzy) throws AlgebraException {
+            final double mxy, final double mxz, final double myx,
+            final double myz, final double mzx, final double mzy) throws AlgebraException {
 
         final double[] result = new double[BodyKinematics.COMPONENTS];
-        fix(measuredFx, measuredFy, measuredFz,
-                biasX, biasY, biasZ,
-                sx, sy, sz,
-                mxy, mxz,
-                myx, myz,
-                mzx, mzy, result);
+        fix(measuredFx, measuredFy, measuredFz, biasX, biasY, biasZ, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, result);
         return result;
     }
 
@@ -1701,18 +1614,11 @@ public class AccelerationFixer {
             final double measuredFx, final double measuredFy, final double measuredFz,
             final double biasX, final double biasY, final double biasZ,
             final double sx, final double sy, final double sz,
-            final double mxy, final double mxz,
-            final double myx, final double myz,
-            final double mzx, final double mzy) throws AlgebraException {
+            final double mxy, final double mxz, final double myx,
+            final double myz, final double mzx, final double mzy) throws AlgebraException {
 
-        final Matrix result = new Matrix(
-                BodyKinematics.COMPONENTS, 1);
-        fix(measuredFx, measuredFy, measuredFz,
-                biasX, biasY, biasZ,
-                sx, sy, sz,
-                mxy, mxz,
-                myx, myz,
-                mzx, mzy, result);
+        final Matrix result = new Matrix(BodyKinematics.COMPONENTS, 1);
+        fix(measuredFx, measuredFy, measuredFz, biasX, biasY, biasZ, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, result);
         return result;
     }
 
@@ -1723,10 +1629,8 @@ public class AccelerationFixer {
      * @param unit  unit of value to be converted.
      * @return converted value.
      */
-    private static double convertAcceleration(
-            final double value, final AccelerationUnit unit) {
-        return AccelerationConverter.convert(value, unit,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+    private static double convertAcceleration(final double value, final AccelerationUnit unit) {
+        return AccelerationConverter.convert(value, unit, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1736,7 +1640,6 @@ public class AccelerationFixer {
      * @return converted value.
      */
     private static double convertAcceleration(final Acceleration acceleration) {
-        return convertAcceleration(acceleration.getValue().doubleValue(),
-                acceleration.getUnit());
+        return convertAcceleration(acceleration.getValue().doubleValue(), acceleration.getUnit());
     }
 }

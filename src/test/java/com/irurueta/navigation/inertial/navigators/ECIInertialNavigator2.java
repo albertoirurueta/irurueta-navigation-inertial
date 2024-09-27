@@ -37,53 +37,33 @@ class ECIInertialNavigator2 {
 
     private static final int ROWS = 3;
 
-    public static void navigateECI(final double timeInterval,
-                                   final ECIFrame oldFrame,
-                                   final BodyKinematics kinematics,
-                                   final ECIFrame result)
+    public static void navigateECI(
+            final double timeInterval, final ECIFrame oldFrame, final BodyKinematics kinematics, final ECIFrame result)
             throws InertialNavigatorException {
         try {
             navigateECI(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),
-                    oldFrame.getCoordinateTransformation(),
-                    oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), kinematics,
-                    result);
+                    oldFrame.getCoordinateTransformation(), oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(),
+                    kinematics, result);
         } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
             // never happens
         }
     }
 
-    public static void navigateECI(final double timeInterval,
-                                   final double oldX,
-                                   final double oldY,
-                                   final double oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final BodyKinematics kinematics,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+    public static void navigateECI(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final BodyKinematics kinematics, final ECIFrame result) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
         navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
                 kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
-                kinematics.getAngularRateX(), kinematics.getAngularRateY(),
-                kinematics.getAngularRateZ(), result);
+                kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ(), result);
     }
 
-    public static void navigateECI(final double timeInterval,
-                                   final double oldX,
-                                   final double oldY,
-                                   final double oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final double fx,
-                                   final double fy,
-                                   final double fz,
-                                   final double angularRateX,
-                                   final double angularRateY,
-                                   final double angularRateZ,
-                                   final ECIFrame result)
+    public static void navigateECI(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
 
         if (!isValidBodyToEciCoordinateTransformationMatrix(oldC)) {
@@ -116,8 +96,8 @@ class ECIInertialNavigator2 {
                         .addAndReturnNew(skewAlphaIbb2.multiplyByScalarAndReturnNew(value2));
             } else {
                 skewAlphaIbb2 = null;
-                cNewOld = Matrix.identity(Rotation3D.INHOM_COORDS, Rotation3D.INHOM_COORDS)
-                        .addAndReturnNew(skewAlphaIbb);
+                cNewOld = Matrix.identity(Rotation3D.INHOM_COORDS, Rotation3D.INHOM_COORDS).addAndReturnNew(
+                        skewAlphaIbb);
             }
 
             // Update attitude
@@ -156,12 +136,12 @@ class ECIInertialNavigator2 {
             oldVibi.setElementAtIndex(1, oldVy);
             oldVibi.setElementAtIndex(2, oldVz);
 
-            final ECIGravitation gravitation = ECIGravitationEstimator
-                    .estimateGravitationAndReturnNew(oldX, oldY, oldZ);
+            final ECIGravitation gravitation = ECIGravitationEstimator.estimateGravitationAndReturnNew(
+                    oldX, oldY, oldZ);
             final Matrix g = gravitation.asMatrix();
 
-            final Matrix vIbi = oldVibi.addAndReturnNew(
-                    fibi.addAndReturnNew(g).multiplyByScalarAndReturnNew(timeInterval));
+            final Matrix vIbi = oldVibi.addAndReturnNew(fibi.addAndReturnNew(g).multiplyByScalarAndReturnNew(
+                    timeInterval));
 
             final double vx = vIbi.getElementAtIndex(0);
             final double vy = vIbi.getElementAtIndex(1);
@@ -173,8 +153,8 @@ class ECIInertialNavigator2 {
             final double y = oldY + (vy + oldVy) * 0.5 * timeInterval;
             final double z = oldZ + (vz + oldVz) * 0.5 * timeInterval;
 
-            final CoordinateTransformation newC = new CoordinateTransformation(cbi,
-                    FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_INERTIAL_FRAME);
+            final CoordinateTransformation newC = new CoordinateTransformation(cbi, FrameType.BODY_FRAME,
+                    FrameType.EARTH_CENTERED_INERTIAL_FRAME);
 
             result.setCoordinates(x, y, z);
             result.setVelocityCoordinates(vx, vy, vz);

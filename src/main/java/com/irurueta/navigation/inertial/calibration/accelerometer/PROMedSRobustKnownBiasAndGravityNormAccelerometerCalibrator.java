@@ -140,8 +140,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed) {
+    public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(final boolean commonAxisUsed) {
         super(commonAxisUsed);
     }
 
@@ -152,8 +151,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *             in meters per squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] bias) {
+    public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(final double[] bias) {
         super(bias);
     }
 
@@ -163,8 +161,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param bias known accelerometer bias.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Matrix bias) {
+    public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(final Matrix bias) {
         super(bias);
     }
 
@@ -176,8 +173,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Matrix bias, final Matrix initialMa) {
+    public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(final Matrix bias, final Matrix initialMa) {
         super(bias, initialMa);
     }
 
@@ -188,8 +184,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                               squared second (m/s^2).
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm) {
+    public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(final Double groundTruthGravityNorm) {
         super(groundTruthGravityNorm);
     }
 
@@ -204,8 +199,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements) {
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements) {
         super(groundTruthGravityNorm, measurements);
     }
 
@@ -222,8 +216,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, listener);
     }
@@ -241,8 +234,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         super(groundTruthGravityNorm, measurements, commonAxisUsed);
     }
@@ -262,10 +254,8 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, commonAxisUsed, listener);
     }
 
@@ -283,8 +273,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final double[] bias) {
         super(groundTruthGravityNorm, measurements, bias);
     }
@@ -304,10 +293,8 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] bias, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, bias, listener);
     }
 
@@ -327,11 +314,9 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias);
     }
 
     /**
@@ -351,12 +336,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, listener);
     }
 
     /**
@@ -372,8 +355,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias) {
         super(groundTruthGravityNorm, measurements, bias);
     }
@@ -392,10 +374,8 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix bias, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, bias, listener);
     }
 
@@ -414,11 +394,9 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias);
     }
 
     /**
@@ -437,12 +415,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, listener);
     }
 
     /**
@@ -460,8 +436,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa) {
         super(groundTruthGravityNorm, measurements, bias, initialMa);
     }
@@ -482,12 +457,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, bias, initialMa,
-                listener);
+        super(groundTruthGravityNorm, measurements, bias, initialMa, listener);
     }
 
     /**
@@ -507,12 +480,9 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, initialMa);
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, initialMa);
     }
 
     /**
@@ -533,13 +503,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, initialMa, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, initialMa, listener);
     }
 
     /**
@@ -548,8 +515,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param groundTruthGravityNorm ground truth gravity norm.
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm) {
+    public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(final Acceleration groundTruthGravityNorm) {
         super(groundTruthGravityNorm);
     }
 
@@ -563,8 +529,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements) {
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements) {
         super(groundTruthGravityNorm, measurements);
     }
 
@@ -580,11 +545,9 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                listener);
+        super(groundTruthGravityNorm, measurements, listener);
     }
 
     /**
@@ -599,11 +562,9 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed);
     }
 
     /**
@@ -620,12 +581,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, listener);
     }
 
     /**
@@ -641,11 +600,9 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final double[] bias) {
-        super(groundTruthGravityNorm, measurements,
-                bias);
+        super(groundTruthGravityNorm, measurements, bias);
     }
 
     /**
@@ -662,12 +619,9 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                bias, listener);
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] bias, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, measurements, bias, listener);
     }
 
     /**
@@ -685,11 +639,9 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, bias);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias);
     }
 
     /**
@@ -708,12 +660,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, bias, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, listener);
     }
 
     /**
@@ -728,8 +678,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias) {
         super(groundTruthGravityNorm, measurements, bias);
     }
@@ -747,10 +696,8 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix bias, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, bias, listener);
     }
 
@@ -768,8 +715,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias) {
         super(groundTruthGravityNorm, measurements, commonAxisUsed, bias);
     }
@@ -789,12 +735,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, bias, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, listener);
     }
 
     /**
@@ -811,8 +755,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa) {
         super(groundTruthGravityNorm, measurements, bias, initialMa);
     }
@@ -832,12 +775,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, bias, initialMa,
-                listener);
+        super(groundTruthGravityNorm, measurements, bias, initialMa, listener);
     }
 
     /**
@@ -856,12 +797,9 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, initialMa);
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, initialMa);
     }
 
     /**
@@ -881,13 +819,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, initialMa, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, initialMa, listener);
     }
 
     /**
@@ -906,8 +841,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  smaller than 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
+            final double[] qualityScores, final Double groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements) {
         super(groundTruthGravityNorm, measurements);
         internalSetQualityScores(qualityScores);
@@ -931,8 +865,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  smaller than 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
+            final double[] qualityScores, final Double groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, listener);
@@ -957,10 +890,8 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  smaller than 10 or 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed) {
         super(groundTruthGravityNorm, measurements, commonAxisUsed);
         internalSetQualityScores(qualityScores);
     }
@@ -985,10 +916,8 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  smaller than 10 or 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
@@ -1014,10 +943,8 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  smaller than 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias) {
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] initialBias) {
         super(groundTruthGravityNorm, measurements, initialBias);
         internalSetQualityScores(qualityScores);
     }
@@ -1043,10 +970,8 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  smaller than 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, initialBias, listener);
         internalSetQualityScores(qualityScores);
@@ -1073,12 +998,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  smaller than 10 or 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double[] bias) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias);
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final double[] bias) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1104,13 +1027,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  smaller than 10 or 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double[] bias,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, listener);
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final double[] bias, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1132,10 +1052,8 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  smaller than 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias) {
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias) {
         super(groundTruthGravityNorm, measurements, bias);
         internalSetQualityScores(qualityScores);
     }
@@ -1159,10 +1077,8 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  smaller than 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, bias, listener);
         internalSetQualityScores(qualityScores);
@@ -1188,12 +1104,9 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  smaller than 10 or 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias);
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed, final Matrix bias) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1218,13 +1131,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  smaller than 10 or 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed, final Matrix bias,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1248,10 +1158,8 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  smaller than 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias, final Matrix initialMa) {
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias, final Matrix initialMa) {
         super(groundTruthGravityNorm, measurements, bias, initialMa);
         internalSetQualityScores(qualityScores);
     }
@@ -1277,13 +1185,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  smaller than 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias, final Matrix initialMa,
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, bias, initialMa,
-                listener);
+        super(groundTruthGravityNorm, measurements, bias, initialMa, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1309,13 +1214,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  smaller than 10 or 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed, final Matrix bias,
             final Matrix initialMa) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, initialMa);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, initialMa);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1342,14 +1244,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  smaller than 10 or 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, initialMa, listener);
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed, final Matrix bias,
+            final Matrix initialMa, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, initialMa, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1365,8 +1263,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  than 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm) {
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm) {
         super(groundTruthGravityNorm);
         internalSetQualityScores(qualityScores);
     }
@@ -1386,8 +1283,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  than 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements) {
         super(groundTruthGravityNorm, measurements);
         internalSetQualityScores(qualityScores);
@@ -1410,12 +1306,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  than 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                listener);
+        super(groundTruthGravityNorm, measurements, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1436,12 +1330,9 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  than 10 or 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed);
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1464,13 +1355,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  than 10 or 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1492,69 +1380,62 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  than 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] bias) {
+        super(groundTruthGravityNorm, measurements, bias);
+        internalSetQualityScores(qualityScores);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias. This must have length 3 and is expressed
+     *                               in meters per squared second (m/s^2).
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 13 samples.
+     */
+    public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] bias,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, measurements, bias, listener);
+        internalSetQualityScores(qualityScores);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias. This must have length 3 and is expressed
+     *                               in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 10 or 13 samples.
+     */
+    public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
             final double[] bias) {
-        super(groundTruthGravityNorm, measurements, bias);
-        internalSetQualityScores(qualityScores);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param qualityScores          quality scores corresponding to each provided
-     *                               measurement. The larger the score value the better
-     *                               the quality of the sample.
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param bias                   known accelerometer bias. This must have length 3 and is expressed
-     *                               in meters per squared second (m/s^2).
-     * @param listener               listener to handle events raised by this calibrator.
-     * @throws IllegalArgumentException if provided bias array does not have length 3 or
-     *                                  if provided gravity norm value is negative or
-     *                                  if provided quality scores length is smaller
-     *                                  than 13 samples.
-     */
-    public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                bias, listener);
-        internalSetQualityScores(qualityScores);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param qualityScores          quality scores corresponding to each provided
-     *                               measurement. The larger the score value the better
-     *                               the quality of the sample.
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param bias                   known accelerometer bias. This must have length 3 and is expressed
-     *                               in meters per squared second (m/s^2).
-     * @throws IllegalArgumentException if provided bias array does not have length 3 or
-     *                                  if provided gravity norm value is negative or
-     *                                  if provided quality scores length is smaller
-     *                                  than 10 or 13 samples.
-     */
-    public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double[] bias) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, bias);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1579,13 +1460,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  than 10 or 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double[] bias,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, bias, listener);
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final double[] bias, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1606,10 +1484,8 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  than 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias) {
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias) {
         super(groundTruthGravityNorm, measurements, bias);
         internalSetQualityScores(qualityScores);
     }
@@ -1632,13 +1508,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  than 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                initialBias, listener);
+        super(groundTruthGravityNorm, measurements, initialBias, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1661,12 +1534,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  than 10 or 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, initialBias);
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Matrix initialBias) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1690,13 +1561,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  than 10 or 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed, final Matrix bias,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, bias, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1719,10 +1587,8 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  than 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias, final Matrix initialMa) {
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias, final Matrix initialMa) {
         super(groundTruthGravityNorm, measurements, bias, initialMa);
         internalSetQualityScores(qualityScores);
     }
@@ -1747,13 +1613,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  than 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias, final Matrix initialMa,
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                bias, initialMa, listener);
+        super(groundTruthGravityNorm, measurements, bias, initialMa, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1778,13 +1641,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  than 10 or 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed, final Matrix bias,
             final Matrix initialMa) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, bias, initialMa);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, initialMa);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1810,14 +1670,10 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  than 10 or 13 samples.
      */
     public PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, bias, initialMa, listener);
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed, final Matrix bias,
+            final Matrix initialMa, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, initialMa, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1898,8 +1754,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setQualityScores(final double[] qualityScores)
-            throws LockedException {
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1913,8 +1768,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     @Override
     public boolean isReady() {
-        return super.isReady() && mQualityScores != null &&
-                mQualityScores.length == mMeasurements.size();
+        return super.isReady() && mQualityScores != null && mQualityScores.length == mMeasurements.size();
     }
 
     /**
@@ -1935,7 +1789,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
         }
 
         final PROMedSRobustEstimator<PreliminaryResult> innerEstimator =
-                new PROMedSRobustEstimator<>(new PROMedSRobustEstimatorListener<PreliminaryResult>() {
+                new PROMedSRobustEstimator<>(new PROMedSRobustEstimatorListener<>() {
                     @Override
                     public double[] getQualityScores() {
                         return mQualityScores;
@@ -1958,14 +1812,12 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
 
                     @Override
                     public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List<PreliminaryResult> solutions) {
+                            final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                         computePreliminarySolutions(samplesIndices, solutions);
                     }
 
                     @Override
-                    public double computeResidual(
-                            final PreliminaryResult currentEstimation, final int i) {
+                    public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
                         return computeError(mMeasurements.get(i), currentEstimation);
                     }
 
@@ -1975,21 +1827,18 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
                     }
 
                     @Override
-                    public void onEstimateStart(
-                            final RobustEstimator<PreliminaryResult> estimator) {
+                    public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                         // no action needed
                     }
 
                     @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator<PreliminaryResult> estimator) {
+                    public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                         // no action needed
                     }
 
                     @Override
                     public void onEstimateNextIteration(
-                            final RobustEstimator<PreliminaryResult> estimator,
-                            final int iteration) {
+                            final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                         if (mListener != null) {
                             mListener.onCalibrateNextIteration(
                                     PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.this,
@@ -1999,8 +1848,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
 
                     @Override
                     public void onEstimateProgressChange(
-                            final RobustEstimator<PreliminaryResult> estimator,
-                            final float progress) {
+                            final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                         if (mListener != null) {
                             mListener.onCalibrateProgressChange(
                                     PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.this,
@@ -2048,7 +1896,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.PROMedS;
+        return RobustEstimatorMethod.PROMEDS;
     }
 
     /**
@@ -2073,8 +1921,7 @@ public class PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  number of samples (10 or 13).
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-        if (qualityScores == null ||
-                qualityScores.length < getMinimumRequiredMeasurements()) {
+        if (qualityScores == null || qualityScores.length < getMinimumRequiredMeasurements()) {
             throw new IllegalArgumentException();
         }
 

@@ -134,8 +134,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final boolean commonAxisUsed) {
+    public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(final boolean commonAxisUsed) {
         super(commonAxisUsed);
     }
 
@@ -146,8 +145,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *             in meters per squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] bias) {
+    public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(final double[] bias) {
         super(bias);
     }
 
@@ -157,8 +155,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @param bias known accelerometer bias.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final Matrix bias) {
+    public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(final Matrix bias) {
         super(bias);
     }
 
@@ -170,8 +167,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final Matrix bias, final Matrix initialMa) {
+    public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(final Matrix bias, final Matrix initialMa) {
         super(bias, initialMa);
     }
 
@@ -180,8 +176,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *
      * @param position position where body kinematics measures have been taken.
      */
-    public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position) {
+    public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(final ECEFPosition position) {
         super(position);
     }
 
@@ -194,8 +189,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                     of accelerometer and gyroscope measurements.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements) {
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements) {
         super(position, measurements);
     }
 
@@ -210,8 +204,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                     starts, ends or its progress significantly changes.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, listener);
     }
@@ -227,8 +220,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         super(position, measurements, commonAxisUsed);
     }
@@ -246,10 +238,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                       starts, ends or its progress significantly changes.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, listener);
     }
 
@@ -265,8 +255,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final double[] bias) {
         super(position, measurements, bias);
     }
@@ -284,10 +273,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] bias, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, bias, listener);
     }
 
@@ -305,8 +292,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias) {
         super(position, measurements, commonAxisUsed, bias);
     }
@@ -327,8 +313,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, initialBias, listener);
@@ -345,8 +330,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias) {
         super(position, measurements, bias);
     }
@@ -363,10 +347,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
-            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix bias, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, bias, listener);
     }
 
@@ -383,8 +365,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias) {
         super(position, measurements, commonAxisUsed, bias);
     }
@@ -403,8 +384,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, bias, listener);
@@ -423,8 +403,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa) {
         super(position, measurements, bias, initialMa);
     }
@@ -443,8 +422,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, bias, initialMa, listener);
@@ -465,10 +443,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa) {
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa) {
         super(position, measurements, commonAxisUsed, bias, initialMa);
     }
 
@@ -488,10 +464,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, bias, initialMa, listener);
     }
@@ -514,8 +488,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                     of accelerometer and gyroscope measurements.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements) {
         super(position, measurements);
     }
 
@@ -530,8 +503,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                     starts, ends or its progress significantly changes.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, listener);
     }
@@ -547,8 +519,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         super(position, measurements, commonAxisUsed);
     }
@@ -566,10 +537,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                       starts, ends or its progress significantly changes.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, listener);
     }
 
@@ -585,8 +554,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final double[] bias) {
         super(position, measurements, bias);
     }
@@ -604,10 +572,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] bias, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, bias, listener);
     }
 
@@ -625,8 +591,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias) {
         super(position, measurements, commonAxisUsed, bias);
     }
@@ -646,8 +611,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, bias, listener);
@@ -664,9 +628,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements, final Matrix bias) {
         super(position, measurements, bias);
     }
 
@@ -682,10 +644,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
-            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix bias, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, bias, listener);
     }
 
@@ -702,8 +662,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias) {
         super(position, measurements, commonAxisUsed, bias);
     }
@@ -722,8 +681,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, bias, listener);
@@ -742,8 +700,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa) {
         super(position, measurements, bias, initialMa);
     }
@@ -762,8 +719,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, bias, initialMa, listener);
@@ -784,10 +740,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa) {
         super(position, measurements, commonAxisUsed, bias, initialMa);
     }
 
@@ -807,10 +761,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, bias, initialMa, listener);
     }
@@ -830,8 +782,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  is smaller than 10 samples.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
+            final double[] qualityScores, final ECEFPosition position,
             final List<StandardDeviationBodyKinematics> measurements) {
         super(position, measurements);
         internalSetQualityScores(qualityScores);
@@ -853,8 +804,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  is smaller than 10 samples.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
+            final double[] qualityScores, final ECEFPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, listener);
@@ -879,10 +829,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  required samples (7 or 10).
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed) {
         super(position, measurements, commonAxisUsed);
         internalSetQualityScores(qualityScores);
     }
@@ -907,10 +855,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  required samples (7 or 10).
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
@@ -933,10 +879,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias) {
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] bias) {
         super(position, measurements, bias);
         internalSetQualityScores(qualityScores);
     }
@@ -959,10 +903,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] bias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, bias, listener);
         internalSetQualityScores(qualityScores);
@@ -988,10 +930,9 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples (7 or 10).
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double[] bias) {
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final double[] bias) {
         super(position, measurements, commonAxisUsed, bias);
         internalSetQualityScores(qualityScores);
     }
@@ -1018,11 +959,9 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples (7 or 10).
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double[] initialBias,
-            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final double[] initialBias, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, initialBias, listener);
         internalSetQualityScores(qualityScores);
     }
@@ -1043,10 +982,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias) {
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias) {
         super(position, measurements, bias);
         internalSetQualityScores(qualityScores);
     }
@@ -1068,10 +1005,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, bias, listener);
         internalSetQualityScores(qualityScores);
@@ -1096,10 +1031,9 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples (7 or 10).
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias) {
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Matrix bias) {
         super(position, measurements, commonAxisUsed, bias);
         internalSetQualityScores(qualityScores);
     }
@@ -1124,10 +1058,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples (7 or 10).
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed, final Matrix bias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, bias, listener);
         internalSetQualityScores(qualityScores);
@@ -1151,10 +1083,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias, final Matrix initialMa) {
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias, final Matrix initialMa) {
         super(position, measurements, bias, initialMa);
         internalSetQualityScores(qualityScores);
     }
@@ -1178,10 +1108,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias, final Matrix initialMa,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, bias, initialMa, listener);
         internalSetQualityScores(qualityScores);
@@ -1208,10 +1136,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples (7 or 10).
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed, final Matrix bias,
             final Matrix initialMa) {
         super(position, measurements, commonAxisUsed, bias, initialMa);
         internalSetQualityScores(qualityScores);
@@ -1239,12 +1165,9 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples (10 or 13).
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa,
-            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed, final Matrix bias,
+            final Matrix initialMa, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, bias, initialMa, listener);
         internalSetQualityScores(qualityScores);
     }
@@ -1263,8 +1186,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  is smaller than 10 samples.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
+            final double[] qualityScores, final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements) {
         super(position, measurements);
         internalSetQualityScores(qualityScores);
@@ -1286,8 +1208,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  is smaller than 10 samples.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
+            final double[] qualityScores, final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, listener);
@@ -1312,10 +1233,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  required samples (7 or 10).
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed) {
         super(position, measurements, commonAxisUsed);
         internalSetQualityScores(qualityScores);
     }
@@ -1339,10 +1258,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  required samples (7 or 10).
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
@@ -1365,10 +1282,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias) {
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] bias) {
         super(position, measurements, bias);
         internalSetQualityScores(qualityScores);
     }
@@ -1391,10 +1306,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] bias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, bias, listener);
         internalSetQualityScores(qualityScores);
@@ -1420,8 +1333,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples (7 or 10).
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
+            final double[] qualityScores, final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias) {
         super(position, measurements, commonAxisUsed, bias);
@@ -1449,11 +1361,9 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples (7 or 10).
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double[] bias,
-            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final double[] bias, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, bias, listener);
         internalSetQualityScores(qualityScores);
     }
@@ -1474,10 +1384,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias) {
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias) {
         super(position, measurements, bias);
         internalSetQualityScores(qualityScores);
     }
@@ -1499,10 +1407,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, bias, listener);
         internalSetQualityScores(qualityScores);
@@ -1527,10 +1433,9 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples (7 or 10).
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias) {
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Matrix bias) {
         super(position, measurements, commonAxisUsed, bias);
         internalSetQualityScores(qualityScores);
     }
@@ -1555,10 +1460,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples (7 or 10).
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed, final Matrix bias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, bias, listener);
         internalSetQualityScores(qualityScores);
@@ -1582,10 +1485,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias, final Matrix initialMa) {
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias, final Matrix initialMa) {
         super(position, measurements, bias, initialMa);
         internalSetQualityScores(qualityScores);
     }
@@ -1609,10 +1510,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples.
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias, final Matrix initialMa,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, bias, initialMa, listener);
         internalSetQualityScores(qualityScores);
@@ -1639,10 +1538,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples (7 or 10).
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed, final Matrix bias,
             final Matrix initialMa) {
         super(position, measurements, commonAxisUsed, bias, initialMa);
         internalSetQualityScores(qualityScores);
@@ -1670,12 +1567,9 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  samples (7 or 10).
      */
     public PROSACRobustKnownBiasAndPositionAccelerometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa,
-            final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed, final Matrix bias,
+            final Matrix initialMa, final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, bias, initialMa, listener);
         internalSetQualityScores(qualityScores);
     }
@@ -1732,8 +1626,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setQualityScores(final double[] qualityScores)
-            throws LockedException {
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1747,8 +1640,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      */
     @Override
     public boolean isReady() {
-        return super.isReady() && mQualityScores != null &&
-                mQualityScores.length == mMeasurements.size();
+        return super.isReady() && mQualityScores != null && mQualityScores.length == mMeasurements.size();
     }
 
     /**
@@ -1768,8 +1660,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                              false if inliers only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers)
-            throws LockedException {
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1793,8 +1684,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                false if residuals only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals)
-            throws LockedException {
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1822,7 +1712,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
         mGravityNorm = computeGravityNorm();
 
         final PROSACRobustEstimator<PreliminaryResult> innerEstimator =
-                new PROSACRobustEstimator<>(new PROSACRobustEstimatorListener<PreliminaryResult>() {
+                new PROSACRobustEstimator<>(new PROSACRobustEstimatorListener<>() {
                     @Override
                     public double[] getQualityScores() {
                         return mQualityScores;
@@ -1845,14 +1735,12 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
 
                     @Override
                     public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List<PreliminaryResult> solutions) {
+                            final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                         computePreliminarySolutions(samplesIndices, solutions);
                     }
 
                     @Override
-                    public double computeResidual(
-                            final PreliminaryResult currentEstimation, final int i) {
+                    public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
                         return computeError(mMeasurements.get(i), currentEstimation);
                     }
 
@@ -1862,21 +1750,18 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
                     }
 
                     @Override
-                    public void onEstimateStart(
-                            final RobustEstimator<PreliminaryResult> estimator) {
+                    public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                         // no action needed
                     }
 
                     @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator<PreliminaryResult> estimator) {
+                    public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                         // no action needed
                     }
 
                     @Override
                     public void onEstimateNextIteration(
-                            final RobustEstimator<PreliminaryResult> estimator,
-                            final int iteration) {
+                            final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                         if (mListener != null) {
                             mListener.onCalibrateNextIteration(
                                     PROSACRobustKnownBiasAndPositionAccelerometerCalibrator.this, iteration);
@@ -1885,8 +1770,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
 
                     @Override
                     public void onEstimateProgressChange(
-                            final RobustEstimator<PreliminaryResult> estimator,
-                            final float progress) {
+                            final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                         if (mListener != null) {
                             mListener.onCalibrateProgressChange(
                                     PROSACRobustKnownBiasAndPositionAccelerometerCalibrator.this, progress);
@@ -1902,10 +1786,8 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             }
 
             mInliersData = null;
-            innerEstimator.setComputeAndKeepInliersEnabled(
-                    mComputeAndKeepInliers || mRefineResult);
-            innerEstimator.setComputeAndKeepResidualsEnabled(
-                    mComputeAndKeepResiduals || mRefineResult);
+            innerEstimator.setComputeAndKeepInliersEnabled(mComputeAndKeepInliers || mRefineResult);
+            innerEstimator.setComputeAndKeepResidualsEnabled(mComputeAndKeepResiduals || mRefineResult);
             innerEstimator.setConfidence(mConfidence);
             innerEstimator.setMaxIterations(mMaxIterations);
             innerEstimator.setProgressDelta(mProgressDelta);
@@ -1961,8 +1843,7 @@ public class PROSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  number of samples (10 or 13).
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-        if (qualityScores == null ||
-                qualityScores.length < getMinimumRequiredMeasurements()) {
+        if (qualityScores == null || qualityScores.length < getMinimumRequiredMeasurements()) {
             throw new IllegalArgumentException();
         }
 

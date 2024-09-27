@@ -21,8 +21,7 @@ package com.irurueta.navigation.inertial.calibration.gyroscope;
  *
  * @param <T> a calibrator type.
  */
-public interface KnownBiasAndFrameGyroscopeCalibratorListener<T
-        extends KnownBiasAndFrameGyroscopeCalibrator<?, ?>> {
+public interface KnownBiasAndFrameGyroscopeCalibratorListener<T extends KnownBiasAndFrameGyroscopeCalibrator<?, ?>> {
 
     /**
      * Called when calibration starts.

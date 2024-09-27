@@ -17,6 +17,7 @@ package com.irurueta.navigation.inertial.calibration;
 
 import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -30,6 +31,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -54,8 +56,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      *
      * @param magneticFluxDensity current body magnetic flux density.
      */
-    public StandardDeviationBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity) {
+    public StandardDeviationBodyMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {
         mMagneticFluxDensity = magneticFluxDensity;
     }
 
@@ -67,8 +68,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      * @throws IllegalArgumentException if provided standard deviation is
      *                                  negative.
      */
-    public StandardDeviationBodyMagneticFluxDensity(
-            final double magneticFluxDensityStandardDeviation) {
+    public StandardDeviationBodyMagneticFluxDensity(final double magneticFluxDensityStandardDeviation) {
         setMagneticFluxDensityStandardDeviation(
                 magneticFluxDensityStandardDeviation);
     }
@@ -84,8 +84,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      *                                  negative.
      */
     public StandardDeviationBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final double magneticFluxDensityStandardDeviation) {
+            final BodyMagneticFluxDensity magneticFluxDensity, final double magneticFluxDensityStandardDeviation) {
         this(magneticFluxDensityStandardDeviation);
         mMagneticFluxDensity = magneticFluxDensity;
     }
@@ -95,8 +94,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      *
      * @param input instance to copy data from.
      */
-    public StandardDeviationBodyMagneticFluxDensity(
-            final StandardDeviationBodyMagneticFluxDensity input) {
+    public StandardDeviationBodyMagneticFluxDensity(final StandardDeviationBodyMagneticFluxDensity input) {
         copyFrom(input);
     }
 
@@ -116,8 +114,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      *
      * @param magneticFluxDensity current body magnetic flux density.
      */
-    public void setMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity) {
+    public void setMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {
         mMagneticFluxDensity = magneticFluxDensity;
     }
 
@@ -140,8 +137,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      *                                             density.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    public void setMagneticFluxDensityStandardDeviation(
-            final double magneticFluxDensityStandardDeviation) {
+    public void setMagneticFluxDensityStandardDeviation(final double magneticFluxDensityStandardDeviation) {
         if (magneticFluxDensityStandardDeviation < 0.0) {
             throw new IllegalArgumentException();
         }
@@ -158,8 +154,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
     public void copyFrom(final StandardDeviationBodyMagneticFluxDensity input) {
         if (input.mMagneticFluxDensity != null) {
             if (mMagneticFluxDensity == null) {
-                mMagneticFluxDensity = new BodyMagneticFluxDensity(
-                        input.mMagneticFluxDensity);
+                mMagneticFluxDensity = new BodyMagneticFluxDensity(input.mMagneticFluxDensity);
             } else {
                 mMagneticFluxDensity.copyFrom(input.mMagneticFluxDensity);
             }
@@ -167,8 +162,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
             mMagneticFluxDensity = null;
         }
 
-        mMagneticFluxDensityStandardDeviation =
-                input.mMagneticFluxDensityStandardDeviation;
+        mMagneticFluxDensityStandardDeviation = input.mMagneticFluxDensityStandardDeviation;
     }
 
     /**
@@ -189,8 +183,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      */
     @Override
     public int hashCode() {
-        return Objects.hash(mMagneticFluxDensity,
-                mMagneticFluxDensityStandardDeviation);
+        return Objects.hash(mMagneticFluxDensity, mMagneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -214,16 +207,16 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      * @return true if both instances are considered to be equal (up to provided
      * threshold, false otherwise).
      */
-    public boolean equals(
-            final StandardDeviationBodyMagneticFluxDensity other,
-            final double threshold) {
+    public boolean equals(final StandardDeviationBodyMagneticFluxDensity other, final double threshold) {
         if (other == null) {
             return false;
         }
 
         return ((other.mMagneticFluxDensity == null && mMagneticFluxDensity == null)
-                || (mMagneticFluxDensity != null && mMagneticFluxDensity.equals(other.mMagneticFluxDensity, threshold)))
-                && Math.abs(mMagneticFluxDensityStandardDeviation - other.mMagneticFluxDensityStandardDeviation) <= threshold;
+                || (mMagneticFluxDensity != null
+                && mMagneticFluxDensity.equals(other.mMagneticFluxDensity, threshold)))
+                && Math.abs(mMagneticFluxDensityStandardDeviation
+                - other.mMagneticFluxDensityStandardDeviation) <= threshold;
     }
 
     /**
@@ -240,8 +233,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final StandardDeviationBodyMagneticFluxDensity other =
-                (StandardDeviationBodyMagneticFluxDensity) obj;
+        final StandardDeviationBodyMagneticFluxDensity other = (StandardDeviationBodyMagneticFluxDensity) obj;
         return equals(other);
     }
 

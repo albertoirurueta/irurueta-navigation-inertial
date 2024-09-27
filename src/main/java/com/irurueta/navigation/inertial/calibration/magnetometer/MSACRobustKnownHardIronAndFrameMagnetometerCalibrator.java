@@ -123,8 +123,7 @@ public class MSACRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-    public MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final boolean commonAxisUsed) {
+    public MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(final boolean commonAxisUsed) {
         super(commonAxisUsed);
     }
 
@@ -136,8 +135,7 @@ public class MSACRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
         super(commonAxisUsed, listener);
     }
 
@@ -151,8 +149,7 @@ public class MSACRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     public MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -167,8 +164,7 @@ public class MSACRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
     }
@@ -219,7 +215,7 @@ public class MSACRobustKnownHardIronAndFrameMagnetometerCalibrator extends
         }
 
         final MSACRobustEstimator<Matrix> innerEstimator =
-                new MSACRobustEstimator<>(new MSACRobustEstimatorListener<Matrix>() {
+                new MSACRobustEstimator<>(new MSACRobustEstimatorListener<>() {
                     @Override
                     public double getThreshold() {
                         return mThreshold;
@@ -237,17 +233,14 @@ public class MSACRobustKnownHardIronAndFrameMagnetometerCalibrator extends
 
                     @Override
                     public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List<Matrix> solutions) {
+                            final int[] samplesIndices, final List<Matrix> solutions) {
                         computePreliminarySolutions(samplesIndices, solutions);
                     }
 
                     @Override
                     public double computeResidual(
-                            final Matrix currentEstimation,
-                            final int i) {
-                        return computeError(mMeasurements.get(i),
-                                currentEstimation);
+                            final Matrix currentEstimation, final int i) {
+                        return computeError(mMeasurements.get(i), currentEstimation);
                     }
 
                     @Override
@@ -256,36 +249,29 @@ public class MSACRobustKnownHardIronAndFrameMagnetometerCalibrator extends
                     }
 
                     @Override
-                    public void onEstimateStart(
-                            final RobustEstimator<Matrix> estimator) {
+                    public void onEstimateStart(final RobustEstimator<Matrix> estimator) {
                         // no action needed
                     }
 
                     @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator<Matrix> estimator) {
+                    public void onEstimateEnd(final RobustEstimator<Matrix> estimator) {
                         // no action needed
                     }
 
                     @Override
-                    public void onEstimateNextIteration(
-                            final RobustEstimator<Matrix> estimator,
-                            final int iteration) {
+                    public void onEstimateNextIteration(final RobustEstimator<Matrix> estimator, final int iteration) {
                         if (mListener != null) {
                             mListener.onCalibrateNextIteration(
-                                    MSACRobustKnownHardIronAndFrameMagnetometerCalibrator.this,
-                                    iteration);
+                                    MSACRobustKnownHardIronAndFrameMagnetometerCalibrator.this, iteration);
                         }
                     }
 
                     @Override
                     public void onEstimateProgressChange(
-                            final RobustEstimator<Matrix> estimator,
-                            final float progress) {
+                            final RobustEstimator<Matrix> estimator, final float progress) {
                         if (mListener != null) {
                             mListener.onCalibrateProgressChange(
-                                    MSACRobustKnownHardIronAndFrameMagnetometerCalibrator.this,
-                                    progress);
+                                    MSACRobustKnownHardIronAndFrameMagnetometerCalibrator.this, progress);
                         }
                     }
                 });

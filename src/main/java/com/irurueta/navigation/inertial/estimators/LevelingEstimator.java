@@ -84,8 +84,7 @@ public class LevelingEstimator {
      *           expressed in meters per squared second (m/s^2).
      * @return pitch angle expressed in radians.
      */
-    public static double getPitch(
-            final double fx, final double fy, final double fz) {
+    public static double getPitch(final double fx, final double fy, final double fz) {
         final double fy2 = fy * fy;
         final double fz2 = fz * fz;
 
@@ -112,8 +111,7 @@ public class LevelingEstimator {
     @SuppressWarnings("DuplicatedCode")
     public static double getYaw(
             final double roll, final double pitch,
-            final double angularRateX, final double angularRateY,
-            final double angularRateZ) {
+            final double angularRateX, final double angularRateY, final double angularRateZ) {
 
         final double sinRoll = Math.sin(roll);
         final double cosRoll = Math.cos(roll);
@@ -121,11 +119,8 @@ public class LevelingEstimator {
         final double sinPitch = Math.sin(pitch);
         final double cosPitch = Math.cos(pitch);
 
-        final double sinYaw = -angularRateY * cosRoll
-                + angularRateZ * sinRoll;
-        final double cosYaw = angularRateX * cosPitch
-                + (angularRateY * sinRoll + angularRateZ * cosRoll)
-                * sinPitch;
+        final double sinYaw = -angularRateY * cosRoll + angularRateZ * sinRoll;
+        final double cosYaw = angularRateX * cosPitch + (angularRateY * sinRoll + angularRateZ * cosRoll) * sinPitch;
 
         return Math.atan2(sinYaw, cosYaw);
     }
@@ -151,12 +146,10 @@ public class LevelingEstimator {
      */
     public static double getYaw(
             final double fx, final double fy, final double fz,
-            final double angularRateX, final double angularRateY,
-            final double angularRateZ) {
+            final double angularRateX, final double angularRateY, final double angularRateZ) {
         final double roll = getRoll(fy, fz);
         final double pitch = getPitch(fx, fy, fz);
-        return getYaw(roll, pitch, angularRateX,
-                angularRateY, angularRateZ);
+        return getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ);
     }
 
     /**
@@ -184,8 +177,7 @@ public class LevelingEstimator {
      * @return pitch angle expressed in radians.
      */
     public static double getPitch(final BodyKinematics kinematics) {
-        return getPitch(kinematics.getFx(), kinematics.getFy(),
-                kinematics.getFz());
+        return getPitch(kinematics.getFx(), kinematics.getFy(), kinematics.getFz());
     }
 
     /**
@@ -198,9 +190,8 @@ public class LevelingEstimator {
      * @return yaw angle expressed in radians.
      */
     public static double getYaw(final BodyKinematics kinematics) {
-        return getYaw(kinematics.getFx(), kinematics.getFy(),
-                kinematics.getFz(), kinematics.getAngularRateX(),
-                kinematics.getAngularRateY(), kinematics.getAngularRateZ());
+        return getYaw(kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
+                kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ());
     }
 
     /**
@@ -222,15 +213,14 @@ public class LevelingEstimator {
      */
     public static void getAttitude(
             final double fx, final double fy, final double fz,
-            final double angularRateX, final double angularRateY,
-            final double angularRateZ, final CoordinateTransformation result) {
+            final double angularRateX, final double angularRateY, final double angularRateZ,
+            final CoordinateTransformation result) {
         result.setSourceType(FrameType.LOCAL_NAVIGATION_FRAME);
         result.setDestinationType(FrameType.BODY_FRAME);
 
         final double roll = getRoll(fy, fz);
         final double pitch = getPitch(fx, fy, fz);
-        final double yaw = getYaw(roll, pitch,
-                angularRateX, angularRateY, angularRateZ);
+        final double yaw = getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ);
         result.setEulerAngles(roll, pitch, yaw);
     }
 
@@ -241,12 +231,9 @@ public class LevelingEstimator {
      *                   body specific force and angular rate.
      * @param result     instance where attitude will be stored.
      */
-    public static void getAttitude(
-            final BodyKinematics kinematics,
-            final CoordinateTransformation result) {
+    public static void getAttitude(final BodyKinematics kinematics, final CoordinateTransformation result) {
         getAttitude(kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
-                kinematics.getAngularRateX(), kinematics.getAngularRateY(),
-                kinematics.getAngularRateZ(), result);
+                kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ(), result);
     }
 
     /**
@@ -268,16 +255,13 @@ public class LevelingEstimator {
      */
     public static CoordinateTransformation getAttitude(
             final double fx, final double fy, final double fz,
-            final double angularRateX, final double angularRateY,
-            final double angularRateZ) {
+            final double angularRateX, final double angularRateY, final double angularRateZ) {
 
         final double roll = getRoll(fy, fz);
         final double pitch = getPitch(fx, fy, fz);
-        final double yaw = getYaw(roll, pitch,
-                angularRateX, angularRateY, angularRateZ);
+        final double yaw = getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ);
 
-        return new CoordinateTransformation(roll, pitch, yaw,
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+        return new CoordinateTransformation(roll, pitch, yaw, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
     }
 
     /**
@@ -287,11 +271,9 @@ public class LevelingEstimator {
      *                   specific force and angular rate.
      * @return a coordinate transformation containing body attitude.
      */
-    public static CoordinateTransformation getAttitude(
-            final BodyKinematics kinematics) {
-        return getAttitude(kinematics.getFx(), kinematics.getFy(),
-                kinematics.getFz(), kinematics.getAngularRateX(),
-                kinematics.getAngularRateY(), kinematics.getAngularRateZ());
+    public static CoordinateTransformation getAttitude(final BodyKinematics kinematics) {
+        return getAttitude(kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
+                kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ());
     }
 
     /**
@@ -304,8 +286,7 @@ public class LevelingEstimator {
      * @param fz z-coordinate of measured body specific force.
      * @return roll angle expressed in radians.
      */
-    public static double getRoll(
-            final Acceleration fy, final Acceleration fz) {
+    public static double getRoll(final Acceleration fy, final Acceleration fz) {
         return getRoll(convertAcceleration(fy), convertAcceleration(fz));
     }
 
@@ -320,11 +301,8 @@ public class LevelingEstimator {
      * @param fz z-coordinate of measured body specific force.
      * @return pitch angle expressed in radians.
      */
-    public static double getPitch(
-            final Acceleration fx, final Acceleration fy,
-            final Acceleration fz) {
-        return getPitch(convertAcceleration(fx), convertAcceleration(fy),
-                convertAcceleration(fz));
+    public static double getPitch(final Acceleration fx, final Acceleration fy, final Acceleration fz) {
+        return getPitch(convertAcceleration(fx), convertAcceleration(fy), convertAcceleration(fz));
     }
 
     /**
@@ -342,8 +320,8 @@ public class LevelingEstimator {
      * @return yaw angle expressed in radians.
      */
     public static double getYaw(
-            final Angle roll, final Angle pitch, final AngularSpeed angularRateX,
-            final AngularSpeed angularRateY, final AngularSpeed angularRateZ) {
+            final Angle roll, final Angle pitch,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ) {
         return getYaw(convertAngle(roll), convertAngle(pitch),
                 convertAngularSpeed(angularRateX),
                 convertAngularSpeed(angularRateY),
@@ -365,10 +343,9 @@ public class LevelingEstimator {
      */
     public static double getYaw(
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
-            final AngularSpeed angularRateX, final AngularSpeed angularRateY,
-            final AngularSpeed angularRateZ) {
-        return getYaw(convertAcceleration(fx), convertAcceleration(fy),
-                convertAcceleration(fz), convertAngularSpeed(angularRateX),
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ) {
+        return getYaw(convertAcceleration(fx), convertAcceleration(fy), convertAcceleration(fz),
+                convertAngularSpeed(angularRateX),
                 convertAngularSpeed(angularRateY),
                 convertAngularSpeed(angularRateZ));
     }
@@ -386,13 +363,11 @@ public class LevelingEstimator {
      */
     public static void getAttitude(
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
-            final AngularSpeed angularRateX, final AngularSpeed angularRateY,
-            final AngularSpeed angularRateZ,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
             final CoordinateTransformation result) {
-        getAttitude(convertAcceleration(fx), convertAcceleration(fy),
-                convertAcceleration(fz), convertAngularSpeed(angularRateX),
-                convertAngularSpeed(angularRateY),
-                convertAngularSpeed(angularRateZ), result);
+        getAttitude(convertAcceleration(fx), convertAcceleration(fy), convertAcceleration(fz),
+                convertAngularSpeed(angularRateX), convertAngularSpeed(angularRateY), convertAngularSpeed(angularRateZ),
+                result);
     }
 
     /**
@@ -408,10 +383,9 @@ public class LevelingEstimator {
      */
     public static CoordinateTransformation getAttitude(
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
-            final AngularSpeed angularRateX, final AngularSpeed angularRateY,
-            final AngularSpeed angularRateZ) {
-        return getAttitude(convertAcceleration(fx), convertAcceleration(fy),
-                convertAcceleration(fz), convertAngularSpeed(angularRateX),
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ) {
+        return getAttitude(convertAcceleration(fx), convertAcceleration(fy), convertAcceleration(fz),
+                convertAngularSpeed(angularRateX),
                 convertAngularSpeed(angularRateY),
                 convertAngularSpeed(angularRateZ));
     }
@@ -428,8 +402,7 @@ public class LevelingEstimator {
      *               expressed in meters per squared second (m/s^2).
      * @param result instance where roll angle will be stored.
      */
-    public static void getRollAsAngle(
-            final double fy, final double fz, final Angle result) {
+    public static void getRollAsAngle(final double fy, final double fz, final Angle result) {
         result.setUnit(AngleUnit.RADIANS);
         result.setValue(getRoll(fy, fz));
     }
@@ -465,8 +438,7 @@ public class LevelingEstimator {
      * @param result instance where pitch angle will be stored.
      */
     public static void getPitchAsAngle(
-            final double fx, final double fy, final double fz,
-            final Angle result) {
+            final double fx, final double fy, final double fz, final Angle result) {
         result.setUnit(AngleUnit.RADIANS);
         result.setValue(getPitch(fx, fy, fz));
     }
@@ -485,8 +457,7 @@ public class LevelingEstimator {
      *           expressed in meters per squared second (m/s^2).
      * @return pitch angle.
      */
-    public static Angle getPitchAsAngle(
-            final double fx, final double fy, final double fz) {
+    public static Angle getPitchAsAngle(final double fx, final double fy, final double fz) {
         return new Angle(getPitch(fx, fy, fz), AngleUnit.RADIANS);
     }
 
@@ -508,12 +479,10 @@ public class LevelingEstimator {
      * @param result       instance where yaw angle will be stored.
      */
     public static void getYawAsAngle(
-            final double roll, final double pitch, final double angularRateX,
-            final double angularRateY, final double angularRateZ,
-            final Angle result) {
+            final double roll, final double pitch,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final Angle result) {
         result.setUnit(AngleUnit.RADIANS);
-        result.setValue(getYaw(roll, pitch, angularRateX, angularRateY,
-                angularRateZ));
+        result.setValue(getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ));
     }
 
     /**
@@ -534,10 +503,9 @@ public class LevelingEstimator {
      * @return yaw angle.
      */
     public static Angle getYawAsAngle(
-            final double roll, final double pitch, final double angularRateX,
-            final double angularRateY, final double angularRateZ) {
-        return new Angle(getYaw(roll, pitch, angularRateX, angularRateY,
-                angularRateZ), AngleUnit.RADIANS);
+            final double roll, final double pitch,
+            final double angularRateX, final double angularRateY, final double angularRateZ) {
+        return new Angle(getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ), AngleUnit.RADIANS);
     }
 
     /**
@@ -561,11 +529,9 @@ public class LevelingEstimator {
      */
     public static void getYawAsAngle(
             final double fx, final double fy, final double fz,
-            final double angularRateX, final double angularRateY,
-            final double angularRateZ, final Angle result) {
+            final double angularRateX, final double angularRateY, final double angularRateZ, final Angle result) {
         result.setUnit(AngleUnit.RADIANS);
-        result.setValue(getYaw(fx, fy, fz, angularRateX, angularRateY,
-                angularRateZ));
+        result.setValue(getYaw(fx, fy, fz, angularRateX, angularRateY, angularRateZ));
     }
 
     /**
@@ -589,10 +555,8 @@ public class LevelingEstimator {
      */
     public static Angle getYawAsAngle(
             final double fx, final double fy, final double fz,
-            final double angularRateX, final double angularRateY,
-            final double angularRateZ) {
-        return new Angle(getYaw(fx, fy, fz, angularRateX, angularRateY,
-                angularRateZ), AngleUnit.RADIANS);
+            final double angularRateX, final double angularRateY, final double angularRateZ) {
+        return new Angle(getYaw(fx, fy, fz, angularRateX, angularRateY, angularRateZ), AngleUnit.RADIANS);
     }
 
     /**
@@ -605,8 +569,7 @@ public class LevelingEstimator {
      *                   body specific force.
      * @param result     instance where roll angle will be stored.
      */
-    public static void getRollAsAngle(
-            final BodyKinematics kinematics, final Angle result) {
+    public static void getRollAsAngle(final BodyKinematics kinematics, final Angle result) {
         result.setUnit(AngleUnit.RADIANS);
         result.setValue(getRoll(kinematics));
     }
@@ -635,8 +598,7 @@ public class LevelingEstimator {
      *                   body specific force.
      * @param result     instance where pitch angle will be stored.
      */
-    public static void getPitchAsAngle(
-            final BodyKinematics kinematics, final Angle result) {
+    public static void getPitchAsAngle(final BodyKinematics kinematics, final Angle result) {
         result.setUnit(AngleUnit.RADIANS);
         result.setValue(getPitch(kinematics));
     }
@@ -664,8 +626,7 @@ public class LevelingEstimator {
      *                   body specific force ang angular rates.
      * @param result     instance where yaw angle will be stored.
      */
-    public static void getYawAsAngle(
-            final BodyKinematics kinematics, final Angle result) {
+    public static void getYawAsAngle(final BodyKinematics kinematics, final Angle result) {
         result.setUnit(AngleUnit.RADIANS);
         result.setValue(getYaw(kinematics));
     }
@@ -693,8 +654,7 @@ public class LevelingEstimator {
      * @param fz     z-coordinate of measured body specific force.
      * @param result instance where roll angle will be stored.
      */
-    public static void getRollAsAngle(
-            final Acceleration fy, final Acceleration fz, final Angle result) {
+    public static void getRollAsAngle(final Acceleration fy, final Acceleration fz, final Angle result) {
         result.setUnit(AngleUnit.RADIANS);
         result.setValue(getRoll(fy, fz));
     }
@@ -709,8 +669,7 @@ public class LevelingEstimator {
      * @param fz z-coordinate of measured body specific force.
      * @return roll angle.
      */
-    public static Angle getRollAsAngle(
-            final Acceleration fy, final Acceleration fz) {
+    public static Angle getRollAsAngle(final Acceleration fy, final Acceleration fz) {
         return new Angle(getRoll(fy, fz), AngleUnit.RADIANS);
     }
 
@@ -726,8 +685,7 @@ public class LevelingEstimator {
      * @param result instance where pitch angle will be stored.
      */
     public static void getPitchAsAngle(
-            final Acceleration fx, final Acceleration fy, final Acceleration fz,
-            final Angle result) {
+            final Acceleration fx, final Acceleration fy, final Acceleration fz, final Angle result) {
         result.setUnit(AngleUnit.RADIANS);
         result.setValue(getPitch(fx, fy, fz));
     }
@@ -764,11 +722,9 @@ public class LevelingEstimator {
      */
     public static void getYawAsAngle(
             final Angle roll, final Angle pitch, final AngularSpeed angularRateX,
-            final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
-            final Angle result) {
+            final AngularSpeed angularRateY, final AngularSpeed angularRateZ, final Angle result) {
         result.setUnit(AngleUnit.RADIANS);
-        result.setValue(getYaw(roll, pitch, angularRateX, angularRateY,
-                angularRateZ));
+        result.setValue(getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ));
     }
 
     /**
@@ -786,10 +742,9 @@ public class LevelingEstimator {
      * @return yaw angle.
      */
     public static Angle getYawAsAngle(
-            final Angle roll, final Angle pitch, final AngularSpeed angularRateX,
-            final AngularSpeed angularRateY, final AngularSpeed angularRateZ) {
-        return new Angle(getYaw(roll, pitch, angularRateX, angularRateY,
-                angularRateZ), AngleUnit.RADIANS);
+            final Angle roll, final Angle pitch,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ) {
+        return new Angle(getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ), AngleUnit.RADIANS);
     }
 
     /**
@@ -807,11 +762,10 @@ public class LevelingEstimator {
      */
     public static void getYawAsAngle(
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
-            final AngularSpeed angularRateX, final AngularSpeed angularRateY,
-            final AngularSpeed angularRateZ, final Angle result) {
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final Angle result) {
         result.setUnit(AngleUnit.RADIANS);
-        result.setValue(getYaw(fx, fy, fz, angularRateX, angularRateY,
-                angularRateZ));
+        result.setValue(getYaw(fx, fy, fz, angularRateX, angularRateY, angularRateZ));
     }
 
     /**
@@ -829,10 +783,8 @@ public class LevelingEstimator {
      */
     public static Angle getYawAsAngle(
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
-            final AngularSpeed angularRateX, final AngularSpeed angularRateY,
-            final AngularSpeed angularRateZ) {
-        return new Angle(getYaw(fx, fy, fz, angularRateX, angularRateY,
-                angularRateZ), AngleUnit.RADIANS);
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ) {
+        return new Angle(getYaw(fx, fy, fz, angularRateX, angularRateY, angularRateZ), AngleUnit.RADIANS);
     }
 
     /**
@@ -843,8 +795,7 @@ public class LevelingEstimator {
      */
     private static double convertAcceleration(final Acceleration acceleration) {
         return AccelerationConverter.convert(
-                acceleration.getValue().doubleValue(),
-                acceleration.getUnit(),
+                acceleration.getValue().doubleValue(), acceleration.getUnit(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -855,9 +806,7 @@ public class LevelingEstimator {
      * @return converted angular speed value.
      */
     private static double convertAngularSpeed(final AngularSpeed angularSpeed) {
-        return AngularSpeedConverter.convert(
-                angularSpeed.getValue().doubleValue(),
-                angularSpeed.getUnit(),
+        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(), angularSpeed.getUnit(),
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -868,7 +817,6 @@ public class LevelingEstimator {
      * @return converted angle value.
      */
     private static double convertAngle(final Angle angle) {
-        return AngleConverter.convert(angle.getValue().doubleValue(),
-                angle.getUnit(), AngleUnit.RADIANS);
+        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(), AngleUnit.RADIANS);
     }
 }

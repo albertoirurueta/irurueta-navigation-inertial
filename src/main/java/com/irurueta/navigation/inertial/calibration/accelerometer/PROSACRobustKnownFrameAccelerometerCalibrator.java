@@ -50,8 +50,7 @@ import java.util.List;
  * - ftrue is ground-truth specific force.
  * - w is measurement noise.
  */
-public class PROSACRobustKnownFrameAccelerometerCalibrator extends
-        RobustKnownFrameAccelerometerCalibrator {
+public class PROSACRobustKnownFrameAccelerometerCalibrator extends RobustKnownFrameAccelerometerCalibrator {
 
     /**
      * Constant defining default threshold to determine whether samples are inliers or not.
@@ -158,8 +157,7 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public PROSACRobustKnownFrameAccelerometerCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownFrameAccelerometerCalibratorListener listener) {
         super(commonAxisUsed, listener);
     }
 
@@ -173,8 +171,7 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public PROSACRobustKnownFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -189,8 +186,7 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public PROSACRobustKnownFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
     }
@@ -204,8 +200,7 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided quality scores length
      *                                  is smaller than 4 samples.
      */
-    public PROSACRobustKnownFrameAccelerometerCalibrator(
-            final double[] qualityScores) {
+    public PROSACRobustKnownFrameAccelerometerCalibrator(final double[] qualityScores) {
         internalSetQualityScores(qualityScores);
     }
 
@@ -221,8 +216,7 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
      *                                  is smaller than 4 samples.
      */
     public PROSACRobustKnownFrameAccelerometerCalibrator(
-            final double[] qualityScores,
-            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+            final double[] qualityScores, final RobustKnownFrameAccelerometerCalibratorListener listener) {
         super(listener);
         internalSetQualityScores(qualityScores);
     }
@@ -240,8 +234,7 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
      *                                  is smaller than 4 samples.
      */
     public PROSACRobustKnownFrameAccelerometerCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements) {
         super(measurements);
         internalSetQualityScores(qualityScores);
     }
@@ -260,8 +253,7 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
      *                                  is smaller than 4 samples.
      */
     public PROSACRobustKnownFrameAccelerometerCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
         super(measurements, listener);
         internalSetQualityScores(qualityScores);
@@ -278,9 +270,7 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided quality scores length
      *                                  is smaller than 4 samples.
      */
-    public PROSACRobustKnownFrameAccelerometerCalibrator(
-            final double[] qualityScores,
-            final boolean commonAxisUsed) {
+    public PROSACRobustKnownFrameAccelerometerCalibrator(final double[] qualityScores, final boolean commonAxisUsed) {
         super(commonAxisUsed);
         internalSetQualityScores(qualityScores);
     }
@@ -298,8 +288,7 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
      *                                  is smaller than 4 samples.
      */
     public PROSACRobustKnownFrameAccelerometerCalibrator(
-            final double[] qualityScores,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
         super(commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
@@ -320,8 +309,7 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
      *                                  is smaller than 4 samples.
      */
     public PROSACRobustKnownFrameAccelerometerCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
         internalSetQualityScores(qualityScores);
@@ -343,10 +331,8 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
      *                                  is smaller than 4 samples.
      */
     public PROSACRobustKnownFrameAccelerometerCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownFrameAccelerometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
     }
@@ -402,8 +388,7 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setQualityScores(final double[] qualityScores)
-            throws LockedException {
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -417,8 +402,7 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
      */
     @Override
     public boolean isReady() {
-        return super.isReady() && mQualityScores != null &&
-                mQualityScores.length == mMeasurements.size();
+        return super.isReady() && mQualityScores != null && mQualityScores.length == mMeasurements.size();
     }
 
     /**
@@ -438,9 +422,7 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
      *                              false if inliers only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepInliersEnabled(
-            final boolean computeAndKeepInliers)
-            throws LockedException {
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -464,9 +446,7 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
      *                                false if residuals only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepResidualsEnabled(
-            final boolean computeAndKeepResiduals)
-            throws LockedException {
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -493,7 +473,7 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
 
         final PROSACRobustEstimator<PreliminaryResult> innerEstimator =
                 new PROSACRobustEstimator<>(
-                        new PROSACRobustEstimatorListener<PreliminaryResult>() {
+                        new PROSACRobustEstimatorListener<>() {
                             @Override
                             public double[] getQualityScores() {
                                 return mQualityScores;
@@ -516,14 +496,12 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
 
                             @Override
                             public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<PreliminaryResult> solutions) {
+                                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                                 computePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override
-                            public double computeResidual(
-                                    final PreliminaryResult currentEstimation, final int i) {
+                            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
                                 return computeError(mMeasurements.get(i), currentEstimation);
                             }
 
@@ -533,36 +511,30 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
                             }
 
                             @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
                             public void onEstimateNextIteration(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final int iteration) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                                 if (mListener != null) {
                                     mListener.onCalibrateNextIteration(
-                                            PROSACRobustKnownFrameAccelerometerCalibrator.this,
-                                            iteration);
+                                            PROSACRobustKnownFrameAccelerometerCalibrator.this, iteration);
                                 }
                             }
 
                             @Override
                             public void onEstimateProgressChange(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final float progress) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                                 if (mListener != null) {
                                     mListener.onCalibrateProgressChange(
-                                            PROSACRobustKnownFrameAccelerometerCalibrator.this,
-                                            progress);
+                                            PROSACRobustKnownFrameAccelerometerCalibrator.this, progress);
                                 }
                             }
                         });
@@ -575,10 +547,8 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
             }
 
             mInliersData = null;
-            innerEstimator.setComputeAndKeepInliersEnabled(
-                    mComputeAndKeepInliers || mRefineResult);
-            innerEstimator.setComputeAndKeepResidualsEnabled(
-                    mComputeAndKeepResiduals || mRefineResult);
+            innerEstimator.setComputeAndKeepInliersEnabled(mComputeAndKeepInliers || mRefineResult);
+            innerEstimator.setComputeAndKeepResidualsEnabled(mComputeAndKeepResiduals || mRefineResult);
             innerEstimator.setConfidence(mConfidence);
             innerEstimator.setMaxIterations(mMaxIterations);
             innerEstimator.setProgressDelta(mProgressDelta);
@@ -633,8 +603,7 @@ public class PROSACRobustKnownFrameAccelerometerCalibrator extends
      *                                  is smaller than 4 samples.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-        if (qualityScores == null ||
-                qualityScores.length < MINIMUM_MEASUREMENTS) {
+        if (qualityScores == null || qualityScores.length < MINIMUM_MEASUREMENTS) {
             throw new IllegalArgumentException();
         }
 

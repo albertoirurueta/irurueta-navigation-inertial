@@ -59,8 +59,7 @@ import java.util.List;
  * - ftrue is ground-truth specific force. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
-public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
-        RobustKnownBiasAndFrameGyroscopeCalibrator {
+public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends RobustKnownBiasAndFrameGyroscopeCalibrator {
     /**
      * Constant defining default threshold to determine whether samples are inliers or not.
      */
@@ -155,8 +154,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final boolean commonAxisUsed) {
+    public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(final boolean commonAxisUsed) {
         super(commonAxisUsed);
     }
 
@@ -168,8 +166,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(commonAxisUsed, listener);
     }
 
@@ -183,8 +180,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -199,8 +195,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
     }
@@ -291,8 +286,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed) {
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed) {
         super(biasX, biasY, biasZ, commonAxisUsed);
     }
 
@@ -310,8 +304,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(biasX, biasY, biasZ, commonAxisUsed, listener);
     }
@@ -333,8 +326,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed) {
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed) {
         super(measurements, biasX, biasY, biasZ, commonAxisUsed);
     }
 
@@ -356,8 +348,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);
     }
@@ -433,8 +424,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
-            final boolean commonAxisUsed) {
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ, final boolean commonAxisUsed) {
         super(biasX, biasY, biasZ, commonAxisUsed);
     }
 
@@ -449,8 +439,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
-            final boolean commonAxisUsed,
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(biasX, biasY, biasZ, commonAxisUsed, listener);
     }
@@ -489,8 +478,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
-            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
-            final boolean commonAxisUsed,
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);
     }
@@ -501,8 +489,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @param bias known gyroscope bias.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] bias) {
+    public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(final double[] bias) {
         super(bias);
     }
 
@@ -515,8 +502,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] bias,
-            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+            final double[] bias, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(bias, listener);
     }
 
@@ -530,8 +516,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double[] bias) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final double[] bias) {
         super(measurements, bias);
     }
 
@@ -546,8 +531,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double[] bias,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final double[] bias,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(measurements, bias, listener);
     }
@@ -560,8 +544,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                       accelerometer and gyroscope.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] bias, final boolean commonAxisUsed) {
+    public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(final double[] bias, final boolean commonAxisUsed) {
         super(bias, commonAxisUsed);
     }
 
@@ -592,8 +575,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double[] bias,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final double[] bias,
             final boolean commonAxisUsed) {
         super(measurements, bias, commonAxisUsed);
     }
@@ -611,9 +593,8 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double[] bias, final boolean commonAxisUsed,
-            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final double[] bias,
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(measurements, bias, commonAxisUsed, listener);
     }
 
@@ -623,8 +604,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @param bias known gyroscope bias.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final Matrix bias) {
+    public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(final Matrix bias) {
         super(bias);
     }
 
@@ -637,8 +617,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final Matrix bias,
-            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+            final Matrix bias, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(bias, listener);
     }
 
@@ -652,8 +631,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final Matrix bias) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final Matrix bias) {
         super(measurements, bias);
     }
 
@@ -668,8 +646,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final Matrix bias,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final Matrix bias,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(measurements, bias, listener);
     }
@@ -682,8 +659,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                       accelerometer and gyroscope.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final Matrix bias, final boolean commonAxisUsed) {
+    public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(final Matrix bias, final boolean commonAxisUsed) {
         super(bias, commonAxisUsed);
     }
 
@@ -714,8 +690,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final Matrix bias,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final Matrix bias,
             final boolean commonAxisUsed) {
         super(measurements, bias, commonAxisUsed);
     }
@@ -733,9 +708,8 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final Matrix bias, final boolean commonAxisUsed,
-            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final Matrix bias,
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(measurements, bias, commonAxisUsed, listener);
     }
 
@@ -752,8 +726,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  is smaller than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements) {
         super(measurements);
         internalSetQualityScores(qualityScores);
     }
@@ -772,8 +745,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  is smaller than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(measurements, listener);
         internalSetQualityScores(qualityScores);
@@ -794,8 +766,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  is smaller than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
         internalSetQualityScores(qualityScores);
@@ -817,10 +788,8 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  is smaller than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
     }
@@ -841,8 +810,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  is smaller than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final double biasX, final double biasY, final double biasZ) {
+            final double[] qualityScores, final double biasX, final double biasY, final double biasZ) {
         super(biasX, biasY, biasZ);
         internalSetQualityScores(qualityScores);
     }
@@ -865,8 +833,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  is smaller than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final double biasX, final double biasY, final double biasZ,
+            final double[] qualityScores, final double biasX, final double biasY, final double biasZ,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(biasX, biasY, biasZ, listener);
         internalSetQualityScores(qualityScores);
@@ -891,8 +858,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  is smaller than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final double biasX, final double biasY, final double biasZ) {
         super(measurements, biasX, biasY, biasZ);
         internalSetQualityScores(qualityScores);
@@ -918,8 +884,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  is smaller than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final double biasX, final double biasY, final double biasZ,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(measurements, biasX, biasY, biasZ, listener);
@@ -944,8 +909,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  is smaller than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final double biasX, final double biasY, final double biasZ,
+            final double[] qualityScores, final double biasX, final double biasY, final double biasZ,
             final boolean commonAxisUsed) {
         super(biasX, biasY, biasZ, commonAxisUsed);
         internalSetQualityScores(qualityScores);
@@ -970,10 +934,8 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  is smaller than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed,
-            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+            final double[] qualityScores, final double biasX, final double biasY, final double biasZ,
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(biasX, biasY, biasZ, commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
     }
@@ -999,10 +961,8 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  is smaller than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed) {
         super(measurements, biasX, biasY, biasZ, commonAxisUsed);
         internalSetQualityScores(qualityScores);
     }
@@ -1029,10 +989,8 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  is smaller than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
@@ -1095,8 +1053,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  is smaller than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) {
         super(measurements, biasX, biasY, biasZ);
         internalSetQualityScores(qualityScores);
@@ -1119,8 +1076,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  is smaller than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(measurements, biasX, biasY, biasZ, listener);
@@ -1142,8 +1098,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  is smaller than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
+            final double[] qualityScores, final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final boolean commonAxisUsed) {
         super(biasX, biasY, biasZ, commonAxisUsed);
         internalSetQualityScores(qualityScores);
@@ -1165,10 +1120,8 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  is smaller than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
-            final boolean commonAxisUsed,
-            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+            final double[] qualityScores, final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(biasX, biasY, biasZ, commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
     }
@@ -1191,8 +1144,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  is smaller than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final boolean commonAxisUsed) {
         super(measurements, biasX, biasY, biasZ, commonAxisUsed);
@@ -1218,11 +1170,9 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  is smaller than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
-            final boolean commonAxisUsed,
-            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
     }
@@ -1238,8 +1188,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  if provided quality scores length is smaller
      *                                  than 6 samples.
      */
-    public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores, final double[] bias) {
+    public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(final double[] qualityScores, final double[] bias) {
         super(bias);
         internalSetQualityScores(qualityScores);
     }
@@ -1258,8 +1207,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final double[] bias,
+            final double[] qualityScores, final double[] bias,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(bias, listener);
         internalSetQualityScores(qualityScores);
@@ -1280,8 +1228,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final double[] bias) {
         super(measurements, bias);
         internalSetQualityScores(qualityScores);
@@ -1303,10 +1250,8 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double[] bias,
-            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] bias, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(measurements, bias, listener);
         internalSetQualityScores(qualityScores);
     }
@@ -1325,8 +1270,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores, final double[] bias,
-            final boolean commonAxisUsed) {
+            final double[] qualityScores, final double[] bias, final boolean commonAxisUsed) {
         super(bias, commonAxisUsed);
         internalSetQualityScores(qualityScores);
     }
@@ -1346,8 +1290,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores, final double[] bias,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final double[] bias, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(bias, commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
@@ -1370,10 +1313,8 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double[] bias,
-            final boolean commonAxisUsed) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] bias, final boolean commonAxisUsed) {
         super(measurements, bias, commonAxisUsed);
         internalSetQualityScores(qualityScores);
     }
@@ -1396,8 +1337,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final double[] bias, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(measurements, bias, commonAxisUsed, listener);
@@ -1415,8 +1355,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  if provided quality scores length is smaller
      *                                  than 6 samples.
      */
-    public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores, final Matrix bias) {
+    public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(final double[] qualityScores, final Matrix bias) {
         super(bias);
         internalSetQualityScores(qualityScores);
     }
@@ -1435,8 +1374,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final Matrix bias,
+            final double[] qualityScores, final Matrix bias,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(bias, listener);
         internalSetQualityScores(qualityScores);
@@ -1457,8 +1395,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final Matrix bias) {
         super(measurements, bias);
         internalSetQualityScores(qualityScores);
@@ -1480,10 +1417,8 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final Matrix bias,
-            final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
+            final Matrix bias, final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(measurements, bias, listener);
         internalSetQualityScores(qualityScores);
     }
@@ -1502,8 +1437,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores, final Matrix bias,
-            final boolean commonAxisUsed) {
+            final double[] qualityScores, final Matrix bias, final boolean commonAxisUsed) {
         super(bias, commonAxisUsed);
         internalSetQualityScores(qualityScores);
     }
@@ -1523,8 +1457,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores, final Matrix bias,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final Matrix bias, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(bias, commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
@@ -1547,10 +1480,8 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final Matrix bias,
-            final boolean commonAxisUsed) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
+            final Matrix bias, final boolean commonAxisUsed) {
         super(measurements, bias, commonAxisUsed);
         internalSetQualityScores(qualityScores);
     }
@@ -1573,8 +1504,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  than 6 samples.
      */
     public PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final Matrix bias, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         super(measurements, bias, commonAxisUsed, listener);
@@ -1632,8 +1562,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setQualityScores(final double[] qualityScores)
-            throws LockedException {
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1647,8 +1576,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     @Override
     public boolean isReady() {
-        return super.isReady() && mQualityScores != null &&
-                mQualityScores.length == mMeasurements.size();
+        return super.isReady() && mQualityScores != null && mQualityScores.length == mMeasurements.size();
     }
 
     /**
@@ -1668,8 +1596,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                              false if inliers only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers)
-            throws LockedException {
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1693,8 +1620,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                false if residuals only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals)
-            throws LockedException {
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1711,8 +1637,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     @SuppressWarnings("DuplicatedCode")
     @Override
-    public void calibrate() throws LockedException, NotReadyException,
-            CalibrationException {
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1722,7 +1647,7 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
 
         final PROSACRobustEstimator<PreliminaryResult> innerEstimator =
                 new PROSACRobustEstimator<>(
-                        new PROSACRobustEstimatorListener<PreliminaryResult>() {
+                        new PROSACRobustEstimatorListener<>() {
                             @Override
                             public double[] getQualityScores() {
                                 return mQualityScores;
@@ -1745,15 +1670,13 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
 
                             @Override
                             public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<PreliminaryResult> solutions) {
+                                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                                 computePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override
                             public double computeResidual(
-                                    final PreliminaryResult currentEstimation,
-                                    final int i) {
+                                    final PreliminaryResult currentEstimation, final int i) {
                                 return computeError(mMeasurements.get(i), currentEstimation);
                             }
 
@@ -1763,36 +1686,30 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
                             }
 
                             @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
                             public void onEstimateNextIteration(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final int iteration) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                                 if (mListener != null) {
                                     mListener.onCalibrateNextIteration(
-                                            PROSACRobustKnownBiasAndFrameGyroscopeCalibrator.this,
-                                            iteration);
+                                            PROSACRobustKnownBiasAndFrameGyroscopeCalibrator.this, iteration);
                                 }
                             }
 
                             @Override
                             public void onEstimateProgressChange(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final float progress) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                                 if (mListener != null) {
                                     mListener.onCalibrateProgressChange(
-                                            PROSACRobustKnownBiasAndFrameGyroscopeCalibrator.this,
-                                            progress);
+                                            PROSACRobustKnownBiasAndFrameGyroscopeCalibrator.this, progress);
                                 }
                             }
                         });
@@ -1805,10 +1722,8 @@ public class PROSACRobustKnownBiasAndFrameGyroscopeCalibrator extends
             }
 
             mInliersData = null;
-            innerEstimator.setComputeAndKeepInliersEnabled(
-                    mComputeAndKeepInliers || mRefineResult);
-            innerEstimator.setComputeAndKeepResidualsEnabled(
-                    mComputeAndKeepResiduals || mRefineResult);
+            innerEstimator.setComputeAndKeepInliersEnabled(mComputeAndKeepInliers || mRefineResult);
+            innerEstimator.setComputeAndKeepResidualsEnabled(mComputeAndKeepResiduals || mRefineResult);
             innerEstimator.setConfidence(mConfidence);
             innerEstimator.setMaxIterations(mMaxIterations);
             innerEstimator.setProgressDelta(mProgressDelta);

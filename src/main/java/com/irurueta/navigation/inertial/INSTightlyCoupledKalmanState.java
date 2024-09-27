@@ -29,6 +29,7 @@ import com.irurueta.navigation.gnss.ECEFPositionAndVelocity;
 import com.irurueta.navigation.gnss.GNSSEstimation;
 import com.irurueta.units.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -46,6 +47,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -136,7 +138,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * of NED coordinates, their respective sub-matrices of this covariance matrix
      * must be rotated, taking into account the Jacobian of the matrix transformation
      * relating both coordinates, the covariance can be expressed following the law
-     * of propagation of uncertainties (https://en.wikipedia.org/wiki/Propagation_of_uncertainty)
+     * of propagation of uncertainties
+     * <a href="https://en.wikipedia.org/wiki/Propagation_of_uncertainty">
+     *     (https://en.wikipedia.org/wiki/Propagation_of_uncertainty)
+     * </a>
      * as: cov(f(x)) = J*cov(x)*J'.
      */
     private Matrix mCovariance;
@@ -183,18 +188,11 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                                  or if provided covariance matrix is not 17x17.
      */
     public INSTightlyCoupledKalmanState(
-            final Matrix bodyToEcefCoordinateTransformationMatrix,
-            final double vx, final double vy, final double vz,
+            final Matrix bodyToEcefCoordinateTransformationMatrix, final double vx, final double vy, final double vz,
             final double x, final double y, final double z,
-            final double accelerationBiasX,
-            final double accelerationBiasY,
-            final double accelerationBiasZ,
-            final double gyroBiasX,
-            final double gyroBiasY,
-            final double gyroBiasZ,
-            final double receiverClockOffset,
-            final double receiverClockDrift,
-            final Matrix covariance) {
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ,
+            final double receiverClockOffset, final double receiverClockDrift, final Matrix covariance) {
         setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);
         setVelocityCoordinates(vx, vy, vz);
         setPositionCoordinates(x, y, z);
@@ -234,18 +232,11 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
      */
     public INSTightlyCoupledKalmanState(
-            final CoordinateTransformation c,
-            final Speed vx, final Speed vy, final Speed vz,
+            final CoordinateTransformation c, final Speed vx, final Speed vy, final Speed vz,
             final Distance x, final Distance y, final Distance z,
-            final double accelerationBiasX,
-            final double accelerationBiasY,
-            final double accelerationBiasZ,
-            final double gyroBiasX,
-            final double gyroBiasY,
-            final double gyroBiasZ,
-            final double receiverClockOffset,
-            final double receiverClockDrift,
-            final Matrix covariance) {
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ,
+            final double receiverClockOffset, final double receiverClockDrift, final Matrix covariance) {
         setC(c);
         setVelocityCoordinates(vx, vy, vz);
         setPositionCoordinates(x, y, z);
@@ -283,18 +274,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
      */
     public INSTightlyCoupledKalmanState(
-            final CoordinateTransformation c,
-            final Speed vx, final Speed vy, final Speed vz,
-            final Point3D position,
-            final double accelerationBiasX,
-            final double accelerationBiasY,
-            final double accelerationBiasZ,
-            final double gyroBiasX,
-            final double gyroBiasY,
-            final double gyroBiasZ,
-            final double receiverClockOffset,
-            final double receiverClockDrift,
-            final Matrix covariance) {
+            final CoordinateTransformation c, final Speed vx, final Speed vy, final Speed vz, final Point3D position,
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ, final double receiverClockOffset,
+            final double receiverClockDrift, final Matrix covariance) {
         setC(c);
         setVelocityCoordinates(vx, vy, vz);
         setPosition(position);
@@ -330,18 +313,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
      */
     public INSTightlyCoupledKalmanState(
-            final CoordinateTransformation c,
-            final ECEFVelocity velocity,
-            final ECEFPosition position,
-            final double accelerationBiasX,
-            final double accelerationBiasY,
-            final double accelerationBiasZ,
-            final double gyroBiasX,
-            final double gyroBiasY,
-            final double gyroBiasZ,
-            final double receiverClockOffset,
-            final double receiverClockDrift,
-            final Matrix covariance) {
+            final CoordinateTransformation c, final ECEFVelocity velocity, final ECEFPosition position,
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ, final double receiverClockOffset,
+            final double receiverClockDrift, final Matrix covariance) {
         setC(c);
         setEcefVelocity(velocity);
         setEcefPosition(position);
@@ -376,17 +351,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
      */
     public INSTightlyCoupledKalmanState(
-            final CoordinateTransformation c,
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final double accelerationBiasX,
-            final double accelerationBiasY,
-            final double accelerationBiasZ,
-            final double gyroBiasX,
-            final double gyroBiasY,
-            final double gyroBiasZ,
-            final double receiverClockOffset,
-            final double receiverClockDrift,
-            final Matrix covariance) {
+            final CoordinateTransformation c, final ECEFPositionAndVelocity positionAndVelocity,
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ, final double receiverClockOffset,
+            final double receiverClockDrift, final Matrix covariance) {
         setC(c);
         setPositionAndVelocity(positionAndVelocity);
         setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);
@@ -420,15 +388,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      */
     public INSTightlyCoupledKalmanState(
             final ECEFFrame frame,
-            final double accelerationBiasX,
-            final double accelerationBiasY,
-            final double accelerationBiasZ,
-            final double gyroBiasX,
-            final double gyroBiasY,
-            final double gyroBiasZ,
-            final double receiverClockOffset,
-            final double receiverClockDrift,
-            final Matrix covariance) {
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ, final double receiverClockOffset,
+            final double receiverClockDrift, final Matrix covariance) {
         setFrame(frame);
         setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);
         setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);
@@ -459,18 +421,11 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
      */
     public INSTightlyCoupledKalmanState(
-            final CoordinateTransformation c,
-            final Speed vx, final Speed vy, final Speed vz,
-            final Distance x, final Distance y, final Distance z,
-            final Acceleration accelerationBiasX,
-            final Acceleration accelerationBiasY,
-            final Acceleration accelerationBiasZ,
-            final AngularSpeed gyroBiasX,
-            final AngularSpeed gyroBiasY,
-            final AngularSpeed gyroBiasZ,
-            final Distance receiverClockOffset,
-            final Speed receiverClockDrift,
-            final Matrix covariance) {
+            final CoordinateTransformation c, final Speed vx, final Speed vy, final Speed vz,
+            final Distance x, final Distance y, final Distance z, final Acceleration accelerationBiasX,
+            final Acceleration accelerationBiasY, final Acceleration accelerationBiasZ,
+            final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY, final AngularSpeed gyroBiasZ,
+            final Distance receiverClockOffset, final Speed receiverClockDrift, final Matrix covariance) {
         setC(c);
         setVelocityCoordinates(vx, vy, vz);
         setPositionCoordinates(x, y, z);
@@ -501,17 +456,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
      */
     public INSTightlyCoupledKalmanState(
-            final CoordinateTransformation c,
-            final Speed vx, final Speed vy, final Speed vz,
-            final Point3D position,
-            final Acceleration accelerationBiasX,
-            final Acceleration accelerationBiasY,
-            final Acceleration accelerationBiasZ,
-            final AngularSpeed gyroBiasX,
-            final AngularSpeed gyroBiasY,
-            final AngularSpeed gyroBiasZ,
-            final Distance receiverClockOffset,
-            final Speed receiverClockDrift,
+            final CoordinateTransformation c, final Speed vx, final Speed vy, final Speed vz, final Point3D position,
+            final Acceleration accelerationBiasX, final Acceleration accelerationBiasY,
+            final Acceleration accelerationBiasZ, final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY,
+            final AngularSpeed gyroBiasZ, final Distance receiverClockOffset, final Speed receiverClockDrift,
             final Matrix covariance) {
         setC(c);
         setVelocityCoordinates(vx, vy, vz);
@@ -541,17 +489,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
      */
     public INSTightlyCoupledKalmanState(
-            final CoordinateTransformation c,
-            final ECEFVelocity velocity,
-            final ECEFPosition position,
-            final Acceleration accelerationBiasX,
-            final Acceleration accelerationBiasY,
-            final Acceleration accelerationBiasZ,
-            final AngularSpeed gyroBiasX,
-            final AngularSpeed gyroBiasY,
-            final AngularSpeed gyroBiasZ,
-            final Distance receiverClockOffset,
-            final Speed receiverClockDrift,
+            final CoordinateTransformation c, final ECEFVelocity velocity, final ECEFPosition position,
+            final Acceleration accelerationBiasX, final Acceleration accelerationBiasY,
+            final Acceleration accelerationBiasZ, final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY,
+            final AngularSpeed gyroBiasZ, final Distance receiverClockOffset, final Speed receiverClockDrift,
             final Matrix covariance) {
         setC(c);
         setEcefVelocity(velocity);
@@ -580,16 +521,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
      */
     public INSTightlyCoupledKalmanState(
-            final CoordinateTransformation c,
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final Acceleration accelerationBiasX,
-            final Acceleration accelerationBiasY,
-            final Acceleration accelerationBiasZ,
-            final AngularSpeed gyroBiasX,
-            final AngularSpeed gyroBiasY,
-            final AngularSpeed gyroBiasZ,
-            final Distance receiverClockOffset,
-            final Speed receiverClockDrift,
+            final CoordinateTransformation c, final ECEFPositionAndVelocity positionAndVelocity,
+            final Acceleration accelerationBiasX, final Acceleration accelerationBiasY,
+            final Acceleration accelerationBiasZ, final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY,
+            final AngularSpeed gyroBiasZ, final Distance receiverClockOffset, final Speed receiverClockDrift,
             final Matrix covariance) {
         setC(c);
         setPositionAndVelocity(positionAndVelocity);
@@ -616,15 +551,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
      */
     public INSTightlyCoupledKalmanState(
-            final ECEFFrame frame,
-            final Acceleration accelerationBiasX,
-            final Acceleration accelerationBiasY,
-            final Acceleration accelerationBiasZ,
-            final AngularSpeed gyroBiasX,
-            final AngularSpeed gyroBiasY,
-            final AngularSpeed gyroBiasZ,
-            final Distance receiverClockOffset,
-            final Speed receiverClockDrift,
+            final ECEFFrame frame, final Acceleration accelerationBiasX, final Acceleration accelerationBiasY,
+            final Acceleration accelerationBiasZ, final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY,
+            final AngularSpeed gyroBiasZ, final Distance receiverClockOffset, final Speed receiverClockDrift,
             final Matrix covariance) {
         setFrame(frame);
         setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);
@@ -664,18 +593,11 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                                  or if provided covariance matrix is not 17x17.
      */
     public INSTightlyCoupledKalmanState(
-            final Matrix bodyToEcefCoordinateTransformationMatrix,
-            final Speed vx, final Speed vy, final Speed vz,
+            final Matrix bodyToEcefCoordinateTransformationMatrix, final Speed vx, final Speed vy, final Speed vz,
             final Distance x, final Distance y, final Distance z,
-            final double accelerationBiasX,
-            final double accelerationBiasY,
-            final double accelerationBiasZ,
-            final double gyroBiasX,
-            final double gyroBiasY,
-            final double gyroBiasZ,
-            final double receiverClockOffset,
-            final double receiverClockDrift,
-            final Matrix covariance) {
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ, final double receiverClockOffset,
+            final double receiverClockDrift, final Matrix covariance) {
         setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);
         setVelocityCoordinates(vx, vy, vz);
         setPositionCoordinates(x, y, z);
@@ -714,18 +636,11 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                                  or if provided covariance matrix is not 17x17.
      */
     public INSTightlyCoupledKalmanState(
-            final Matrix bodyToEcefCoordinateTransformationMatrix,
-            final Speed vx, final Speed vy, final Speed vz,
+            final Matrix bodyToEcefCoordinateTransformationMatrix, final Speed vx, final Speed vy, final Speed vz,
             final Point3D position,
-            final double accelerationBiasX,
-            final double accelerationBiasY,
-            final double accelerationBiasZ,
-            final double gyroBiasX,
-            final double gyroBiasY,
-            final double gyroBiasZ,
-            final double receiverClockOffset,
-            final double receiverClockDrift,
-            final Matrix covariance) {
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ,
+            final double receiverClockOffset, final double receiverClockDrift, final Matrix covariance) {
         setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);
         setVelocityCoordinates(vx, vy, vz);
         setPosition(position);
@@ -762,18 +677,11 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                                  or if provided covariance matrix is not 17x17.
      */
     public INSTightlyCoupledKalmanState(
-            final Matrix bodyToEcefCoordinateTransformationMatrix,
-            final ECEFVelocity velocity,
+            final Matrix bodyToEcefCoordinateTransformationMatrix, final ECEFVelocity velocity,
             final ECEFPosition position,
-            final double accelerationBiasX,
-            final double accelerationBiasY,
-            final double accelerationBiasZ,
-            final double gyroBiasX,
-            final double gyroBiasY,
-            final double gyroBiasZ,
-            final double receiverClockOffset,
-            final double receiverClockDrift,
-            final Matrix covariance) {
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ, final double receiverClockOffset,
+            final double receiverClockDrift, final Matrix covariance) {
         setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);
         setEcefVelocity(velocity);
         setEcefPosition(position);
@@ -809,17 +717,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                                  or if provided covariance matrix is not 17x17.
      */
     public INSTightlyCoupledKalmanState(
-            final Matrix bodyToEcefCoordinateTransformationMatrix,
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final double accelerationBiasX,
-            final double accelerationBiasY,
-            final double accelerationBiasZ,
-            final double gyroBiasX,
-            final double gyroBiasY,
-            final double gyroBiasZ,
-            final double receiverClockOffset,
-            final double receiverClockDrift,
-            final Matrix covariance) {
+            final Matrix bodyToEcefCoordinateTransformationMatrix, final ECEFPositionAndVelocity positionAndVelocity,
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ,
+            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ, final double receiverClockOffset,
+            final double receiverClockDrift, final Matrix covariance) {
         setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);
         setPositionAndVelocity(positionAndVelocity);
         setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);
@@ -852,18 +753,11 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                                  or if provided covariance matrix is not 17x17.
      */
     public INSTightlyCoupledKalmanState(
-            final Matrix bodyToEcefCoordinateTransformationMatrix,
-            final Speed vx, final Speed vy, final Speed vz,
-            final Distance x, final Distance y, final Distance z,
-            final Acceleration accelerationBiasX,
-            final Acceleration accelerationBiasY,
-            final Acceleration accelerationBiasZ,
-            final AngularSpeed gyroBiasX,
-            final AngularSpeed gyroBiasY,
-            final AngularSpeed gyroBiasZ,
-            final Distance receiverClockOffset,
-            final Speed receiverClockDrift,
-            final Matrix covariance) {
+            final Matrix bodyToEcefCoordinateTransformationMatrix, final Speed vx, final Speed vy, final Speed vz,
+            final Distance x, final Distance y, final Distance z, final Acceleration accelerationBiasX,
+            final Acceleration accelerationBiasY, final Acceleration accelerationBiasZ,
+            final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY, final AngularSpeed gyroBiasZ,
+            final Distance receiverClockOffset, final Speed receiverClockDrift, final Matrix covariance) {
         setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);
         setVelocityCoordinates(vx, vy, vz);
         setPositionCoordinates(x, y, z);
@@ -895,17 +789,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                                  or if provided covariance matrix is not 17x17.
      */
     public INSTightlyCoupledKalmanState(
-            final Matrix bodyToEcefCoordinateTransformationMatrix,
-            final Speed vx, final Speed vy, final Speed vz,
-            final Point3D position,
-            final Acceleration accelerationBiasX,
-            final Acceleration accelerationBiasY,
-            final Acceleration accelerationBiasZ,
-            final AngularSpeed gyroBiasX,
-            final AngularSpeed gyroBiasY,
-            final AngularSpeed gyroBiasZ,
-            final Distance receiverClockOffset,
-            final Speed receiverClockDrift,
+            final Matrix bodyToEcefCoordinateTransformationMatrix, final Speed vx, final Speed vy, final Speed vz,
+            final Point3D position, final Acceleration accelerationBiasX, final Acceleration accelerationBiasY,
+            final Acceleration accelerationBiasZ, final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY,
+            final AngularSpeed gyroBiasZ, final Distance receiverClockOffset, final Speed receiverClockDrift,
             final Matrix covariance) {
         setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);
         setVelocityCoordinates(vx, vy, vz);
@@ -936,17 +823,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                                  or if provided covariance matrix is not 17x17.
      */
     public INSTightlyCoupledKalmanState(
-            final Matrix bodyToEcefCoordinateTransformationMatrix,
-            final ECEFVelocity velocity,
-            final ECEFPosition position,
-            final Acceleration accelerationBiasX,
-            final Acceleration accelerationBiasY,
-            final Acceleration accelerationBiasZ,
-            final AngularSpeed gyroBiasX,
-            final AngularSpeed gyroBiasY,
-            final AngularSpeed gyroBiasZ,
-            final Distance receiverClockOffset,
-            final Speed receiverClockDrift,
+            final Matrix bodyToEcefCoordinateTransformationMatrix, final ECEFVelocity velocity,
+            final ECEFPosition position, final Acceleration accelerationBiasX, final Acceleration accelerationBiasY,
+            final Acceleration accelerationBiasZ, final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY,
+            final AngularSpeed gyroBiasZ, final Distance receiverClockOffset, final Speed receiverClockDrift,
             final Matrix covariance) {
         setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);
         setEcefVelocity(velocity);
@@ -976,16 +856,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                                  or if provided covariance matrix is not 17x17.
      */
     public INSTightlyCoupledKalmanState(
-            final Matrix bodyToEcefCoordinateTransformationMatrix,
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final Acceleration accelerationBiasX,
-            final Acceleration accelerationBiasY,
-            final Acceleration accelerationBiasZ,
-            final AngularSpeed gyroBiasX,
-            final AngularSpeed gyroBiasY,
-            final AngularSpeed gyroBiasZ,
-            final Distance receiverClockOffset,
-            final Speed receiverClockDrift,
+            final Matrix bodyToEcefCoordinateTransformationMatrix, final ECEFPositionAndVelocity positionAndVelocity,
+            final Acceleration accelerationBiasX, final Acceleration accelerationBiasY,
+            final Acceleration accelerationBiasZ, final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY,
+            final AngularSpeed gyroBiasZ, final Distance receiverClockOffset, final Speed receiverClockDrift,
             final Matrix covariance) {
         setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);
         setPositionAndVelocity(positionAndVelocity);
@@ -1021,14 +895,12 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                                                 transformation matrix.
      * @throws IllegalArgumentException if provided matrix is not 3x3.
      */
-    public void setBodyToEcefCoordinateTransformationMatrix(
-            final Matrix bodyToEcefCoordinateTransformationMatrix) {
+    public void setBodyToEcefCoordinateTransformationMatrix(final Matrix bodyToEcefCoordinateTransformationMatrix) {
         if (bodyToEcefCoordinateTransformationMatrix.getRows() != CoordinateTransformation.ROWS ||
                 bodyToEcefCoordinateTransformationMatrix.getColumns() != CoordinateTransformation.COLS) {
             throw new IllegalArgumentException();
         }
-        mBodyToEcefCoordinateTransformationMatrix =
-                bodyToEcefCoordinateTransformationMatrix;
+        mBodyToEcefCoordinateTransformationMatrix = bodyToEcefCoordinateTransformationMatrix;
     }
 
     /**
@@ -1092,8 +964,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param vy estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).
      * @param vz estimated ECEF user velocity resolved around z axis and expressed in meters per second (m/s).
      */
-    public void setVelocityCoordinates(
-            final double vx, final double vy, final double vz) {
+    public void setVelocityCoordinates(final double vx, final double vy, final double vz) {
         mVx = vx;
         mVy = vy;
         mVz = vz;
@@ -1160,8 +1031,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param y y coordinate of estimated ECEF user position expressed in meters (m).
      * @param z z coordinate of estimated ECEF user position expressed in meters (m).
      */
-    public void setPositionCoordinates(
-            final double x, final double y, final double z) {
+    public void setPositionCoordinates(final double x, final double y, final double z) {
         mX = x;
         mY = y;
         mZ = z;
@@ -1244,8 +1114,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                          expressed in meters per squared second (m/s^2).
      */
     public void setAccelerationBiasCoordinates(
-            final double accelerationBiasX, final double accelerationBiasY,
-            final double accelerationBiasZ) {
+            final double accelerationBiasX, final double accelerationBiasY, final double accelerationBiasZ) {
         mAccelerationBiasX = accelerationBiasX;
         mAccelerationBiasY = accelerationBiasY;
         mAccelerationBiasZ = accelerationBiasZ;
@@ -1328,8 +1197,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param gyroBiasZ estimated gyroscope bias resolved around z axis and
      *                  expressed in radians per second (rad/s).
      */
-    public void setGyroBiasCoordinates(
-            final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ) {
+    public void setGyroBiasCoordinates(final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ) {
         mGyroBiasX = gyroBiasX;
         mGyroBiasY = gyroBiasY;
         mGyroBiasZ = gyroBiasZ;
@@ -1380,7 +1248,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * of NED coordinates, their respective sub-matrices of this covariance matrix
      * must be rotated, taking into account the Jacobian of the matrix transformation
      * relating both coordinates, the covariance can be expressed following the law
-     * of propagation of uncertainties (https://en.wikipedia.org/wiki/Propagation_of_uncertainty)
+     * of propagation of uncertainties
+     * <a href="https://en.wikipedia.org/wiki/Propagation_of_uncertainty">
+     *     (https://en.wikipedia.org/wiki/Propagation_of_uncertainty)
+     * </a>
      * as: cov(f(x)) = J*cov(x)*J'.
      *
      * @param result instance where result data will be copied to.
@@ -1402,7 +1273,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * of NED coordinates, their respective sub-matrices of this covariance matrix
      * must be rotated, taking into account the Jacobian of the matrix transformation
      * relating both coordinates, the covariance can be expressed following the law
-     * of propagation of uncertainties (https://en.wikipedia.org/wiki/Propagation_of_uncertainty)
+     * of propagation of uncertainties
+     * <a href="https://en.wikipedia.org/wiki/Propagation_of_uncertainty">
+     *     (https://en.wikipedia.org/wiki/Propagation_of_uncertainty)
+     * </a>
      * as: cov(f(x)) = J*cov(x)*J'.
      *
      * @return Kalman filter error covariance matrix.
@@ -1418,8 +1292,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
      */
     public void setCovariance(final Matrix covariance) {
-        if (covariance.getRows() != NUM_PARAMS ||
-                covariance.getColumns() != NUM_PARAMS) {
+        if (covariance.getRows() != NUM_PARAMS || covariance.getColumns() != NUM_PARAMS) {
             throw new IllegalArgumentException();
         }
 
@@ -1435,8 +1308,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      */
     public CoordinateTransformation getC() throws InvalidRotationMatrixException {
         return mBodyToEcefCoordinateTransformationMatrix != null ?
-                new CoordinateTransformation(mBodyToEcefCoordinateTransformationMatrix,
-                        FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME) : null;
+                new CoordinateTransformation(mBodyToEcefCoordinateTransformationMatrix, FrameType.BODY_FRAME,
+                        FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME) : null;
     }
 
     /**
@@ -1450,8 +1323,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      */
     public CoordinateTransformation getC(final double threshold) throws InvalidRotationMatrixException {
         return mBodyToEcefCoordinateTransformationMatrix != null ?
-                new CoordinateTransformation(mBodyToEcefCoordinateTransformationMatrix,
-                        FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME, threshold) : null;
+                new CoordinateTransformation(mBodyToEcefCoordinateTransformationMatrix, FrameType.BODY_FRAME,
+                        FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME, threshold) : null;
     }
 
     /**
@@ -1483,8 +1356,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @throws InvalidRotationMatrixException if current body to ECEF transformation matrix
      *                                        is not valid (is not a 3x3 orthonormal matrix) with provided threshold.
      */
-    public boolean getC(final CoordinateTransformation result,
-                        final double threshold) throws InvalidRotationMatrixException {
+    public boolean getC(final CoordinateTransformation result, final double threshold)
+            throws InvalidRotationMatrixException {
         if (mBodyToEcefCoordinateTransformationMatrix != null) {
             result.setSourceType(FrameType.BODY_FRAME);
             result.setDestinationType(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
@@ -1508,8 +1381,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
 
         } else {
 
-            if (c.getSourceType() != FrameType.BODY_FRAME ||
-                    c.getDestinationType() != FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME) {
+            if (c.getSourceType() != FrameType.BODY_FRAME
+                    || c.getDestinationType() != FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME) {
                 throw new IllegalArgumentException();
             }
 
@@ -1546,8 +1419,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param vx estimated ECEF user velocity resolved around x axis.
      */
     public void setSpeedX(final Speed vx) {
-        mVx = SpeedConverter.convert(vx.getValue().doubleValue(),
-                vx.getUnit(), SpeedUnit.METERS_PER_SECOND);
+        mVx = SpeedConverter.convert(vx.getValue().doubleValue(), vx.getUnit(), SpeedUnit.METERS_PER_SECOND);
     }
 
     /**
@@ -1575,8 +1447,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param vy estimated ECEF user velocity resolved around y axis.
      */
     public void setSpeedY(final Speed vy) {
-        mVy = SpeedConverter.convert(vy.getValue().doubleValue(),
-                vy.getUnit(), SpeedUnit.METERS_PER_SECOND);
+        mVy = SpeedConverter.convert(vy.getValue().doubleValue(), vy.getUnit(), SpeedUnit.METERS_PER_SECOND);
     }
 
     /**
@@ -1604,8 +1475,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param vz estimated ECEF velocity resolved around z axis.
      */
     public void setSpeedZ(final Speed vz) {
-        mVz = SpeedConverter.convert(vz.getValue().doubleValue(),
-                vz.getUnit(), SpeedUnit.METERS_PER_SECOND);
+        mVz = SpeedConverter.convert(vz.getValue().doubleValue(), vz.getUnit(), SpeedUnit.METERS_PER_SECOND);
     }
 
     /**
@@ -1615,8 +1485,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param vy estimated ECEF velocity resolved around y axis.
      * @param vz estimated ECEF velocity resolved around z axis.
      */
-    public void setVelocityCoordinates(
-            final Speed vx, final Speed vy, final Speed vz) {
+    public void setVelocityCoordinates(final Speed vx, final Speed vy, final Speed vz) {
         setSpeedX(vx);
         setSpeedY(vy);
         setSpeedZ(vz);
@@ -1677,8 +1546,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param x x coordinate of estimated ECEF user position.
      */
     public void setDistanceX(final Distance x) {
-        mX = DistanceConverter.convert(x.getValue().doubleValue(),
-                x.getUnit(), DistanceUnit.METER);
+        mX = DistanceConverter.convert(x.getValue().doubleValue(), x.getUnit(), DistanceUnit.METER);
     }
 
     /**
@@ -1707,8 +1575,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param y y coordinate of estimated ECEF user position.
      */
     public void setDistanceY(final Distance y) {
-        mY = DistanceConverter.convert(y.getValue().doubleValue(),
-                y.getUnit(), DistanceUnit.METER);
+        mY = DistanceConverter.convert(y.getValue().doubleValue(), y.getUnit(), DistanceUnit.METER);
     }
 
     /**
@@ -1737,8 +1604,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param z z coordinate of estimated ECEF user position.
      */
     public void setDistanceZ(final Distance z) {
-        mZ = DistanceConverter.convert(z.getValue().doubleValue(),
-                z.getUnit(), DistanceUnit.METER);
+        mZ = DistanceConverter.convert(z.getValue().doubleValue(), z.getUnit(), DistanceUnit.METER);
     }
 
     /**
@@ -1748,8 +1614,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param y y coordinate of estimated ECEF user position.
      * @param z z coordinate of estimated ECEF user position.
      */
-    public void setPositionCoordinates(
-            final Distance x, final Distance y, final Distance z) {
+    public void setPositionCoordinates(final Distance x, final Distance y, final Distance z) {
         setDistanceX(x);
         setDistanceY(y);
         setDistanceZ(z);
@@ -1861,8 +1726,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
         if (mBodyToEcefCoordinateTransformationMatrix != null) {
             try {
                 result.setCoordinateTransformation(getC());
-            } catch (final InvalidSourceAndDestinationFrameTypeException
-                    | InvalidRotationMatrixException e) {
+            } catch (final InvalidSourceAndDestinationFrameTypeException | InvalidRotationMatrixException e) {
                 return false;
             }
             result.setCoordinates(mX, mY, mZ);
@@ -1883,8 +1747,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
         if (mBodyToEcefCoordinateTransformationMatrix != null) {
             try {
                 return new ECEFFrame(mX, mY, mZ, mVx, mVy, mVz, getC());
-            } catch (final InvalidSourceAndDestinationFrameTypeException
-                    | InvalidRotationMatrixException e) {
+            } catch (final InvalidSourceAndDestinationFrameTypeException | InvalidRotationMatrixException e) {
                 return null;
             }
         } else {
@@ -1931,8 +1794,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated accelerometer bias resolved around x axis.
      */
     public Acceleration getAccelerationBiasXAsAcceleration() {
-        return new Acceleration(mAccelerationBiasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mAccelerationBiasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1942,10 +1804,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                          around x axis.
      */
     public void setAccelerationBiasX(final Acceleration accelerationBiasX) {
-        mAccelerationBiasX = AccelerationConverter.convert(
-                accelerationBiasX.getValue().doubleValue(),
-                accelerationBiasX.getUnit(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        mAccelerationBiasX = AccelerationConverter.convert(accelerationBiasX.getValue().doubleValue(),
+                accelerationBiasX.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1965,8 +1825,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated accelerometer bias resolved around y axis.
      */
     public Acceleration getAccelerationBiasYAsAcceleration() {
-        return new Acceleration(mAccelerationBiasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mAccelerationBiasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1976,10 +1835,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                          around y axis.
      */
     public void setAccelerationBiasY(final Acceleration accelerationBiasY) {
-        mAccelerationBiasY = AccelerationConverter.convert(
-                accelerationBiasY.getValue().doubleValue(),
-                accelerationBiasY.getUnit(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        mAccelerationBiasY = AccelerationConverter.convert(accelerationBiasY.getValue().doubleValue(),
+                accelerationBiasY.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1999,8 +1856,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated accelerometer bias resolved around z axis.
      */
     public Acceleration getAccelerationBiasZAsAcceleration() {
-        return new Acceleration(mAccelerationBiasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mAccelerationBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2010,10 +1866,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                          around z axis.
      */
     public void setAccelerationBiasZ(final Acceleration accelerationBiasZ) {
-        mAccelerationBiasZ = AccelerationConverter.convert(
-                accelerationBiasZ.getValue().doubleValue(),
-                accelerationBiasZ.getUnit(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        mAccelerationBiasZ = AccelerationConverter.convert(accelerationBiasZ.getValue().doubleValue(),
+                accelerationBiasZ.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2057,9 +1911,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param gyroBiasX estimated gyroscope bias resolved around x axis.
      */
     public void setGyroBiasX(final AngularSpeed gyroBiasX) {
-        mGyroBiasX = AngularSpeedConverter.convert(
-                gyroBiasX.getValue().doubleValue(),
-                gyroBiasX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        mGyroBiasX = AngularSpeedConverter.convert(gyroBiasX.getValue().doubleValue(), gyroBiasX.getUnit(),
+                AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2088,9 +1941,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param gyroBiasY estimated gyroscope bias resolved around y axis.
      */
     public void setGyroBiasY(final AngularSpeed gyroBiasY) {
-        mGyroBiasY = AngularSpeedConverter.convert(
-                gyroBiasY.getValue().doubleValue(),
-                gyroBiasY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        mGyroBiasY = AngularSpeedConverter.convert(gyroBiasY.getValue().doubleValue(), gyroBiasY.getUnit(),
+                AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2119,9 +1971,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param gyroBiasZ estimated gyroscope bias resolved around z axis.
      */
     public void setGyroBiasZ(final AngularSpeed gyroBiasZ) {
-        mGyroBiasZ = AngularSpeedConverter.convert(
-                gyroBiasZ.getValue().doubleValue(),
-                gyroBiasZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        mGyroBiasZ = AngularSpeedConverter.convert(gyroBiasZ.getValue().doubleValue(), gyroBiasZ.getUnit(),
+                AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2132,8 +1983,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param gyroBiasZ estimated gyroscope bias resolved around z axis.
      */
     public void setGyroBiasCoordinates(
-            final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY,
-            final AngularSpeed gyroBiasZ) {
+            final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY, final AngularSpeed gyroBiasZ) {
         setGyroBiasX(gyroBiasX);
         setGyroBiasY(gyroBiasY);
         setGyroBiasZ(gyroBiasZ);
@@ -2164,8 +2014,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param receiverClockOffset estimated receiver clock offset.
      */
     public void setReceiverClockOffset(final Distance receiverClockOffset) {
-        mReceiverClockOffset = DistanceConverter.convert(
-                receiverClockOffset.getValue().doubleValue(),
+        mReceiverClockOffset = DistanceConverter.convert(receiverClockOffset.getValue().doubleValue(),
                 receiverClockOffset.getUnit(), DistanceUnit.METER);
     }
 
@@ -2194,8 +2043,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param receiverClockDrift estimated receiver clock drift.
      */
     public void setReceiverClockDrift(final Speed receiverClockDrift) {
-        mReceiverClockDrift = SpeedConverter.convert(
-                receiverClockDrift.getValue().doubleValue(),
+        mReceiverClockDrift = SpeedConverter.convert(receiverClockDrift.getValue().doubleValue(),
                 receiverClockDrift.getUnit(), SpeedUnit.METERS_PER_SECOND);
     }
 
@@ -2217,8 +2065,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return a new GNSS estimation instance.
      */
     public GNSSEstimation getGNSSEstimation() {
-        return new GNSSEstimation(mX, mY, mZ, mVx, mVy, mVz, mReceiverClockOffset,
-                mReceiverClockDrift);
+        return new GNSSEstimation(mX, mY, mZ, mVx, mVy, mVz, mReceiverClockOffset, mReceiverClockDrift);
     }
 
     /**
@@ -2259,11 +2106,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             mBodyToEcefCoordinateTransformationMatrix = null;
         } else {
             if (mBodyToEcefCoordinateTransformationMatrix == null) {
-                mBodyToEcefCoordinateTransformationMatrix =
-                        new Matrix(input.mBodyToEcefCoordinateTransformationMatrix);
+                mBodyToEcefCoordinateTransformationMatrix = new Matrix(input.mBodyToEcefCoordinateTransformationMatrix);
             } else {
-                mBodyToEcefCoordinateTransformationMatrix.copyFrom(
-                        input.mBodyToEcefCoordinateTransformationMatrix);
+                mBodyToEcefCoordinateTransformationMatrix.copyFrom(input.mBodyToEcefCoordinateTransformationMatrix);
             }
         }
 
@@ -2306,10 +2151,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(mBodyToEcefCoordinateTransformationMatrix,
-                mVx, mVy, mVz, mX, mY, mZ,
-                mAccelerationBiasX, mAccelerationBiasY, mAccelerationBiasZ,
-                mGyroBiasX, mGyroBiasY, mGyroBiasZ,
+        return Objects.hash(mBodyToEcefCoordinateTransformationMatrix, mVx, mVy, mVz, mX, mY, mZ,
+                mAccelerationBiasX, mAccelerationBiasY, mAccelerationBiasZ, mGyroBiasX, mGyroBiasY, mGyroBiasZ,
                 mReceiverClockOffset, mReceiverClockDrift, mCovariance);
     }
 
@@ -2351,8 +2194,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return true if both instances are considered to be equal (up to provided threshold),
      * false otherwise.
      */
-    public boolean equals(final INSTightlyCoupledKalmanState other,
-                          final double threshold) {
+    public boolean equals(final INSTightlyCoupledKalmanState other, final double threshold) {
         if (other == null) {
             return false;
         }
@@ -2385,8 +2227,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final INSTightlyCoupledKalmanState result =
-                (INSTightlyCoupledKalmanState) super.clone();
+        final INSTightlyCoupledKalmanState result = (INSTightlyCoupledKalmanState) super.clone();
         copyTo(result);
         return result;
     }

@@ -23,6 +23,6 @@ import com.irurueta.units.AngularSpeedUnit;
  * Interface defining events generated for {@link AngularSpeedTriadStaticIntervalDetector}.
  */
 public interface AngularSpeedTriadStaticIntervalDetectorListener extends
-        TriadStaticIntervalDetectorListener<AngularSpeedUnit, AngularSpeed,
-                AngularSpeedTriad, AngularSpeedTriadStaticIntervalDetector> {
+        TriadStaticIntervalDetectorListener<AngularSpeedUnit, AngularSpeed, AngularSpeedTriad,
+                AngularSpeedTriadStaticIntervalDetector> {
 }

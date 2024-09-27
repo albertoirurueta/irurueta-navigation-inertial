@@ -24,6 +24,7 @@ import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
@@ -55,6 +56,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -193,10 +195,8 @@ public class IMUErrors implements Serializable, Cloneable {
         try {
             mAccelerometerScaleFactorAndCrossCouplingErrors = Matrix.identity(
                     ACCELEROMETER_COMPONENTS, ACCELEROMETER_COMPONENTS);
-            mGyroScaleFactorAndCrossCouplingErrors = Matrix.identity(
-                    GYRO_COMPONENTS, GYRO_COMPONENTS);
-            mGyroGDependentBiases = new Matrix(
-                    ACCELEROMETER_COMPONENTS, ACCELEROMETER_COMPONENTS);
+            mGyroScaleFactorAndCrossCouplingErrors = Matrix.identity(GYRO_COMPONENTS, GYRO_COMPONENTS);
+            mGyroGDependentBiases = new Matrix(ACCELEROMETER_COMPONENTS, ACCELEROMETER_COMPONENTS);
         } catch (final WrongSizeException ignore) {
             // never happens
         }
@@ -216,19 +216,15 @@ public class IMUErrors implements Serializable, Cloneable {
      * @param gyroNoiseRootPSD                               gyro noise root PSD expressed in (rad * s^-0.5).
      * @throws IllegalArgumentException if any value is invalid.
      */
-    public IMUErrors(final double[] accelerometerBiases,
-                     final double[] gyroBiases,
+    public IMUErrors(final double[] accelerometerBiases, final double[] gyroBiases,
                      final Matrix accelerometerScaleFactorAndCrossCouplingErrors,
-                     final Matrix gyroScaleFactorAndCrossCouplingErrors,
-                     final double accelerometerNoiseRootPSD,
+                     final Matrix gyroScaleFactorAndCrossCouplingErrors, final double accelerometerNoiseRootPSD,
                      final double gyroNoiseRootPSD) {
         this();
         setAccelerometerBiases(accelerometerBiases);
         setGyroBiases(gyroBiases);
-        setAccelerometerScaleFactorAndCrossCouplingErrors(
-                accelerometerScaleFactorAndCrossCouplingErrors);
-        setGyroScaleFactorAndCrossCouplingErrors(
-                gyroScaleFactorAndCrossCouplingErrors);
+        setAccelerometerScaleFactorAndCrossCouplingErrors(accelerometerScaleFactorAndCrossCouplingErrors);
+        setGyroScaleFactorAndCrossCouplingErrors(gyroScaleFactorAndCrossCouplingErrors);
         setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);
         setGyroNoiseRootPSD(gyroNoiseRootPSD);
     }
@@ -247,19 +243,15 @@ public class IMUErrors implements Serializable, Cloneable {
      * @param gyroNoiseRootPSD                               gyro noise root PSD expressed in (rad * s^-0.5).
      * @throws IllegalArgumentException if any value is invalid.
      */
-    public IMUErrors(final Matrix accelerometerBiases,
-                     final Matrix gyroBiases,
+    public IMUErrors(final Matrix accelerometerBiases, final Matrix gyroBiases,
                      final Matrix accelerometerScaleFactorAndCrossCouplingErrors,
-                     final Matrix gyroScaleFactorAndCrossCouplingErrors,
-                     final double accelerometerNoiseRootPSD,
+                     final Matrix gyroScaleFactorAndCrossCouplingErrors, final double accelerometerNoiseRootPSD,
                      final double gyroNoiseRootPSD) {
         this();
         setAccelerometerBiases(accelerometerBiases);
         setGyroBiases(gyroBiases);
-        setAccelerometerScaleFactorAndCrossCouplingErrors(
-                accelerometerScaleFactorAndCrossCouplingErrors);
-        setGyroScaleFactorAndCrossCouplingErrors(
-                gyroScaleFactorAndCrossCouplingErrors);
+        setAccelerometerScaleFactorAndCrossCouplingErrors(accelerometerScaleFactorAndCrossCouplingErrors);
+        setGyroScaleFactorAndCrossCouplingErrors(gyroScaleFactorAndCrossCouplingErrors);
         setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);
         setGyroNoiseRootPSD(gyroNoiseRootPSD);
     }
@@ -276,19 +268,15 @@ public class IMUErrors implements Serializable, Cloneable {
      * @param gyroNoiseRootPSD                               gyro noise root PSD expressed in (rad * s^-0.5).
      * @throws IllegalArgumentException if any value is invalid.
      */
-    public IMUErrors(final Acceleration[] accelerometerBiases,
-                     final AngularSpeed[] gyroBiases,
+    public IMUErrors(final Acceleration[] accelerometerBiases, final AngularSpeed[] gyroBiases,
                      final Matrix accelerometerScaleFactorAndCrossCouplingErrors,
-                     final Matrix gyroScaleFactorAndCrossCouplingErrors,
-                     final double accelerometerNoiseRootPSD,
+                     final Matrix gyroScaleFactorAndCrossCouplingErrors, final double accelerometerNoiseRootPSD,
                      final double gyroNoiseRootPSD) {
         this();
         setAccelerometerBiases(accelerometerBiases);
         setGyroBiases(gyroBiases);
-        setAccelerometerScaleFactorAndCrossCouplingErrors(
-                accelerometerScaleFactorAndCrossCouplingErrors);
-        setGyroScaleFactorAndCrossCouplingErrors(
-                gyroScaleFactorAndCrossCouplingErrors);
+        setAccelerometerScaleFactorAndCrossCouplingErrors(accelerometerScaleFactorAndCrossCouplingErrors);
+        setGyroScaleFactorAndCrossCouplingErrors(gyroScaleFactorAndCrossCouplingErrors);
         setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);
         setGyroNoiseRootPSD(gyroNoiseRootPSD);
     }
@@ -313,22 +301,16 @@ public class IMUErrors implements Serializable, Cloneable {
      *                                                       (rad/s).
      * @throws IllegalArgumentException if any value is invalid.
      */
-    public IMUErrors(final double[] accelerometerBiases,
-                     final double[] gyroBiases,
+    public IMUErrors(final double[] accelerometerBiases, final double[] gyroBiases,
                      final Matrix accelerometerScaleFactorAndCrossCouplingErrors,
-                     final Matrix gyroScaleFactorAndCrossCouplingErrors,
-                     final Matrix gyroGDependentBiases,
-                     final double accelerometerNoiseRootPSD,
-                     final double gyroNoiseRootPSD,
-                     final double accelerometerQuantizationLevel,
-                     final double gyroQuantizationLevel) {
+                     final Matrix gyroScaleFactorAndCrossCouplingErrors, final Matrix gyroGDependentBiases,
+                     final double accelerometerNoiseRootPSD, final double gyroNoiseRootPSD,
+                     final double accelerometerQuantizationLevel, final double gyroQuantizationLevel) {
         this();
         setAccelerometerBiases(accelerometerBiases);
         setGyroBiases(gyroBiases);
-        setAccelerometerScaleFactorAndCrossCouplingErrors(
-                accelerometerScaleFactorAndCrossCouplingErrors);
-        setGyroScaleFactorAndCrossCouplingErrors(
-                gyroScaleFactorAndCrossCouplingErrors);
+        setAccelerometerScaleFactorAndCrossCouplingErrors(accelerometerScaleFactorAndCrossCouplingErrors);
+        setGyroScaleFactorAndCrossCouplingErrors(gyroScaleFactorAndCrossCouplingErrors);
         setGyroGDependentBiases(gyroGDependentBiases);
         setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);
         setGyroNoiseRootPSD(gyroNoiseRootPSD);
@@ -356,22 +338,16 @@ public class IMUErrors implements Serializable, Cloneable {
      *                                                       (rad/s).
      * @throws IllegalArgumentException if any value is invalid.
      */
-    public IMUErrors(final Matrix accelerometerBiases,
-                     final Matrix gyroBiases,
+    public IMUErrors(final Matrix accelerometerBiases, final Matrix gyroBiases,
                      final Matrix accelerometerScaleFactorAndCrossCouplingErrors,
-                     final Matrix gyroScaleFactorAndCrossCouplingErrors,
-                     final Matrix gyroGDependentBiases,
-                     final double accelerometerNoiseRootPSD,
-                     final double gyroNoiseRootPSD,
-                     final double accelerometerQuantizationLevel,
-                     final double gyroQuantizationLevel) {
+                     final Matrix gyroScaleFactorAndCrossCouplingErrors, final Matrix gyroGDependentBiases,
+                     final double accelerometerNoiseRootPSD, final double gyroNoiseRootPSD,
+                     final double accelerometerQuantizationLevel, final double gyroQuantizationLevel) {
         this();
         setAccelerometerBiases(accelerometerBiases);
         setGyroBiases(gyroBiases);
-        setAccelerometerScaleFactorAndCrossCouplingErrors(
-                accelerometerScaleFactorAndCrossCouplingErrors);
-        setGyroScaleFactorAndCrossCouplingErrors(
-                gyroScaleFactorAndCrossCouplingErrors);
+        setAccelerometerScaleFactorAndCrossCouplingErrors(accelerometerScaleFactorAndCrossCouplingErrors);
+        setGyroScaleFactorAndCrossCouplingErrors(gyroScaleFactorAndCrossCouplingErrors);
         setGyroGDependentBiases(gyroGDependentBiases);
         setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);
         setGyroNoiseRootPSD(gyroNoiseRootPSD);
@@ -395,22 +371,17 @@ public class IMUErrors implements Serializable, Cloneable {
      * @param gyroQuantizationLevel                          gyro quantization level.
      * @throws IllegalArgumentException if any value is invalid.
      */
-    public IMUErrors(final Acceleration[] accelerometerBiases,
-                     final AngularSpeed[] gyroBiases,
+    public IMUErrors(final Acceleration[] accelerometerBiases, final AngularSpeed[] gyroBiases,
                      final Matrix accelerometerScaleFactorAndCrossCouplingErrors,
-                     final Matrix gyroScaleFactorAndCrossCouplingErrors,
-                     final Matrix gyroGDependentBiases,
-                     final double accelerometerNoiseRootPSD,
-                     final double gyroNoiseRootPSD,
+                     final Matrix gyroScaleFactorAndCrossCouplingErrors, final Matrix gyroGDependentBiases,
+                     final double accelerometerNoiseRootPSD, final double gyroNoiseRootPSD,
                      final Acceleration accelerometerQuantizationLevel,
                      final AngularSpeed gyroQuantizationLevel) {
         this();
         setAccelerometerBiases(accelerometerBiases);
         setGyroBiases(gyroBiases);
-        setAccelerometerScaleFactorAndCrossCouplingErrors(
-                accelerometerScaleFactorAndCrossCouplingErrors);
-        setGyroScaleFactorAndCrossCouplingErrors(
-                gyroScaleFactorAndCrossCouplingErrors);
+        setAccelerometerScaleFactorAndCrossCouplingErrors(accelerometerScaleFactorAndCrossCouplingErrors);
+        setGyroScaleFactorAndCrossCouplingErrors(gyroScaleFactorAndCrossCouplingErrors);
         setGyroGDependentBiases(gyroGDependentBiases);
         setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);
         setGyroNoiseRootPSD(gyroNoiseRootPSD);
@@ -455,8 +426,7 @@ public class IMUErrors implements Serializable, Cloneable {
             throw new IllegalArgumentException();
         }
 
-        System.arraycopy(mAccelerometerBiases, 0, result, 0,
-                ACCELEROMETER_COMPONENTS);
+        System.arraycopy(mAccelerometerBiases, 0, result, 0, ACCELEROMETER_COMPONENTS);
     }
 
     /**
@@ -494,8 +464,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided result matrix is not 3x1.
      */
     public void getAccelerometerBiasesAsMatrix(final Matrix result) {
-        result.setSubmatrix(0, 0,
-                COMPONENTS_MINUS_ONE, 0,
+        result.setSubmatrix(0, 0, COMPONENTS_MINUS_ONE, 0,
                 mAccelerometerBiases);
     }
 
@@ -507,8 +476,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public void setAccelerometerBiases(final Matrix accelerometerBiases) {
-        if (accelerometerBiases.getRows() != ACCELEROMETER_COMPONENTS ||
-                accelerometerBiases.getColumns() != 1) {
+        if (accelerometerBiases.getRows() != ACCELEROMETER_COMPONENTS || accelerometerBiases.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -547,8 +515,7 @@ public class IMUErrors implements Serializable, Cloneable {
         for (int i = 0; i < ACCELEROMETER_COMPONENTS; i++) {
             Acceleration a = result[i];
             if (a == null) {
-                result[i] = new Acceleration(mAccelerometerBiases[i],
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND);
+                result[i] = new Acceleration(mAccelerometerBiases[i], AccelerationUnit.METERS_PER_SQUARED_SECOND);
             } else {
                 a.setValue(mAccelerometerBiases[i]);
                 a.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
@@ -633,8 +600,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided result matrix is not 3x1.
      */
     public void getGyroBiasesAsMatrix(final Matrix result) {
-        result.setSubmatrix(0, 0,
-                COMPONENTS_MINUS_ONE, 0, mGyroBiases);
+        result.setSubmatrix(0, 0, COMPONENTS_MINUS_ONE, 0, mGyroBiases);
     }
 
     /**
@@ -645,14 +611,13 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public void setGyroBiases(final Matrix gyroBiases) {
-        if (gyroBiases.getRows() != GYRO_COMPONENTS ||
-                gyroBiases.getColumns() != 1) {
+        if (gyroBiases.getRows() != GYRO_COMPONENTS || gyroBiases.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
         try {
-            gyroBiases.getSubmatrixAsArray(0, 0,
-                    COMPONENTS_MINUS_ONE, 0, mGyroBiases);
+            gyroBiases.getSubmatrixAsArray(0, 0, COMPONENTS_MINUS_ONE, 0,
+                    mGyroBiases);
         } catch (final WrongSizeException ignore) {
             // never happens
         }
@@ -685,8 +650,7 @@ public class IMUErrors implements Serializable, Cloneable {
         for (int i = 0; i < GYRO_COMPONENTS; i++) {
             AngularSpeed as = result[i];
             if (as == null) {
-                result[i] = new AngularSpeed(mGyroBiases[i],
-                        AngularSpeedUnit.RADIANS_PER_SECOND);
+                result[i] = new AngularSpeed(mGyroBiases[i], AngularSpeedUnit.RADIANS_PER_SECOND);
             } else {
                 as.setValue(mGyroBiases[i]);
                 as.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
@@ -853,8 +817,7 @@ public class IMUErrors implements Serializable, Cloneable {
             throw new IllegalArgumentException();
         }
 
-        mAccelerometerScaleFactorAndCrossCouplingErrors
-                .copyFrom(accelerometerScaleFactorAndCrossCouplingErrors);
+        mAccelerometerScaleFactorAndCrossCouplingErrors.copyFrom(accelerometerScaleFactorAndCrossCouplingErrors);
     }
 
     /**
@@ -993,15 +956,13 @@ public class IMUErrors implements Serializable, Cloneable {
      *                                              matrix to be set.
      * @throws IllegalArgumentException if provided matrix is not 3x3.
      */
-    public void setGyroScaleFactorAndCrossCouplingErrors(
-            final Matrix gyroScaleFactorAndCrossCouplingErrors) {
+    public void setGyroScaleFactorAndCrossCouplingErrors(final Matrix gyroScaleFactorAndCrossCouplingErrors) {
         if (gyroScaleFactorAndCrossCouplingErrors.getRows() != GYRO_COMPONENTS
                 || gyroScaleFactorAndCrossCouplingErrors.getColumns() != GYRO_COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
-        mGyroScaleFactorAndCrossCouplingErrors
-                .copyFrom(gyroScaleFactorAndCrossCouplingErrors);
+        mGyroScaleFactorAndCrossCouplingErrors.copyFrom(gyroScaleFactorAndCrossCouplingErrors);
     }
 
     /**
@@ -1152,8 +1113,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @param accelerometerQuantizationLevel accelerometer quantization level to be
      *                                       set.
      */
-    public void setAccelerometerQuantizationLevel(
-            final double accelerometerQuantizationLevel) {
+    public void setAccelerometerQuantizationLevel(final double accelerometerQuantizationLevel) {
         mAccelerometerQuantizationLevel = accelerometerQuantizationLevel;
     }
 
@@ -1164,8 +1124,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return accelerometer quantization level.
      */
     public Acceleration getAccelerometerQuantizationLevelAsAcceleration() {
-        return new Acceleration(mAccelerometerQuantizationLevel,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mAccelerometerQuantizationLevel, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1184,10 +1143,8 @@ public class IMUErrors implements Serializable, Cloneable {
      *
      * @param accelerometerQuantizationLevel accelerometer quantization level to be set.
      */
-    public void setAccelerometerQuantizationLevel(
-            final Acceleration accelerometerQuantizationLevel) {
-        mAccelerometerQuantizationLevel = convertAcceleration(
-                accelerometerQuantizationLevel);
+    public void setAccelerometerQuantizationLevel(final Acceleration accelerometerQuantizationLevel) {
+        mAccelerometerQuantizationLevel = convertAcceleration(accelerometerQuantizationLevel);
     }
 
     /**
@@ -1216,8 +1173,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return gyro quantization level.
      */
     public AngularSpeed getGyroQuantizationLevelAsAngularSpeed() {
-        return new AngularSpeed(mGyroQuantizationLevel,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mGyroQuantizationLevel, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -1257,10 +1213,8 @@ public class IMUErrors implements Serializable, Cloneable {
     public void copyFrom(final IMUErrors input) {
         input.getAccelerometerBiases(mAccelerometerBiases);
         input.getGyroBiases(mGyroBiases);
-        mAccelerometerScaleFactorAndCrossCouplingErrors.copyFrom(
-                input.mAccelerometerScaleFactorAndCrossCouplingErrors);
-        mGyroScaleFactorAndCrossCouplingErrors.copyFrom(
-                input.mGyroScaleFactorAndCrossCouplingErrors);
+        mAccelerometerScaleFactorAndCrossCouplingErrors.copyFrom(input.mAccelerometerScaleFactorAndCrossCouplingErrors);
+        mGyroScaleFactorAndCrossCouplingErrors.copyFrom(input.mGyroScaleFactorAndCrossCouplingErrors);
         mGyroGDependentBiases.copyFrom(input.mGyroGDependentBiases);
         mAccelerometerNoiseRootPSD = input.mAccelerometerNoiseRootPSD;
         mGyroNoiseRootPSD = input.mGyroNoiseRootPSD;
@@ -1277,11 +1231,9 @@ public class IMUErrors implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(mAccelerometerScaleFactorAndCrossCouplingErrors,
-                mGyroScaleFactorAndCrossCouplingErrors, mGyroGDependentBiases,
-                mAccelerometerNoiseRootPSD, mGyroNoiseRootPSD,
-                mAccelerometerQuantizationLevel, mGyroQuantizationLevel,
-                Arrays.hashCode(mAccelerometerBiases), Arrays.hashCode(mGyroBiases));
+        return Objects.hash(mAccelerometerScaleFactorAndCrossCouplingErrors, mGyroScaleFactorAndCrossCouplingErrors,
+                mGyroGDependentBiases, mAccelerometerNoiseRootPSD, mGyroNoiseRootPSD, mAccelerometerQuantizationLevel,
+                mGyroQuantizationLevel, Arrays.hashCode(mAccelerometerBiases), Arrays.hashCode(mGyroBiases));
     }
 
     /**
@@ -1333,8 +1285,8 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return converted value.
      */
     private double convertAcceleration(final Acceleration acceleration) {
-        return AccelerationConverter.convert(acceleration.getValue().doubleValue(),
-                acceleration.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return AccelerationConverter.convert(acceleration.getValue().doubleValue(), acceleration.getUnit(),
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1344,7 +1296,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return converted value.
      */
     private double convertAngularSpeed(final AngularSpeed angularSpeed) {
-        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(),
-                angularSpeed.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(), angularSpeed.getUnit(),
+                AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 }

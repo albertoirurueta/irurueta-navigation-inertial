@@ -26,8 +26,7 @@ import com.irurueta.units.Measurement;
  * @param <T> a triad type.
  * @param <E> an estimator type.
  */
-public interface WindowedTriadNoiseEstimatorListener<U extends Enum<?>,
-        M extends Measurement<U>, T extends Triad<U, M>,
+public interface WindowedTriadNoiseEstimatorListener<U extends Enum<?>, M extends Measurement<U>, T extends Triad<U, M>,
         E extends WindowedTriadNoiseEstimator<U, M, T, E, ?>> {
 
     /**

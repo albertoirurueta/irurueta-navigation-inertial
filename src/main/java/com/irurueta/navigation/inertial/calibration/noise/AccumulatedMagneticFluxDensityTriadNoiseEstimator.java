@@ -43,8 +43,8 @@ import com.irurueta.units.MagneticFluxDensityUnit;
  * - (T * s^0.5) for magnetometer root PSD (Power Spectral Density).
  */
 public class AccumulatedMagneticFluxDensityTriadNoiseEstimator extends
-        AccumulatedTriadNoiseEstimator<MagneticFluxDensityUnit, MagneticFluxDensity,
-                MagneticFluxDensityTriad, AccumulatedMagneticFluxDensityTriadNoiseEstimator,
+        AccumulatedTriadNoiseEstimator<MagneticFluxDensityUnit, MagneticFluxDensity, MagneticFluxDensityTriad,
+                AccumulatedMagneticFluxDensityTriadNoiseEstimator,
                 AccumulatedMagneticFluxDensityTriadNoiseEstimatorListener> {
 
     /**
@@ -75,8 +75,7 @@ public class AccumulatedMagneticFluxDensityTriadNoiseEstimator extends
      */
     @Override
     protected MagneticFluxDensityTriad createTriad(
-            final double valueX, final double valueY, final double valueZ,
-            final MagneticFluxDensityUnit unit) {
+            final double valueX, final double valueY, final double valueZ, final MagneticFluxDensityUnit unit) {
         return new MagneticFluxDensityTriad(unit, valueX, valueY, valueZ);
     }
 
@@ -98,8 +97,7 @@ public class AccumulatedMagneticFluxDensityTriadNoiseEstimator extends
      * @return created measurement.
      */
     @Override
-    protected MagneticFluxDensity createMeasurement(
-            final double value, final MagneticFluxDensityUnit unit) {
+    protected MagneticFluxDensity createMeasurement(final double value, final MagneticFluxDensityUnit unit) {
         return new MagneticFluxDensity(value, unit);
     }
 

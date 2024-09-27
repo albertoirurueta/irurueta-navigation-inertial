@@ -45,8 +45,8 @@ import com.irurueta.units.MagneticFluxDensityUnit;
  * - (T * s^0.5) for magnetometer root PSD (Power Spectral Density).
  */
 public class WindowedMagneticFluxDensityTriadNoiseEstimator extends
-        WindowedTriadNoiseEstimator<MagneticFluxDensityUnit, MagneticFluxDensity,
-                MagneticFluxDensityTriad, WindowedMagneticFluxDensityTriadNoiseEstimator,
+        WindowedTriadNoiseEstimator<MagneticFluxDensityUnit, MagneticFluxDensity, MagneticFluxDensityTriad,
+                WindowedMagneticFluxDensityTriadNoiseEstimator,
                 WindowedMagneticFluxDensityTriadNoiseEstimatorListener> {
 
     /**
@@ -88,8 +88,7 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimator extends
      */
     @Override
     protected MagneticFluxDensityTriad createTriad(
-            final double valueX, final double valueY, final double valueZ,
-            final MagneticFluxDensityUnit unit) {
+            final double valueX, final double valueY, final double valueZ, final MagneticFluxDensityUnit unit) {
         return new MagneticFluxDensityTriad(unit, valueX, valueY, valueZ);
     }
 
@@ -103,9 +102,7 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimator extends
      */
     @Override
     protected MagneticFluxDensityTriad createTriad(
-            final MagneticFluxDensity valueX,
-            final MagneticFluxDensity valueY,
-            final MagneticFluxDensity valueZ) {
+            final MagneticFluxDensity valueX, final MagneticFluxDensity valueY, final MagneticFluxDensity valueZ) {
         return new MagneticFluxDensityTriad(valueX, valueY, valueZ);
     }
 
@@ -127,8 +124,7 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimator extends
      * @return created measurement.
      */
     @Override
-    protected MagneticFluxDensity createMeasurement(
-            final double value, final MagneticFluxDensityUnit unit) {
+    protected MagneticFluxDensity createMeasurement(final double value, final MagneticFluxDensityUnit unit) {
         return new MagneticFluxDensity(value, unit);
     }
 }

@@ -24,8 +24,7 @@ import java.util.Collection;
  * Defines a gyroscope calibrator using unordered collections of
  * {@link StandardDeviationBodyKinematics} measurements.
  */
-public interface UnorderedStandardDeviationBodyKinematicsGyroscopeCalibrator extends
-        GyroscopeCalibrator {
+public interface UnorderedStandardDeviationBodyKinematicsGyroscopeCalibrator extends GyroscopeCalibrator {
 
     /**
      * Gets a collection of body kinematics measurements taken at
@@ -46,7 +45,5 @@ public interface UnorderedStandardDeviationBodyKinematicsGyroscopeCalibrator ext
      *                     known position with unknown orientations.
      * @throws LockedException if calibrator is currently running.
      */
-    void setMeasurements(
-            final Collection<StandardDeviationBodyKinematics> measurements)
-            throws LockedException;
+    void setMeasurements(final Collection<StandardDeviationBodyKinematics> measurements) throws LockedException;
 }

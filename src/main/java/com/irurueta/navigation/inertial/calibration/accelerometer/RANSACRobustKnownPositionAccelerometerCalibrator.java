@@ -52,8 +52,7 @@ import java.util.List;
  * - ftrue is ground-truth specific force.
  * - w is measurement noise.
  */
-public class RANSACRobustKnownPositionAccelerometerCalibrator extends
-        RobustKnownPositionAccelerometerCalibrator {
+public class RANSACRobustKnownPositionAccelerometerCalibrator extends RobustKnownPositionAccelerometerCalibrator {
 
     /**
      * Constant defining default threshold to determine whether samples are inliers or not.
@@ -117,8 +116,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                     different unknown orientations and containing the standard deviations
      *                     of accelerometer and gyroscope measurements.
      */
-    public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final List<StandardDeviationBodyKinematics> measurements) {
+    public RANSACRobustKnownPositionAccelerometerCalibrator(final List<StandardDeviationBodyKinematics> measurements) {
         super(measurements);
     }
 
@@ -128,8 +126,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final boolean commonAxisUsed) {
+    public RANSACRobustKnownPositionAccelerometerCalibrator(final boolean commonAxisUsed) {
         super(commonAxisUsed);
     }
 
@@ -141,8 +138,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                    squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final double[] initialBias) {
+    public RANSACRobustKnownPositionAccelerometerCalibrator(final double[] initialBias) {
         super(initialBias);
     }
 
@@ -152,8 +148,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @param initialBias initial bias to find a solution.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final Matrix initialBias) {
+    public RANSACRobustKnownPositionAccelerometerCalibrator(final Matrix initialBias) {
         super(initialBias);
     }
 
@@ -165,8 +160,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final Matrix initialBias, final Matrix initialMa) {
+    public RANSACRobustKnownPositionAccelerometerCalibrator(final Matrix initialBias, final Matrix initialMa) {
         super(initialBias, initialMa);
     }
 
@@ -175,8 +169,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *
      * @param position position where body kinematics measures have been taken.
      */
-    public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position) {
+    public RANSACRobustKnownPositionAccelerometerCalibrator(final ECEFPosition position) {
         super(position);
     }
 
@@ -189,8 +182,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                     of accelerometer and gyroscope measurements.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements) {
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements) {
         super(position, measurements);
     }
 
@@ -205,8 +197,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                     starts, ends or its progress significantly changes.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, listener);
     }
@@ -222,8 +213,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         super(position, measurements, commonAxisUsed);
     }
@@ -241,10 +231,8 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                       starts, ends or its progress significantly changes.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownPositionAccelerometerCalibratorListener listener) {
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, listener);
     }
 
@@ -261,8 +249,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final double[] initialBias) {
         super(position, measurements, initialBias);
     }
@@ -281,10 +268,8 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final RobustKnownPositionAccelerometerCalibratorListener listener) {
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] initialBias, final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, initialBias, listener);
     }
 
@@ -303,8 +288,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
         super(position, measurements, commonAxisUsed, initialBias);
     }
@@ -325,8 +309,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, initialBias, listener);
@@ -343,8 +326,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias) {
         super(position, measurements, initialBias);
     }
@@ -361,10 +343,8 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final RobustKnownPositionAccelerometerCalibratorListener listener) {
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix initialBias, final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, initialBias, listener);
     }
 
@@ -381,8 +361,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
         super(position, measurements, commonAxisUsed, initialBias);
     }
@@ -401,8 +380,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, initialBias, listener);
@@ -421,8 +399,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa) {
         super(position, measurements, initialBias, initialMa);
     }
@@ -441,8 +418,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, initialBias, initialMa, listener);
@@ -463,10 +439,8 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa) {
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa) {
         super(position, measurements, commonAxisUsed, initialBias, initialMa);
     }
 
@@ -486,13 +460,10 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-        super(position, measurements, commonAxisUsed, initialBias, initialMa,
-                listener);
+        super(position, measurements, commonAxisUsed, initialBias, initialMa, listener);
     }
 
     /**
@@ -500,8 +471,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *
      * @param position position where body kinematics measures have been taken.
      */
-    public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position) {
+    public RANSACRobustKnownPositionAccelerometerCalibrator(final NEDPosition position) {
         super(position);
     }
 
@@ -514,8 +484,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                     of accelerometer and gyroscope measurements.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements) {
         super(position, measurements);
     }
 
@@ -530,8 +499,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                     starts, ends or its progress significantly changes.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, listener);
     }
@@ -547,8 +515,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         super(position, measurements, commonAxisUsed);
     }
@@ -566,10 +533,8 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                       starts, ends or its progress significantly changes.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownPositionAccelerometerCalibratorListener listener) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, listener);
     }
 
@@ -586,8 +551,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final double[] initialBias) {
         super(position, measurements, initialBias);
     }
@@ -606,10 +570,8 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final RobustKnownPositionAccelerometerCalibratorListener listener) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] initialBias, final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, initialBias, listener);
     }
 
@@ -628,8 +590,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
         super(position, measurements, commonAxisUsed, initialBias);
     }
@@ -650,8 +611,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, initialBias, listener);
@@ -668,8 +628,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias) {
         super(position, measurements, initialBias);
     }
@@ -686,10 +645,8 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final RobustKnownPositionAccelerometerCalibratorListener listener) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix initialBias, final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, initialBias, listener);
     }
 
@@ -706,8 +663,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
         super(position, measurements, commonAxisUsed, initialBias);
     }
@@ -726,8 +682,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, initialBias, listener);
@@ -746,8 +701,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa) {
         super(position, measurements, initialBias, initialMa);
     }
@@ -766,8 +720,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, initialBias, initialMa, listener);
@@ -788,10 +741,8 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa) {
         super(position, measurements, commonAxisUsed, initialBias, initialMa);
     }
 
@@ -811,13 +762,10 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public RANSACRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-        super(position, measurements, commonAxisUsed, initialBias, initialMa,
-                listener);
+        super(position, measurements, commonAxisUsed, initialBias, initialMa, listener);
     }
 
     /**
@@ -867,9 +815,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                              false if inliers only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepInliersEnabled(
-            final boolean computeAndKeepInliers)
-            throws LockedException {
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -893,9 +839,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
      *                                false if residuals only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepResidualsEnabled(
-            final boolean computeAndKeepResiduals)
-            throws LockedException {
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -924,7 +868,7 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
 
         final RANSACRobustEstimator<PreliminaryResult> innerEstimator =
                 new RANSACRobustEstimator<>(
-                        new RANSACRobustEstimatorListener<PreliminaryResult>() {
+                        new RANSACRobustEstimatorListener<>() {
                             @Override
                             public double getThreshold() {
                                 return mThreshold;
@@ -942,14 +886,12 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
 
                             @Override
                             public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<PreliminaryResult> solutions) {
+                                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                                 computePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override
-                            public double computeResidual(
-                                    final PreliminaryResult currentEstimation, final int i) {
+                            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
                                 return computeError(mMeasurements.get(i), currentEstimation);
                             }
 
@@ -959,36 +901,30 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
                             }
 
                             @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
                             public void onEstimateNextIteration(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final int iteration) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                                 if (mListener != null) {
                                     mListener.onCalibrateNextIteration(
-                                            RANSACRobustKnownPositionAccelerometerCalibrator.this,
-                                            iteration);
+                                            RANSACRobustKnownPositionAccelerometerCalibrator.this, iteration);
                                 }
                             }
 
                             @Override
                             public void onEstimateProgressChange(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final float progress) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                                 if (mListener != null) {
                                     mListener.onCalibrateProgressChange(
-                                            RANSACRobustKnownPositionAccelerometerCalibrator.this,
-                                            progress);
+                                            RANSACRobustKnownPositionAccelerometerCalibrator.this, progress);
                                 }
                             }
                         });
@@ -1001,10 +937,8 @@ public class RANSACRobustKnownPositionAccelerometerCalibrator extends
             }
 
             mInliersData = null;
-            innerEstimator.setComputeAndKeepInliersEnabled(
-                    mComputeAndKeepInliers || mRefineResult);
-            innerEstimator.setComputeAndKeepResidualsEnabled(
-                    mComputeAndKeepResiduals || mRefineResult);
+            innerEstimator.setComputeAndKeepInliersEnabled(mComputeAndKeepInliers || mRefineResult);
+            innerEstimator.setComputeAndKeepResidualsEnabled(mComputeAndKeepResiduals || mRefineResult);
             innerEstimator.setConfidence(mConfidence);
             innerEstimator.setMaxIterations(mMaxIterations);
             innerEstimator.setProgressDelta(mProgressDelta);

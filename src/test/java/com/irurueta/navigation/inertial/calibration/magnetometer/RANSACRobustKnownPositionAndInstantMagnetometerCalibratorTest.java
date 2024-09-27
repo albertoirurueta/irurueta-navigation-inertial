@@ -97,10 +97,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
     private static final long END_TIMESTAMP_MILLIS;
 
     static {
-        START_CALENDAR.set(2020, Calendar.JANUARY, 1,
-                0, 0, 0);
-        END_CALENDAR.set(2025, Calendar.DECEMBER, 31,
-                23, 59, 59);
+        START_CALENDAR.set(2020, Calendar.JANUARY, 1, 0, 0, 0);
+        END_CALENDAR.set(2025, Calendar.DECEMBER, 31, 23, 59, 59);
 
         START_TIMESTAMP_MILLIS = START_CALENDAR.getTimeInMillis();
         END_TIMESTAMP_MILLIS = END_CALENDAR.getTimeInMillis();
@@ -117,62 +115,61 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, new double[3], 0.0);
+        assertArrayEquals(new double[3], b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
         final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
-        assertEquals(bm1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), bm1);
         final Matrix bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, bTriad1.getValueX(), 0.0);
+        assertEquals(0.0, bTriad1.getValueY(), 0.0);
+        assertEquals(0.0, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
@@ -188,18 +185,16 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -230,8 +225,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -252,8 +247,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -266,62 +261,61 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(this);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, new double[3], 0.0);
+        assertArrayEquals(new double[3], b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
         final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
-        assertEquals(bm1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), bm1);
         final Matrix bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, bTriad1.getValueX(), 0.0);
+        assertEquals(0.0, bTriad1.getValueY(), 0.0);
+        assertEquals(0.0, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
@@ -336,19 +330,17 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertSame(this, calibrator.getListener());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -379,8 +371,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -401,8 +393,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -411,69 +403,66 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
 
     @Test
     public void testConstructor3() throws WrongSizeException {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        measurements);
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(measurements);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, new double[3], 0.0);
+        assertArrayEquals(new double[3], b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
         final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
-        assertEquals(bm1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), bm1);
         final Matrix bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, bTriad1.getValueX(), 0.0);
+        assertEquals(0.0, bTriad1.getValueY(), 0.0);
+        assertEquals(0.0, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
@@ -482,25 +471,23 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEcefPosition());
         assertFalse(calibrator.getEcefPosition(null));
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -531,8 +518,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -553,8 +540,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -564,66 +551,64 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
     @Test
     public void testConstructor4() throws WrongSizeException {
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        true);
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(true);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, new double[3], 0.0);
+        assertArrayEquals(new double[3], b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
         final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
-        assertEquals(bm1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), bm1);
         final Matrix bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, bTriad1.getValueX(), 0.0);
+        assertEquals(0.0, bTriad1.getValueY(), 0.0);
+        assertEquals(0.0, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
@@ -639,18 +624,16 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -681,8 +664,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -703,8 +686,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -715,66 +698,64 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
     public void testConstructor5() throws WrongSizeException {
         final WorldMagneticModel magneticModel = new WorldMagneticModel();
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        magneticModel);
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(magneticModel);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, new double[3], 0.0);
+        assertArrayEquals(new double[3], b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
         final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
-        assertEquals(bm1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), bm1);
         final Matrix bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, bTriad1.getValueX(), 0.0);
+        assertEquals(0.0, bTriad1.getValueY(), 0.0);
+        assertEquals(0.0, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
@@ -790,18 +771,16 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertSame(calibrator.getMagneticModel(), magneticModel);
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertSame(magneticModel, calibrator.getMagneticModel());
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -832,8 +811,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -854,8 +833,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -864,40 +843,38 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
 
     @Test
     public void testConstructor6() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
         final double bmx = hardIron[0];
         final double bmy = hardIron[1];
         final double bmz = hardIron[2];
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        hardIron);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(hardIron);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -907,32 +884,31 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
@@ -948,18 +924,16 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -990,8 +964,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -1012,60 +986,52 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(new double[1]));
     }
 
     @Test
     public void testConstructor7() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
         final double bmx = hardIron[0];
         final double bmy = hardIron[1];
         final double bmz = hardIron[2];
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        bm);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(bm);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -1075,32 +1041,31 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
@@ -1116,18 +1081,16 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1158,8 +1121,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -1180,34 +1143,23 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(new Matrix(3, 3)));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(new Matrix(1, 1)));
     }
 
     @Test
     public void testConstructor8() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
         final double bmx = hardIron[0];
@@ -1226,59 +1178,57 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        bm, mm);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(bm, mm);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), sx, 0.0);
-        assertEquals(calibrator.getInitialSy(), sy, 0.0);
-        assertEquals(calibrator.getInitialSz(), sz, 0.0);
-        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
-        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
-        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
-        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
-        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
-        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(sx, calibrator.getInitialSx(), 0.0);
+        assertEquals(sy, calibrator.getInitialSy(), 0.0);
+        assertEquals(sz, calibrator.getInitialSz(), 0.0);
+        assertEquals(mxy, calibrator.getInitialMxy(), 0.0);
+        assertEquals(mxz, calibrator.getInitialMxz(), 0.0);
+        assertEquals(myx, calibrator.getInitialMyx(), 0.0);
+        assertEquals(myz, calibrator.getInitialMyz(), 0.0);
+        assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
+        assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
         final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
         assertEquals(bm1, bm);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
@@ -1302,18 +1252,16 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+                calibrator.getConfidence(), 0.0);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1344,8 +1292,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -1366,121 +1314,102 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    new Matrix(3, 3), mm);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    new Matrix(1, 1), mm);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    bm, new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    bm, new Matrix(3, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(new Matrix(3, 3),
+                        mm));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(new Matrix(1, 1),
+                        mm));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(bm,
+                        new Matrix(1, 3)));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(bm,
+                        new Matrix(3, 1)));
     }
 
     @Test
     public void testConstructor9() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        nedPosition);
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, new double[3], 0.0);
+        assertArrayEquals(new double[3], b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
         final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
-        assertEquals(bm1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), bm1);
         final Matrix bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, bTriad1.getValueX(), 0.0);
+        assertEquals(0.0, bTriad1.getValueY(), 0.0);
+        assertEquals(0.0, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                ABSOLUTE_ERROR));
+        assertSame(nedPosition, calibrator.getNedPosition());
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
@@ -1492,18 +1421,16 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1534,8 +1461,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -1556,8 +1483,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1566,108 +1493,100 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
 
     @Test
     public void testConstructor10() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements);
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, new double[3], 0.0);
+        assertArrayEquals(new double[3], b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
         final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
-        assertEquals(bm1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), bm1);
         final Matrix bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, bTriad1.getValueX(), 0.0);
+        assertEquals(0.0, bTriad1.getValueY(), 0.0);
+        assertEquals(0.0, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                ABSOLUTE_ERROR));
+        assertSame(nedPosition, calibrator.getNedPosition());
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1698,8 +1617,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -1720,8 +1639,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1730,108 +1649,100 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
 
     @Test
     public void testConstructor11() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, this);
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, this);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, new double[3], 0.0);
+        assertArrayEquals(new double[3], b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
         final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
-        assertEquals(bm1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), bm1);
         final Matrix bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, bTriad1.getValueX(), 0.0);
+        assertEquals(0.0, bTriad1.getValueY(), 0.0);
+        assertEquals(0.0, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                ABSOLUTE_ERROR));
+        assertSame(nedPosition, calibrator.getNedPosition());
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertSame(this, calibrator.getListener());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1862,8 +1773,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -1884,8 +1795,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -1894,108 +1805,101 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
 
     @Test
     public void testConstructor12() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, true);
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, new double[3], 0.0);
+        assertArrayEquals(new double[3], b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
         final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
-        assertEquals(bm1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), bm1);
         final Matrix bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, bTriad1.getValueX(), 0.0);
+        assertEquals(0.0, bTriad1.getValueY(), 0.0);
+        assertEquals(0.0, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                ABSOLUTE_ERROR));
+        assertSame(nedPosition, calibrator.getNedPosition());
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2026,8 +1930,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -2048,8 +1952,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2058,108 +1962,101 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
 
     @Test
     public void testConstructor13() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, true, this);
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, this);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, new double[3], 0.0);
+        assertArrayEquals(new double[3], b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
         final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
-        assertEquals(bm1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), bm1);
         final Matrix bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, bTriad1.getValueX(), 0.0);
+        assertEquals(0.0, bTriad1.getValueY(), 0.0);
+        assertEquals(0.0, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                ABSOLUTE_ERROR));
+        assertSame(nedPosition, calibrator.getNedPosition());
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
+        assertSame(this, calibrator.getListener());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2190,8 +2087,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -2212,8 +2109,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -2222,16 +2119,13 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
 
     @Test
     public void testConstructor14() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -2239,32 +2133,31 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double bmy = hardIron[1];
         final double bmz = hardIron[2];
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, hardIron);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, hardIron);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -2274,62 +2167,58 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                ABSOLUTE_ERROR));
+        assertSame(nedPosition, calibrator.getNedPosition());
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2360,8 +2249,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -2382,36 +2271,28 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        new double[1]));
     }
 
     @Test
     public void testConstructor15() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -2419,32 +2300,32 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double bmy = hardIron[1];
         final double bmz = hardIron[2];
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, hardIron, this);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, hardIron,
+                        this);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -2454,62 +2335,58 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                ABSOLUTE_ERROR));
+        assertSame(nedPosition, calibrator.getNedPosition());
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertSame(this, calibrator.getListener());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2540,8 +2417,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -2562,36 +2439,28 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, new double[1], this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        new double[1], this));
     }
 
     @Test
     public void testConstructor16() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -2599,32 +2468,32 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double bmy = hardIron[1];
         final double bmz = hardIron[2];
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, true, hardIron);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, hardIron);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -2634,62 +2503,58 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                ABSOLUTE_ERROR));
+        assertSame(nedPosition, calibrator.getNedPosition());
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2720,8 +2585,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -2742,36 +2607,28 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, new double[1]));
     }
 
     @Test
     public void testConstructor17() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -2779,33 +2636,32 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double bmy = hardIron[1];
         final double bmz = hardIron[2];
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, true,
-                        hardIron, this);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, hardIron, this);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -2815,62 +2671,58 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                ABSOLUTE_ERROR));
+        assertSame(nedPosition, calibrator.getNedPosition());
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
+        assertSame(this, calibrator.getListener());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2901,8 +2753,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -2923,37 +2775,28 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new double[1], this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, new double[1], this));
     }
 
     @Test
     public void testConstructor18() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -2961,32 +2804,31 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double bmy = hardIron[1];
         final double bmz = hardIron[2];
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, bm);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, bm);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -2996,62 +2838,58 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                ABSOLUTE_ERROR));
+        assertSame(nedPosition, calibrator.getNedPosition());
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -3082,8 +2920,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -3104,42 +2942,31 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        new Matrix(3, 3)));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        new Matrix(1, 1)));
     }
 
     @Test
     public void testConstructor19() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -3147,32 +2974,32 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double bmy = hardIron[1];
         final double bmz = hardIron[2];
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, bm, this);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, bm,
+                        this);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -3182,62 +3009,58 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                ABSOLUTE_ERROR));
+        assertSame(nedPosition, calibrator.getNedPosition());
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertSame(this, calibrator.getListener());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -3268,8 +3091,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -3290,44 +3113,31 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, new Matrix(3, 3),
-                    this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, new Matrix(1, 1),
-                    this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        new Matrix(3, 3), this));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        new Matrix(1, 1), this));
     }
 
     @Test
     public void testConstructor20() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -3335,32 +3145,32 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double bmy = hardIron[1];
         final double bmz = hardIron[2];
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, true, bm);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, bm);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -3370,62 +3180,58 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                ABSOLUTE_ERROR));
+        assertSame(nedPosition, calibrator.getNedPosition());
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -3456,8 +3262,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -3478,44 +3284,31 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, new Matrix(3, 3)));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, new Matrix(1, 1)));
     }
 
     @Test
     public void testConstructor21() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -3523,33 +3316,32 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double bmy = hardIron[1];
         final double bmz = hardIron[2];
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, true, bm,
-                        this);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, bm, this);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -3559,62 +3351,58 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                ABSOLUTE_ERROR));
+        assertSame(nedPosition, calibrator.getNedPosition());
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
+        assertSame(this, calibrator.getListener());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -3645,8 +3433,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -3667,44 +3455,31 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new Matrix(3, 3), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new Matrix(1, 1), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, new Matrix(3, 3), this));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, new Matrix(1, 1), this));
     }
 
     @Test
     public void testConstructor22() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -3725,32 +3500,31 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, bm, mm);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, bm, mm);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), sx, 0.0);
-        assertEquals(calibrator.getInitialSy(), sy, 0.0);
-        assertEquals(calibrator.getInitialSz(), sz, 0.0);
-        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
-        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
-        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
-        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
-        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
-        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(sx, calibrator.getInitialSx(), 0.0);
+        assertEquals(sy, calibrator.getInitialSy(), 0.0);
+        assertEquals(sz, calibrator.getInitialSz(), 0.0);
+        assertEquals(mxy, calibrator.getInitialMxy(), 0.0);
+        assertEquals(mxz, calibrator.getInitialMxz(), 0.0);
+        assertEquals(myx, calibrator.getInitialMyx(), 0.0);
+        assertEquals(myz, calibrator.getInitialMyz(), 0.0);
+        assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
+        assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -3760,27 +3534,26 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
@@ -3790,32 +3563,29 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                ABSOLUTE_ERROR));
+        assertSame(nedPosition, calibrator.getNedPosition());
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -3846,8 +3616,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -3868,58 +3638,37 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, new Matrix(3, 3),
-                    mm);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, new Matrix(1, 1),
-                    mm);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, bm,
-                    new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, bm,
-                    new Matrix(3, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        new Matrix(3, 3), mm));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        new Matrix(1, 1), mm));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, bm,
+                        new Matrix(1, 3)));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, bm,
+                        new Matrix(3, 1)));
     }
 
     @Test
     public void testConstructor23() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -3940,32 +3689,32 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, bm, mm, this);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, bm, mm,
+                        this);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), sx, 0.0);
-        assertEquals(calibrator.getInitialSy(), sy, 0.0);
-        assertEquals(calibrator.getInitialSz(), sz, 0.0);
-        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
-        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
-        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
-        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
-        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
-        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(sx, calibrator.getInitialSx(), 0.0);
+        assertEquals(sy, calibrator.getInitialSy(), 0.0);
+        assertEquals(sz, calibrator.getInitialSz(), 0.0);
+        assertEquals(mxy, calibrator.getInitialMxy(), 0.0);
+        assertEquals(mxz, calibrator.getInitialMxz(), 0.0);
+        assertEquals(myx, calibrator.getInitialMyx(), 0.0);
+        assertEquals(myz, calibrator.getInitialMyz(), 0.0);
+        assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
+        assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -3975,27 +3724,26 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
@@ -4005,32 +3753,29 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                ABSOLUTE_ERROR));
+        assertSame(nedPosition, calibrator.getNedPosition());
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertSame(this, calibrator.getListener());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -4061,8 +3806,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -4083,58 +3828,37 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, new Matrix(3, 3),
-                    mm, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, new Matrix(1, 1),
-                    mm, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, bm,
-                    new Matrix(1, 3), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, bm,
-                    new Matrix(3, 1), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        new Matrix(3, 3), mm, this));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        new Matrix(1, 1), mm, this));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, bm,
+                        new Matrix(1, 3), this));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements, bm,
+                        new Matrix(3, 1), this));
     }
 
     @Test
     public void testConstructor24() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -4155,30 +3879,29 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, true,
-                        bm, mm);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, bm, mm);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), sx, 0.0);
-        assertEquals(calibrator.getInitialSy(), sy, 0.0);
-        assertEquals(calibrator.getInitialSz(), sz, 0.0);
-        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
-        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
-        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
-        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
-        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
-        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(sx, calibrator.getInitialSx(), 0.0);
+        assertEquals(sy, calibrator.getInitialSy(), 0.0);
+        assertEquals(sz, calibrator.getInitialSz(), 0.0);
+        assertEquals(mxy, calibrator.getInitialMxy(), 0.0);
+        assertEquals(mxz, calibrator.getInitialMxz(), 0.0);
+        assertEquals(myx, calibrator.getInitialMyx(), 0.0);
+        assertEquals(myz, calibrator.getInitialMyz(), 0.0);
+        assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
+        assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
@@ -4191,27 +3914,26 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
@@ -4221,32 +3943,29 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                ABSOLUTE_ERROR));
+        assertSame(nedPosition, calibrator.getNedPosition());
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -4277,8 +3996,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -4299,58 +4018,37 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new Matrix(3, 3), mm);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new Matrix(1, 1), mm);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    bm, new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    bm, new Matrix(3, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, new Matrix(3, 3), mm));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, new Matrix(1, 1), mm));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, bm, new Matrix(1, 3)));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, bm, new Matrix(3, 1)));
     }
 
     @Test
     public void testConstructor25() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -4371,33 +4069,32 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, true,
-                        bm, mm, this);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, bm, mm, this);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), sx, 0.0);
-        assertEquals(calibrator.getInitialSy(), sy, 0.0);
-        assertEquals(calibrator.getInitialSz(), sz, 0.0);
-        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
-        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
-        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
-        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
-        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
-        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(sx, calibrator.getInitialSx(), 0.0);
+        assertEquals(sy, calibrator.getInitialSy(), 0.0);
+        assertEquals(sz, calibrator.getInitialSz(), 0.0);
+        assertEquals(mxy, calibrator.getInitialMxy(), 0.0);
+        assertEquals(mxz, calibrator.getInitialMxz(), 0.0);
+        assertEquals(myx, calibrator.getInitialMyx(), 0.0);
+        assertEquals(myz, calibrator.getInitialMyz(), 0.0);
+        assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
+        assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -4407,27 +4104,26 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
@@ -4437,32 +4133,29 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                ABSOLUTE_ERROR));
+        assertSame(nedPosition, calibrator.getNedPosition());
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertEquals(ecefPosition, ecefPosition1);
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
+        assertSame(this, calibrator.getListener());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -4493,8 +4186,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -4515,126 +4208,102 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new Matrix(3, 3), mm, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new Matrix(1, 1), mm, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    bm, new Matrix(1, 3), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    bm, new Matrix(3, 1), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, new Matrix(3, 3), mm, this));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, new Matrix(1, 1), mm, this));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, bm, new Matrix(1, 3), this));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(nedPosition, measurements,
+                        true, bm, new Matrix(3, 1), this));
     }
 
     @Test
     public void testConstructor26() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition);
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, new double[3], 0.0);
+        assertArrayEquals(new double[3], b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
         final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
-        assertEquals(bm1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), bm1);
         final Matrix bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, bTriad1.getValueX(), 0.0);
+        assertEquals(0.0, bTriad1.getValueY(), 0.0);
+        assertEquals(0.0, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertTrue(calibrator.getNedPosition().equals(nedPosition,
-                LARGE_ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
@@ -4646,18 +4315,16 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -4688,8 +4355,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -4710,8 +4377,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -4720,109 +4387,100 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
 
     @Test
     public void testConstructor27() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements);
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, new double[3], 0.0);
+        assertArrayEquals(new double[3], b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
         final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
-        assertEquals(bm1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), bm1);
         final Matrix bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, bTriad1.getValueX(), 0.0);
+        assertEquals(0.0, bTriad1.getValueY(), 0.0);
+        assertEquals(0.0, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertTrue(calibrator.getNedPosition().equals(nedPosition,
-                LARGE_ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -4853,8 +4511,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -4875,8 +4533,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -4885,109 +4543,100 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
 
     @Test
     public void testConstructor28() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, this);
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, this);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, new double[3], 0.0);
+        assertArrayEquals(new double[3], b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
         final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
-        assertEquals(bm1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), bm1);
         final Matrix bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, bTriad1.getValueX(), 0.0);
+        assertEquals(0.0, bTriad1.getValueY(), 0.0);
+        assertEquals(0.0, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertTrue(calibrator.getNedPosition().equals(nedPosition,
-                LARGE_ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertSame(this, calibrator.getListener());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -5018,8 +4667,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -5040,8 +4689,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -5050,109 +4699,101 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
 
     @Test
     public void testConstructor29() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, true);
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, new double[3], 0.0);
+        assertArrayEquals(new double[3], b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
         final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
-        assertEquals(bm1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), bm1);
         final Matrix bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, bTriad1.getValueX(), 0.0);
+        assertEquals(0.0, bTriad1.getValueY(), 0.0);
+        assertEquals(0.0, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertTrue(calibrator.getNedPosition().equals(nedPosition,
-                LARGE_ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -5183,8 +4824,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -5205,8 +4846,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -5215,109 +4856,101 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
 
     @Test
     public void testConstructor30() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, true, this);
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, this);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, new double[3], 0.0);
+        assertArrayEquals(new double[3], b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
         final Matrix bm1 = calibrator.getInitialHardIronAsMatrix();
-        assertEquals(bm1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), bm1);
         final Matrix bm2 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(bTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, bTriad1.getValueX(), 0.0);
+        assertEquals(0.0, bTriad1.getValueY(), 0.0);
+        assertEquals(0.0, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertTrue(calibrator.getNedPosition().equals(nedPosition,
-                LARGE_ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
+        assertSame(this, calibrator.getListener());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -5348,8 +4981,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -5370,8 +5003,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
@@ -5380,16 +5013,13 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
 
     @Test
     public void testConstructor31() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -5397,32 +5027,31 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double bmy = hardIron[1];
         final double bmz = hardIron[2];
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, hardIron);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, hardIron);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -5432,63 +5061,58 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertTrue(calibrator.getNedPosition().equals(nedPosition,
-                LARGE_ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -5519,8 +5143,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -5541,36 +5165,28 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        new double[1]));
     }
 
     @Test
     public void testConstructor32() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -5578,32 +5194,32 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double bmy = hardIron[1];
         final double bmz = hardIron[2];
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, hardIron, this);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, hardIron,
+                        this);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -5613,63 +5229,58 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertTrue(calibrator.getNedPosition().equals(nedPosition,
-                LARGE_ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertSame(this, calibrator.getListener());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -5700,8 +5311,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -5722,36 +5333,28 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, new double[1], this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        new double[1], this));
     }
 
     @Test
     public void testConstructor33() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -5759,32 +5362,32 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double bmy = hardIron[1];
         final double bmz = hardIron[2];
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, true, hardIron);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, hardIron);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -5794,63 +5397,58 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertTrue(calibrator.getNedPosition().equals(nedPosition,
-                LARGE_ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -5881,8 +5479,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -5903,36 +5501,28 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, new double[1]));
     }
 
     @Test
     public void testConstructor34() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -5940,33 +5530,32 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double bmy = hardIron[1];
         final double bmz = hardIron[2];
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, true,
-                        hardIron, this);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, hardIron, this);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -5976,63 +5565,58 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertTrue(calibrator.getNedPosition().equals(nedPosition,
-                LARGE_ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
+        assertSame(this, calibrator.getListener());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -6063,8 +5647,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -6085,37 +5669,28 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
-                    new double[1], this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, new double[1], this));
     }
 
     @Test
     public void testConstructor35() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -6123,32 +5698,31 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double bmy = hardIron[1];
         final double bmz = hardIron[2];
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, bm);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, bm);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -6158,63 +5732,58 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertTrue(calibrator.getNedPosition().equals(nedPosition,
-                LARGE_ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -6245,8 +5814,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -6267,42 +5836,31 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        new Matrix(3, 3)));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        new Matrix(1, 1)));
     }
 
     @Test
     public void testConstructor36() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -6310,29 +5868,29 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double bmy = hardIron[1];
         final double bmz = hardIron[2];
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, bm, this);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, bm,
+                        this);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
@@ -6345,63 +5903,58 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertTrue(calibrator.getNedPosition().equals(nedPosition,
-                LARGE_ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertSame(this, calibrator.getListener());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -6432,8 +5985,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -6454,44 +6007,31 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, new Matrix(3, 3),
-                    this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, new Matrix(1, 1),
-                    this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        new Matrix(3, 3), this));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        new Matrix(1, 1), this));
     }
 
     @Test
     public void testConstructor37() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -6499,29 +6039,29 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double bmy = hardIron[1];
         final double bmz = hardIron[2];
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, true, bm);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, bm);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
@@ -6535,62 +6075,57 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
         assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
         assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertTrue(calibrator.getNedPosition().equals(nedPosition,
-                LARGE_ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -6621,8 +6156,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -6643,44 +6178,31 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
-                    new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
-                    new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, new Matrix(3, 3)));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, new Matrix(1, 1)));
     }
 
     @Test
     public void testConstructor38() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -6688,33 +6210,32 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double bmy = hardIron[1];
         final double bmz = hardIron[2];
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, true, bm,
-                        this);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, bm, this);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -6724,63 +6245,58 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
         final Matrix mm1 = calibrator.getInitialMm();
-        assertEquals(mm1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), mm1);
         final Matrix mm2 = new Matrix(3, 3);
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertTrue(calibrator.getNedPosition().equals(nedPosition,
-                LARGE_ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
+        assertSame(this, calibrator.getListener());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -6811,8 +6327,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -6833,44 +6349,31 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
-                    new Matrix(3, 3), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
-                    new Matrix(1, 1), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, new Matrix(3, 3), this));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, new Matrix(1, 1), this));
     }
 
     @Test
     public void testConstructor39() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -6891,32 +6394,31 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, bm, mm);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, bm, mm);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), sx, 0.0);
-        assertEquals(calibrator.getInitialSy(), sy, 0.0);
-        assertEquals(calibrator.getInitialSz(), sz, 0.0);
-        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
-        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
-        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
-        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
-        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
-        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(sx, calibrator.getInitialSx(), 0.0);
+        assertEquals(sy, calibrator.getInitialSy(), 0.0);
+        assertEquals(sz, calibrator.getInitialSz(), 0.0);
+        assertEquals(mxy, calibrator.getInitialMxy(), 0.0);
+        assertEquals(mxz, calibrator.getInitialMxz(), 0.0);
+        assertEquals(myx, calibrator.getInitialMyx(), 0.0);
+        assertEquals(myz, calibrator.getInitialMyz(), 0.0);
+        assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
+        assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -6926,27 +6428,26 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
@@ -6956,33 +6457,29 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertTrue(calibrator.getNedPosition().equals(nedPosition,
-                LARGE_ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -7013,8 +6510,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -7035,58 +6532,37 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, new Matrix(3, 3),
-                    mm);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, new Matrix(1, 1),
-                    mm);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, bm,
-                    new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, bm,
-                    new Matrix(3, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        new Matrix(3, 3), mm));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        new Matrix(1, 1), mm));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, bm,
+                        new Matrix(1, 3)));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, bm,
+                        new Matrix(3, 1)));
     }
 
     @Test
     public void testConstructor40() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -7107,32 +6583,32 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, bm, mm, this);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, bm, mm,
+                        this);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), sx, 0.0);
-        assertEquals(calibrator.getInitialSy(), sy, 0.0);
-        assertEquals(calibrator.getInitialSz(), sz, 0.0);
-        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
-        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
-        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
-        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
-        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
-        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(sx, calibrator.getInitialSx(), 0.0);
+        assertEquals(sy, calibrator.getInitialSy(), 0.0);
+        assertEquals(sz, calibrator.getInitialSz(), 0.0);
+        assertEquals(mxy, calibrator.getInitialMxy(), 0.0);
+        assertEquals(mxz, calibrator.getInitialMxz(), 0.0);
+        assertEquals(myx, calibrator.getInitialMyx(), 0.0);
+        assertEquals(myz, calibrator.getInitialMyz(), 0.0);
+        assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
+        assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -7142,27 +6618,26 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
@@ -7172,33 +6647,29 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertTrue(calibrator.getNedPosition().equals(nedPosition,
-                LARGE_ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertSame(this, calibrator.getListener());
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -7229,8 +6700,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -7251,58 +6722,37 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, new Matrix(3, 3),
-                    mm, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, new Matrix(1, 1),
-                    mm, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, bm,
-                    new Matrix(1, 3), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, bm,
-                    new Matrix(3, 1), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        new Matrix(3, 3), mm, this));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        new Matrix(1, 1), mm, this));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, bm,
+                        new Matrix(1, 3), this));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements, bm,
+                        new Matrix(3, 1), this));
     }
 
     @Test
     public void testConstructor41() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -7323,30 +6773,29 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, true,
-                        bm, mm);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, bm, mm);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), sx, 0.0);
-        assertEquals(calibrator.getInitialSy(), sy, 0.0);
-        assertEquals(calibrator.getInitialSz(), sz, 0.0);
-        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
-        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
-        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
-        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
-        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
-        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(sx, calibrator.getInitialSx(), 0.0);
+        assertEquals(sy, calibrator.getInitialSy(), 0.0);
+        assertEquals(sz, calibrator.getInitialSz(), 0.0);
+        assertEquals(mxy, calibrator.getInitialMxy(), 0.0);
+        assertEquals(mxz, calibrator.getInitialMxz(), 0.0);
+        assertEquals(myx, calibrator.getInitialMyx(), 0.0);
+        assertEquals(myz, calibrator.getInitialMyz(), 0.0);
+        assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
+        assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
         assertArrayEquals(b1, hardIron, 0.0);
@@ -7359,27 +6808,26 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
@@ -7389,33 +6837,29 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertTrue(calibrator.getNedPosition().equals(nedPosition,
-                LARGE_ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -7446,8 +6890,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -7468,58 +6912,37 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
-                    new Matrix(3, 3), mm);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
-                    new Matrix(1, 1), mm);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
-                    bm, new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
-                    bm, new Matrix(3, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, new Matrix(3, 3), mm));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, new Matrix(1, 1), mm));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, bm, new Matrix(1, 3)));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, bm, new Matrix(3, 1)));
     }
 
     @Test
     public void testConstructor42() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix bm = Matrix.newFromArray(hardIron);
@@ -7540,33 +6963,32 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-        RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, true,
-                        bm, mm, this);
+        final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
+                new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, bm, mm, this);
 
         // check default values
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
-        assertEquals(calibrator.getInitialHardIronX(), bmx, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), bmy, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), bmz, 0.0);
-        assertEquals(calibrator.getInitialSx(), sx, 0.0);
-        assertEquals(calibrator.getInitialSy(), sy, 0.0);
-        assertEquals(calibrator.getInitialSz(), sz, 0.0);
-        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
-        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
-        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
-        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
-        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
-        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
+        assertEquals(bmx, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(bmy, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(bmz, calibrator.getInitialHardIronZ(), 0.0);
+        assertEquals(sx, calibrator.getInitialSx(), 0.0);
+        assertEquals(sy, calibrator.getInitialSy(), 0.0);
+        assertEquals(sz, calibrator.getInitialSz(), 0.0);
+        assertEquals(mxy, calibrator.getInitialMxy(), 0.0);
+        assertEquals(mxz, calibrator.getInitialMxz(), 0.0);
+        assertEquals(myx, calibrator.getInitialMyx(), 0.0);
+        assertEquals(myz, calibrator.getInitialMyz(), 0.0);
+        assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
+        assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
 
         final double[] b1 = calibrator.getInitialHardIron();
-        assertArrayEquals(b1, hardIron, 0.0);
+        assertArrayEquals(hardIron, b1, 0.0);
         final double[] b2 = new double[3];
         calibrator.getInitialHardIron(b2);
         assertArrayEquals(b1, b2, 0.0);
@@ -7576,27 +6998,26 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialHardIronAsMatrix(bm2);
         assertEquals(bm1, bm2);
         MagneticFluxDensity mb1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmx, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
+        final MagneticFluxDensity mb2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmy, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmy, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronYAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         mb1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(mb1.getValue().doubleValue(), bmz, 0.0);
-        assertEquals(mb1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmz, mb1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, mb1.getUnit());
         calibrator.getInitialHardIronZAsMagneticFluxDensity(mb2);
         assertEquals(mb1, mb2);
         final MagneticFluxDensityTriad bTriad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(bTriad1.getValueX(), bmx, 0.0);
-        assertEquals(bTriad1.getValueY(), bmy, 0.0);
-        assertEquals(bTriad1.getValueZ(), bmz, 0.0);
-        assertEquals(bTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bmx, bTriad1.getValueX(), 0.0);
+        assertEquals(bmy, bTriad1.getValueY(), 0.0);
+        assertEquals(bmz, bTriad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
@@ -7606,33 +7027,29 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.getInitialMm(mm2);
         assertEquals(mm1, mm2);
 
-        assertTrue(calibrator.getNedPosition().equals(nedPosition,
-                LARGE_ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition1 = new ECEFPosition();
         assertTrue(calibrator.getEcefPosition(ecefPosition1));
         assertTrue(ecefPosition1.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         assertNotNull(calibrator.getYear());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertTrue(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
+        assertSame(this, calibrator.getListener());
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertNull(calibrator.getMagneticModel());
-        assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
-                0.0f);
-        assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE,
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                calibrator.getProgressDelta(), 0.0f);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_CONFIDENCE, calibrator.getConfidence(),
                 0.0);
-        assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_MAX_ITERATIONS,
+                calibrator.getMaxIterations());
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -7663,8 +7080,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getPreliminarySubsetSize(), 13);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.RANSAC);
+        assertEquals(13, calibrator.getPreliminarySubsetSize());
+        assertEquals(RobustEstimatorMethod.RANSAC, calibrator.getMethod());
         assertNull(calibrator.getEstimatedHardIronXVariance());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviation());
         assertNull(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity());
@@ -7685,44 +7102,26 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNorm());
         assertNull(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity());
         assertFalse(calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(null));
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getEstimatedMse(), 0.0);
+        assertEquals(0.0, calibrator.getEstimatedChiSq(), 0.0);
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
-                    new Matrix(3, 3), mm, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
-                    new Matrix(1, 1), mm, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
-                    bm, new Matrix(1, 3), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
-                    bm, new Matrix(3, 1), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, new Matrix(3, 3), mm, this));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, new Matrix(1, 1), mm, this));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, bm, new Matrix(1, 3), this));
+        assertThrows(IllegalArgumentException.class,
+                () -> new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(ecefPosition, measurements,
+                        true, bm, new Matrix(3, 1), this));
     }
 
     @Test
@@ -7731,33 +7130,27 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getThreshold(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
-                0.0);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_THRESHOLD,
+                calibrator.getThreshold(), 0.0);
 
         // set new value
         calibrator.setThreshold(THRESHOLD);
 
         // check
-        assertEquals(calibrator.getThreshold(), THRESHOLD, 0.0);
+        assertEquals(THRESHOLD, calibrator.getThreshold(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            calibrator.setThreshold(0.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> calibrator.setThreshold(0.0));
     }
 
     @Test
-    public void testIsSetComputeAndKeepInliersEnabled()
-            throws LockedException {
+    public void testIsSetComputeAndKeepInliersEnabled() throws LockedException {
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.isComputeAndKeepInliersEnabled(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_INLIERS,
+                calibrator.isComputeAndKeepInliersEnabled());
         assertFalse(calibrator.isComputeAndKeepInliersEnabled());
 
         // set new value
@@ -7773,8 +7166,8 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.isComputeAndKeepResiduals(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.DEFAULT_COMPUTE_AND_KEEP_RESIDUALS,
+                calibrator.isComputeAndKeepResiduals());
         assertFalse(calibrator.isComputeAndKeepResiduals());
 
         // set new value
@@ -7790,19 +7183,17 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getInitialHardIronX(), 0.0,
-                0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double[] mb = generateHardIron(randomizer);
         final double hardIronX = mb[0];
 
         calibrator.setInitialHardIronX(hardIronX);
 
         // check
-        assertEquals(calibrator.getInitialHardIronX(), hardIronX, 0.0);
+        assertEquals(hardIronX, calibrator.getInitialHardIronX(), 0.0);
     }
 
     @Test
@@ -7811,19 +7202,17 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getInitialHardIronY(), 0.0,
-                0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double[] mb = generateHardIron(randomizer);
         final double hardIronY = mb[1];
 
         calibrator.setInitialHardIronY(hardIronY);
 
         // check
-        assertEquals(calibrator.getInitialHardIronY(), hardIronY, 0.0);
+        assertEquals(hardIronY, calibrator.getInitialHardIronY(), 0.0);
     }
 
     @Test
@@ -7832,46 +7221,40 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getInitialHardIronZ(), 0.0,
-                0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double[] mb = generateHardIron(randomizer);
         final double hardIronZ = mb[2];
 
         calibrator.setInitialHardIronZ(hardIronZ);
 
         // check
-        assertEquals(calibrator.getInitialHardIronZ(), hardIronZ, 0.0);
+        assertEquals(hardIronZ, calibrator.getInitialHardIronZ(), 0.0);
     }
 
     @Test
-    public void testGetSetInitialHardIronXAsMagneticFluxDensity()
-            throws LockedException {
+    public void testGetSetInitialHardIronXAsMagneticFluxDensity() throws LockedException {
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         final MagneticFluxDensity b1 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, b1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double[] mb = generateHardIron(randomizer);
         final double hardIronX = mb[0];
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(
-                hardIronX, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(hardIronX, MagneticFluxDensityUnit.TESLA);
 
         calibrator.setInitialHardIronX(b2);
 
         // check
         final MagneticFluxDensity b3 = calibrator.getInitialHardIronXAsMagneticFluxDensity();
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronXAsMagneticFluxDensity(b4);
 
         assertEquals(b2, b3);
@@ -7879,30 +7262,26 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
     }
 
     @Test
-    public void testGetSetInitialHardIronYAsMagneticFluxDensity()
-            throws LockedException {
+    public void testGetSetInitialHardIronYAsMagneticFluxDensity() throws LockedException {
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         final MagneticFluxDensity b1 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, b1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double[] mb = generateHardIron(randomizer);
         final double hardIronY = mb[1];
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(
-                hardIronY, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(hardIronY, MagneticFluxDensityUnit.TESLA);
 
         calibrator.setInitialHardIronY(b2);
 
         // check
         final MagneticFluxDensity b3 = calibrator.getInitialHardIronYAsMagneticFluxDensity();
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronYAsMagneticFluxDensity(b4);
 
         assertEquals(b2, b3);
@@ -7910,30 +7289,26 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
     }
 
     @Test
-    public void testGetSetInitialHardIronZAsMagneticFluxDensity()
-            throws LockedException {
+    public void testGetSetInitialHardIronZAsMagneticFluxDensity() throws LockedException {
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
         final MagneticFluxDensity b1 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, b1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double[] mb = generateHardIron(randomizer);
         final double hardIronZ = mb[2];
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(
-                hardIronZ, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(hardIronZ, MagneticFluxDensityUnit.TESLA);
 
         calibrator.setInitialHardIronZ(b2);
 
         // check
         final MagneticFluxDensity b3 = calibrator.getInitialHardIronZAsMagneticFluxDensity();
-        final MagneticFluxDensity b4 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         calibrator.getInitialHardIronZAsMagneticFluxDensity(b4);
 
         assertEquals(b2, b3);
@@ -7946,13 +7321,12 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default values
-        assertEquals(calibrator.getInitialHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(0.0, calibrator.getInitialHardIronZ(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double[] mb = generateHardIron(randomizer);
         final double hardIronX = mb[0];
         final double hardIronY = mb[1];
@@ -7961,9 +7335,9 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.setInitialHardIron(hardIronX, hardIronY, hardIronZ);
 
         // check
-        assertEquals(calibrator.getInitialHardIronX(), hardIronX, 0.0);
-        assertEquals(calibrator.getInitialHardIronY(), hardIronY, 0.0);
-        assertEquals(calibrator.getInitialHardIronZ(), hardIronZ, 0.0);
+        assertEquals(hardIronX, calibrator.getInitialHardIronX(), 0.0);
+        assertEquals(hardIronY, calibrator.getInitialHardIronY(), 0.0);
+        assertEquals(hardIronZ, calibrator.getInitialHardIronZ(), 0.0);
     }
 
     @Test
@@ -7971,8 +7345,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
-        final MagneticFluxDensity def = new MagneticFluxDensity(0.0,
-                MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity def = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
 
         // check default value
         assertEquals(def, calibrator.getInitialHardIronXAsMagneticFluxDensity());
@@ -7980,15 +7353,11 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertEquals(def, calibrator.getInitialHardIronZAsMagneticFluxDensity());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double[] mb = generateHardIron(randomizer);
-        final MagneticFluxDensity hardIronX = new MagneticFluxDensity(mb[0],
-                MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity hardIronY = new MagneticFluxDensity(mb[1],
-                MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity hardIronZ = new MagneticFluxDensity(mb[2],
-                MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity hardIronX = new MagneticFluxDensity(mb[0], MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity hardIronY = new MagneticFluxDensity(mb[1], MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity hardIronZ = new MagneticFluxDensity(mb[2], MagneticFluxDensityUnit.TESLA);
 
         calibrator.setInitialHardIron(hardIronX, hardIronY, hardIronZ);
 
@@ -8005,24 +7374,22 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
 
         // check default values
         final MagneticFluxDensityTriad triad1 = calibrator.getInitialHardIronAsTriad();
-        assertEquals(triad1.getValueX(), 0.0, 0.0);
-        assertEquals(triad1.getValueY(), 0.0, 0.0);
-        assertEquals(triad1.getValueZ(), 0.0, 0.0);
-        assertEquals(triad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, triad1.getValueX(), 0.0);
+        assertEquals(0.0, triad1.getValueY(), 0.0);
+        assertEquals(0.0, triad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, triad1.getUnit());
         final MagneticFluxDensityTriad triad2 = new MagneticFluxDensityTriad();
         calibrator.getInitialHardIronAsTriad(triad2);
         assertEquals(triad1, triad2);
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double[] mb = generateHardIron(randomizer);
         final double hardIronX = mb[0];
         final double hardIronY = mb[1];
         final double hardIronZ = mb[2];
 
-        final MagneticFluxDensityTriad triad3 = new MagneticFluxDensityTriad(
-                MagneticFluxDensityUnit.TESLA,
+        final MagneticFluxDensityTriad triad3 = new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,
                 hardIronX, hardIronY, hardIronZ);
         calibrator.setInitialHardIron(triad3);
 
@@ -8040,7 +7407,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
 
         // set new value
         final Matrix mm = generateSoftIronGeneral();
@@ -8051,7 +7418,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.setInitialSx(sx);
 
         // check
-        assertEquals(calibrator.getInitialSx(), sx, 0.0);
+        assertEquals(sx, calibrator.getInitialSx(), 0.0);
     }
 
     @Test
@@ -8060,7 +7427,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
 
         // set new value
         final Matrix mm = generateSoftIronGeneral();
@@ -8071,7 +7438,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.setInitialSy(sy);
 
         // check
-        assertEquals(calibrator.getInitialSy(), sy, 0.0);
+        assertEquals(sy, calibrator.getInitialSy(), 0.0);
     }
 
     @Test
@@ -8080,7 +7447,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
 
         // set new value
         final Matrix mm = generateSoftIronGeneral();
@@ -8091,7 +7458,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.setInitialSz(sz);
 
         // check
-        assertEquals(calibrator.getInitialSz(), sz, 0.0);
+        assertEquals(sz, calibrator.getInitialSz(), 0.0);
     }
 
     @Test
@@ -8100,7 +7467,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
 
         // set new value
         final Matrix mm = generateSoftIronGeneral();
@@ -8111,7 +7478,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.setInitialMxy(mxy);
 
         // check
-        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
+        assertEquals(mxy, calibrator.getInitialMxy(), 0.0);
     }
 
     @Test
@@ -8120,7 +7487,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
 
         // set new value
         final Matrix mm = generateSoftIronGeneral();
@@ -8131,7 +7498,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.setInitialMxz(mxz);
 
         // check
-        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
+        assertEquals(mxz, calibrator.getInitialMxz(), 0.0);
     }
 
     @Test
@@ -8140,7 +7507,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
 
         // set new value
         final Matrix mm = generateSoftIronGeneral();
@@ -8151,7 +7518,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.setInitialMyx(myx);
 
         // check
-        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
+        assertEquals(myx, calibrator.getInitialMyx(), 0.0);
     }
 
     @Test
@@ -8160,7 +7527,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
 
         // set new value
         final Matrix mm = generateSoftIronGeneral();
@@ -8171,7 +7538,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.setInitialMyz(myz);
 
         // check
-        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
+        assertEquals(myz, calibrator.getInitialMyz(), 0.0);
     }
 
     @Test
@@ -8180,7 +7547,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
 
         // set new value
         final Matrix mm = generateSoftIronGeneral();
@@ -8191,7 +7558,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.setInitialMzx(mzx);
 
         // check
-        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
+        assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
     }
 
     @Test
@@ -8200,7 +7567,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new value
         final Matrix mm = generateSoftIronGeneral();
@@ -8211,7 +7578,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.setInitialMzy(mzy);
 
         // check
-        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
+        assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
     }
 
     @Test
@@ -8220,9 +7587,9 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default values
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
 
         // set new values
         final Matrix mm = generateSoftIronGeneral();
@@ -8235,9 +7602,9 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.setInitialScalingFactors(sx, sy, sz);
 
         // check
-        assertEquals(calibrator.getInitialSx(), sx, 0.0);
-        assertEquals(calibrator.getInitialSy(), sy, 0.0);
-        assertEquals(calibrator.getInitialSz(), sz, 0.0);
+        assertEquals(sx, calibrator.getInitialSx(), 0.0);
+        assertEquals(sy, calibrator.getInitialSy(), 0.0);
+        assertEquals(sz, calibrator.getInitialSz(), 0.0);
     }
 
     @Test
@@ -8246,12 +7613,12 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default values
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new value
         final Matrix mm = generateSoftIronGeneral();
@@ -8264,34 +7631,32 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-        calibrator.setInitialCrossCouplingErrors(mxy, mxz, myx,
-                myz, mzx, mzy);
+        calibrator.setInitialCrossCouplingErrors(mxy, mxz, myx, myz, mzx, mzy);
 
         // check
-        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
-        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
-        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
-        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
-        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
-        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
+        assertEquals(mxy, calibrator.getInitialMxy(), 0.0);
+        assertEquals(mxz, calibrator.getInitialMxz(), 0.0);
+        assertEquals(myx, calibrator.getInitialMyx(), 0.0);
+        assertEquals(myz, calibrator.getInitialMyz(), 0.0);
+        assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
+        assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
     }
 
     @Test
-    public void testSetInitialScalingFactorsAndCrossCouplingErrors()
-            throws LockedException {
+    public void testSetInitialScalingFactorsAndCrossCouplingErrors() throws LockedException {
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default values
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getInitialSx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialSz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxy(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMxz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMyz(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzx(), 0.0);
+        assertEquals(0.0, calibrator.getInitialMzy(), 0.0);
 
         // set new value
         final Matrix mm = generateSoftIronGeneral();
@@ -8307,19 +7672,18 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-        calibrator.setInitialScalingFactorsAndCrossCouplingErrors(
-                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
+        calibrator.setInitialScalingFactorsAndCrossCouplingErrors(sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
 
         // check
-        assertEquals(calibrator.getInitialSx(), sx, 0.0);
-        assertEquals(calibrator.getInitialSy(), sy, 0.0);
-        assertEquals(calibrator.getInitialSz(), sz, 0.0);
-        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
-        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
-        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
-        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
-        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
-        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
+        assertEquals(sx, calibrator.getInitialSx(), 0.0);
+        assertEquals(sy, calibrator.getInitialSy(), 0.0);
+        assertEquals(sz, calibrator.getInitialSz(), 0.0);
+        assertEquals(mxy, calibrator.getInitialMxy(), 0.0);
+        assertEquals(mxz, calibrator.getInitialMxz(), 0.0);
+        assertEquals(myx, calibrator.getInitialMyx(), 0.0);
+        assertEquals(myz, calibrator.getInitialMyz(), 0.0);
+        assertEquals(mzx, calibrator.getInitialMzx(), 0.0);
+        assertEquals(mzy, calibrator.getInitialMzy(), 0.0);
     }
 
     @Test
@@ -8328,53 +7692,40 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertArrayEquals(calibrator.getInitialHardIron(),
-                new double[3], 0.0);
+        assertArrayEquals(new double[3], calibrator.getInitialHardIron(), 0.0);
         final double[] result1 = new double[3];
         calibrator.getInitialHardIron(result1);
-        assertArrayEquals(result1, new double[3], 0.0);
+        assertArrayEquals(new double[3], result1, 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double[] bm = generateHardIron(randomizer);
         calibrator.setInitialHardIron(bm);
 
         // check
-        assertArrayEquals(calibrator.getInitialHardIron(), bm, 0.0);
+        assertArrayEquals(bm, calibrator.getInitialHardIron(), 0.0);
         final double[] result2 = new double[3];
         calibrator.getInitialHardIron(result2);
         assertArrayEquals(result2, bm, 0.0);
 
         // Force IllegalArgumentException
-        try {
-            calibrator.getInitialHardIron(new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator.setInitialHardIron(new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> calibrator.getInitialHardIron(new double[1]));
+        assertThrows(IllegalArgumentException.class, () -> calibrator.setInitialHardIron(new double[1]));
     }
 
     @Test
-    public void testGetInitialHardIronAsMatrix() throws LockedException,
-            WrongSizeException {
+    public void testGetInitialHardIronAsMatrix() throws LockedException, WrongSizeException {
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getInitialHardIronAsMatrix(),
-                new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), calibrator.getInitialHardIronAsMatrix());
         final Matrix result1 = new Matrix(3, 1);
         calibrator.getInitialHardIronAsMatrix(result1);
-        assertEquals(result1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), result1);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double[] bm = generateHardIron(randomizer);
         final Matrix b = Matrix.newFromArray(bm);
         calibrator.setInitialHardIron(b);
@@ -8386,36 +7737,23 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertEquals(result2, b);
 
         // Force IllegalArgumentException
-        try {
-            calibrator.getInitialHardIronAsMatrix(new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator.getInitialHardIronAsMatrix(new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator.setInitialHardIron(new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator.setInitialHardIron(new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class,
+                () -> calibrator.getInitialHardIronAsMatrix(new Matrix(1, 1)));
+        assertThrows(IllegalArgumentException.class,
+                () -> calibrator.getInitialHardIronAsMatrix(new Matrix(3, 3)));
+        assertThrows(IllegalArgumentException.class,
+                () -> calibrator.setInitialHardIron(new Matrix(1, 1)));
+        assertThrows(IllegalArgumentException.class,
+                () -> calibrator.setInitialHardIron(new Matrix(1, 3)));
     }
 
     @Test
-    public void testGetSetInitialMm() throws WrongSizeException,
-            LockedException {
+    public void testGetSetInitialMm() throws WrongSizeException, LockedException {
         final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getInitialMm(), new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), calibrator.getInitialMm());
         final Matrix result1 = new Matrix(3, 3);
         calibrator.getInitialMm(result1);
 
@@ -8424,7 +7762,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.setInitialMm(mm);
 
         // check
-        assertEquals(calibrator.getInitialMm(), mm);
+        assertEquals(mm, calibrator.getInitialMm());
         final Matrix result2 = new Matrix(3, 3);
         calibrator.getInitialMm(result2);
         assertEquals(mm, result2);
@@ -8439,21 +7777,18 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getNedPosition());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
         calibrator.setPosition(nedPosition);
 
         // check
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertSame(nedPosition, calibrator.getNedPosition());
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
     }
 
     @Test
@@ -8466,26 +7801,21 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertFalse(calibrator.getEcefPosition(null));
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
         final NEDVelocity nedVelocity = new NEDVelocity();
         final ECEFPosition ecefPosition = new ECEFPosition();
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, ecefPosition, ecefVelocity);
 
         calibrator.setPosition(ecefPosition);
 
         // check
-        assertTrue(calibrator.getNedPosition().equals(nedPosition,
-                LARGE_ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition().equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getNedPosition().equals(nedPosition, LARGE_ABSOLUTE_ERROR));
+        assertTrue(calibrator.getEcefPosition().equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
         final ECEFPosition ecefPosition2 = new ECEFPosition();
         calibrator.getEcefPosition(ecefPosition2);
-        assertTrue(ecefPosition2.equals(ecefPosition,
-                LARGE_ABSOLUTE_ERROR));
+        assertTrue(ecefPosition2.equals(ecefPosition, LARGE_ABSOLUTE_ERROR));
     }
 
     @Test
@@ -8497,18 +7827,16 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNotNull(calibrator.getYear());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         long timestamp = createTimestamp(randomizer);
         final GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeInMillis(timestamp);
-        final double year = WMMEarthMagneticFluxDensityEstimator
-                .convertTime(calendar);
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
 
         calibrator.setYear(year);
 
         // check
-        assertEquals(calibrator.getYear(), year, 0.0);
+        assertEquals(year, calibrator.getYear(), 0.0);
     }
 
     @Test
@@ -8520,19 +7848,17 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNotNull(calibrator.getYear());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         long timestamp = createTimestamp(randomizer);
         final Date date = new Date(timestamp);
         final GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeInMillis(timestamp);
-        final double year = WMMEarthMagneticFluxDensityEstimator
-                .convertTime(calendar);
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
 
         calibrator.setTime(date);
 
         // check
-        assertEquals(calibrator.getYear(), year, 0.0);
+        assertEquals(year, calibrator.getYear(), 0.0);
     }
 
     @Test
@@ -8544,19 +7870,17 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNotNull(calibrator.getYear());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         long timestamp = createTimestamp(randomizer);
         final Date date = new Date(timestamp);
         final GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeInMillis(timestamp);
-        final double year = WMMEarthMagneticFluxDensityEstimator
-                .convertTime(calendar);
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
 
         calibrator.setTime(date.getTime());
 
         // check
-        assertEquals(calibrator.getYear(), year, 0.0);
+        assertEquals(year, calibrator.getYear(), 0.0);
     }
 
     @Test
@@ -8568,18 +7892,16 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNotNull(calibrator.getYear());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         long timestamp = createTimestamp(randomizer);
         final GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeInMillis(timestamp);
-        final double year = WMMEarthMagneticFluxDensityEstimator
-                .convertTime(calendar);
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
 
         calibrator.setTime(calendar);
 
         // check
-        assertEquals(calibrator.getYear(), year, 0.0);
+        assertEquals(year, calibrator.getYear(), 0.0);
     }
 
     @Test
@@ -8591,12 +7913,11 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getMeasurements());
 
         // set new value
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         calibrator.setMeasurements(measurements);
 
         // check
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
     }
 
     @Test
@@ -8626,7 +7947,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.setListener(this);
 
         // check
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -8635,14 +7956,14 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 13);
+        assertEquals(13, calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isCommonAxisUsed());
 
         // set new value
         calibrator.setCommonAxisUsed(true);
 
         // check
-        assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
+        assertEquals(10, calibrator.getMinimumRequiredMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
     }
 
@@ -8656,27 +7977,21 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNull(calibrator.getMeasurements());
 
         // set not enough measurements
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements1 =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements1 = Collections.emptyList();
         calibrator.setMeasurements(measurements1);
 
         // check
         assertFalse(calibrator.isReady());
 
         // set enough measurements
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition position = createPosition(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix softIron = generateSoftIronGeneral();
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements2 =
-                generateMeasures(hardIron, softIron,
-                        calibrator.getMinimumRequiredMeasurements(),
-                        wmmEstimator, randomizer,
-                        position, timestamp);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements2 = generateMeasures(hardIron, softIron,
+                calibrator.getMinimumRequiredMeasurements(), wmmEstimator, randomizer, position, timestamp);
         calibrator.setMeasurements(measurements2);
 
         // check
@@ -8708,7 +8023,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         calibrator.setMagneticModel(magneticModel);
 
         // check
-        assertSame(calibrator.getMagneticModel(), magneticModel);
+        assertSame(magneticModel, calibrator.getMagneticModel());
     }
 
     @Test
@@ -8717,25 +8032,17 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getProgressDelta(), 0.05f, 0.0);
+        assertEquals(0.05f, calibrator.getProgressDelta(), 0.0);
 
         // set new value
         calibrator.setProgressDelta(0.01f);
 
         // check
-        assertEquals(calibrator.getProgressDelta(), 0.01f, 0.0);
+        assertEquals(0.01f, calibrator.getProgressDelta(), 0.0);
 
         // force IllegalArgumentException
-        try {
-            calibrator.setProgressDelta(-1.0f);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator.setProgressDelta(2.0f);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> calibrator.setProgressDelta(-1.0f));
+        assertThrows(IllegalArgumentException.class, () -> calibrator.setProgressDelta(2.0f));
     }
 
     @Test
@@ -8744,25 +8051,17 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getConfidence(), 0.99, 0.0);
+        assertEquals(0.99, calibrator.getConfidence(), 0.0);
 
         // set new value
         calibrator.setConfidence(0.5);
 
         // check
-        assertEquals(calibrator.getConfidence(), 0.5, 0.0);
+        assertEquals(0.5, calibrator.getConfidence(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            calibrator.setConfidence(-1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator.setConfidence(2.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> calibrator.setConfidence(-1.0));
+        assertThrows(IllegalArgumentException.class, () -> calibrator.setConfidence(2.0));
     }
 
     @Test
@@ -8771,18 +8070,15 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getMaxIterations(), 5000);
+        assertEquals(5000, calibrator.getMaxIterations());
 
         // set new value
         calibrator.setMaxIterations(100);
 
-        assertEquals(calibrator.getMaxIterations(), 100);
+        assertEquals(100, calibrator.getMaxIterations());
 
         // Force IllegalArgumentException
-        try {
-            calibrator.setMaxIterations(0);
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> calibrator.setMaxIterations(0));
     }
 
     @Test
@@ -8836,66 +8132,56 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
                 new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator();
 
         // check default value
-        assertEquals(calibrator.getPreliminarySubsetSize(),
-                RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+        assertEquals(RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
+                calibrator.getPreliminarySubsetSize());
 
         // set new value
         calibrator.setPreliminarySubsetSize(11);
 
         // check
-        assertEquals(calibrator.getPreliminarySubsetSize(), 11);
+        assertEquals(11, calibrator.getPreliminarySubsetSize());
 
         // Force IllegalArgumentException
-        try {
-            calibrator.setPreliminarySubsetSize(9);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> calibrator.setPreliminarySubsetSize(9));
     }
 
     @Test
-    public void testCalibrateGeneralNoNoiseInlier()
-            throws IOException, LockedException, WrongSizeException, NotReadyException {
+    public void testCalibrateGeneralNoNoiseInlier() throws IOException, LockedException, WrongSizeException,
+            NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                    new WMMEarthMagneticFluxDensityEstimator();
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
             final double[] hardIron = generateHardIron(randomizer);
             final Matrix bm = Matrix.newFromArray(hardIron);
             final Matrix mm = generateSoftIronGeneral();
             assertNotNull(mm);
 
-            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
-                    new Random(), 0.0,
+            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
 
             final NEDPosition position = createPosition(randomizer);
             final Date timestamp = new Date(createTimestamp(randomizer));
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                    new ArrayList<>();
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
             for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
                 final CoordinateTransformation cnb = generateBodyC(randomizer);
 
                 final StandardDeviationBodyMagneticFluxDensity b;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
                     // outlier
-                    b = generateMeasure(hardIron, mm, wmmEstimator,
-                            noiseRandomizer, position, timestamp, cnb);
+                    b = generateMeasure(hardIron, mm, wmmEstimator, noiseRandomizer, position, timestamp, cnb);
                 } else {
                     // inlier
-                    b = generateMeasure(hardIron, mm, wmmEstimator,
-                            null, position, timestamp, cnb);
+                    b = generateMeasure(hardIron, mm, wmmEstimator, null, position, timestamp, cnb);
                 }
                 measurements.add(b);
             }
 
             final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                    new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                            position, measurements, false,
-                            bm, mm, this);
+                    new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(position, measurements,
+                            false, bm, mm, this);
             calibrator.setTime(timestamp);
             calibrator.setThreshold(THRESHOLD);
 
@@ -8903,10 +8189,10 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
-            assertEquals(mCalibrateNextIteration, 0);
-            assertEquals(mCalibrateProgressChange, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
+            assertEquals(0, mCalibrateNextIteration);
+            assertEquals(0, mCalibrateProgressChange);
 
             try {
                 calibrator.calibrate();
@@ -8917,13 +8203,12 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
             assertTrue(mCalibrateNextIteration > 0);
             assertTrue(mCalibrateProgressChange >= 0);
 
-            final Matrix estimatedHardIron = calibrator
-                    .getEstimatedHardIronAsMatrix();
+            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
             final Matrix estimatedMm = calibrator.getEstimatedMm();
 
             if (!bm.equals(estimatedHardIron, ABSOLUTE_ERROR)) {
@@ -8950,49 +8235,42 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
     }
 
     @Test
-    public void testCalibrateCommonAxisNoNoiseInlier()
-            throws IOException, LockedException, CalibrationException,
+    public void testCalibrateCommonAxisNoNoiseInlier() throws IOException, LockedException, CalibrationException,
             NotReadyException, WrongSizeException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                    new WMMEarthMagneticFluxDensityEstimator();
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
             final double[] hardIron = generateHardIron(randomizer);
             final Matrix bm = Matrix.newFromArray(hardIron);
             final Matrix mm = generateSoftIronCommonAxis();
             assertNotNull(mm);
 
-            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
-                    new Random(), 0.0,
+            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
 
             final NEDPosition position = createPosition(randomizer);
             final Date timestamp = new Date(createTimestamp(randomizer));
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                    new ArrayList<>();
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
             for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
                 final CoordinateTransformation cnb = generateBodyC(randomizer);
 
                 final StandardDeviationBodyMagneticFluxDensity b;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
                     // outlier
-                    b = generateMeasure(hardIron, mm, wmmEstimator,
-                            noiseRandomizer, position, timestamp, cnb);
+                    b = generateMeasure(hardIron, mm, wmmEstimator, noiseRandomizer, position, timestamp, cnb);
                 } else {
                     // inlier
-                    b = generateMeasure(hardIron, mm, wmmEstimator,
-                            null, position, timestamp, cnb);
+                    b = generateMeasure(hardIron, mm, wmmEstimator, null, position, timestamp, cnb);
                 }
                 measurements.add(b);
             }
 
             final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                    new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                            position, measurements, true,
-                            bm, mm, this);
+                    new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(position, measurements,
+                            true, bm, mm, this);
             calibrator.setTime(timestamp);
             calibrator.setThreshold(THRESHOLD);
 
@@ -9000,23 +8278,22 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
-            assertEquals(mCalibrateNextIteration, 0);
-            assertEquals(mCalibrateProgressChange, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
+            assertEquals(0, mCalibrateNextIteration);
+            assertEquals(0, mCalibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
             assertTrue(mCalibrateNextIteration > 0);
             assertTrue(mCalibrateProgressChange >= 0);
 
-            final Matrix estimatedHardIron = calibrator
-                    .getEstimatedHardIronAsMatrix();
+            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
             final Matrix estimatedMm = calibrator.getEstimatedMm();
 
             if (!bm.equals(estimatedHardIron, ABSOLUTE_ERROR)) {
@@ -9043,50 +8320,44 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
     }
 
     @Test
-    public void testCalibrateGeneralWithInlierNoise()
-            throws IOException, LockedException, NotReadyException, WrongSizeException {
+    public void testCalibrateGeneralWithInlierNoise() throws IOException, LockedException, NotReadyException,
+            WrongSizeException {
 
         int numValid = 0;
         for (int t = 0; t < 2 * TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                    new WMMEarthMagneticFluxDensityEstimator();
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
             final double[] hardIron = generateHardIron(randomizer);
             final Matrix bm = Matrix.newFromArray(hardIron);
             final Matrix mm = generateSoftIronGeneral();
             assertNotNull(mm);
 
-            final GaussianRandomizer inlierNoiseRandomizer = new GaussianRandomizer(
-                    new Random(), 0.0, MAGNETOMETER_NOISE_STD);
-            final GaussianRandomizer outlierNoiseRandomizer = new GaussianRandomizer(
-                    new Random(), 0.0,
+            final GaussianRandomizer inlierNoiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+                    MAGNETOMETER_NOISE_STD);
+            final GaussianRandomizer outlierNoiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
 
             final NEDPosition position = createPosition(randomizer);
             final Date timestamp = new Date(createTimestamp(randomizer));
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                    new ArrayList<>();
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
             for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
                 final CoordinateTransformation cnb = generateBodyC(randomizer);
 
                 final StandardDeviationBodyMagneticFluxDensity b;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
                     // outlier
-                    b = generateMeasure(hardIron, mm, wmmEstimator,
-                            outlierNoiseRandomizer, position, timestamp, cnb);
+                    b = generateMeasure(hardIron, mm, wmmEstimator, outlierNoiseRandomizer, position, timestamp, cnb);
                 } else {
                     // inlier
-                    b = generateMeasure(hardIron, mm, wmmEstimator,
-                            inlierNoiseRandomizer, position, timestamp, cnb);
+                    b = generateMeasure(hardIron, mm, wmmEstimator, inlierNoiseRandomizer, position, timestamp, cnb);
                 }
                 measurements.add(b);
             }
 
             final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                    new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                            position, measurements, false,
-                            bm, mm, this);
+                    new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(position, measurements,
+                            false, bm, mm, this);
             calibrator.setTime(timestamp);
             calibrator.setThreshold(THRESHOLD);
 
@@ -9094,10 +8365,10 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
-            assertEquals(mCalibrateNextIteration, 0);
-            assertEquals(mCalibrateProgressChange, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
+            assertEquals(0, mCalibrateNextIteration);
+            assertEquals(0, mCalibrateProgressChange);
 
             try {
                 calibrator.calibrate();
@@ -9108,13 +8379,12 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
             assertTrue(mCalibrateNextIteration > 0);
             assertTrue(mCalibrateProgressChange >= 0);
 
-            final Matrix estimatedHardIron = calibrator
-                    .getEstimatedHardIronAsMatrix();
+            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
             final Matrix estimatedMm = calibrator.getEstimatedMm();
 
             if (!bm.equals(estimatedHardIron, LARGE_ABSOLUTE_ERROR)) {
@@ -9141,51 +8411,44 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
     }
 
     @Test
-    public void testCalibrateCommonAxisWithInlierNoise()
-            throws IOException, LockedException, CalibrationException,
+    public void testCalibrateCommonAxisWithInlierNoise() throws IOException, LockedException, CalibrationException,
             NotReadyException, WrongSizeException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                    new WMMEarthMagneticFluxDensityEstimator();
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
             final double[] hardIron = generateHardIron(randomizer);
             final Matrix bm = Matrix.newFromArray(hardIron);
             final Matrix mm = generateSoftIronCommonAxis();
             assertNotNull(mm);
 
-            final GaussianRandomizer inlierNoiseRandomizer = new GaussianRandomizer(
-                    new Random(), 0.0, MAGNETOMETER_NOISE_STD);
-            final GaussianRandomizer outlierNoiseRandomizer = new GaussianRandomizer(
-                    new Random(), 0.0,
+            final GaussianRandomizer inlierNoiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+                    MAGNETOMETER_NOISE_STD);
+            final GaussianRandomizer outlierNoiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
 
             final NEDPosition position = createPosition(randomizer);
             final Date timestamp = new Date(createTimestamp(randomizer));
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                    new ArrayList<>();
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
             for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
                 final CoordinateTransformation cnb = generateBodyC(randomizer);
 
                 final StandardDeviationBodyMagneticFluxDensity b;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
                     // outlier
-                    b = generateMeasure(hardIron, mm, wmmEstimator,
-                            outlierNoiseRandomizer, position, timestamp, cnb);
+                    b = generateMeasure(hardIron, mm, wmmEstimator, outlierNoiseRandomizer, position, timestamp, cnb);
                 } else {
                     // inlier
-                    b = generateMeasure(hardIron, mm, wmmEstimator,
-                            inlierNoiseRandomizer, position, timestamp, cnb);
+                    b = generateMeasure(hardIron, mm, wmmEstimator, inlierNoiseRandomizer, position, timestamp, cnb);
                 }
                 measurements.add(b);
             }
 
             final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                    new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                            position, measurements, true,
-                            bm, mm, this);
+                    new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(position, measurements,
+                            true, bm, mm, this);
             calibrator.setTime(timestamp);
             calibrator.setThreshold(THRESHOLD);
 
@@ -9193,23 +8456,22 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
-            assertEquals(mCalibrateNextIteration, 0);
-            assertEquals(mCalibrateProgressChange, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
+            assertEquals(0, mCalibrateNextIteration);
+            assertEquals(0, mCalibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
             assertTrue(mCalibrateNextIteration > 0);
             assertTrue(mCalibrateProgressChange >= 0);
 
-            final Matrix estimatedHardIron = calibrator
-                    .getEstimatedHardIronAsMatrix();
+            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
             final Matrix estimatedMm = calibrator.getEstimatedMm();
 
             if (!bm.equals(estimatedHardIron, LARGE_ABSOLUTE_ERROR)) {
@@ -9236,50 +8498,42 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
     }
 
     @Test
-    public void testCalibrateGeneralNoRefinement()
-            throws IOException,
-            LockedException, CalibrationException, NotReadyException,
-            WrongSizeException {
+    public void testCalibrateGeneralNoRefinement() throws IOException, LockedException, CalibrationException,
+            NotReadyException, WrongSizeException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                    new WMMEarthMagneticFluxDensityEstimator();
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
             final double[] hardIron = generateHardIron(randomizer);
             final Matrix bm = Matrix.newFromArray(hardIron);
             final Matrix mm = generateSoftIronGeneral();
             assertNotNull(mm);
 
-            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
-                    new Random(), 0.0,
+            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
 
             final NEDPosition position = createPosition(randomizer);
             final Date timestamp = new Date(createTimestamp(randomizer));
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                    new ArrayList<>();
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
             for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
                 final CoordinateTransformation cnb = generateBodyC(randomizer);
 
                 final StandardDeviationBodyMagneticFluxDensity b;
                 if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
                     // outlier
-                    b = generateMeasure(hardIron, mm, wmmEstimator,
-                            noiseRandomizer, position, timestamp, cnb);
+                    b = generateMeasure(hardIron, mm, wmmEstimator, noiseRandomizer, position, timestamp, cnb);
                 } else {
                     // inlier
-                    b = generateMeasure(hardIron, mm, wmmEstimator,
-                            null, position, timestamp, cnb);
+                    b = generateMeasure(hardIron, mm, wmmEstimator, null, position, timestamp, cnb);
                 }
                 measurements.add(b);
             }
 
             final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator =
-                    new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(
-                            position, measurements, false,
-                            bm, mm, this);
+                    new RANSACRobustKnownPositionAndInstantMagnetometerCalibrator(position, measurements,
+                            false, bm, mm, this);
             calibrator.setTime(timestamp);
             calibrator.setThreshold(THRESHOLD);
             calibrator.setResultRefined(false);
@@ -9288,23 +8542,22 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
-            assertEquals(mCalibrateNextIteration, 0);
-            assertEquals(mCalibrateProgressChange, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
+            assertEquals(0, mCalibrateNextIteration);
+            assertEquals(0, mCalibrateProgressChange);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
             assertTrue(mCalibrateNextIteration > 0);
             assertTrue(mCalibrateProgressChange >= 0);
 
-            final Matrix estimatedHardIron = calibrator
-                    .getEstimatedHardIronAsMatrix();
+            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
             final Matrix estimatedMm = calibrator.getEstimatedMm();
 
             if (!bm.equals(estimatedHardIron, ABSOLUTE_ERROR)) {
@@ -9331,31 +8584,27 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
     }
 
     @Override
-    public void onCalibrateStart(
-            final RobustKnownPositionAndInstantMagnetometerCalibrator calibrator) {
+    public void onCalibrateStart(final RobustKnownPositionAndInstantMagnetometerCalibrator calibrator) {
         checkLocked((RANSACRobustKnownPositionAndInstantMagnetometerCalibrator) calibrator);
         mCalibrateStart++;
     }
 
     @Override
-    public void onCalibrateEnd(
-            final RobustKnownPositionAndInstantMagnetometerCalibrator calibrator) {
+    public void onCalibrateEnd(final RobustKnownPositionAndInstantMagnetometerCalibrator calibrator) {
         checkLocked((RANSACRobustKnownPositionAndInstantMagnetometerCalibrator) calibrator);
         mCalibrateEnd++;
     }
 
     @Override
     public void onCalibrateNextIteration(
-            final RobustKnownPositionAndInstantMagnetometerCalibrator calibrator,
-            final int iteration) {
+            final RobustKnownPositionAndInstantMagnetometerCalibrator calibrator, final int iteration) {
         checkLocked((RANSACRobustKnownPositionAndInstantMagnetometerCalibrator) calibrator);
         mCalibrateNextIteration++;
     }
 
     @Override
     public void onCalibrateProgressChange(
-            final RobustKnownPositionAndInstantMagnetometerCalibrator calibrator,
-            final float progress) {
+            final RobustKnownPositionAndInstantMagnetometerCalibrator calibrator, final float progress) {
         checkLocked((RANSACRobustKnownPositionAndInstantMagnetometerCalibrator) calibrator);
         mCalibrateProgressChange++;
     }
@@ -9367,245 +8616,64 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         mCalibrateProgressChange = 0;
     }
 
-    private void checkLocked(
-            final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator) {
+    private static void checkLocked(final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator) {
         assertTrue(calibrator.isRunning());
-        try {
-            calibrator.setThreshold(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setComputeAndKeepInliersEnabled(true);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setComputeAndKeepResidualsEnabled(true);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialHardIronX(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialHardIronY(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialHardIronZ(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialHardIronX(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialHardIronY(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialHardIronZ(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialHardIron(
-                    0.0, 0.0, 0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialHardIron(
-                    null, null, null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialHardIron((MagneticFluxDensityTriad) null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialSx(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialSy(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialSz(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialMxy(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialMxz(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialMyx(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialMyz(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialMzx(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialMzy(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialScalingFactors(
-                    0.0, 0.0, 0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialCrossCouplingErrors(
-                    0.0, 0.0, 0.0,
-                    0.0, 0.0, 0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialScalingFactorsAndCrossCouplingErrors(
-                    0.0, 0.0, 0.0,
-                    0.0, 0.0, 0.0,
-                    0.0, 0.0, 0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialHardIron((double[]) null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialHardIron((Matrix) null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setInitialMm(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setPosition((NEDPosition) null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setPosition((ECEFPosition) null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setYear(2020.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setTime(0L);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setTime((Date) null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setTime((GregorianCalendar) null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setMeasurements(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setCommonAxisUsed(true);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setListener(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setMagneticModel(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setProgressDelta(0.5f);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setConfidence(0.8);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setMaxIterations(100);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setResultRefined(true);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setCovarianceKept(true);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setPreliminarySubsetSize(10);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.calibrate();
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
+        assertThrows(LockedException.class, () -> calibrator.setThreshold(0.0));
+        assertThrows(LockedException.class, () -> calibrator.setComputeAndKeepInliersEnabled(true));
+        assertThrows(LockedException.class, () -> calibrator.setComputeAndKeepResidualsEnabled(true));
+        assertThrows(LockedException.class, () -> calibrator.setInitialHardIronX(0.0));
+        assertThrows(LockedException.class, () -> calibrator.setInitialHardIronY(0.0));
+        assertThrows(LockedException.class, () -> calibrator.setInitialHardIronZ(0.0));
+        assertThrows(LockedException.class, () -> calibrator.setInitialHardIronX(null));
+        assertThrows(LockedException.class, () -> calibrator.setInitialHardIronY(null));
+        assertThrows(LockedException.class, () -> calibrator.setInitialHardIronZ(null));
+        assertThrows(LockedException.class, () -> calibrator.setInitialHardIron(
+                0.0, 0.0, 0.0));
+        assertThrows(LockedException.class, () -> calibrator.setInitialHardIron(
+                null, null, null));
+        assertThrows(LockedException.class, () -> calibrator.setInitialHardIron((MagneticFluxDensityTriad) null));
+        assertThrows(LockedException.class, () -> calibrator.setInitialSx(0.0));
+        assertThrows(LockedException.class, () -> calibrator.setInitialSy(0.0));
+        assertThrows(LockedException.class, () -> calibrator.setInitialSz(0.0));
+        assertThrows(LockedException.class, () -> calibrator.setInitialMxy(0.0));
+        assertThrows(LockedException.class, () -> calibrator.setInitialMxz(0.0));
+        assertThrows(LockedException.class, () -> calibrator.setInitialMyx(0.0));
+        assertThrows(LockedException.class, () -> calibrator.setInitialMyz(0.0));
+        assertThrows(LockedException.class, () -> calibrator.setInitialMzx(0.0));
+        assertThrows(LockedException.class, () -> calibrator.setInitialMzy(0.0));
+        assertThrows(LockedException.class, () -> calibrator.setInitialScalingFactors(
+                0.0, 0.0, 0.0));
+        assertThrows(LockedException.class, () -> calibrator.setInitialCrossCouplingErrors(
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
+        assertThrows(LockedException.class, () -> calibrator.setInitialScalingFactorsAndCrossCouplingErrors(
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                0.0, 0.0, 0.0));
+        assertThrows(LockedException.class, () -> calibrator.setInitialHardIron((double[]) null));
+        assertThrows(LockedException.class, () -> calibrator.setInitialHardIron((Matrix) null));
+        assertThrows(LockedException.class, () -> calibrator.setInitialMm(null));
+        assertThrows(LockedException.class, () -> calibrator.setPosition((NEDPosition) null));
+        assertThrows(LockedException.class, () -> calibrator.setPosition((ECEFPosition) null));
+        assertThrows(LockedException.class, () -> calibrator.setYear(2020.0));
+        assertThrows(LockedException.class, () -> calibrator.setTime(0L));
+        assertThrows(LockedException.class, () -> calibrator.setTime((Date) null));
+        assertThrows(LockedException.class, () -> calibrator.setTime((GregorianCalendar) null));
+        assertThrows(LockedException.class, () -> calibrator.setMeasurements(null));
+        assertThrows(LockedException.class, () -> calibrator.setCommonAxisUsed(true));
+        assertThrows(LockedException.class, () -> calibrator.setListener(null));
+        assertThrows(LockedException.class, () -> calibrator.setMagneticModel(null));
+        assertThrows(LockedException.class, () -> calibrator.setProgressDelta(0.5f));
+        assertThrows(LockedException.class, () -> calibrator.setConfidence(0.8));
+        assertThrows(LockedException.class, () -> calibrator.setMaxIterations(100));
+        assertThrows(LockedException.class, () -> calibrator.setResultRefined(true));
+        assertThrows(LockedException.class, () -> calibrator.setCovarianceKept(true));
+        assertThrows(LockedException.class, () -> calibrator.setPreliminarySubsetSize(10));
+        assertThrows(LockedException.class, calibrator::calibrate);
     }
 
-    private void assertEstimatedResult(
+    private static void assertEstimatedResult(
             final Matrix hardIron, final Matrix mm,
-            final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator,
-            final boolean checkCovariance) throws WrongSizeException {
+            final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator, final boolean checkCovariance)
+            throws WrongSizeException {
 
         final double[] estimatedHardIron = calibrator.getEstimatedHardIron();
         assertArrayEquals(hardIron.getBuffer(), estimatedHardIron, 0.0);
@@ -9619,59 +8687,47 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
 
         assertEquals(hardIron, hardIron2);
 
-        assertEquals(hardIron.getElementAtIndex(0),
-                calibrator.getEstimatedHardIronX(), 0.0);
-        assertEquals(hardIron.getElementAtIndex(1),
-                calibrator.getEstimatedHardIronY(), 0.0);
-        assertEquals(hardIron.getElementAtIndex(2),
-                calibrator.getEstimatedHardIronZ(), 0.0);
+        assertEquals(hardIron.getElementAtIndex(0), calibrator.getEstimatedHardIronX(), 0.0);
+        assertEquals(hardIron.getElementAtIndex(1), calibrator.getEstimatedHardIronY(), 0.0);
+        assertEquals(hardIron.getElementAtIndex(2), calibrator.getEstimatedHardIronZ(), 0.0);
 
         final MagneticFluxDensity bx1 = calibrator.getEstimatedHardIronXAsMagneticFluxDensity();
-        assertEquals(calibrator.getEstimatedHardIronX(), bx1.getValue().doubleValue(), 0.0);
+        assertEquals(bx1.getValue().doubleValue(), calibrator.getEstimatedHardIronX(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bx1.getUnit());
         final MagneticFluxDensity bx2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         calibrator.getEstimatedHardIronXAsMagneticFluxDensity(bx2);
         assertEquals(bx1, bx2);
         final MagneticFluxDensity by1 = calibrator.getEstimatedHardIronYAsMagneticFluxDensity();
-        assertEquals(calibrator.getEstimatedHardIronY(), by1.getValue().doubleValue(), 0.0);
+        assertEquals(by1.getValue().doubleValue(), calibrator.getEstimatedHardIronY(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, by1.getUnit());
         final MagneticFluxDensity by2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         calibrator.getEstimatedHardIronYAsMagneticFluxDensity(by2);
         assertEquals(by1, by2);
         final MagneticFluxDensity bz1 = calibrator.getEstimatedHardIronZAsMagneticFluxDensity();
-        assertEquals(calibrator.getEstimatedHardIronZ(), bz1.getValue().doubleValue(), 0.0);
+        assertEquals(bz1.getValue().doubleValue(), calibrator.getEstimatedHardIronZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bz1.getUnit());
         final MagneticFluxDensity bz2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         calibrator.getEstimatedHardIronZAsMagneticFluxDensity(bz2);
         assertEquals(bz1, bz2);
 
         final MagneticFluxDensityTriad bTriad1 = calibrator.getEstimatedHardIronAsTriad();
-        assertEquals(calibrator.getEstimatedHardIronX(), bTriad1.getValueX(), 0.0);
-        assertEquals(calibrator.getEstimatedHardIronY(), bTriad1.getValueY(), 0.0);
-        assertEquals(calibrator.getEstimatedHardIronZ(), bTriad1.getValueZ(), 0.0);
+        assertEquals(bTriad1.getValueX(), calibrator.getEstimatedHardIronX(), 0.0);
+        assertEquals(bTriad1.getValueY(), calibrator.getEstimatedHardIronY(), 0.0);
+        assertEquals(bTriad1.getValueZ(), calibrator.getEstimatedHardIronZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
         final MagneticFluxDensityTriad bTriad2 = new MagneticFluxDensityTriad();
         calibrator.getEstimatedHardIronAsTriad(bTriad2);
         assertEquals(bTriad1, bTriad2);
 
-        assertEquals(mm.getElementAt(0, 0), calibrator.getEstimatedSx(),
-                0.0);
-        assertEquals(mm.getElementAt(1, 1), calibrator.getEstimatedSy(),
-                0.0);
-        assertEquals(mm.getElementAt(2, 2), calibrator.getEstimatedSz(),
-                0.0);
-        assertEquals(mm.getElementAt(0, 1), calibrator.getEstimatedMxy(),
-                0.0);
-        assertEquals(mm.getElementAt(0, 2), calibrator.getEstimatedMxz(),
-                0.0);
-        assertEquals(mm.getElementAt(1, 0), calibrator.getEstimatedMyx(),
-                0.0);
-        assertEquals(mm.getElementAt(1, 2), calibrator.getEstimatedMyz(),
-                0.0);
-        assertEquals(mm.getElementAt(2, 0), calibrator.getEstimatedMzx(),
-                0.0);
-        assertEquals(mm.getElementAt(2, 1), calibrator.getEstimatedMzy(),
-                0.0);
+        assertEquals(mm.getElementAt(0, 0), calibrator.getEstimatedSx(), 0.0);
+        assertEquals(mm.getElementAt(1, 1), calibrator.getEstimatedSy(), 0.0);
+        assertEquals(mm.getElementAt(2, 2), calibrator.getEstimatedSz(), 0.0);
+        assertEquals(mm.getElementAt(0, 1), calibrator.getEstimatedMxy(), 0.0);
+        assertEquals(mm.getElementAt(0, 2), calibrator.getEstimatedMxz(), 0.0);
+        assertEquals(mm.getElementAt(1, 0), calibrator.getEstimatedMyx(), 0.0);
+        assertEquals(mm.getElementAt(1, 2), calibrator.getEstimatedMyz(), 0.0);
+        assertEquals(mm.getElementAt(2, 0), calibrator.getEstimatedMzx(), 0.0);
+        assertEquals(mm.getElementAt(2, 1), calibrator.getEstimatedMzy(), 0.0);
 
         if (checkCovariance) {
             assertCovariance(calibrator);
@@ -9680,15 +8736,14 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertNotNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
         final MagneticFluxDensity b1 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
         assertNotNull(b1);
-        assertEquals(calibrator.getGroundTruthMagneticFluxDensityNorm(), b1.getValue());
+        assertEquals(b1.getValue(), calibrator.getGroundTruthMagneticFluxDensityNorm());
         assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
         final MagneticFluxDensity b2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b2));
         assertEquals(b1, b2);
     }
 
-    private void assertCovariance(
-            final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator) {
+    private static void assertCovariance(final RANSACRobustKnownPositionAndInstantMagnetometerCalibrator calibrator) {
         assertNotNull(calibrator.getEstimatedHardIronXVariance());
         assertNotNull(calibrator.getEstimatedHardIronXStandardDeviation());
         final MagneticFluxDensity stdBx1 = calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity();
@@ -9714,9 +8769,9 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertEquals(stdBz1, stdBz2);
 
         final MagneticFluxDensityTriad std1 = calibrator.getEstimatedHardIronStandardDeviation();
-        assertEquals(calibrator.getEstimatedHardIronXStandardDeviation(), std1.getValueX(), 0.0);
-        assertEquals(calibrator.getEstimatedHardIronYStandardDeviation(), std1.getValueY(), 0.0);
-        assertEquals(calibrator.getEstimatedHardIronZStandardDeviation(), std1.getValueZ(), 0.0);
+        assertEquals(std1.getValueX(), calibrator.getEstimatedHardIronXStandardDeviation(), 0.0);
+        assertEquals(std1.getValueY(), calibrator.getEstimatedHardIronYStandardDeviation(), 0.0);
+        assertEquals(std1.getValueZ(), calibrator.getEstimatedHardIronZStandardDeviation(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, std1.getUnit());
         final MagneticFluxDensityTriad std2 = new MagneticFluxDensityTriad();
         assertTrue(calibrator.getEstimatedHardIronStandardDeviation(std2));
@@ -9741,24 +8796,24 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertEquals(norm1, norm2);
     }
 
-    private void checkCommonAxisCovariance(final Matrix covariance) {
-        assertEquals(covariance.getRows(), 12);
-        assertEquals(covariance.getColumns(), 12);
+    private static void checkCommonAxisCovariance(final Matrix covariance) {
+        assertEquals(12, covariance.getRows());
+        assertEquals(12, covariance.getColumns());
 
         for (int j = 0; j < 12; j++) {
             final boolean colIsZero = j == 8 || j == 10 || j == 11;
             for (int i = 0; i < 12; i++) {
                 final boolean rowIsZero = i == 8 || i == 10 || i == 11;
                 if (colIsZero || rowIsZero) {
-                    assertEquals(covariance.getElementAt(i, j), 0.0, 0.0);
+                    assertEquals(0.0, covariance.getElementAt(i, j), 0.0);
                 }
             }
         }
     }
 
-    private void checkGeneralCovariance(final Matrix covariance) {
-        assertEquals(covariance.getRows(), 12);
-        assertEquals(covariance.getColumns(), 12);
+    private static void checkGeneralCovariance(final Matrix covariance) {
+        assertEquals(12, covariance.getRows());
+        assertEquals(12, covariance.getColumns());
 
         for (int i = 0; i < 12; i++) {
             assertNotEquals(covariance.getElementAt(i, i), 0.0);
@@ -9766,83 +8821,55 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
     }
 
     private static List<StandardDeviationBodyMagneticFluxDensity> generateMeasures(
-            final double[] hardIron, final Matrix softIron,
-            final int numberOfMeasurements,
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-            final UniformRandomizer randomizer,
-            final NEDPosition position,
-            final Date timestamp) {
+            final double[] hardIron, final Matrix softIron, final int numberOfMeasurements,
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator, final UniformRandomizer randomizer,
+            final NEDPosition position, final Date timestamp) {
 
-        final List<StandardDeviationBodyMagneticFluxDensity> result =
-                new ArrayList<>();
+        final List<StandardDeviationBodyMagneticFluxDensity> result = new ArrayList<>();
         for (int i = 0; i < numberOfMeasurements; i++) {
             final CoordinateTransformation cnb = generateBodyC(randomizer);
-            result.add(generateMeasure(hardIron, softIron, wmmEstimator,
-                    null, position, timestamp, cnb));
+            result.add(generateMeasure(hardIron, softIron, wmmEstimator, null, position, timestamp,
+                    cnb));
         }
         return result;
     }
 
     private static StandardDeviationBodyMagneticFluxDensity generateMeasure(
-            final double[] hardIron, final Matrix softIron,
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-            final GaussianRandomizer noiseRandomizer,
-            final NEDPosition position,
-            final Date timestamp,
+            final double[] hardIron, final Matrix softIron, final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
+            final GaussianRandomizer noiseRandomizer, final NEDPosition position, final Date timestamp,
             final CoordinateTransformation cnb) {
 
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity truthMagnetic =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
-        final BodyMagneticFluxDensity measuredMagnetic =
-                generateMeasuredMagneticFluxDensity(truthMagnetic,
-                        hardIron, softIron);
+        final BodyMagneticFluxDensity truthMagnetic = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity measuredMagnetic = generateMeasuredMagneticFluxDensity(truthMagnetic, hardIron,
+                softIron);
 
         if (noiseRandomizer != null) {
-            measuredMagnetic.setBx(measuredMagnetic.getBx()
-                    + noiseRandomizer.nextDouble());
-            measuredMagnetic.setBy(measuredMagnetic.getBy()
-                    + noiseRandomizer.nextDouble());
-            measuredMagnetic.setBz(measuredMagnetic.getBz()
-                    + noiseRandomizer.nextDouble());
+            measuredMagnetic.setBx(measuredMagnetic.getBx() + noiseRandomizer.nextDouble());
+            measuredMagnetic.setBy(measuredMagnetic.getBy() + noiseRandomizer.nextDouble());
+            measuredMagnetic.setBz(measuredMagnetic.getBz() + noiseRandomizer.nextDouble());
         }
 
-        final double std = noiseRandomizer != null ?
-                noiseRandomizer.getStandardDeviation() :
-                MAGNETOMETER_NOISE_STD;
-        return new StandardDeviationBodyMagneticFluxDensity(
-                measuredMagnetic, std);
+        final double std = noiseRandomizer != null ? noiseRandomizer.getStandardDeviation() : MAGNETOMETER_NOISE_STD;
+        return new StandardDeviationBodyMagneticFluxDensity(measuredMagnetic, std);
     }
 
-    private static CoordinateTransformation generateBodyC(
-            final UniformRandomizer randomizer) {
+    private static CoordinateTransformation generateBodyC(final UniformRandomizer randomizer) {
 
-        final double roll = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        return new CoordinateTransformation(
-                roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        return new CoordinateTransformation(roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
     }
 
     private static BodyMagneticFluxDensity generateMeasuredMagneticFluxDensity(
-            final BodyMagneticFluxDensity input, final double[] hardIron,
-            final Matrix softIron) {
-        return BodyMagneticFluxDensityGenerator.generate(input, hardIron,
-                softIron);
+            final BodyMagneticFluxDensity input, final double[] hardIron, final Matrix softIron) {
+        return BodyMagneticFluxDensityGenerator.generate(input, hardIron, softIron);
     }
 
-    private static double[] generateHardIron(
-            final UniformRandomizer randomizer) {
+    private static double[] generateHardIron(final UniformRandomizer randomizer) {
         final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
         randomizer.fill(result, MIN_HARD_IRON, MAX_HARD_IRON);
         return result;
@@ -9850,8 +8877,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
 
     private static Matrix generateSoftIronGeneral() {
         try {
-            return Matrix.createWithUniformRandomValues(
-                    BodyMagneticFluxDensity.COMPONENTS,
+            return Matrix.createWithUniformRandomValues(BodyMagneticFluxDensity.COMPONENTS,
                     BodyMagneticFluxDensity.COMPONENTS, MIN_SOFT_IRON, MAX_SOFT_IRON);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -9873,20 +8899,15 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         return mm;
     }
 
-    private static NEDPosition createPosition(
-            final UniformRandomizer randomizer) {
-        final double latitude = Math.toRadians(randomizer.nextDouble(
-                MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(
-                MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(
-                MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
+    private static NEDPosition createPosition(final UniformRandomizer randomizer) {
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double height = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
 
         return new NEDPosition(latitude, longitude, height);
     }
 
     private static long createTimestamp(final UniformRandomizer randomizer) {
-        return randomizer.nextLong(
-                START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS);
+        return randomizer.nextLong(START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS);
     }
 }

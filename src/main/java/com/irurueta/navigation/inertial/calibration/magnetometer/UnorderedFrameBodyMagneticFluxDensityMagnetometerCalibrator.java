@@ -24,8 +24,7 @@ import java.util.Collection;
  * Defines a magnetometer calibrator using unordered collections of
  * {@link FrameBodyMagneticFluxDensity} measurements.
  */
-public interface UnorderedFrameBodyMagneticFluxDensityMagnetometerCalibrator extends
-        MagnetometerCalibrator {
+public interface UnorderedFrameBodyMagneticFluxDensityMagnetometerCalibrator extends MagnetometerCalibrator {
 
     /**
      * Gets a collection of body magnetic flux density measurements taken at different
@@ -43,7 +42,7 @@ public interface UnorderedFrameBodyMagneticFluxDensityMagnetometerCalibrator ext
      * @return a collection of body magnetic flux density measurements taken at different
      * frames (positions, orientations and velocities).
      */
-    Collection<? extends FrameBodyMagneticFluxDensity> getMeasurements();
+    Collection<FrameBodyMagneticFluxDensity> getMeasurements();
 
     /**
      * Sets a collection of body magnetic flux density measurements taken at different
@@ -63,8 +62,6 @@ public interface UnorderedFrameBodyMagneticFluxDensityMagnetometerCalibrator ext
      *                     and velocities).
      * @throws LockedException if estimator is currently running.
      */
-    void setMeasurements(
-            final Collection<? extends FrameBodyMagneticFluxDensity> measurements)
-            throws LockedException;
+    void setMeasurements(final Collection<? extends FrameBodyMagneticFluxDensity> measurements) throws LockedException;
 
 }

@@ -31,21 +31,21 @@ import com.irurueta.units.DistanceUnit;
  * and down axes of a NED frame.
  * This implementation is based on the equations defined in "Principles of GNSS, Inertial, and Multisensor
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
- * https://github.com/ymjdz/MATLAB-Codes/blob/master/Gravity_NED.m
+ * <a href="https://github.com/ymjdz/MATLAB-Codes/blob/master/Gravity_NED.m">
+ *     https://github.com/ymjdz/MATLAB-Codes/blob/master/Gravity_NED.m
+ * </a>
  */
 public class NEDGravityEstimator {
 
     /**
      * The equatorial radius of WGS84 ellipsoid (6378137 m) defining Earth's shape.
      */
-    public static final double EARTH_EQUATORIAL_RADIUS_WGS84 =
-            Constants.EARTH_EQUATORIAL_RADIUS_WGS84;
+    public static final double EARTH_EQUATORIAL_RADIUS_WGS84 = Constants.EARTH_EQUATORIAL_RADIUS_WGS84;
 
     /**
      * The polar radius of WGS84 ellipsoid (6356752.31425 m) defining Earth's shape.
      */
-    public static final double EARTH_POLAR_RADIUS_WGS84 =
-            Constants.EARTH_POLAR_RADIUS_WGS84;
+    public static final double EARTH_POLAR_RADIUS_WGS84 = Constants.EARTH_POLAR_RADIUS_WGS84;
 
     /**
      * Earth eccentricity as defined on the WGS84 ellipsoid.
@@ -263,8 +263,7 @@ public class NEDGravityEstimator {
      * @return converted angle expressed in radians.
      */
     private static double convertAngle(final Angle angle) {
-        return AngleConverter.convert(angle.getValue().doubleValue(),
-                angle.getUnit(), AngleUnit.RADIANS);
+        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(), AngleUnit.RADIANS);
     }
 
     /**
@@ -274,7 +273,6 @@ public class NEDGravityEstimator {
      * @return converted distance expressed in meters.
      */
     private static double convertDistance(final Distance distance) {
-        return DistanceConverter.convert(distance.getValue().doubleValue(),
-                distance.getUnit(), DistanceUnit.METER);
+        return DistanceConverter.convert(distance.getValue().doubleValue(), distance.getUnit(), DistanceUnit.METER);
     }
 }

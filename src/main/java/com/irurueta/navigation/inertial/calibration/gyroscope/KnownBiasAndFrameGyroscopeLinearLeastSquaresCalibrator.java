@@ -110,7 +110,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      * typically constant at horizontal orientation while the phone remains on a
      * flat surface.
      */
-    private Collection<? extends FrameBodyKinematics> mMeasurements;
+    private Collection<FrameBodyKinematics> mMeasurements;
 
     /**
      * This flag indicates whether z-axis is assumed to be common for accelerometer
@@ -214,8 +214,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      * @param measurements collection of body kinematics measurements taken at
      *                     different frames (positions, orientations and velocities).
      */
-    public KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(
-            final Collection<FrameBodyKinematics> measurements) {
+    public KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(final Collection<FrameBodyKinematics> measurements) {
         mMeasurements = measurements;
     }
 
@@ -239,8 +238,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(
-            final boolean commonAxisUsed) {
+    public KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(final boolean commonAxisUsed) {
         mCommonAxisUsed = commonAxisUsed;
     }
 
@@ -267,8 +265,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      *                       accelerometer and gyroscope.
      */
     public KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(
-            final Collection<FrameBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final Collection<FrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         this(measurements);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -283,8 +280,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      * @param listener       listener to handle events raised by this calibrator.
      */
     public KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(
-            final Collection<FrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final Collection<FrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorListener listener) {
         this(measurements, commonAxisUsed);
         mListener = listener;
@@ -380,8 +376,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      *                       accelerometer and gyroscope.
      */
     public KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed) {
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed) {
         this(biasX, biasY, biasZ);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -400,8 +395,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      * @param listener       listener to handle events raised by this calibrator.
      */
     public KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
             final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorListener listener) {
         this(biasX, biasY, biasZ, commonAxisUsed);
         mListener = listener;
@@ -423,8 +417,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      */
     public KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(
             final Collection<FrameBodyKinematics> measurements,
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed) {
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed) {
         this(measurements, biasX, biasY, biasZ);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -446,8 +439,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      */
     public KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(
             final Collection<FrameBodyKinematics> measurements,
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
             final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorListener listener) {
         this(measurements, biasX, biasY, biasZ, commonAxisUsed);
         mListener = listener;
@@ -461,8 +453,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      * @param biasZ known z coordinate of gyroscope bias.
      */
     public KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(
-            final AngularSpeed biasX, final AngularSpeed biasY,
-            final AngularSpeed biasZ) {
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) {
         try {
             setBiasCoordinates(biasX, biasY, biasZ);
         } catch (final LockedException ignore) {
@@ -546,8 +537,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      * @param listener       listener to handle events raised by this calibrator.
      */
     public KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(
-            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
-            final boolean commonAxisUsed,
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ, final boolean commonAxisUsed,
             final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorListener listener) {
         this(biasX, biasY, biasZ, commonAxisUsed);
         mListener = listener;
@@ -586,8 +576,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      */
     public KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator(
             final Collection<FrameBodyKinematics> measurements,
-            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
-            final boolean commonAxisUsed,
+            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ, final boolean commonAxisUsed,
             final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorListener listener) {
         this(measurements, biasX, biasY, biasZ, commonAxisUsed);
         mListener = listener;
@@ -610,7 +599,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      * frames (positions, orientations and velocities).
      */
     @Override
-    public Collection<? extends FrameBodyKinematics> getMeasurements() {
+    public Collection<FrameBodyKinematics> getMeasurements() {
         return mMeasurements;
     }
 
@@ -632,13 +621,12 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setMeasurements(
-            final Collection<? extends FrameBodyKinematics> measurements)
-            throws LockedException {
+    public void setMeasurements(final Collection<? extends FrameBodyKinematics> measurements) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
-        mMeasurements = measurements;
+        //noinspection unchecked
+        mMeasurements = (Collection<FrameBodyKinematics>) measurements;
     }
 
     /**
@@ -721,8 +709,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setListener(
-            final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorListener listener)
+    public void setListener(final KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibratorListener listener)
             throws LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -927,9 +914,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setBiasCoordinates(
-            final double biasX, final double biasY, final double biasZ)
-            throws LockedException {
+    public void setBiasCoordinates(final double biasX, final double biasY, final double biasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -948,8 +933,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setBiasCoordinates(
-            final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ)
+    public void setBiasCoordinates(final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ)
             throws LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -966,9 +950,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      * @return known gyroscope bias.
      */
     public AngularSpeedTriad getBiasAsTriad() {
-        return new AngularSpeedTriad(
-                AngularSpeedUnit.RADIANS_PER_SECOND,
-                mBiasX, mBiasY, mBiasZ);
+        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND, mBiasX, mBiasY, mBiasZ);
     }
 
     /**
@@ -977,8 +959,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      * @param result instance where result will be stored.
      */
     public void getBiasAsTriad(final AngularSpeedTriad result) {
-        result.setValueCoordinatesAndUnit(mBiasX, mBiasY, mBiasZ,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        result.setValueCoordinatesAndUnit(mBiasX, mBiasY, mBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -1075,8 +1056,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      */
     @Override
     public void getBiasAsMatrix(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mBiasX);
@@ -1096,8 +1076,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
         if (mRunning) {
             throw new LockedException();
         }
-        if (bias.getRows() != BodyKinematics.COMPONENTS
-                || bias.getColumns() != 1) {
+        if (bias.getRows() != BodyKinematics.COMPONENTS || bias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -1123,8 +1102,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean isReady() {
-        return mMeasurements != null
-                && mMeasurements.size() >= MINIMUM_MEASUREMENTS;
+        return mMeasurements != null && mMeasurements.size() >= MINIMUM_MEASUREMENTS;
     }
 
     /**
@@ -1232,8 +1210,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(0, 0) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 0) : null;
     }
 
     /**
@@ -1243,8 +1220,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(1, 1) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 1) : null;
     }
 
     /**
@@ -1254,8 +1230,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(2, 2) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 2) : null;
     }
 
     /**
@@ -1265,8 +1240,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(0, 1) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 1) : null;
     }
 
     /**
@@ -1276,8 +1250,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(0, 2) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 2) : null;
     }
 
     /**
@@ -1287,8 +1260,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(1, 0) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 0) : null;
     }
 
     /**
@@ -1298,8 +1270,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(1, 2) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 2) : null;
     }
 
     /**
@@ -1309,8 +1280,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(2, 0) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 0) : null;
     }
 
     /**
@@ -1320,8 +1290,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(2, 1) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 1) : null;
     }
 
     /**
@@ -1407,8 +1376,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
             final ECEFFrame previousEcefFrame = measurement.getPreviousFrame();
             final double timeInterval = measurement.getTimeInterval();
 
-            ECEFKinematicsEstimator.estimateKinematics(timeInterval, ecefFrame,
-                    previousEcefFrame, expectedKinematics);
+            ECEFKinematicsEstimator.estimateKinematics(timeInterval, ecefFrame, previousEcefFrame, expectedKinematics);
 
             final double omegaMeasX = measuredKinematics.getAngularRateX();
             final double omegaMeasY = measuredKinematics.getAngularRateY();
@@ -1539,8 +1507,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
             final ECEFFrame previousEcefFrame = measurement.getPreviousFrame();
             final double timeInterval = measurement.getTimeInterval();
 
-            ECEFKinematicsEstimator.estimateKinematics(timeInterval, ecefFrame,
-                    previousEcefFrame, expectedKinematics);
+            ECEFKinematicsEstimator.estimateKinematics(timeInterval, ecefFrame, previousEcefFrame, expectedKinematics);
 
             final double omegaMeasX = measuredKinematics.getAngularRateX();
             final double omegaMeasY = measuredKinematics.getAngularRateY();
@@ -1626,11 +1593,9 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      */
     private void fillMg(final double sx, final double sy, final double sz,
                         final double mxy, final double mxz, final double myx,
-                        final double myz, final double mzx, final double mzy)
-            throws WrongSizeException {
+                        final double myz, final double mzx, final double mzy) throws WrongSizeException {
         if (mEstimatedMg == null) {
-            mEstimatedMg = new Matrix(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            mEstimatedMg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         }
 
         mEstimatedMg.setElementAt(0, 0, sx);
@@ -1662,11 +1627,9 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      */
     private void fillGg(final double g11, final double g12, final double g13,
                         final double g21, final double g22, final double g23,
-                        final double g31, final double g32, final double g33)
-            throws WrongSizeException {
+                        final double g31, final double g32, final double g33) throws WrongSizeException {
         if (mEstimatedGg == null) {
-            mEstimatedGg = new Matrix(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            mEstimatedGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         }
 
         mEstimatedGg.setElementAt(0, 0, g11);
@@ -1690,8 +1653,7 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      * @return converted value.
      */
     private static double convertAngularSpeed(final double value, final AngularSpeedUnit unit) {
-        return AngularSpeedConverter.convert(value, unit,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return AngularSpeedConverter.convert(value, unit, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -1701,7 +1663,6 @@ public class KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator implements
      * @return converted value.
      */
     private static double convertAngularSpeed(final AngularSpeed angularSpeed) {
-        return convertAngularSpeed(angularSpeed.getValue().doubleValue(),
-                angularSpeed.getUnit());
+        return convertAngularSpeed(angularSpeed.getValue().doubleValue(), angularSpeed.getUnit());
     }
 }

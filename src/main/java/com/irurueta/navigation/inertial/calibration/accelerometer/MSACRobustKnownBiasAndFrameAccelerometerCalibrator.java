@@ -53,8 +53,7 @@ import java.util.List;
  * - ftrue is ground-truth specific force.
  * - w is measurement noise.
  */
-public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
-        RobustKnownBiasAndFrameAccelerometerCalibrator {
+public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends RobustKnownBiasAndFrameAccelerometerCalibrator {
 
     /**
      * Constant defining default threshold to determine whether samples are
@@ -124,8 +123,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final boolean commonAxisUsed) {
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(final boolean commonAxisUsed) {
         super(commonAxisUsed);
     }
 
@@ -137,8 +135,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(commonAxisUsed, listener);
     }
 
@@ -152,8 +149,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -168,8 +164,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
     }
@@ -260,8 +255,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed) {
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed) {
         super(biasX, biasY, biasZ, commonAxisUsed);
     }
 
@@ -279,8 +273,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(biasX, biasY, biasZ, commonAxisUsed, listener);
     }
@@ -302,8 +295,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed) {
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed) {
         super(measurements, biasX, biasY, biasZ, commonAxisUsed);
     }
 
@@ -325,8 +317,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double biasX, final double biasY, final double biasZ,
-            final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);
     }
@@ -418,8 +409,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
-            final boolean commonAxisUsed,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(biasX, biasY, biasZ, commonAxisUsed, listener);
     }
@@ -458,8 +448,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
-            final boolean commonAxisUsed,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);
     }
@@ -470,8 +459,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @param bias known accelerometer bias.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final double[] bias) {
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(final double[] bias) {
         super(bias);
     }
 
@@ -484,8 +472,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final double[] bias,
-            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+            final double[] bias, final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(bias, listener);
     }
 
@@ -499,8 +486,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double[] bias) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final double[] bias) {
         super(measurements, bias);
     }
 
@@ -515,8 +501,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double[] bias,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final double[] bias,
             final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(measurements, bias, listener);
     }
@@ -529,8 +514,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final double[] bias, final boolean commonAxisUsed) {
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(final double[] bias, final boolean commonAxisUsed) {
         super(bias, commonAxisUsed);
     }
 
@@ -561,8 +545,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double[] bias,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final double[] bias,
             final boolean commonAxisUsed) {
         super(measurements, bias, commonAxisUsed);
     }
@@ -580,9 +563,8 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final double[] bias, final boolean commonAxisUsed,
-            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final double[] bias,
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(measurements, bias, commonAxisUsed, listener);
     }
 
@@ -592,8 +574,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @param bias known accelerometer bias.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final Matrix bias) {
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(final Matrix bias) {
         super(bias);
     }
 
@@ -606,8 +587,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final Matrix bias,
-            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+            final Matrix bias, final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(bias, listener);
     }
 
@@ -621,8 +601,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final Matrix bias) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final Matrix bias) {
         super(measurements, bias);
     }
 
@@ -637,8 +616,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final Matrix bias,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final Matrix bias,
             final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(measurements, bias, listener);
     }
@@ -651,8 +629,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final Matrix bias, final boolean commonAxisUsed) {
+    public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(final Matrix bias, final boolean commonAxisUsed) {
         super(bias, commonAxisUsed);
     }
 
@@ -683,8 +660,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final Matrix bias,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final Matrix bias,
             final boolean commonAxisUsed) {
         super(measurements, bias, commonAxisUsed);
     }
@@ -702,9 +678,8 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final Matrix bias, final boolean commonAxisUsed,
-            final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final Matrix bias,
+            final boolean commonAxisUsed, final RobustKnownBiasAndFrameAccelerometerCalibratorListener listener) {
         super(measurements, bias, commonAxisUsed, listener);
     }
 
@@ -753,7 +728,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
         }
 
         final MSACRobustEstimator<Matrix> innerEstimator =
-                new MSACRobustEstimator<>(new MSACRobustEstimatorListener<Matrix>() {
+                new MSACRobustEstimator<>(new MSACRobustEstimatorListener<>() {
                     @Override
                     public double getThreshold() {
                         return mThreshold;
@@ -770,15 +745,12 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
                     }
 
                     @Override
-                    public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List<Matrix> solutions) {
+                    public void estimatePreliminarSolutions(final int[] samplesIndices, final List<Matrix> solutions) {
                         computePreliminarySolutions(samplesIndices, solutions);
                     }
 
                     @Override
-                    public double computeResidual(
-                            final Matrix currentEstimation, final int i) {
+                    public double computeResidual(final Matrix currentEstimation, final int i) {
                         return computeError(mMeasurements.get(i), currentEstimation);
                     }
 
@@ -798,24 +770,19 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibrator extends
                     }
 
                     @Override
-                    public void onEstimateNextIteration(
-                            final RobustEstimator<Matrix> estimator,
-                            final int iteration) {
+                    public void onEstimateNextIteration(final RobustEstimator<Matrix> estimator, final int iteration) {
                         if (mListener != null) {
                             mListener.onCalibrateNextIteration(
-                                    MSACRobustKnownBiasAndFrameAccelerometerCalibrator.this,
-                                    iteration);
+                                    MSACRobustKnownBiasAndFrameAccelerometerCalibrator.this, iteration);
                         }
                     }
 
                     @Override
                     public void onEstimateProgressChange(
-                            final RobustEstimator<Matrix> estimator,
-                            final float progress) {
+                            final RobustEstimator<Matrix> estimator, final float progress) {
                         if (mListener != null) {
                             mListener.onCalibrateProgressChange(
-                                    MSACRobustKnownBiasAndFrameAccelerometerCalibrator.this,
-                                    progress);
+                                    MSACRobustKnownBiasAndFrameAccelerometerCalibrator.this, progress);
                         }
                     }
                 });

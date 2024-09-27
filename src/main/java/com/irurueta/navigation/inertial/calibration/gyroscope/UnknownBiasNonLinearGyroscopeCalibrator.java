@@ -24,8 +24,7 @@ import com.irurueta.units.AngularSpeed;
  * Interface for non-linear gyroscope calibrator where bias is unknown
  * and needs to be estimated.
  */
-public interface UnknownBiasNonLinearGyroscopeCalibrator
-        extends UnknownBiasGyroscopeCalibrator {
+public interface UnknownBiasNonLinearGyroscopeCalibrator extends UnknownBiasGyroscopeCalibrator {
 
     /**
      * Gets initial x-coordinate of gyroscope bias to be used to find a solution.
@@ -98,8 +97,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator
      * @param initialBiasX initial x-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBiasX(final AngularSpeed initialBiasX)
-            throws LockedException;
+    void setInitialBiasX(final AngularSpeed initialBiasX) throws LockedException;
 
     /**
      * Gets initial y-coordinate of gyroscope bias to be used to find a solution.
@@ -121,8 +119,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator
      * @param initialBiasY initial y-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBiasY(final AngularSpeed initialBiasY)
-            throws LockedException;
+    void setInitialBiasY(final AngularSpeed initialBiasY) throws LockedException;
 
     /**
      * Gets initial z-coordinate of gyroscope bias to be used to find a solution.
@@ -144,8 +141,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator
      * @param initialBiasZ initial z-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBiasZ(final AngularSpeed initialBiasZ)
-            throws LockedException;
+    void setInitialBiasZ(final AngularSpeed initialBiasZ) throws LockedException;
 
     /**
      * Sets initial bias coordinates of gyroscope used to find a solution
@@ -156,8 +152,8 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator
      * @param initialBiasZ initial z-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBias(final double initialBiasX, final double initialBiasY,
-                        final double initialBiasZ) throws LockedException;
+    void setInitialBias(final double initialBiasX, final double initialBiasY, final double initialBiasZ)
+            throws LockedException;
 
     /**
      * Sets initial bias coordinates of gyroscope used to find a solution.
@@ -167,8 +163,7 @@ public interface UnknownBiasNonLinearGyroscopeCalibrator
      * @param initialBiasZ initial z-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBias(final AngularSpeed initialBiasX,
-                        final AngularSpeed initialBiasY,
+    void setInitialBias(final AngularSpeed initialBiasX, final AngularSpeed initialBiasY,
                         final AngularSpeed initialBiasZ) throws LockedException;
 
     /**

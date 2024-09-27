@@ -33,7 +33,9 @@ import com.irurueta.units.*;
  * Runs precision ECI-frame inertial navigation equations.
  * This implementation is based on the equations defined in "Principles of GNSS, Inertial, and Multisensor
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
- * https://github.com/ymjdz/MATLAB-Codes/blob/master/Nav_equations_ECI.m
+ * <a href="https://github.com/ymjdz/MATLAB-Codes/blob/master/Nav_equations_ECI.m">
+ *     https://github.com/ymjdz/MATLAB-Codes/blob/master/Nav_equations_ECI.m
+ * </a>
  */
 public class ECIInertialNavigator {
 
@@ -89,24 +91,14 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final double timeInterval,
-                         final double oldX,
-                         final double oldY,
-                         final double oldZ,
-                         final CoordinateTransformation oldC,
-                         final double oldVx,
-                         final double oldVy,
-                         final double oldVz,
-                         final double fx,
-                         final double fy,
-                         final double fz,
-                         final double angularRateX,
-                         final double angularRateY,
-                         final double angularRateZ,
-                         final ECIFrame result)
+    public void navigate(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -151,24 +143,14 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final Time timeInterval,
-                         final double oldX,
-                         final double oldY,
-                         final double oldZ,
-                         final CoordinateTransformation oldC,
-                         final double oldVx,
-                         final double oldVy,
-                         final double oldVz,
-                         final double fx,
-                         final double fy,
-                         final double fz,
-                         final double angularRateX,
-                         final double angularRateY,
-                         final double angularRateZ,
-                         final ECIFrame result)
+    public void navigate(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -197,19 +179,12 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final double timeInterval,
-                         final double oldX,
-                         final double oldY,
-                         final double oldZ,
-                         final CoordinateTransformation oldC,
-                         final double oldVx,
-                         final double oldVy,
-                         final double oldVz,
-                         final BodyKinematics kinematics,
-                         final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,
-                result);
+    public void navigate(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final BodyKinematics kinematics, final ECIFrame result) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result);
     }
 
     /**
@@ -238,19 +213,12 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final Time timeInterval,
-                         final double oldX,
-                         final double oldY,
-                         final double oldZ,
-                         final CoordinateTransformation oldC,
-                         final double oldVx,
-                         final double oldVy,
-                         final double oldVz,
-                         final BodyKinematics kinematics,
-                         final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,
-                result);
+    public void navigate(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final BodyKinematics kinematics, final ECIFrame result) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result);
     }
 
     /**
@@ -291,22 +259,14 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final double timeInterval,
-                         final Point3D oldPosition,
-                         final CoordinateTransformation oldC,
-                         final double oldVx,
-                         final double oldVy,
-                         final double oldVz,
-                         final double fx,
-                         final double fy,
-                         final double fz,
-                         final double angularRateX,
-                         final double angularRateY,
-                         final double angularRateZ,
-                         final ECIFrame result)
+    public void navigate(
+            final double timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -347,22 +307,14 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final Time timeInterval,
-                         final Point3D oldPosition,
-                         final CoordinateTransformation oldC,
-                         final double oldVx,
-                         final double oldVy,
-                         final double oldVz,
-                         final double fx,
-                         final double fy,
-                         final double fz,
-                         final double angularRateX,
-                         final double angularRateY,
-                         final double angularRateZ,
-                         final ECIFrame result)
+    public void navigate(
+            final Time timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -387,17 +339,11 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final double timeInterval,
-                         final Point3D oldPosition,
-                         final CoordinateTransformation oldC,
-                         final double oldVx,
-                         final double oldVy,
-                         final double oldVz,
-                         final BodyKinematics kinematics,
-                         final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics,
-                result);
+    public void navigate(
+            final double timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz, final BodyKinematics kinematics,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics, result);
     }
 
     /**
@@ -422,17 +368,11 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final Time timeInterval,
-                         final Point3D oldPosition,
-                         final CoordinateTransformation oldC,
-                         final double oldVx,
-                         final double oldVy,
-                         final double oldVz,
-                         final BodyKinematics kinematics,
-                         final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics,
-                result);
+    public void navigate(
+            final Time timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz, final BodyKinematics kinematics,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics, result);
     }
 
     /**
@@ -477,24 +417,14 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final double timeInterval,
-                         final Distance oldX,
-                         final Distance oldY,
-                         final Distance oldZ,
-                         final CoordinateTransformation oldC,
-                         final double oldVx,
-                         final double oldVy,
-                         final double oldVz,
-                         final double fx,
-                         final double fy,
-                         final double fz,
-                         final double angularRateX,
-                         final double angularRateY,
-                         final double angularRateZ,
-                         final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+    public void navigate(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -539,24 +469,14 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final Time timeInterval,
-                         final Distance oldX,
-                         final Distance oldY,
-                         final Distance oldZ,
-                         final CoordinateTransformation oldC,
-                         final double oldVx,
-                         final double oldVy,
-                         final double oldVz,
-                         final double fx,
-                         final double fy,
-                         final double fz,
-                         final double angularRateX,
-                         final double angularRateY,
-                         final double angularRateZ,
-                         final ECIFrame result)
+    public void navigate(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -585,19 +505,12 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final double timeInterval,
-                         final Distance oldX,
-                         final Distance oldY,
-                         final Distance oldZ,
-                         final CoordinateTransformation oldC,
-                         final double oldVx,
-                         final double oldVy,
-                         final double oldVz,
-                         final BodyKinematics kinematics,
-                         final ECIFrame result)
+    public void navigate(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final BodyKinematics kinematics, final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                kinematics, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result);
     }
 
     /**
@@ -626,19 +539,12 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final Time timeInterval,
-                         final Distance oldX,
-                         final Distance oldY,
-                         final Distance oldZ,
-                         final CoordinateTransformation oldC,
-                         final double oldVx,
-                         final double oldVy,
-                         final double oldVz,
-                         final BodyKinematics kinematics,
-                         final ECIFrame result)
+    public void navigate(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final BodyKinematics kinematics, final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                kinematics, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result);
     }
 
     /**
@@ -683,24 +589,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final double timeInterval,
-                         final double oldX,
-                         final double oldY,
-                         final double oldZ,
-                         final CoordinateTransformation oldC,
-                         final Speed oldSpeedX,
-                         final Speed oldSpeedY,
-                         final Speed oldSpeedZ,
-                         final double fx,
-                         final double fy,
-                         final double fz,
-                         final double angularRateX,
-                         final double angularRateY,
-                         final double angularRateZ,
-                         final ECIFrame result)
+    public void navigate(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
     }
 
@@ -746,24 +641,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final Time timeInterval,
-                         final double oldX,
-                         final double oldY,
-                         final double oldZ,
-                         final CoordinateTransformation oldC,
-                         final Speed oldSpeedX,
-                         final Speed oldSpeedY,
-                         final Speed oldSpeedZ,
-                         final double fx,
-                         final double fy,
-                         final double fz,
-                         final double angularRateX,
-                         final double angularRateY,
-                         final double angularRateZ,
-                         final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
+    public void navigate(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
     }
 
@@ -793,19 +677,12 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final double timeInterval,
-                         final double oldX,
-                         final double oldY,
-                         final double oldZ,
-                         final CoordinateTransformation oldC,
-                         final Speed oldSpeedX,
-                         final Speed oldSpeedY,
-                         final Speed oldSpeedZ,
-                         final BodyKinematics kinematics,
-                         final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
+    public void navigate(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final BodyKinematics kinematics, final ECIFrame result) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
     }
 
     /**
@@ -834,19 +711,12 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final Time timeInterval,
-                         final double oldX,
-                         final double oldY,
-                         final double oldZ,
-                         final CoordinateTransformation oldC,
-                         final Speed oldSpeedX,
-                         final Speed oldSpeedY,
-                         final Speed oldSpeedZ,
-                         final BodyKinematics kinematics,
-                         final ECIFrame result)
+    public void navigate(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final BodyKinematics kinematics, final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
     }
 
     /**
@@ -888,24 +758,14 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final double timeInterval,
-                         final double oldX,
-                         final double oldY,
-                         final double oldZ,
-                         final CoordinateTransformation oldC,
-                         final double oldVx,
-                         final double oldVy,
-                         final double oldVz,
-                         final Acceleration fx,
-                         final Acceleration fy,
-                         final Acceleration fz,
-                         final double angularRateX,
-                         final double angularRateY,
-                         final double angularRateZ,
-                         final ECIFrame result)
+    public void navigate(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -947,24 +807,14 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final Time timeInterval,
-                         final double oldX,
-                         final double oldY,
-                         final double oldZ,
-                         final CoordinateTransformation oldC,
-                         final double oldVx,
-                         final double oldVy,
-                         final double oldVz,
-                         final Acceleration fx,
-                         final Acceleration fy,
-                         final Acceleration fz,
-                         final double angularRateX,
-                         final double angularRateY,
-                         final double angularRateZ,
-                         final ECIFrame result)
+    public void navigate(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -1006,24 +856,14 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final double timeInterval,
-                         final double oldX,
-                         final double oldY,
-                         final double oldZ,
-                         final CoordinateTransformation oldC,
-                         final double oldVx,
-                         final double oldVy,
-                         final double oldVz,
-                         final double fx,
-                         final double fy,
-                         final double fz,
-                         final AngularSpeed angularRateX,
-                         final AngularSpeed angularRateY,
-                         final AngularSpeed angularRateZ,
-                         final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+    public void navigate(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -1065,24 +905,14 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final Time timeInterval,
-                         final double oldX,
-                         final double oldY,
-                         final double oldZ,
-                         final CoordinateTransformation oldC,
-                         final double oldVx,
-                         final double oldVy,
-                         final double oldVz,
-                         final double fx,
-                         final double fy,
-                         final double fz,
-                         final AngularSpeed angularRateX,
-                         final AngularSpeed angularRateY,
-                         final AngularSpeed angularRateZ,
-                         final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+    public void navigate(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -1127,24 +957,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final double timeInterval,
-                         final Distance oldX,
-                         final Distance oldY,
-                         final Distance oldZ,
-                         final CoordinateTransformation oldC,
-                         final Speed oldSpeedX,
-                         final Speed oldSpeedY,
-                         final Speed oldSpeedZ,
-                         final double fx,
-                         final double fy,
-                         final double fz,
-                         final double angularRateX,
-                         final double angularRateY,
-                         final double angularRateZ,
-                         final ECIFrame result)
+    public void navigate(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
     }
 
@@ -1190,24 +1009,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final Time timeInterval,
-                         final Distance oldX,
-                         final Distance oldY,
-                         final Distance oldZ,
-                         final CoordinateTransformation oldC,
-                         final Speed oldSpeedX,
-                         final Speed oldSpeedY,
-                         final Speed oldSpeedZ,
-                         final double fx,
-                         final double fy,
-                         final double fz,
-                         final double angularRateX,
-                         final double angularRateY,
-                         final double angularRateZ,
-                         final ECIFrame result)
+    public void navigate(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
     }
 
@@ -1247,24 +1055,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final double timeInterval,
-                         final Distance oldX,
-                         final Distance oldY,
-                         final Distance oldZ,
-                         final CoordinateTransformation oldC,
-                         final Speed oldSpeedX,
-                         final Speed oldSpeedY,
-                         final Speed oldSpeedZ,
-                         final Acceleration fx,
-                         final Acceleration fy,
-                         final Acceleration fz,
-                         final AngularSpeed angularRateX,
-                         final AngularSpeed angularRateY,
-                         final AngularSpeed angularRateZ,
-                         final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
+    public void navigate(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
     }
 
@@ -1304,24 +1101,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final Time timeInterval,
-                         final Distance oldX,
-                         final Distance oldY,
-                         final Distance oldZ,
-                         final CoordinateTransformation oldC,
-                         final Speed oldSpeedX,
-                         final Speed oldSpeedY,
-                         final Speed oldSpeedZ,
-                         final Acceleration fx,
-                         final Acceleration fy,
-                         final Acceleration fz,
-                         final AngularSpeed angularRateX,
-                         final AngularSpeed angularRateY,
-                         final AngularSpeed angularRateZ,
-                         final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
+    public void navigate(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
     }
 
@@ -1361,24 +1147,14 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final double timeInterval,
-                         final double oldX,
-                         final double oldY,
-                         final double oldZ,
-                         final CoordinateTransformation oldC,
-                         final double oldVx,
-                         final double oldVy,
-                         final double oldVz,
-                         final Acceleration fx,
-                         final Acceleration fy,
-                         final Acceleration fz,
-                         final AngularSpeed angularRateX,
-                         final AngularSpeed angularRateY,
-                         final AngularSpeed angularRateZ,
-                         final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+    public void navigate(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -1417,24 +1193,14 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final Time timeInterval,
-                         final double oldX,
-                         final double oldY,
-                         final double oldZ,
-                         final CoordinateTransformation oldC,
-                         final double oldVx,
-                         final double oldVy,
-                         final double oldVz,
-                         final Acceleration fx,
-                         final Acceleration fy,
-                         final Acceleration fz,
-                         final AngularSpeed angularRateX,
-                         final AngularSpeed angularRateY,
-                         final AngularSpeed angularRateZ,
-                         final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+    public void navigate(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -1463,19 +1229,12 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final double timeInterval,
-                         final Distance oldX,
-                         final Distance oldY,
-                         final Distance oldZ,
-                         final CoordinateTransformation oldC,
-                         final Speed oldSpeedX,
-                         final Speed oldSpeedY,
-                         final Speed oldSpeedZ,
-                         final BodyKinematics kinematics,
-                         final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
+    public void navigate(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final BodyKinematics kinematics, final ECIFrame result) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
     }
 
     /**
@@ -1504,19 +1263,12 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public void navigate(final Time timeInterval,
-                         final Distance oldX,
-                         final Distance oldY,
-                         final Distance oldZ,
-                         final CoordinateTransformation oldC,
-                         final Speed oldSpeedX,
-                         final Speed oldSpeedY,
-                         final Speed oldSpeedZ,
-                         final BodyKinematics kinematics,
-                         final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
+    public void navigate(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final BodyKinematics kinematics, final ECIFrame result) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
     }
 
     /**
@@ -1547,18 +1299,11 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public void navigate(final double timeInterval,
-                         final ECIFrame oldFrame,
-                         final double fx,
-                         final double fy,
-                         final double fz,
-                         final double angularRateX,
-                         final double angularRateY,
-                         final double angularRateZ,
-                         final ECIFrame result)
+    public void navigate(
+            final double timeInterval, final ECIFrame oldFrame, final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
             throws InertialNavigatorException {
-        navigateECI(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -1589,18 +1334,11 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public void navigate(final Time timeInterval,
-                         final ECIFrame oldFrame,
-                         final double fx,
-                         final double fy,
-                         final double fz,
-                         final double angularRateX,
-                         final double angularRateY,
-                         final double angularRateZ,
-                         final ECIFrame result)
+    public void navigate(
+            final Time timeInterval, final ECIFrame oldFrame, final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
             throws InertialNavigatorException {
-        navigateECI(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -1615,10 +1353,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public void navigate(final double timeInterval,
-                         final ECIFrame oldFrame,
-                         final BodyKinematics kinematics,
-                         final ECIFrame result)
+    public void navigate(
+            final double timeInterval, final ECIFrame oldFrame, final BodyKinematics kinematics, final ECIFrame result)
             throws InertialNavigatorException {
         navigateECI(timeInterval, oldFrame, kinematics, result);
     }
@@ -1635,10 +1371,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public void navigate(final Time timeInterval,
-                         final ECIFrame oldFrame,
-                         final BodyKinematics kinematics,
-                         final ECIFrame result)
+    public void navigate(
+            final Time timeInterval, final ECIFrame oldFrame, final BodyKinematics kinematics, final ECIFrame result)
             throws InertialNavigatorException {
         navigateECI(timeInterval, oldFrame, kinematics, result);
     }
@@ -1668,18 +1402,12 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public void navigate(final double timeInterval,
-                         final ECIFrame oldFrame,
-                         final Acceleration fx,
-                         final Acceleration fy,
-                         final Acceleration fz,
-                         final double angularRateX,
-                         final double angularRateY,
-                         final double angularRateZ,
-                         final ECIFrame result)
+    public void navigate(
+            final double timeInterval, final ECIFrame oldFrame,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
             throws InertialNavigatorException {
-        navigateECI(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -1707,18 +1435,12 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public void navigate(final Time timeInterval,
-                         final ECIFrame oldFrame,
-                         final Acceleration fx,
-                         final Acceleration fy,
-                         final Acceleration fz,
-                         final double angularRateX,
-                         final double angularRateY,
-                         final double angularRateZ,
-                         final ECIFrame result)
+    public void navigate(
+            final Time timeInterval, final ECIFrame oldFrame,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
             throws InertialNavigatorException {
-        navigateECI(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -1746,18 +1468,11 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public void navigate(final double timeInterval,
-                         final ECIFrame oldFrame,
-                         final double fx,
-                         final double fy,
-                         final double fz,
-                         final AngularSpeed angularRateX,
-                         final AngularSpeed angularRateY,
-                         final AngularSpeed angularRateZ,
-                         final ECIFrame result)
-            throws InertialNavigatorException {
-        navigateECI(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result);
+    public void navigate(
+            final double timeInterval, final ECIFrame oldFrame, final double fx, final double fy, final double fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException {
+        navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -1785,18 +1500,11 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public void navigate(final Time timeInterval,
-                         final ECIFrame oldFrame,
-                         final double fx,
-                         final double fy,
-                         final double fz,
-                         final AngularSpeed angularRateX,
-                         final AngularSpeed angularRateY,
-                         final AngularSpeed angularRateZ,
-                         final ECIFrame result)
-            throws InertialNavigatorException {
-        navigateECI(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result);
+    public void navigate(
+            final Time timeInterval, final ECIFrame oldFrame, final double fx, final double fy, final double fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException {
+        navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -1821,18 +1529,12 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public void navigate(final double timeInterval,
-                         final ECIFrame oldFrame,
-                         final Acceleration fx,
-                         final Acceleration fy,
-                         final Acceleration fz,
-                         final AngularSpeed angularRateX,
-                         final AngularSpeed angularRateY,
-                         final AngularSpeed angularRateZ,
-                         final ECIFrame result)
-            throws InertialNavigatorException {
-        navigateECI(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result);
+    public void navigate(
+            final double timeInterval, final ECIFrame oldFrame,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException {
+        navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -1857,18 +1559,12 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public void navigate(final Time timeInterval,
-                         final ECIFrame oldFrame,
-                         final Acceleration fx,
-                         final Acceleration fy,
-                         final Acceleration fz,
-                         final AngularSpeed angularRateX,
-                         final AngularSpeed angularRateY,
-                         final AngularSpeed angularRateZ,
-                         final ECIFrame result)
-            throws InertialNavigatorException {
-        navigateECI(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result);
+    public void navigate(
+            final Time timeInterval, final ECIFrame oldFrame,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException {
+        navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
     }
 
     /**
@@ -1913,23 +1609,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final double oldX,
-                                         final double oldY,
-                                         final double oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final double oldVx,
-                                         final double oldVy,
-                                         final double oldVz,
-                                         final double fx,
-                                         final double fy,
-                                         final double fz,
-                                         final double angularRateX,
-                                         final double angularRateY,
-                                         final double angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz,
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -1975,23 +1661,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final double oldX,
-                                         final double oldY,
-                                         final double oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final double oldVx,
-                                         final double oldVy,
-                                         final double oldVz,
-                                         final double fx,
-                                         final double fy,
-                                         final double fz,
-                                         final double angularRateX,
-                                         final double angularRateY,
-                                         final double angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz,
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -2021,18 +1697,12 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final double oldX,
-                                         final double oldY,
-                                         final double oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final double oldVx,
-                                         final double oldVy,
-                                         final double oldVz,
-                                         final BodyKinematics kinematics)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, kinematics);
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final BodyKinematics kinematics) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics);
     }
 
     /**
@@ -2061,18 +1731,12 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final double oldX,
-                                         final double oldY,
-                                         final double oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final double oldVx,
-                                         final double oldVy,
-                                         final double oldVz,
-                                         final BodyKinematics kinematics)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, kinematics);
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final BodyKinematics kinematics) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics);
     }
 
     /**
@@ -2113,21 +1777,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final Point3D oldPosition,
-                                         final CoordinateTransformation oldC,
-                                         final double oldVx,
-                                         final double oldVy,
-                                         final double oldVz,
-                                         final double fx,
-                                         final double fy,
-                                         final double fz,
-                                         final double angularRateX,
-                                         final double angularRateY,
-                                         final double angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldPosition, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz,
+        return navigateECIAndReturnNew(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -2169,21 +1825,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final Point3D oldPosition,
-                                         final CoordinateTransformation oldC,
-                                         final double oldVx,
-                                         final double oldVy,
-                                         final double oldVz,
-                                         final double fx,
-                                         final double fy,
-                                         final double fz,
-                                         final double angularRateX,
-                                         final double angularRateY,
-                                         final double angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldPosition, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz,
+        return navigateECIAndReturnNew(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -2209,16 +1857,11 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final Point3D oldPosition,
-                                         final CoordinateTransformation oldC,
-                                         final double oldVx,
-                                         final double oldVy,
-                                         final double oldVz,
-                                         final BodyKinematics kinematics)
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz, final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldPosition, oldC,
-                oldVx, oldVy, oldVz, kinematics);
+        return navigateECIAndReturnNew(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics);
     }
 
     /**
@@ -2243,16 +1886,11 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final Point3D oldPosition,
-                                         final CoordinateTransformation oldC,
-                                         final double oldVx,
-                                         final double oldVy,
-                                         final double oldVz,
-                                         final BodyKinematics kinematics)
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz, final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldPosition, oldC,
-                oldVx, oldVy, oldVz, kinematics);
+        return navigateECIAndReturnNew(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics);
     }
 
     /**
@@ -2297,23 +1935,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final Distance oldX,
-                                         final Distance oldY,
-                                         final Distance oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final double oldVx,
-                                         final double oldVy,
-                                         final double oldVz,
-                                         final double fx,
-                                         final double fy,
-                                         final double fz,
-                                         final double angularRateX,
-                                         final double angularRateY,
-                                         final double angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz,
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -2359,23 +1987,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final Distance oldX,
-                                         final Distance oldY,
-                                         final Distance oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final double oldVx,
-                                         final double oldVy,
-                                         final double oldVz,
-                                         final double fx,
-                                         final double fy,
-                                         final double fz,
-                                         final double angularRateX,
-                                         final double angularRateY,
-                                         final double angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz,
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -2405,18 +2023,12 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final Distance oldX,
-                                         final Distance oldY,
-                                         final Distance oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final double oldVx,
-                                         final double oldVy,
-                                         final double oldVz,
-                                         final BodyKinematics kinematics)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, kinematics);
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final BodyKinematics kinematics) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics);
     }
 
     /**
@@ -2445,18 +2057,12 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final Distance oldX,
-                                         final Distance oldY,
-                                         final Distance oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final double oldVx,
-                                         final double oldVy,
-                                         final double oldVz,
-                                         final BodyKinematics kinematics)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, kinematics);
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final BodyKinematics kinematics) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics);
     }
 
     /**
@@ -2501,24 +2107,14 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final double oldX,
-                                         final double oldY,
-                                         final double oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final Speed oldSpeedX,
-                                         final Speed oldSpeedY,
-                                         final Speed oldSpeedZ,
-                                         final double fx,
-                                         final double fy,
-                                         final double fz,
-                                         final double angularRateX,
-                                         final double angularRateY,
-                                         final double angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
     /**
@@ -2563,24 +2159,14 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final double oldX,
-                                         final double oldY,
-                                         final double oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final Speed oldSpeedX,
-                                         final Speed oldSpeedY,
-                                         final Speed oldSpeedZ,
-                                         final double fx,
-                                         final double fy,
-                                         final double fz,
-                                         final double angularRateX,
-                                         final double angularRateY,
-                                         final double angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
     /**
@@ -2609,18 +2195,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final double oldX,
-                                         final double oldY,
-                                         final double oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final Speed oldSpeedX,
-                                         final Speed oldSpeedY,
-                                         final Speed oldSpeedZ,
-                                         final BodyKinematics kinematics)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final BodyKinematics kinematics) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
+                kinematics);
     }
 
     /**
@@ -2649,18 +2230,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final double oldX,
-                                         final double oldY,
-                                         final double oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final Speed oldSpeedX,
-                                         final Speed oldSpeedY,
-                                         final Speed oldSpeedZ,
-                                         final BodyKinematics kinematics)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final BodyKinematics kinematics) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
+                kinematics);
     }
 
     /**
@@ -2702,23 +2278,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final double oldX,
-                                         final double oldY,
-                                         final double oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final double oldVx,
-                                         final double oldVy,
-                                         final double oldVz,
-                                         final Acceleration fx,
-                                         final Acceleration fy,
-                                         final Acceleration fz,
-                                         final double angularRateX,
-                                         final double angularRateY,
-                                         final double angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz,
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -2761,23 +2327,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final double oldX,
-                                         final double oldY,
-                                         final double oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final double oldVx,
-                                         final double oldVy,
-                                         final double oldVz,
-                                         final Acceleration fx,
-                                         final Acceleration fy,
-                                         final Acceleration fz,
-                                         final double angularRateX,
-                                         final double angularRateY,
-                                         final double angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz,
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -2820,23 +2376,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final double oldX,
-                                         final double oldY,
-                                         final double oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final double oldVx,
-                                         final double oldVy,
-                                         final double oldVz,
-                                         final double fx,
-                                         final double fy,
-                                         final double fz,
-                                         final AngularSpeed angularRateX,
-                                         final AngularSpeed angularRateY,
-                                         final AngularSpeed angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ,
-                oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -2879,23 +2425,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final double oldX,
-                                         final double oldY,
-                                         final double oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final double oldVx,
-                                         final double oldVy,
-                                         final double oldVz,
-                                         final double fx,
-                                         final double fy,
-                                         final double fz,
-                                         final AngularSpeed angularRateX,
-                                         final AngularSpeed angularRateY,
-                                         final AngularSpeed angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz,
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -2941,24 +2477,14 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final Distance oldX,
-                                         final Distance oldY,
-                                         final Distance oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final Speed oldSpeedX,
-                                         final Speed oldSpeedY,
-                                         final Speed oldSpeedZ,
-                                         final double fx,
-                                         final double fy,
-                                         final double fz,
-                                         final double angularRateX,
-                                         final double angularRateY,
-                                         final double angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
     /**
@@ -3003,24 +2529,14 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final Distance oldX,
-                                         final Distance oldY,
-                                         final Distance oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final Speed oldSpeedX,
-                                         final Speed oldSpeedY,
-                                         final Speed oldSpeedZ,
-                                         final double fx,
-                                         final double fy,
-                                         final double fz,
-                                         final double angularRateX,
-                                         final double angularRateY,
-                                         final double angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
     /**
@@ -3059,24 +2575,14 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final Distance oldX,
-                                         final Distance oldY,
-                                         final Distance oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final Speed oldSpeedX,
-                                         final Speed oldSpeedY,
-                                         final Speed oldSpeedZ,
-                                         final Acceleration fx,
-                                         final Acceleration fy,
-                                         final Acceleration fz,
-                                         final AngularSpeed angularRateX,
-                                         final AngularSpeed angularRateY,
-                                         final AngularSpeed angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
     /**
@@ -3115,24 +2621,14 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final Distance oldX,
-                                         final Distance oldY,
-                                         final Distance oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final Speed oldSpeedX,
-                                         final Speed oldSpeedY,
-                                         final Speed oldSpeedZ,
-                                         final Acceleration fx,
-                                         final Acceleration fy,
-                                         final Acceleration fz,
-                                         final AngularSpeed angularRateX,
-                                         final AngularSpeed angularRateY,
-                                         final AngularSpeed angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
     /**
@@ -3171,23 +2667,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final double oldX,
-                                         final double oldY,
-                                         final double oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final double oldVx,
-                                         final double oldVy,
-                                         final double oldVz,
-                                         final Acceleration fx,
-                                         final Acceleration fy,
-                                         final Acceleration fz,
-                                         final AngularSpeed angularRateX,
-                                         final AngularSpeed angularRateY,
-                                         final AngularSpeed angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz,
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -3227,23 +2713,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final double oldX,
-                                         final double oldY,
-                                         final double oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final double oldVx,
-                                         final double oldVy,
-                                         final double oldVz,
-                                         final Acceleration fx,
-                                         final Acceleration fy,
-                                         final Acceleration fz,
-                                         final AngularSpeed angularRateX,
-                                         final AngularSpeed angularRateY,
-                                         final AngularSpeed angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz,
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -3273,18 +2749,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final Distance oldX,
-                                         final Distance oldY,
-                                         final Distance oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final Speed oldSpeedX,
-                                         final Speed oldSpeedY,
-                                         final Speed oldSpeedZ,
-                                         final BodyKinematics kinematics)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final BodyKinematics kinematics) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
+                kinematics);
     }
 
     /**
@@ -3313,18 +2784,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final Distance oldX,
-                                         final Distance oldY,
-                                         final Distance oldZ,
-                                         final CoordinateTransformation oldC,
-                                         final Speed oldSpeedX,
-                                         final Speed oldSpeedY,
-                                         final Speed oldSpeedZ,
-                                         final BodyKinematics kinematics)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final BodyKinematics kinematics) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
+                kinematics);
     }
 
     /**
@@ -3355,17 +2821,11 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final ECIFrame oldFrame,
-                                         final double fx,
-                                         final double fy,
-                                         final double fz,
-                                         final double angularRateX,
-                                         final double angularRateY,
-                                         final double angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final ECIFrame oldFrame, final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException {
-        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
     /**
@@ -3396,17 +2856,11 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final ECIFrame oldFrame,
-                                         final double fx,
-                                         final double fy,
-                                         final double fz,
-                                         final double angularRateX,
-                                         final double angularRateY,
-                                         final double angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final ECIFrame oldFrame, final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException {
-        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
     /**
@@ -3421,9 +2875,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final ECIFrame oldFrame,
-                                         final BodyKinematics kinematics)
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final ECIFrame oldFrame, final BodyKinematics kinematics)
             throws InertialNavigatorException {
         return navigateECIAndReturnNew(timeInterval, oldFrame, kinematics);
     }
@@ -3440,9 +2893,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final ECIFrame oldFrame,
-                                         final BodyKinematics kinematics)
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final ECIFrame oldFrame, final BodyKinematics kinematics)
             throws InertialNavigatorException {
         return navigateECIAndReturnNew(timeInterval, oldFrame, kinematics);
     }
@@ -3472,17 +2924,12 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final ECIFrame oldFrame,
-                                         final Acceleration fx,
-                                         final Acceleration fy,
-                                         final Acceleration fz,
-                                         final double angularRateX,
-                                         final double angularRateY,
-                                         final double angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final ECIFrame oldFrame,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException {
-        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
     /**
@@ -3510,17 +2957,12 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final ECIFrame oldFrame,
-                                         final Acceleration fx,
-                                         final Acceleration fy,
-                                         final Acceleration fz,
-                                         final double angularRateX,
-                                         final double angularRateY,
-                                         final double angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final ECIFrame oldFrame,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException {
-        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
     /**
@@ -3548,17 +2990,11 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final ECIFrame oldFrame,
-                                         final double fx,
-                                         final double fy,
-                                         final double fz,
-                                         final AngularSpeed angularRateX,
-                                         final AngularSpeed angularRateY,
-                                         final AngularSpeed angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final ECIFrame oldFrame, final double fx, final double fy, final double fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
     /**
@@ -3586,17 +3022,11 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final ECIFrame oldFrame,
-                                         final double fx,
-                                         final double fy,
-                                         final double fz,
-                                         final AngularSpeed angularRateX,
-                                         final AngularSpeed angularRateY,
-                                         final AngularSpeed angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final ECIFrame oldFrame, final double fx, final double fy, final double fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
     /**
@@ -3621,17 +3051,12 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public ECIFrame navigateAndReturnNew(final double timeInterval,
-                                         final ECIFrame oldFrame,
-                                         final Acceleration fx,
-                                         final Acceleration fy,
-                                         final Acceleration fz,
-                                         final AngularSpeed angularRateX,
-                                         final AngularSpeed angularRateY,
-                                         final AngularSpeed angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final double timeInterval, final ECIFrame oldFrame,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
     /**
@@ -3656,17 +3081,12 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public ECIFrame navigateAndReturnNew(final Time timeInterval,
-                                         final ECIFrame oldFrame,
-                                         final Acceleration fx,
-                                         final Acceleration fy,
-                                         final Acceleration fz,
-                                         final AngularSpeed angularRateX,
-                                         final AngularSpeed angularRateY,
-                                         final AngularSpeed angularRateZ)
+    public ECIFrame navigateAndReturnNew(
+            final Time timeInterval, final ECIFrame oldFrame,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
     /**
@@ -3711,22 +3131,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static void navigateECI(final double timeInterval,
-                                   final double oldX,
-                                   final double oldY,
-                                   final double oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final double fx,
-                                   final double fy,
-                                   final double fz,
-                                   final double angularRateX,
-                                   final double angularRateY,
-                                   final double angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+    public static void navigateECI(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
 
         if (!isValidBodyToEciCoordinateTransformationMatrix(oldC)) {
             throw new InvalidSourceAndDestinationFrameTypeException();
@@ -3879,1498 +3290,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static void navigateECI(final Time timeInterval,
-                                   final double oldX,
-                                   final double oldY,
-                                   final double oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final double fx,
-                                   final double fy,
-                                   final double fz,
-                                   final double angularRateX,
-                                   final double angularRateY,
-                                   final double angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
-                result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param kinematics   body kinematics containing specific forces and angular rates applied to
-     *                     the body.
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final double timeInterval,
-                                   final double oldX,
-                                   final double oldY,
-                                   final double oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final BodyKinematics kinematics,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
-                kinematics.getAngularRateX(), kinematics.getAngularRateY(),
-                kinematics.getAngularRateZ(), result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param kinematics   body kinematics containing specific forces and angular rates applied to
-     *                     the body.
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final Time timeInterval,
-                                   final double oldX,
-                                   final double oldY,
-                                   final double oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final BodyKinematics kinematics,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, kinematics, result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param oldPosition  previous cartesian position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final double timeInterval,
-                                   final Point3D oldPosition,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final double fx,
-                                   final double fy,
-                                   final double fz,
-                                   final double angularRateX,
-                                   final double angularRateY,
-                                   final double angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldPosition.getInhomX(), oldPosition.getInhomY(), oldPosition.getInhomZ(),
-                oldC, oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param oldPosition  previous cartesian position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final Time timeInterval,
-                                   final Point3D oldPosition,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final double fx,
-                                   final double fy,
-                                   final double fz,
-                                   final double angularRateX,
-                                   final double angularRateY,
-                                   final double angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldPosition.getInhomX(), oldPosition.getInhomY(), oldPosition.getInhomZ(),
-                oldC, oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param oldPosition  previous cartesian position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param kinematics   body kinematics containing specific forces and angular rates applied to
-     *                     the body.
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final double timeInterval,
-                                   final Point3D oldPosition,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final BodyKinematics kinematics,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,
-                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
-                kinematics.getAngularRateX(), kinematics.getAngularRateY(),
-                kinematics.getAngularRateZ(), result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param oldPosition  previous cartesian position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param kinematics   body kinematics containing specific forces and angular rates applied to
-     *                     the body.
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final Time timeInterval,
-                                   final Point3D oldPosition,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final BodyKinematics kinematics,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(convertTimeToDouble(timeInterval), oldPosition, oldC,
-                oldVx, oldVy, oldVz, kinematics, result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final double timeInterval,
-                                   final Distance oldX,
-                                   final Distance oldY,
-                                   final Distance oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final double fx,
-                                   final double fy,
-                                   final double fz,
-                                   final double angularRateX,
-                                   final double angularRateY,
-                                   final double angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, convertDistanceToDouble(oldX),
-                convertDistanceToDouble(oldY), convertDistanceToDouble(oldZ), oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
-                result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final Time timeInterval,
-                                   final Distance oldX,
-                                   final Distance oldY,
-                                   final Distance oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final double fx,
-                                   final double fy,
-                                   final double fz,
-                                   final double angularRateX,
-                                   final double angularRateY,
-                                   final double angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY,
-                angularRateZ, result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param kinematics   body kinematics containing specific forces and angular rates applied to
-     *                     the body.
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final double timeInterval,
-                                   final Distance oldX,
-                                   final Distance oldY,
-                                   final Distance oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final BodyKinematics kinematics,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
-                kinematics.getAngularRateX(), kinematics.getAngularRateY(),
-                kinematics.getAngularRateZ(), result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param kinematics   body kinematics containing specific forces and angular rates applied to
-     *                     the body.
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final Time timeInterval,
-                                   final Distance oldX,
-                                   final Distance oldY,
-                                   final Distance oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final BodyKinematics kinematics,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
-                kinematics.getAngularRateX(), kinematics.getAngularRateY(),
-                kinematics.getAngularRateZ(), result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final double timeInterval,
-                                   final double oldX,
-                                   final double oldY,
-                                   final double oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final Speed oldSpeedX,
-                                   final Speed oldSpeedY,
-                                   final Speed oldSpeedZ,
-                                   final double fx,
-                                   final double fy,
-                                   final double fz,
-                                   final double angularRateX,
-                                   final double angularRateY,
-                                   final double angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,
-                convertSpeedToDouble(oldSpeedX), convertSpeedToDouble(oldSpeedY),
-                convertSpeedToDouble(oldSpeedZ), fx, fy, fz, angularRateX,
-                angularRateY, angularRateZ, result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final Time timeInterval,
-                                   final double oldX,
-                                   final double oldY,
-                                   final double oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final Speed oldSpeedX,
-                                   final Speed oldSpeedY,
-                                   final Speed oldSpeedZ,
-                                   final double fx,
-                                   final double fy,
-                                   final double fz,
-                                   final double angularRateX,
-                                   final double angularRateY,
-                                   final double angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX,
-                angularRateY, angularRateZ, result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param kinematics   body kinematics containing specific forces and angular rates applied to
-     *                     the body.
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final double timeInterval,
-                                   final double oldX,
-                                   final double oldY,
-                                   final double oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final Speed oldSpeedX,
-                                   final Speed oldSpeedY,
-                                   final Speed oldSpeedZ,
-                                   final BodyKinematics kinematics,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY,
-                oldSpeedZ, kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
-                kinematics.getAngularRateX(), kinematics.getAngularRateY(),
-                kinematics.getAngularRateZ(), result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param kinematics   body kinematics containing specific forces and angular rates applied to
-     *                     the body.
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final Time timeInterval,
-                                   final double oldX,
-                                   final double oldY,
-                                   final double oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final Speed oldSpeedX,
-                                   final Speed oldSpeedY,
-                                   final Speed oldSpeedZ,
-                                   final BodyKinematics kinematics,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final double timeInterval,
-                                   final double oldX,
-                                   final double oldY,
-                                   final double oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final Acceleration fx,
-                                   final Acceleration fy,
-                                   final Acceleration fz,
-                                   final double angularRateX,
-                                   final double angularRateY,
-                                   final double angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                convertAccelerationToDouble(fx), convertAccelerationToDouble(fy),
-                convertAccelerationToDouble(fz), angularRateX, angularRateY,
-                angularRateZ, result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final Time timeInterval,
-                                   final double oldX,
-                                   final double oldY,
-                                   final double oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final Acceleration fx,
-                                   final Acceleration fy,
-                                   final Acceleration fz,
-                                   final double angularRateX,
-                                   final double angularRateY,
-                                   final double angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                convertAccelerationToDouble(fx), convertAccelerationToDouble(fy),
-                convertAccelerationToDouble(fz), angularRateX, angularRateY,
-                angularRateZ, result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final double timeInterval,
-                                   final double oldX,
-                                   final double oldY,
-                                   final double oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final double fx,
-                                   final double fy,
-                                   final double fz,
-                                   final AngularSpeed angularRateX,
-                                   final AngularSpeed angularRateY,
-                                   final AngularSpeed angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, convertAngularSpeedToDouble(angularRateX),
-                convertAngularSpeedToDouble(angularRateY),
-                convertAngularSpeedToDouble(angularRateZ), result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final Time timeInterval,
-                                   final double oldX,
-                                   final double oldY,
-                                   final double oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final double fx,
-                                   final double fy,
-                                   final double fz,
-                                   final AngularSpeed angularRateX,
-                                   final AngularSpeed angularRateY,
-                                   final AngularSpeed angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY,
-                angularRateZ, result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final double timeInterval,
-                                   final Distance oldX,
-                                   final Distance oldY,
-                                   final Distance oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final Speed oldSpeedX,
-                                   final Speed oldSpeedY,
-                                   final Speed oldSpeedZ,
-                                   final double fx,
-                                   final double fy,
-                                   final double fz,
-                                   final double angularRateX,
-                                   final double angularRateY,
-                                   final double angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, convertDistanceToDouble(oldX),
-                convertDistanceToDouble(oldY), convertDistanceToDouble(oldZ), oldC,
-                convertSpeedToDouble(oldSpeedX), convertSpeedToDouble(oldSpeedY),
-                convertSpeedToDouble(oldSpeedZ), fx, fy, fz, angularRateX, angularRateY,
-                angularRateZ, result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final Time timeInterval,
-                                   final Distance oldX,
-                                   final Distance oldY,
-                                   final Distance oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final Speed oldSpeedX,
-                                   final Speed oldSpeedY,
-                                   final Speed oldSpeedZ,
-                                   final double fx,
-                                   final double fy,
-                                   final double fz,
-                                   final double angularRateX,
-                                   final double angularRateY,
-                                   final double angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX, angularRateY,
-                angularRateZ, result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final double timeInterval,
-                                   final Distance oldX,
-                                   final Distance oldY,
-                                   final Distance oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final Speed oldSpeedX,
-                                   final Speed oldSpeedY,
-                                   final Speed oldSpeedZ,
-                                   final Acceleration fx,
-                                   final Acceleration fy,
-                                   final Acceleration fz,
-                                   final AngularSpeed angularRateX,
-                                   final AngularSpeed angularRateY,
-                                   final AngularSpeed angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, convertDistanceToDouble(oldX),
-                convertDistanceToDouble(oldY), convertDistanceToDouble(oldZ), oldC,
-                convertSpeedToDouble(oldSpeedX), convertSpeedToDouble(oldSpeedY),
-                convertSpeedToDouble(oldSpeedZ), convertAccelerationToDouble(fx),
-                convertAccelerationToDouble(fy), convertAccelerationToDouble(fz),
-                convertAngularSpeedToDouble(angularRateX),
-                convertAngularSpeedToDouble(angularRateY),
-                convertAngularSpeedToDouble(angularRateZ),
-                result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final Time timeInterval,
-                                   final Distance oldX,
-                                   final Distance oldY,
-                                   final Distance oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final Speed oldSpeedX,
-                                   final Speed oldSpeedY,
-                                   final Speed oldSpeedZ,
-                                   final Acceleration fx,
-                                   final Acceleration fy,
-                                   final Acceleration fz,
-                                   final AngularSpeed angularRateX,
-                                   final AngularSpeed angularRateY,
-                                   final AngularSpeed angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX,
-                angularRateY, angularRateZ, result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final double timeInterval,
-                                   final double oldX,
-                                   final double oldY,
-                                   final double oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final Acceleration fx,
-                                   final Acceleration fy,
-                                   final Acceleration fz,
-                                   final AngularSpeed angularRateX,
-                                   final AngularSpeed angularRateY,
-                                   final AngularSpeed angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                convertAccelerationToDouble(fx), convertAccelerationToDouble(fy),
-                convertAccelerationToDouble(fz),
-                convertAngularSpeedToDouble(angularRateX),
-                convertAngularSpeedToDouble(angularRateY),
-                convertAngularSpeedToDouble(angularRateZ), result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval.
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final Time timeInterval,
-                                   final double oldX,
-                                   final double oldY,
-                                   final double oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVx,
-                                   final double oldVy,
-                                   final double oldVz,
-                                   final Acceleration fx,
-                                   final Acceleration fy,
-                                   final Acceleration fz,
-                                   final AngularSpeed angularRateX,
-                                   final AngularSpeed angularRateY,
-                                   final AngularSpeed angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,
-                oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY,
-                angularRateZ, result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param kinematics   body kinematics containing specific forces and angular rates applied to
-     *                     the body.
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final double timeInterval,
-                                   final Distance oldX,
-                                   final Distance oldY,
-                                   final Distance oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final Speed oldSpeedX,
-                                   final Speed oldSpeedY,
-                                   final Speed oldSpeedZ,
-                                   final BodyKinematics kinematics,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY,
-                oldSpeedZ, kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
-                kinematics.getAngularRateX(), kinematics.getAngularRateY(),
-                kinematics.getAngularRateZ(), result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes.
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes.
-     * @param kinematics   body kinematics containing specific forces and angular rates applied to
-     *                     the body.
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static void navigateECI(final Time timeInterval,
-                                   final Distance oldX,
-                                   final Distance oldY,
-                                   final Distance oldZ,
-                                   final CoordinateTransformation oldC,
-                                   final Speed oldSpeedX,
-                                   final Speed oldSpeedY,
-                                   final Speed oldSpeedZ,
-                                   final BodyKinematics kinematics,
-                                   final ECIFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,
-                oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param oldFrame     previous ECI frame containing body position, velocity and
-     *                     coordinate transformation matrix.
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
-     */
-    public static void navigateECI(final double timeInterval,
-                                   final ECIFrame oldFrame,
-                                   final double fx,
-                                   final double fy,
-                                   final double fz,
-                                   final double angularRateX,
-                                   final double angularRateY,
-                                   final double angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException {
-        try {
-            navigateECI(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),
-                    oldFrame.getCoordinateTransformation(),
-                    oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), fx, fy, fz,
-                    angularRateX, angularRateY, angularRateZ, result);
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-            // never happens
-        }
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param oldFrame     previous ECI frame containing body position, velocity and
-     *                     coordinate transformation matrix.
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param result       instance where new estimated ECI frame containing new body position,
-     *                     velocity and coordinate transformation matrix will be stored.
-     * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
-     */
-    public static void navigateECI(final Time timeInterval,
-                                   final ECIFrame oldFrame,
-                                   final double fx,
-                                   final double fy,
-                                   final double fz,
-                                   final double angularRateX,
-                                   final double angularRateY,
-                                   final double angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException {
-        navigateECI(convertTimeToDouble(timeInterval), oldFrame, fx, fy, fz,
+    public static void navigateECI(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
     }
 
@@ -5378,6 +3304,1228 @@ public class ECIInertialNavigator {
      * Runs precision ECI-frame inertial navigation equations.
      *
      * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param kinematics   body kinematics containing specific forces and angular rates applied to
+     *                     the body.
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final BodyKinematics kinematics, final ECIFrame result) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
+                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
+                kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ(), result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param kinematics   body kinematics containing specific forces and angular rates applied to
+     *                     the body.
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final BodyKinematics kinematics, final ECIFrame result) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous cartesian position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final double timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
+            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldPosition.getInhomX(), oldPosition.getInhomY(), oldPosition.getInhomZ(),
+                oldC, oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous cartesian position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final Time timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
+            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldPosition.getInhomX(), oldPosition.getInhomY(), oldPosition.getInhomZ(), oldC,
+                oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous cartesian position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param kinematics   body kinematics containing specific forces and angular rates applied to
+     *                     the body.
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final double timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz, final BodyKinematics kinematics,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,
+                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
+                kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ(), result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous cartesian position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param kinematics   body kinematics containing specific forces and angular rates applied to
+     *                     the body.
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final Time timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz, final BodyKinematics kinematics,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(convertTimeToDouble(timeInterval), oldPosition, oldC, oldVx, oldVy, oldVz, kinematics, result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
+            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval,
+                convertDistanceToDouble(oldX), convertDistanceToDouble(oldY), convertDistanceToDouble(oldZ), oldC,
+                oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
+            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param kinematics   body kinematics containing specific forces and angular rates applied to
+     *                     the body.
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final BodyKinematics kinematics, final ECIFrame result) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
+                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
+                kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ(), result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param kinematics   body kinematics containing specific forces and angular rates applied to
+     *                     the body.
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final BodyKinematics kinematics, final ECIFrame result)
+            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
+                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
+                kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ(), result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,
+                convertSpeedToDouble(oldSpeedX), convertSpeedToDouble(oldSpeedY), convertSpeedToDouble(oldSpeedZ),
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
+            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param kinematics   body kinematics containing specific forces and angular rates applied to
+     *                     the body.
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final BodyKinematics kinematics, final ECIFrame result) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
+                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
+                kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ(), result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param kinematics   body kinematics containing specific forces and angular rates applied to
+     *                     the body.
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final BodyKinematics kinematics, final ECIFrame result) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
+                kinematics, result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
+            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
+                convertAccelerationToDouble(fx), convertAccelerationToDouble(fy), convertAccelerationToDouble(fz),
+                angularRateX, angularRateY, angularRateZ, result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
+            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
+                convertAccelerationToDouble(fx), convertAccelerationToDouble(fy), convertAccelerationToDouble(fz),
+                angularRateX, angularRateY, angularRateZ, result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                convertAngularSpeedToDouble(angularRateX), convertAngularSpeedToDouble(angularRateY),
+                convertAngularSpeedToDouble(angularRateZ), result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
+            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval,
+                convertDistanceToDouble(oldX), convertDistanceToDouble(oldY), convertDistanceToDouble(oldZ), oldC,
+                convertSpeedToDouble(oldSpeedX), convertSpeedToDouble(oldSpeedY), convertSpeedToDouble(oldSpeedZ),
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
+            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval,
+                convertDistanceToDouble(oldX), convertDistanceToDouble(oldY), convertDistanceToDouble(oldZ), oldC,
+                convertSpeedToDouble(oldSpeedX), convertSpeedToDouble(oldSpeedY), convertSpeedToDouble(oldSpeedZ),
+                convertAccelerationToDouble(fx), convertAccelerationToDouble(fy), convertAccelerationToDouble(fz),
+                convertAngularSpeedToDouble(angularRateX), convertAngularSpeedToDouble(angularRateY),
+                convertAngularSpeedToDouble(angularRateZ), result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
+                convertAccelerationToDouble(fx), convertAccelerationToDouble(fy), convertAccelerationToDouble(fz),
+                convertAngularSpeedToDouble(angularRateX), convertAngularSpeedToDouble(angularRateY),
+                convertAngularSpeedToDouble(angularRateZ), result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval.
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param kinematics   body kinematics containing specific forces and angular rates applied to
+     *                     the body.
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final BodyKinematics kinematics, final ECIFrame result) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
+                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
+                kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ(), result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes.
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldSpeedX    previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedY    previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param oldSpeedZ    previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes.
+     * @param kinematics   body kinematics containing specific forces and angular rates applied to
+     *                     the body.
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static void navigateECI(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final BodyKinematics kinematics, final ECIFrame result) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
+        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
+                kinematics, result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldFrame     previous ECI frame containing body position, velocity and
+     *                     coordinate transformation matrix.
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
+     */
+    public static void navigateECI(
+            final double timeInterval, final ECIFrame oldFrame, final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
+            throws InertialNavigatorException {
+        try {
+            navigateECI(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),
+                    oldFrame.getCoordinateTransformation(), oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(),
+                    fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
+            // never happens
+        }
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldFrame     previous ECI frame containing body position, velocity and
+     *                     coordinate transformation matrix.
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param result       instance where new estimated ECI frame containing new body position,
+     *                     velocity and coordinate transformation matrix will be stored.
+     * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
+     */
+    public static void navigateECI(
+            final Time timeInterval, final ECIFrame oldFrame, final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
+            throws InertialNavigatorException {
+        navigateECI(convertTimeToDouble(timeInterval), oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
+                result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
      * @param oldFrame     previous ECI frame containing body position, velocity and
      *                     coordinate transformation matrix.
      * @param kinematics   body kinematics containing specific forces and angular rates applied to
@@ -5386,16 +4534,13 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public static void navigateECI(final double timeInterval,
-                                   final ECIFrame oldFrame,
-                                   final BodyKinematics kinematics,
-                                   final ECIFrame result)
+    public static void navigateECI(
+            final double timeInterval, final ECIFrame oldFrame, final BodyKinematics kinematics, final ECIFrame result)
             throws InertialNavigatorException {
         try {
             navigateECI(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),
-                    oldFrame.getCoordinateTransformation(),
-                    oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), kinematics,
-                    result);
+                    oldFrame.getCoordinateTransformation(), oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(),
+                    kinematics, result);
         } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
             // never happens
         }
@@ -5413,10 +4558,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public static void navigateECI(final Time timeInterval,
-                                   final ECIFrame oldFrame,
-                                   final BodyKinematics kinematics,
-                                   final ECIFrame result)
+    public static void navigateECI(
+            final Time timeInterval, final ECIFrame oldFrame, final BodyKinematics kinematics, final ECIFrame result)
             throws InertialNavigatorException {
         navigateECI(convertTimeToDouble(timeInterval), oldFrame, kinematics, result);
     }
@@ -5446,15 +4589,10 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public static void navigateECI(final double timeInterval,
-                                   final ECIFrame oldFrame,
-                                   final Acceleration fx,
-                                   final Acceleration fy,
-                                   final Acceleration fz,
-                                   final double angularRateX,
-                                   final double angularRateY,
-                                   final double angularRateZ,
-                                   final ECIFrame result)
+    public static void navigateECI(
+            final double timeInterval, final ECIFrame oldFrame,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
             throws InertialNavigatorException {
         try {
             navigateECI(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),
@@ -5491,18 +4629,13 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public static void navigateECI(final Time timeInterval,
-                                   final ECIFrame oldFrame,
-                                   final Acceleration fx,
-                                   final Acceleration fy,
-                                   final Acceleration fz,
-                                   final double angularRateX,
-                                   final double angularRateY,
-                                   final double angularRateZ,
-                                   final ECIFrame result)
+    public static void navigateECI(
+            final Time timeInterval, final ECIFrame oldFrame,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ, final ECIFrame result)
             throws InertialNavigatorException {
-        navigateECI(convertTimeToDouble(timeInterval), oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(convertTimeToDouble(timeInterval), oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
+                result);
     }
 
     /**
@@ -5530,21 +4663,15 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public static void navigateECI(final double timeInterval,
-                                   final ECIFrame oldFrame,
-                                   final double fx,
-                                   final double fy,
-                                   final double fz,
-                                   final AngularSpeed angularRateX,
-                                   final AngularSpeed angularRateY,
-                                   final AngularSpeed angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException {
+    public static void navigateECI(
+            final double timeInterval, final ECIFrame oldFrame,
+            final double fx, final double fy, final double fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException {
         try {
             navigateECI(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),
-                    oldFrame.getCoordinateTransformation(),
-                    oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), fx, fy, fz,
-                    angularRateX, angularRateY, angularRateZ, result);
+                    oldFrame.getCoordinateTransformation(), oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(),
+                    fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
             // never happens
         }
@@ -5575,18 +4702,13 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public static void navigateECI(final Time timeInterval,
-                                   final ECIFrame oldFrame,
-                                   final double fx,
-                                   final double fy,
-                                   final double fz,
-                                   final AngularSpeed angularRateX,
-                                   final AngularSpeed angularRateY,
-                                   final AngularSpeed angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException {
-        navigateECI(convertTimeToDouble(timeInterval), oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result);
+    public static void navigateECI(
+            final Time timeInterval, final ECIFrame oldFrame,
+            final double fx, final double fy, final double fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException {
+        navigateECI(convertTimeToDouble(timeInterval), oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
+                result);
     }
 
     /**
@@ -5611,21 +4733,15 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public static void navigateECI(final double timeInterval,
-                                   final ECIFrame oldFrame,
-                                   final Acceleration fx,
-                                   final Acceleration fy,
-                                   final Acceleration fz,
-                                   final AngularSpeed angularRateX,
-                                   final AngularSpeed angularRateY,
-                                   final AngularSpeed angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException {
+    public static void navigateECI(
+            final double timeInterval, final ECIFrame oldFrame,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException {
         try {
             navigateECI(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),
-                    oldFrame.getCoordinateTransformation(),
-                    oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), fx, fy, fz,
-                    angularRateX, angularRateY, angularRateZ, result);
+                    oldFrame.getCoordinateTransformation(), oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(),
+                    fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
             // never happens
         }
@@ -5653,80 +4769,66 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public static void navigateECI(final Time timeInterval,
-                                   final ECIFrame oldFrame,
-                                   final Acceleration fx,
-                                   final Acceleration fy,
-                                   final Acceleration fz,
-                                   final AngularSpeed angularRateX,
-                                   final AngularSpeed angularRateY,
-                                   final AngularSpeed angularRateZ,
-                                   final ECIFrame result)
-            throws InertialNavigatorException {
-        navigateECI(convertTimeToDouble(timeInterval), oldFrame, fx, fy, fz,
+    public static void navigateECI(
+            final Time timeInterval, final ECIFrame oldFrame,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ,
+            final ECIFrame result) throws InertialNavigatorException {
+        navigateECI(convertTimeToDouble(timeInterval), oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
+                result);
+    }
+
+    /**
+     * Runs precision ECI-frame inertial navigation equations.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
+     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
+     * @param oldC         previous body-to-ECI-frame coordinate transformation.
+     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
+     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
+     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in meters per squared second (m/s^2).
+     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
+     *                     resolved along body-frame axes, averaged over time interval and
+     *                     expressed in radians per second (rad/s).
+     * @return estimated ECI frame containing new body position, velocity and coordinate
+     * transformation matrix.
+     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
+     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
+     */
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
+            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+        final ECIFrame result = new ECIFrame();
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
-    }
-
-    /**
-     * Runs precision ECI-frame inertial navigation equations.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param oldX         previous cartesian x-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldY         previous cartesian y-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldZ         previous cartesian z-coordinate position of body frame with respect ECI
-     *                     frame, resolved along ECI-frame axes and expressed in meters (m).
-     * @param oldC         previous body-to-ECI-frame coordinate transformation.
-     * @param oldVx        previous velocity x-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVy        previous velocity y-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param oldVz        previous velocity z-coordinate of body frame with respect ECI frame,
-     *                     resolved along ECI-frame axes and expressed in meters per second (m/s).
-     * @param fx           specific force x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fy           specific force y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param fz           specific force z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in meters per squared second (m/s^2).
-     * @param angularRateX angular rate x-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateY angular rate y-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @param angularRateZ angular rate z-coordinate of body frame with respect ECI frame,
-     *                     resolved along body-frame axes, averaged over time interval and
-     *                     expressed in radians per second (rad/s).
-     * @return estimated ECI frame containing new body position, velocity and coordinate
-     * transformation matrix.
-     * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
-     * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are
-     *                                                       invalid.
-     */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final double oldX,
-                                                   final double oldY,
-                                                   final double oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final double oldVx,
-                                                   final double oldVy,
-                                                   final double oldVz,
-                                                   final double fx,
-                                                   final double fy,
-                                                   final double fz,
-                                                   final double angularRateX,
-                                                   final double angularRateY,
-                                                   final double angularRateZ)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -5772,24 +4874,15 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final double oldX,
-                                                   final double oldY,
-                                                   final double oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final double oldVx,
-                                                   final double oldVy,
-                                                   final double oldVz,
-                                                   final double fx,
-                                                   final double fy,
-                                                   final double fz,
-                                                   final double angularRateX,
-                                                   final double angularRateY,
-                                                   final double angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -5819,19 +4912,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final double oldX,
-                                                   final double oldY,
-                                                   final double oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final double oldVx,
-                                                   final double oldVy,
-                                                   final double oldVz,
-                                                   final BodyKinematics kinematics)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final BodyKinematics kinematics) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,
-                result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
 
@@ -5861,19 +4948,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final double oldX,
-                                                   final double oldY,
-                                                   final double oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final double oldVx,
-                                                   final double oldVy,
-                                                   final double oldVz,
-                                                   final BodyKinematics kinematics)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final BodyKinematics kinematics) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,
-                result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
 
@@ -5915,22 +4996,15 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final Point3D oldPosition,
-                                                   final CoordinateTransformation oldC,
-                                                   final double oldVx,
-                                                   final double oldVy,
-                                                   final double oldVz,
-                                                   final double fx,
-                                                   final double fy,
-                                                   final double fz,
-                                                   final double angularRateX,
-                                                   final double angularRateY,
-                                                   final double angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -5972,22 +5046,15 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final Point3D oldPosition,
-                                                   final CoordinateTransformation oldC,
-                                                   final double oldVx,
-                                                   final double oldVy,
-                                                   final double oldVz,
-                                                   final double fx,
-                                                   final double fy,
-                                                   final double fz,
-                                                   final double angularRateX,
-                                                   final double angularRateY,
-                                                   final double angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -6013,17 +5080,12 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final Point3D oldPosition,
-                                                   final CoordinateTransformation oldC,
-                                                   final double oldVx,
-                                                   final double oldVy,
-                                                   final double oldVz,
-                                                   final BodyKinematics kinematics)
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz, final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics,
-                result);
+        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
 
@@ -6049,17 +5111,12 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final Point3D oldPosition,
-                                                   final CoordinateTransformation oldC,
-                                                   final double oldVx,
-                                                   final double oldVy,
-                                                   final double oldVz,
-                                                   final BodyKinematics kinematics)
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final Point3D oldPosition, final CoordinateTransformation oldC,
+            final double oldVx, final double oldVy, final double oldVz, final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics,
-                result);
+        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
 
@@ -6105,24 +5162,15 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final Distance oldX,
-                                                   final Distance oldY,
-                                                   final Distance oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final double oldVx,
-                                                   final double oldVy,
-                                                   final double oldVz,
-                                                   final double fx,
-                                                   final double fy,
-                                                   final double fz,
-                                                   final double angularRateX,
-                                                   final double angularRateY,
-                                                   final double angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -6168,24 +5216,15 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final Distance oldX,
-                                                   final Distance oldY,
-                                                   final Distance oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final double oldVx,
-                                                   final double oldVy,
-                                                   final double oldVz,
-                                                   final double fx,
-                                                   final double fy,
-                                                   final double fz,
-                                                   final double angularRateX,
-                                                   final double angularRateY,
-                                                   final double angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -6215,19 +5254,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final Distance oldX,
-                                                   final Distance oldY,
-                                                   final Distance oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final double oldVx,
-                                                   final double oldVy,
-                                                   final double oldVz,
-                                                   final BodyKinematics kinematics)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final BodyKinematics kinematics) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,
-                result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
 
@@ -6257,19 +5290,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final Distance oldX,
-                                                   final Distance oldY,
-                                                   final Distance oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final double oldVx,
-                                                   final double oldVy,
-                                                   final double oldVz,
-                                                   final BodyKinematics kinematics)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final BodyKinematics kinematics) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,
-                result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics, result);
         return result;
     }
 
@@ -6315,24 +5342,15 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final double oldX,
-                                                   final double oldY,
-                                                   final double oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final Speed oldSpeedX,
-                                                   final Speed oldSpeedY,
-                                                   final Speed oldSpeedZ,
-                                                   final double fx,
-                                                   final double fy,
-                                                   final double fz,
-                                                   final double angularRateX,
-                                                   final double angularRateY,
-                                                   final double angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -6378,24 +5396,15 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final double oldX,
-                                                   final double oldY,
-                                                   final double oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final Speed oldSpeedX,
-                                                   final Speed oldSpeedY,
-                                                   final Speed oldSpeedZ,
-                                                   final double fx,
-                                                   final double fy,
-                                                   final double fz,
-                                                   final double angularRateX,
-                                                   final double angularRateY,
-                                                   final double angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -6425,19 +5434,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final double oldX,
-                                                   final double oldY,
-                                                   final double oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final Speed oldSpeedX,
-                                                   final Speed oldSpeedY,
-                                                   final Speed oldSpeedZ,
-                                                   final BodyKinematics kinematics)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final BodyKinematics kinematics) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
-                kinematics, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
         return result;
     }
 
@@ -6467,19 +5470,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final double oldX,
-                                                   final double oldY,
-                                                   final double oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final Speed oldSpeedX,
-                                                   final Speed oldSpeedY,
-                                                   final Speed oldSpeedZ,
-                                                   final BodyKinematics kinematics)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final BodyKinematics kinematics) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
-                kinematics, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
         return result;
     }
 
@@ -6522,24 +5519,15 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final double oldX,
-                                                   final double oldY,
-                                                   final double oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final double oldVx,
-                                                   final double oldVy,
-                                                   final double oldVz,
-                                                   final Acceleration fx,
-                                                   final Acceleration fy,
-                                                   final Acceleration fz,
-                                                   final double angularRateX,
-                                                   final double angularRateY,
-                                                   final double angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -6582,24 +5570,15 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final double oldX,
-                                                   final double oldY,
-                                                   final double oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final double oldVx,
-                                                   final double oldVy,
-                                                   final double oldVz,
-                                                   final Acceleration fx,
-                                                   final Acceleration fy,
-                                                   final Acceleration fz,
-                                                   final double angularRateX,
-                                                   final double angularRateY,
-                                                   final double angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -6642,24 +5621,15 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final double oldX,
-                                                   final double oldY,
-                                                   final double oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final double oldVx,
-                                                   final double oldVy,
-                                                   final double oldVz,
-                                                   final double fx,
-                                                   final double fy,
-                                                   final double fz,
-                                                   final AngularSpeed angularRateX,
-                                                   final AngularSpeed angularRateY,
-                                                   final AngularSpeed angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -6702,24 +5672,15 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final double oldX,
-                                                   final double oldY,
-                                                   final double oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final double oldVx,
-                                                   final double oldVy,
-                                                   final double oldVz,
-                                                   final double fx,
-                                                   final double fy,
-                                                   final double fz,
-                                                   final AngularSpeed angularRateX,
-                                                   final AngularSpeed angularRateY,
-                                                   final AngularSpeed angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -6765,24 +5726,15 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final Distance oldX,
-                                                   final Distance oldY,
-                                                   final Distance oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final Speed oldSpeedX,
-                                                   final Speed oldSpeedY,
-                                                   final Speed oldSpeedZ,
-                                                   final double fx,
-                                                   final double fy,
-                                                   final double fz,
-                                                   final double angularRateX,
-                                                   final double angularRateY,
-                                                   final double angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -6828,24 +5780,15 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final Distance oldX,
-                                                   final Distance oldY,
-                                                   final Distance oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final Speed oldSpeedX,
-                                                   final Speed oldSpeedY,
-                                                   final Speed oldSpeedZ,
-                                                   final double fx,
-                                                   final double fy,
-                                                   final double fz,
-                                                   final double angularRateX,
-                                                   final double angularRateY,
-                                                   final double angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -6885,24 +5828,15 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final Distance oldX,
-                                                   final Distance oldY,
-                                                   final Distance oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final Speed oldSpeedX,
-                                                   final Speed oldSpeedY,
-                                                   final Speed oldSpeedZ,
-                                                   final Acceleration fx,
-                                                   final Acceleration fy,
-                                                   final Acceleration fz,
-                                                   final AngularSpeed angularRateX,
-                                                   final AngularSpeed angularRateY,
-                                                   final AngularSpeed angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -6942,24 +5876,15 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final Distance oldX,
-                                                   final Distance oldY,
-                                                   final Distance oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final Speed oldSpeedX,
-                                                   final Speed oldSpeedY,
-                                                   final Speed oldSpeedZ,
-                                                   final Acceleration fx,
-                                                   final Acceleration fy,
-                                                   final Acceleration fz,
-                                                   final AngularSpeed angularRateX,
-                                                   final AngularSpeed angularRateY,
-                                                   final AngularSpeed angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -6999,24 +5924,15 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final double oldX,
-                                                   final double oldY,
-                                                   final double oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final double oldVx,
-                                                   final double oldVy,
-                                                   final double oldVz,
-                                                   final Acceleration fx,
-                                                   final Acceleration fy,
-                                                   final Acceleration fz,
-                                                   final AngularSpeed angularRateX,
-                                                   final AngularSpeed angularRateY,
-                                                   final AngularSpeed angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -7056,24 +5972,15 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final double oldX,
-                                                   final double oldY,
-                                                   final double oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final double oldVx,
-                                                   final double oldVy,
-                                                   final double oldVz,
-                                                   final Acceleration fx,
-                                                   final Acceleration fy,
-                                                   final Acceleration fz,
-                                                   final AngularSpeed angularRateX,
-                                                   final AngularSpeed angularRateY,
-                                                   final AngularSpeed angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -7103,19 +6010,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final Distance oldX,
-                                                   final Distance oldY,
-                                                   final Distance oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final Speed oldSpeedX,
-                                                   final Speed oldSpeedY,
-                                                   final Speed oldSpeedZ,
-                                                   final BodyKinematics kinematics)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final BodyKinematics kinematics) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
-                kinematics, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
         return result;
     }
 
@@ -7145,19 +6046,13 @@ public class ECIInertialNavigator {
      *                                                       body-to-ECI-frame coordinate transformation matrix are
      *                                                       invalid.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final Distance oldX,
-                                                   final Distance oldY,
-                                                   final Distance oldZ,
-                                                   final CoordinateTransformation oldC,
-                                                   final Speed oldSpeedX,
-                                                   final Speed oldSpeedY,
-                                                   final Speed oldSpeedZ,
-                                                   final BodyKinematics kinematics)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final Distance oldX, final Distance oldY, final Distance oldZ,
+            final CoordinateTransformation oldC, final Speed oldSpeedX, final Speed oldSpeedY, final Speed oldSpeedZ,
+            final BodyKinematics kinematics) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,
-                kinematics, result);
+        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
         return result;
     }
 
@@ -7189,18 +6084,12 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final ECIFrame oldFrame,
-                                                   final double fx,
-                                                   final double fy,
-                                                   final double fz,
-                                                   final double angularRateX,
-                                                   final double angularRateY,
-                                                   final double angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final ECIFrame oldFrame, final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -7232,18 +6121,12 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final ECIFrame oldFrame,
-                                                   final double fx,
-                                                   final double fy,
-                                                   final double fz,
-                                                   final double angularRateX,
-                                                   final double angularRateY,
-                                                   final double angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final ECIFrame oldFrame, final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -7259,9 +6142,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final ECIFrame oldFrame,
-                                                   final BodyKinematics kinematics)
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final ECIFrame oldFrame, final BodyKinematics kinematics)
             throws InertialNavigatorException {
         final ECIFrame result = new ECIFrame();
         navigateECI(timeInterval, oldFrame, kinematics, result);
@@ -7280,9 +6162,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final ECIFrame oldFrame,
-                                                   final BodyKinematics kinematics)
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final ECIFrame oldFrame, final BodyKinematics kinematics)
             throws InertialNavigatorException {
         final ECIFrame result = new ECIFrame();
         navigateECI(timeInterval, oldFrame, kinematics, result);
@@ -7314,18 +6195,13 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final ECIFrame oldFrame,
-                                                   final Acceleration fx,
-                                                   final Acceleration fy,
-                                                   final Acceleration fz,
-                                                   final double angularRateX,
-                                                   final double angularRateY,
-                                                   final double angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final ECIFrame oldFrame,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -7354,18 +6230,13 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final ECIFrame oldFrame,
-                                                   final Acceleration fx,
-                                                   final Acceleration fy,
-                                                   final Acceleration fz,
-                                                   final double angularRateX,
-                                                   final double angularRateY,
-                                                   final double angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final ECIFrame oldFrame,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ)
             throws InertialNavigatorException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -7394,18 +6265,12 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final ECIFrame oldFrame,
-                                                   final double fx,
-                                                   final double fy,
-                                                   final double fz,
-                                                   final AngularSpeed angularRateX,
-                                                   final AngularSpeed angularRateY,
-                                                   final AngularSpeed angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final ECIFrame oldFrame, final double fx, final double fy, final double fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -7434,18 +6299,12 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final ECIFrame oldFrame,
-                                                   final double fx,
-                                                   final double fy,
-                                                   final double fz,
-                                                   final AngularSpeed angularRateX,
-                                                   final AngularSpeed angularRateY,
-                                                   final AngularSpeed angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final ECIFrame oldFrame, final double fx, final double fy, final double fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -7471,18 +6330,13 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
-                                                   final ECIFrame oldFrame,
-                                                   final Acceleration fx,
-                                                   final Acceleration fy,
-                                                   final Acceleration fz,
-                                                   final AngularSpeed angularRateX,
-                                                   final AngularSpeed angularRateY,
-                                                   final AngularSpeed angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final double timeInterval, final ECIFrame oldFrame,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -7508,18 +6362,13 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException if navigation fails due to numerical instabilities.
      */
-    public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
-                                                   final ECIFrame oldFrame,
-                                                   final Acceleration fx,
-                                                   final Acceleration fy,
-                                                   final Acceleration fz,
-                                                   final AngularSpeed angularRateX,
-                                                   final AngularSpeed angularRateY,
-                                                   final AngularSpeed angularRateZ)
+    public static ECIFrame navigateECIAndReturnNew(
+            final Time timeInterval, final ECIFrame oldFrame,
+            final Acceleration fx, final Acceleration fy, final Acceleration fz,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
         final ECIFrame result = new ECIFrame();
-        navigateECI(timeInterval, oldFrame, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result);
+        navigateECI(timeInterval, oldFrame, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -7542,8 +6391,7 @@ public class ECIInertialNavigator {
      * @return converted value expressed in seconds.
      */
     private static double convertTimeToDouble(final com.irurueta.units.Time time) {
-        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(),
-                TimeUnit.SECOND);
+        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);
     }
 
     /**
@@ -7554,8 +6402,7 @@ public class ECIInertialNavigator {
      * @return converted value expressed in meters.
      */
     private static double convertDistanceToDouble(final Distance distance) {
-        return DistanceConverter.convert(distance.getValue().doubleValue(),
-                distance.getUnit(), DistanceUnit.METER);
+        return DistanceConverter.convert(distance.getValue().doubleValue(), distance.getUnit(), DistanceUnit.METER);
     }
 
     /**
@@ -7566,8 +6413,7 @@ public class ECIInertialNavigator {
      * @return converted value expressed in meters per second.
      */
     private static double convertSpeedToDouble(final Speed speed) {
-        return SpeedConverter.convert(speed.getValue().doubleValue(),
-                speed.getUnit(), SpeedUnit.METERS_PER_SECOND);
+        return SpeedConverter.convert(speed.getValue().doubleValue(), speed.getUnit(), SpeedUnit.METERS_PER_SECOND);
     }
 
     /**
@@ -7578,8 +6424,8 @@ public class ECIInertialNavigator {
      * @return converted value expressed in meters per squared second.
      */
     private static double convertAccelerationToDouble(final Acceleration acceleration) {
-        return AccelerationConverter.convert(acceleration.getValue().doubleValue(),
-                acceleration.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return AccelerationConverter.convert(acceleration.getValue().doubleValue(), acceleration.getUnit(),
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -7590,7 +6436,7 @@ public class ECIInertialNavigator {
      * @return converted value expressed in radians per second.
      */
     private static double convertAngularSpeedToDouble(final AngularSpeed angularSpeed) {
-        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(),
-                angularSpeed.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(), angularSpeed.getUnit(),
+                AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 }

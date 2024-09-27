@@ -26,13 +26,13 @@ public class WorldMagneticModelTest {
     public void testConstructor() {
         final WorldMagneticModel model = new WorldMagneticModel();
 
-        assertEquals(WorldMagneticModel.MAX_ORDER, 12);
-        assertEquals(WorldMagneticModel.LIFESPAN, 5.0, 0.0);
-        assertEquals(WorldMagneticModel.N, 13);
+        assertEquals(12, WorldMagneticModel.MAX_ORDER);
+        assertEquals(5.0, WorldMagneticModel.LIFESPAN, 0.0);
+        assertEquals(13, WorldMagneticModel.N);
 
         assertNotNull(model.c);
         assertNotNull(model.cd);
-        assertEquals(model.epoch, 0.0, 0.0);
+        assertEquals(0.0, model.epoch, 0.0);
         assertNotNull(model.snorm);
         assertNotNull(model.k);
         assertNotNull(model.fn);

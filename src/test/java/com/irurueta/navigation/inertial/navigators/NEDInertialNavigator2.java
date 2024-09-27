@@ -43,58 +43,37 @@ public class NEDInertialNavigator2 {
 
     private static final int ROWS = 3;
 
-    public static void navigateNED(final double timeInterval,
-                                   final NEDFrame oldFrame,
-                                   final BodyKinematics kinematics,
-                                   final double accuracyThreshold,
-                                   final NEDFrame result)
-            throws InertialNavigatorException {
+    public static void navigateNED(
+            final double timeInterval, final NEDFrame oldFrame, final BodyKinematics kinematics,
+            final double accuracyThreshold, final NEDFrame result) throws InertialNavigatorException {
         try {
-            navigateNED(timeInterval, oldFrame.getLatitude(), oldFrame.getLongitude(),
-                    oldFrame.getHeight(), oldFrame.getCoordinateTransformation(),
-                    oldFrame.getVn(), oldFrame.getVe(), oldFrame.getVd(), kinematics,
-                    accuracyThreshold, result);
+            navigateNED(timeInterval, oldFrame.getLatitude(), oldFrame.getLongitude(), oldFrame.getHeight(),
+                    oldFrame.getCoordinateTransformation(), oldFrame.getVn(), oldFrame.getVe(), oldFrame.getVd(),
+                    kinematics, accuracyThreshold, result);
         } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
             // never happens
         }
     }
 
-    public static void navigateNED(final double timeInterval,
-                                   final double oldLatitude,
-                                   final double oldLongitude,
-                                   final double oldHeight,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVn,
-                                   final double oldVe,
-                                   final double oldVd,
-                                   final BodyKinematics kinematics,
-                                   final double accuracyThreshold,
-                                   final NEDFrame result)
+    public static void navigateNED(
+            final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final CoordinateTransformation oldC, final double oldVn, final double oldVe, final double oldVd,
+            final BodyKinematics kinematics, final double accuracyThreshold, final NEDFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
 
-        navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC,
-                oldVn, oldVe, oldVd, kinematics.getFx(), kinematics.getFy(),
-                kinematics.getFz(), kinematics.getAngularRateX(),
-                kinematics.getAngularRateY(), kinematics.getAngularRateZ(), accuracyThreshold, result);
+        navigateNED(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVn, oldVe, oldVd,
+                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
+                kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ(),
+                accuracyThreshold, result);
     }
 
-    public static void navigateNED(final double timeInterval,
-                                   final double oldLatitude,
-                                   final double oldLongitude,
-                                   final double oldHeight,
-                                   final CoordinateTransformation oldC,
-                                   final double oldVn,
-                                   final double oldVe,
-                                   final double oldVd,
-                                   final double fx,
-                                   final double fy,
-                                   final double fz,
-                                   final double angularRateX,
-                                   final double angularRateY,
-                                   final double angularRateZ,
-                                   final double accuracyThreshold,
-                                   final NEDFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+    public static void navigateNED(
+            final double timeInterval, final double oldLatitude, final double oldLongitude, final double oldHeight,
+            final CoordinateTransformation oldC, final double oldVn, final double oldVe, final double oldVd,
+            final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ,
+            final double accuracyThreshold, final NEDFrame result) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
 
         if (!isValidBodyToNEDCoordinateTransformationMatrix(oldC)) {
             throw new InvalidSourceAndDestinationFrameTypeException();
@@ -116,15 +95,13 @@ public class NEDInertialNavigator2 {
             // From (2.123), determine the angular rate of the ECEF frame with respect
             // the ECI frame, resolved about NED
             final Matrix omegaIen = new Matrix(ROWS, 1);
-            omegaIen.setElementAtIndex(0,
-                    Math.cos(oldLatitude) * EARTH_ROTATION_RATE);
-            omegaIen.setElementAtIndex(2,
-                    -Math.sin(oldLatitude) * EARTH_ROTATION_RATE);
+            omegaIen.setElementAtIndex(0, Math.cos(oldLatitude) * EARTH_ROTATION_RATE);
+            omegaIen.setElementAtIndex(2, -Math.sin(oldLatitude) * EARTH_ROTATION_RATE);
 
             // From (5.44), determine the angular rate of the NED frame with respect
             // the ECEF frame, resolved about NED
-            final RadiiOfCurvature oldRadiiOfCurvature = RadiiOfCurvatureEstimator
-                    .estimateRadiiOfCurvatureAndReturnNew(oldLatitude);
+            final RadiiOfCurvature oldRadiiOfCurvature = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(
+                    oldLatitude);
             final double oldRe = oldRadiiOfCurvature.getRe();
             final double oldRn = oldRadiiOfCurvature.getRn();
 
@@ -169,8 +146,7 @@ public class NEDInertialNavigator2 {
 
             // Update velocity
             // From (5.54),
-            final NEDGravity gravity = NEDGravityEstimator
-                    .estimateGravityAndReturnNew(oldLatitude, oldHeight);
+            final NEDGravity gravity = NEDGravityEstimator.estimateGravityAndReturnNew(oldLatitude, oldHeight);
             final Matrix g = gravity.asMatrix();
 
             final Matrix oldVebn = new Matrix(ROWS, 1);
@@ -178,14 +154,11 @@ public class NEDInertialNavigator2 {
             oldVebn.setElementAtIndex(1, oldVe);
             oldVebn.setElementAtIndex(2, oldVd);
 
-            final Matrix skewOmega2 = Utils.skewMatrix(
-                    oldOmegaEnN.addAndReturnNew(
-                            omegaIen.multiplyByScalarAndReturnNew(2.0)));
+            final Matrix skewOmega2 = Utils.skewMatrix(oldOmegaEnN.addAndReturnNew(
+                    omegaIen.multiplyByScalarAndReturnNew(2.0)));
 
-            final Matrix vEbn = oldVebn.addAndReturnNew(
-                    fibn.addAndReturnNew(g).subtractAndReturnNew(
-                            skewOmega2.multiplyAndReturnNew(oldVebn))
-                            .multiplyByScalarAndReturnNew(timeInterval));
+            final Matrix vEbn = oldVebn.addAndReturnNew(fibn.addAndReturnNew(g).subtractAndReturnNew(
+                    skewOmega2.multiplyAndReturnNew(oldVebn)).multiplyByScalarAndReturnNew(timeInterval));
 
             final double vn = vEbn.getElementAtIndex(0);
             final double ve = vEbn.getElementAtIndex(1);
@@ -200,8 +173,8 @@ public class NEDInertialNavigator2 {
                     + 0.5 * timeInterval * (oldVn / (oldRn + oldHeight) + vn / (oldRn + height));
 
             // Calculate meridian and transverse radii of curvature
-            final RadiiOfCurvature radiiOfCurvature = RadiiOfCurvatureEstimator
-                    .estimateRadiiOfCurvatureAndReturnNew(latitude);
+            final RadiiOfCurvature radiiOfCurvature = RadiiOfCurvatureEstimator.estimateRadiiOfCurvatureAndReturnNew(
+                    latitude);
             final double rn = radiiOfCurvature.getRn();
             final double re = radiiOfCurvature.getRe();
 

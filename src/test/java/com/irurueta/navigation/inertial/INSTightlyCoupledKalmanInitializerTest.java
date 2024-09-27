@@ -68,24 +68,15 @@ public class INSTightlyCoupledKalmanInitializerTest {
 
     private static INSTightlyCoupledKalmanInitializerConfig generateConfig() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double initialAttitudeUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double initialVelocityUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double initialPositionUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double initialAccelerationBiasUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double initialGyroscopeBiasUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double initialClockOffsetUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double initialClockDriftUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        return new INSTightlyCoupledKalmanInitializerConfig(initialAttitudeUncertainty,
-                initialVelocityUncertainty, initialPositionUncertainty,
-                initialAccelerationBiasUncertainty, initialGyroscopeBiasUncertainty,
+        final double initialAttitudeUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialVelocityUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialPositionUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialAccelerationBiasUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialGyroscopeBiasUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialClockOffsetUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialClockDriftUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        return new INSTightlyCoupledKalmanInitializerConfig(initialAttitudeUncertainty, initialVelocityUncertainty,
+                initialPositionUncertainty, initialAccelerationBiasUncertainty, initialGyroscopeBiasUncertainty,
                 initialClockOffsetUncertainty, initialClockDriftUncertainty);
-
     }
 }

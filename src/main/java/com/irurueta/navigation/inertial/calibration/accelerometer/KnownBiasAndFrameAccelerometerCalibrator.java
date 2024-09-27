@@ -46,7 +46,7 @@ public interface KnownBiasAndFrameAccelerometerCalibrator<T extends FrameBodyKin
      * @return a collection of body kinematics measurements taken at different
      * frames (positions, orientations and velocities).
      */
-    Collection<? extends T> getMeasurements();
+    Collection<T> getMeasurements();
 
     /**
      * Sets a collection of body kinematics measurements taken at different

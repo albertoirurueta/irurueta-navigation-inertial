@@ -21,5 +21,6 @@ package com.irurueta.navigation.inertial.calibration.magnetometer;
  * gyroscope bias is known.
  */
 public interface KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorListener extends
-        KnownHardIronAndFrameMagnetometerCalibratorListener<KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator> {
+        KnownHardIronAndFrameMagnetometerCalibratorListener<
+                KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator> {
 }

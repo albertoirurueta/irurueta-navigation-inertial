@@ -51,21 +51,20 @@ public class ECIGravitationEstimatorTest {
 
     @Test
     public void testConstants() {
-        assertEquals(ECIGravitationEstimator.EARTH_EQUATORIAL_RADIUS_WGS84,
-                Constants.EARTH_EQUATORIAL_RADIUS_WGS84, 0.0);
-        assertEquals(ECIGravitationEstimator.EARTH_GRAVITATIONAL_CONSTANT,
-                Constants.EARTH_GRAVITATIONAL_CONSTANT, 0.0);
+        assertEquals(ECIGravitationEstimator.EARTH_EQUATORIAL_RADIUS_WGS84, Constants.EARTH_EQUATORIAL_RADIUS_WGS84,
+                0.0);
+        assertEquals(ECIGravitationEstimator.EARTH_GRAVITATIONAL_CONSTANT, Constants.EARTH_GRAVITATIONAL_CONSTANT, 0.0);
         assertEquals(ECIGravitationEstimator.EARTH_SECOND_GRAVITATIONAL_CONSTANT,
                 Constants.EARTH_SECOND_GRAVITATIONAL_CONSTANT, 0.0);
     }
 
     @Test
     public void testEstimateWithCoordinates() {
-        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES),
-                Math.toRadians(LONGITUDE_DEGREES), HEIGHT);
+        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES),
+                HEIGHT);
         final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
-        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(
-                TIME_INTERVAL_SECONDS, ecefFrame);
+        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+                ecefFrame);
         final double x = eciFrame.getX();
         final double y = eciFrame.getY();
         final double z = eciFrame.getZ();
@@ -78,16 +77,16 @@ public class ECIGravitationEstimatorTest {
                 Math.pow(gravitation.getGy(), 2.0) +
                 Math.pow(gravitation.getGz(), 2.0));
 
-        assertEquals(g, GRAVITATION, ABSOLUTE_ERROR);
+        assertEquals(GRAVITATION, g, ABSOLUTE_ERROR);
     }
 
     @Test
     public void testEstimateAndReturnNewWithCoordinates() {
-        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES),
-                Math.toRadians(LONGITUDE_DEGREES), HEIGHT);
+        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES),
+                HEIGHT);
         final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
-        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(
-                TIME_INTERVAL_SECONDS, ecefFrame);
+        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+                ecefFrame);
         final double x = eciFrame.getX();
         final double y = eciFrame.getY();
         final double z = eciFrame.getZ();
@@ -99,17 +98,16 @@ public class ECIGravitationEstimatorTest {
                 Math.pow(gravitation.getGy(), 2.0) +
                 Math.pow(gravitation.getGz(), 2.0));
 
-        assertEquals(g, GRAVITATION, ABSOLUTE_ERROR);
+        assertEquals(GRAVITATION, g, ABSOLUTE_ERROR);
     }
 
     @Test
     public void testEstimateWithECIFrame() {
-        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES),
-                Math.toRadians(LONGITUDE_DEGREES), HEIGHT);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                nedFrame);
-        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(
-                TIME_INTERVAL_SECONDS, ecefFrame);
+        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES),
+                HEIGHT);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+                ecefFrame);
 
         final ECIGravitationEstimator estimator = new ECIGravitationEstimator();
         final ECIGravitation gravitation = new ECIGravitation();
@@ -119,17 +117,16 @@ public class ECIGravitationEstimatorTest {
                 Math.pow(gravitation.getGy(), 2.0) +
                 Math.pow(gravitation.getGz(), 2.0));
 
-        assertEquals(g, GRAVITATION, ABSOLUTE_ERROR);
+        assertEquals(GRAVITATION, g, ABSOLUTE_ERROR);
     }
 
     @Test
     public void testEstimateAndReturnNewWithECIFrame() {
-        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES),
-                Math.toRadians(LONGITUDE_DEGREES), HEIGHT);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                nedFrame);
-        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(
-                TIME_INTERVAL_SECONDS, ecefFrame);
+        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES),
+                HEIGHT);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+                ecefFrame);
 
         final ECIGravitationEstimator estimator = new ECIGravitationEstimator();
         final ECIGravitation gravitation = estimator.estimateAndReturnNew(eciFrame);
@@ -138,17 +135,16 @@ public class ECIGravitationEstimatorTest {
                 Math.pow(gravitation.getGy(), 2.0) +
                 Math.pow(gravitation.getGz(), 2.0));
 
-        assertEquals(g, GRAVITATION, ABSOLUTE_ERROR);
+        assertEquals(GRAVITATION, g, ABSOLUTE_ERROR);
     }
 
     @Test
     public void testEstimateWithPosition() {
-        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES),
-                Math.toRadians(LONGITUDE_DEGREES), HEIGHT);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                nedFrame);
-        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(
-                TIME_INTERVAL_SECONDS, ecefFrame);
+        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES),
+                HEIGHT);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+                ecefFrame);
         final double x = eciFrame.getX();
         final double y = eciFrame.getY();
         final double z = eciFrame.getZ();
@@ -163,17 +159,16 @@ public class ECIGravitationEstimatorTest {
                 Math.pow(gravitation.getGy(), 2.0) +
                 Math.pow(gravitation.getGz(), 2.0));
 
-        assertEquals(g, GRAVITATION, ABSOLUTE_ERROR);
+        assertEquals(GRAVITATION, g, ABSOLUTE_ERROR);
     }
 
     @Test
     public void testEstimateAndReturnNewWithPosition() {
-        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES),
-                Math.toRadians(LONGITUDE_DEGREES), HEIGHT);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                nedFrame);
-        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(
-                TIME_INTERVAL_SECONDS, ecefFrame);
+        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES),
+                HEIGHT);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+                ecefFrame);
         final double x = eciFrame.getX();
         final double y = eciFrame.getY();
         final double z = eciFrame.getZ();
@@ -187,17 +182,16 @@ public class ECIGravitationEstimatorTest {
                 Math.pow(gravitation.getGy(), 2.0) +
                 Math.pow(gravitation.getGz(), 2.0));
 
-        assertEquals(g, GRAVITATION, ABSOLUTE_ERROR);
+        assertEquals(GRAVITATION, g, ABSOLUTE_ERROR);
     }
 
     @Test
     public void testEstimateWithDistances() {
-        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES),
-                Math.toRadians(LONGITUDE_DEGREES), HEIGHT);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                nedFrame);
-        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(
-                TIME_INTERVAL_SECONDS, ecefFrame);
+        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES),
+                HEIGHT);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+                ecefFrame);
         final double x = eciFrame.getX();
         final double y = eciFrame.getY();
         final double z = eciFrame.getZ();
@@ -214,17 +208,16 @@ public class ECIGravitationEstimatorTest {
                 Math.pow(gravitation.getGy(), 2.0) +
                 Math.pow(gravitation.getGz(), 2.0));
 
-        assertEquals(g, GRAVITATION, ABSOLUTE_ERROR);
+        assertEquals(GRAVITATION, g, ABSOLUTE_ERROR);
     }
 
     @Test
     public void testEstimateAndReturnNewWithDistances() {
-        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES),
-                Math.toRadians(LONGITUDE_DEGREES), HEIGHT);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                nedFrame);
-        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(
-                TIME_INTERVAL_SECONDS, ecefFrame);
+        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES),
+                HEIGHT);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+                ecefFrame);
         final double x = eciFrame.getX();
         final double y = eciFrame.getY();
         final double z = eciFrame.getZ();
@@ -234,57 +227,50 @@ public class ECIGravitationEstimatorTest {
         final Distance distanceZ = new Distance(z, DistanceUnit.METER);
 
         final ECIGravitationEstimator estimator = new ECIGravitationEstimator();
-        final ECIGravitation gravitation = estimator.estimateAndReturnNew(
-                distanceX, distanceY, distanceZ);
+        final ECIGravitation gravitation = estimator.estimateAndReturnNew(distanceX, distanceY, distanceZ);
 
         final double g = Math.sqrt(Math.pow(gravitation.getGx(), 2.0) +
                 Math.pow(gravitation.getGy(), 2.0) +
                 Math.pow(gravitation.getGz(), 2.0));
 
-        assertEquals(g, GRAVITATION, ABSOLUTE_ERROR);
+        assertEquals(GRAVITATION, g, ABSOLUTE_ERROR);
     }
 
     @Test
     public void testEstimateForAGivenLatitudeAndLongitude() {
-        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES),
-                Math.toRadians(LONGITUDE_DEGREES), HEIGHT);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                nedFrame);
-        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(
-                TIME_INTERVAL_SECONDS, ecefFrame);
+        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES),
+                HEIGHT);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+                ecefFrame);
 
-        final ECIGravitation gravitation = ECIGravitationEstimator
-                .estimateGravitationAndReturnNew(eciFrame);
+        final ECIGravitation gravitation = ECIGravitationEstimator.estimateGravitationAndReturnNew(eciFrame);
 
         final double g = Math.sqrt(Math.pow(gravitation.getGx(), 2.0) +
                 Math.pow(gravitation.getGy(), 2.0) +
                 Math.pow(gravitation.getGz(), 2.0));
 
-        assertEquals(g, GRAVITATION, ABSOLUTE_ERROR);
+        assertEquals(GRAVITATION, g, ABSOLUTE_ERROR);
     }
 
     @Test
     public void testEstimateForMultipleLatitudesAndLongitudes() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(
-                MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(
-                MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 
         final NEDFrame nedFrame = new NEDFrame(latitude, longitude, HEIGHT);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                nedFrame);
-        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(
-                TIME_INTERVAL_SECONDS, ecefFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+                ecefFrame);
 
-        final ECIGravitation gravitation = ECIGravitationEstimator
-                .estimateGravitationAndReturnNew(eciFrame);
+        final ECIGravitation gravitation = ECIGravitationEstimator.estimateGravitationAndReturnNew(eciFrame);
 
         final double g = Math.sqrt(Math.pow(gravitation.getGx(), 2.0) +
                 Math.pow(gravitation.getGy(), 2.0) +
                 Math.pow(gravitation.getGz(), 2.0));
 
-        assertEquals(g, GRAVITATION, ABSOLUTE_ERROR);
+        assertEquals(GRAVITATION, g, ABSOLUTE_ERROR);
     }
 
     @Test
@@ -293,8 +279,8 @@ public class ECIGravitationEstimatorTest {
         final ECIGravitation gravitation = estimator.estimateAndReturnNew(0.0, 0.0, 0.0);
 
         // check
-        assertEquals(gravitation.getGx(), 0.0, 0.0);
-        assertEquals(gravitation.getGy(), 0.0, 0.0);
-        assertEquals(gravitation.getGz(), 0.0, 0.0);
+        assertEquals(0.0, gravitation.getGx(), 0.0);
+        assertEquals(0.0, gravitation.getGy(), 0.0);
+        assertEquals(0.0, gravitation.getGz(), 0.0);
     }
 }

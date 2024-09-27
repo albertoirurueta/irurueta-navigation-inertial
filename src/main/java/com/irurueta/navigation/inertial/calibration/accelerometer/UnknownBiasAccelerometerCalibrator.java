@@ -61,8 +61,7 @@ public interface UnknownBiasAccelerometerCalibrator {
      * @return true if result was updated, false otherwise.
      * @throws WrongSizeException if provided result instance has invalid size.
      */
-    boolean getEstimatedBiasesAsMatrix(final Matrix result)
-            throws WrongSizeException;
+    boolean getEstimatedBiasesAsMatrix(final Matrix result) throws WrongSizeException;
 
     /**
      * Gets x coordinate of estimated accelerometer bias expressed in meters per

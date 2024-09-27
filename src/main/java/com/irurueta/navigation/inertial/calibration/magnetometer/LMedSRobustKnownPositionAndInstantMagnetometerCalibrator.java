@@ -141,8 +141,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-    public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final boolean commonAxisUsed) {
+    public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(final boolean commonAxisUsed) {
         super(commonAxisUsed);
     }
 
@@ -152,8 +151,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      * @param magneticModel Earth's magnetic model. If null, a default model
      *                      will be used instead.
      */
-    public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final WorldMagneticModel magneticModel) {
+    public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(final WorldMagneticModel magneticModel) {
         super(magneticModel);
     }
 
@@ -164,8 +162,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final double[] initialHardIron) {
+    public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(final double[] initialHardIron) {
         super(initialHardIron);
     }
 
@@ -176,8 +173,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final Matrix initialHardIron) {
+    public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(final Matrix initialHardIron) {
         super(initialHardIron);
     }
 
@@ -202,8 +198,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      * @param position position where body magnetic flux density measurements
      *                 have been taken.
      */
-    public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position) {
+    public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(final NEDPosition position) {
         super(position);
     }
 
@@ -219,8 +214,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                     orientations.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         super(position, measurements);
     }
 
@@ -237,8 +231,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      * @param listener     listener to handle events raised by this calibrator.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, listener);
     }
@@ -257,8 +250,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
         super(position, measurements, commonAxisUsed);
     }
@@ -278,10 +270,8 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, listener);
     }
 
@@ -300,8 +290,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  not have length 3.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] initialHardIron) {
         super(position, measurements, initialHardIron);
     }
@@ -322,8 +311,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  not have length 3.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] initialHardIron,
             final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, initialHardIron, listener);
@@ -346,8 +334,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  not have length 3.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] initialHardIron) {
         super(position, measurements, commonAxisUsed, initialHardIron);
     }
@@ -370,8 +357,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  not have length 3.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] initialHardIron,
             final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, initialHardIron, listener);
@@ -392,8 +378,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  3x1.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix initialHardIron) {
         super(position, measurements, initialHardIron);
     }
@@ -414,10 +399,8 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  3x1.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix initialHardIron,
-            final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final Matrix initialHardIron, final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, initialHardIron, listener);
     }
 
@@ -438,8 +421,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  3x1.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix initialHardIron) {
         super(position, measurements, commonAxisUsed, initialHardIron);
     }
@@ -462,8 +444,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  3x1.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix initialHardIron,
             final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, initialHardIron, listener);
@@ -487,8 +468,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  3x3.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix initialHardIron, final Matrix initialMm) {
         super(position, measurements, initialHardIron, initialMm);
     }
@@ -512,8 +492,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  3x3.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix initialHardIron, final Matrix initialMm,
             final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, initialHardIron, initialMm, listener);
@@ -539,12 +518,9 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  3x3.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron,
-            final Matrix initialMm) {
-        super(position, measurements, commonAxisUsed, initialHardIron,
-                initialMm);
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix initialHardIron, final Matrix initialMm) {
+        super(position, measurements, commonAxisUsed, initialHardIron, initialMm);
     }
 
     /**
@@ -568,13 +544,10 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  3x3.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron,
-            final Matrix initialMm,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix initialHardIron, final Matrix initialMm,
             final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
-        super(position, measurements, commonAxisUsed, initialHardIron,
-                initialMm, listener);
+        super(position, measurements, commonAxisUsed, initialHardIron, initialMm, listener);
     }
 
     /**
@@ -583,8 +556,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      * @param position position where body magnetic flux density measurements
      *                 have been taken.
      */
-    public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position) {
+    public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(final ECEFPosition position) {
         super(position);
     }
 
@@ -600,8 +572,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                     orientations.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         super(position, measurements);
     }
 
@@ -618,8 +589,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      * @param listener     listener to handle events raised by this calibrator.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, listener);
     }
@@ -638,8 +608,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
         super(position, measurements, commonAxisUsed);
     }
@@ -659,10 +628,8 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, listener);
     }
 
@@ -681,8 +648,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  not have length 3.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] initialHardIron) {
         super(position, measurements, initialHardIron);
     }
@@ -703,8 +669,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  not have length 3.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] initialHardIron,
             final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, initialHardIron, listener);
@@ -727,8 +692,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  not have length 3.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] initialHardIron) {
         super(position, measurements, commonAxisUsed, initialHardIron);
     }
@@ -751,8 +715,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  not have length 3.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] initialHardIron,
             final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, initialHardIron, listener);
@@ -773,8 +736,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  3x1.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix initialHardIron) {
         super(position, measurements, initialHardIron);
     }
@@ -795,10 +757,8 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  3x1.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix initialHardIron,
-            final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final Matrix initialHardIron, final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, initialHardIron, listener);
     }
 
@@ -819,8 +779,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  3x1.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix initialHardIron) {
         super(position, measurements, commonAxisUsed, initialHardIron);
     }
@@ -843,8 +802,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  3x1.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix initialHardIron,
             final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, initialHardIron, listener);
@@ -868,8 +826,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  3x3.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix initialHardIron, final Matrix initialMm) {
         super(position, measurements, initialHardIron, initialMm);
     }
@@ -893,8 +850,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  3x3.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix initialHardIron, final Matrix initialMm,
             final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, initialHardIron, initialMm, listener);
@@ -920,12 +876,9 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  3x3.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron,
-            final Matrix initialMm) {
-        super(position, measurements, commonAxisUsed, initialHardIron,
-                initialMm);
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix initialHardIron, final Matrix initialMm) {
+        super(position, measurements, commonAxisUsed, initialHardIron, initialMm);
     }
 
     /**
@@ -949,13 +902,10 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      *                                  3x3.
      */
     public LMedSRobustKnownPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron,
-            final Matrix initialMm,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix initialHardIron, final Matrix initialMm,
             final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
-        super(position, measurements, commonAxisUsed, initialHardIron,
-                initialMm, listener);
+        super(position, measurements, commonAxisUsed, initialHardIron, initialMm, listener);
     }
 
     /**
@@ -1033,7 +983,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
 
         final LMedSRobustEstimator<PreliminaryResult> innerEstimator =
                 new LMedSRobustEstimator<>(
-                        new LMedSRobustEstimatorListener<PreliminaryResult>() {
+                        new LMedSRobustEstimatorListener<>() {
                             @Override
                             public int getTotalSamples() {
                                 return mMeasurements.size();
@@ -1046,18 +996,14 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
 
                             @Override
                             public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<PreliminaryResult> solutions) {
-                                computePreliminarySolutions(
-                                        samplesIndices, solutions);
+                                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
+                                computePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override
                             public double computeResidual(
-                                    final PreliminaryResult currentEstimation,
-                                    final int i) {
-                                return computeError(mMeasurements.get(i),
-                                        currentEstimation);
+                                    final PreliminaryResult currentEstimation, final int i) {
+                                return computeError(mMeasurements.get(i), currentEstimation);
                             }
 
                             @Override
@@ -1066,21 +1012,18 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
                             }
 
                             @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
                             public void onEstimateNextIteration(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final int iteration) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                                 if (mListener != null) {
                                     mListener.onCalibrateNextIteration(
                                             LMedSRobustKnownPositionAndInstantMagnetometerCalibrator.this,
@@ -1090,8 +1033,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
 
                             @Override
                             public void onEstimateProgressChange(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final float progress) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                                 if (mListener != null) {
                                     mListener.onCalibrateProgressChange(
                                             LMedSRobustKnownPositionAndInstantMagnetometerCalibrator.this,
@@ -1143,7 +1085,7 @@ public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.LMedS;
+        return RobustEstimatorMethod.LMEDS;
     }
 
     /**

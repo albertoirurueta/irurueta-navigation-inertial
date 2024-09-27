@@ -92,8 +92,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     /**
      * Default robust estimator method when none is provided.
      */
-    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD =
-            RobustEstimatorMethod.LMedS;
+    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD = RobustEstimatorMethod.LMEDS;
 
     /**
      * Indicates that result is refined by default using a non-linear calibrator
@@ -388,8 +387,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    protected RobustKnownFrameAccelerometerCalibrator(
-            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+    protected RobustKnownFrameAccelerometerCalibrator(final RobustKnownFrameAccelerometerCalibratorListener listener) {
         mListener = listener;
     }
 
@@ -400,8 +398,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      *                     deviations taken at different frames (positions, orientations
      *                     and velocities).
      */
-    protected RobustKnownFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements) {
+    protected RobustKnownFrameAccelerometerCalibrator(final List<StandardDeviationFrameBodyKinematics> measurements) {
         mMeasurements = measurements;
     }
 
@@ -438,8 +435,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @param listener       listener to handle events raised by this calibrator.
      */
     protected RobustKnownFrameAccelerometerCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownFrameAccelerometerCalibratorListener listener) {
         this(commonAxisUsed);
         mListener = listener;
     }
@@ -454,8 +450,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      *                       accelerometer and gyroscope.
      */
     protected RobustKnownFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         this(measurements);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -471,8 +466,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @param listener       listener to handle events raised by this calibrator.
      */
     protected RobustKnownFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
         this(measurements, commonAxisUsed);
         mListener = listener;
@@ -570,8 +564,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Acceleration getInitialBiasXAsAcceleration() {
-        return new Acceleration(mInitialBiasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mInitialBiasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -594,8 +587,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBiasX(final Acceleration initialBiasX)
-            throws LockedException {
+    public void setInitialBiasX(final Acceleration initialBiasX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -610,8 +602,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Acceleration getInitialBiasYAsAcceleration() {
-        return new Acceleration(mInitialBiasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mInitialBiasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -650,8 +641,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Acceleration getInitialBiasZAsAcceleration() {
-        return new Acceleration(mInitialBiasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mInitialBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -674,8 +664,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBiasZ(final Acceleration initialBiasZ)
-            throws LockedException {
+    public void setInitialBiasZ(final Acceleration initialBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -693,8 +682,8 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBias(final double initialBiasX, final double initialBiasY,
-                               final double initialBiasZ) throws LockedException {
+    public void setInitialBias(final double initialBiasX, final double initialBiasY, final double initialBiasZ)
+            throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -713,8 +702,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBias(final Acceleration initialBiasX,
-                               final Acceleration initialBiasY,
+    public void setInitialBias(final Acceleration initialBiasX, final Acceleration initialBiasY,
                                final Acceleration initialBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -731,8 +719,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public AccelerationTriad getInitialBiasAsTriad() {
-        return new AccelerationTriad(
-                AccelerationUnit.METERS_PER_SQUARED_SECOND,
+        return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,
                 mInitialBiasX, mInitialBiasY, mInitialBiasZ);
     }
 
@@ -743,8 +730,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void getInitialBiasAsTriad(final AccelerationTriad result) {
-        result.setValueCoordinatesAndUnit(
-                mInitialBiasX, mInitialBiasY, mInitialBiasZ,
+        result.setValueCoordinatesAndUnit(mInitialBiasX, mInitialBiasY, mInitialBiasZ,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -755,12 +741,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setInitialBias(final AccelerationTriad initialBias) {
-        mInitialBiasX = convertAcceleration(
-                initialBias.getValueX(), initialBias.getUnit());
-        mInitialBiasY = convertAcceleration(
-                initialBias.getValueY(), initialBias.getUnit());
-        mInitialBiasZ = convertAcceleration(
-                initialBias.getValueZ(), initialBias.getUnit());
+        mInitialBiasX = convertAcceleration(initialBias.getValueX(), initialBias.getUnit());
+        mInitialBiasY = convertAcceleration(initialBias.getValueY(), initialBias.getUnit());
+        mInitialBiasZ = convertAcceleration(initialBias.getValueZ(), initialBias.getUnit());
     }
 
     /**
@@ -1008,8 +991,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx, final double initialSy, final double initialSz)
-            throws LockedException {
+            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1033,8 +1015,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     @Override
     public void setInitialCrossCouplingErrors(
             final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy)
-            throws LockedException {
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1065,14 +1046,12 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public void setInitialScalingFactorsAndCrossCouplingErrors(
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy)
-            throws LockedException {
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
+        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
     }
 
     /**
@@ -1160,8 +1139,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void getInitialBiasAsMatrix(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mInitialBiasX);
@@ -1183,8 +1161,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
         if (mRunning) {
             throw new LockedException();
         }
-        if (initialBias.getRows() != BodyKinematics.COMPONENTS
-                || initialBias.getColumns() != 1) {
+        if (initialBias.getRows() != BodyKinematics.COMPONENTS || initialBias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -1203,8 +1180,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public Matrix getInitialMa() {
         Matrix result;
         try {
-            result = new Matrix(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            result = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             getInitialMa(result);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -1222,8 +1198,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void getInitialMa(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS ||
-                result.getColumns() != BodyKinematics.COMPONENTS) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mInitialSx);
@@ -1252,8 +1227,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
         if (mRunning) {
             throw new LockedException();
         }
-        if (initialMa.getRows() != BodyKinematics.COMPONENTS ||
-                initialMa.getColumns() != BodyKinematics.COMPONENTS) {
+        if (initialMa.getRows() != BodyKinematics.COMPONENTS || initialMa.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -1312,8 +1286,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setMeasurements(
-            final List<StandardDeviationFrameBodyKinematics> measurements)
-            throws LockedException {
+            final List<StandardDeviationFrameBodyKinematics> measurements) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1388,8 +1361,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     public void setListener(
-            final RobustKnownFrameAccelerometerCalibratorListener listener)
-            throws LockedException {
+            final RobustKnownFrameAccelerometerCalibratorListener listener) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1446,8 +1418,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      *                             or not for preliminary solutions.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setLinearCalibratorUsed(final boolean linearCalibratorUsed)
-            throws LockedException {
+    public void setLinearCalibratorUsed(final boolean linearCalibratorUsed) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1477,8 +1448,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      *                                   initial linear solution, false otherwise.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setPreliminarySolutionRefined(
-            final boolean preliminarySolutionRefined) throws LockedException {
+    public void setPreliminarySolutionRefined(final boolean preliminarySolutionRefined) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1506,13 +1476,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @throws IllegalArgumentException if progress delta is less than zero or greater than 1.
      * @throws LockedException          if calibrator is currently running.
      */
-    public void setProgressDelta(
-            final float progressDelta) throws LockedException {
+    public void setProgressDelta(final float progressDelta) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
-        if (progressDelta < MIN_PROGRESS_DELTA ||
-                progressDelta > MAX_PROGRESS_DELTA) {
+        if (progressDelta < MIN_PROGRESS_DELTA || progressDelta > MAX_PROGRESS_DELTA) {
             throw new IllegalArgumentException();
         }
         mProgressDelta = progressDelta;
@@ -1540,8 +1508,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided value is not between 0.0 and 1.0.
      * @throws LockedException          if calibrator is currently running.
      */
-    public void setConfidence(
-            final double confidence) throws LockedException {
+    public void setConfidence(final double confidence) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1571,8 +1538,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided value is less than 1.
      * @throws LockedException          if calibrator is currently running.
      */
-    public void setMaxIterations(
-            final int maxIterations) throws LockedException {
+    public void setMaxIterations(final int maxIterations) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1608,8 +1574,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      *                     estimator without further refining.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setResultRefined(
-            final boolean refineResult) throws LockedException {
+    public void setResultRefined(final boolean refineResult) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1634,8 +1599,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      *                       false otherwise.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setCovarianceKept(
-            final boolean keepCovariance) throws LockedException {
+    public void setCovarianceKept(final boolean keepCovariance) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1668,8 +1632,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setQualityScores(final double[] qualityScores)
-            throws LockedException {
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
     }
 
     /**
@@ -1694,8 +1657,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     @Override
     public boolean getEstimatedBiases(final double[] result) {
         if (mEstimatedBiases != null) {
-            System.arraycopy(mEstimatedBiases, 0, result,
-                    0, mEstimatedBiases.length);
+            System.arraycopy(mEstimatedBiases, 0, result, 0, mEstimatedBiases.length);
             return true;
         } else {
             return false;
@@ -1723,8 +1685,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @throws WrongSizeException if provided result instance has invalid size.
      */
     @Override
-    public boolean getEstimatedBiasesAsMatrix(final Matrix result)
-            throws WrongSizeException {
+    public boolean getEstimatedBiasesAsMatrix(final Matrix result) throws WrongSizeException {
         if (mEstimatedBiases != null) {
             result.fromArray(mEstimatedBiases);
             return true;
@@ -1774,8 +1735,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     @Override
     public Acceleration getEstimatedBiasFxAsAcceleration() {
         return mEstimatedBiases != null ?
-                new Acceleration(mEstimatedBiases[0],
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
+                new Acceleration(mEstimatedBiases[0], AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
     }
 
     /**
@@ -1803,8 +1763,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     @Override
     public Acceleration getEstimatedBiasFyAsAcceleration() {
         return mEstimatedBiases != null ?
-                new Acceleration(mEstimatedBiases[1],
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
+                new Acceleration(mEstimatedBiases[1], AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
     }
 
     /**
@@ -1832,8 +1791,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     @Override
     public Acceleration getEstimatedBiasFzAsAcceleration() {
         return mEstimatedBiases != null ?
-                new Acceleration(mEstimatedBiases[2],
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
+                new Acceleration(mEstimatedBiases[2], AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
     }
 
     /**
@@ -1875,8 +1833,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     @Override
     public boolean getEstimatedBiasAsTriad(final AccelerationTriad result) {
         if (mEstimatedBiases != null) {
-            result.setValueCoordinatesAndUnit(
-                    mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2],
+            result.setValueCoordinatesAndUnit(mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2],
                     AccelerationUnit.METERS_PER_SQUARED_SECOND);
             return true;
         } else {
@@ -1938,8 +1895,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMa != null ?
-                mEstimatedMa.getElementAt(0, 0) : null;
+        return mEstimatedMa != null ? mEstimatedMa.getElementAt(0, 0) : null;
     }
 
     /**
@@ -1949,8 +1905,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMa != null ?
-                mEstimatedMa.getElementAt(1, 1) : null;
+        return mEstimatedMa != null ? mEstimatedMa.getElementAt(1, 1) : null;
     }
 
     /**
@@ -1960,8 +1915,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMa != null ?
-                mEstimatedMa.getElementAt(2, 2) : null;
+        return mEstimatedMa != null ? mEstimatedMa.getElementAt(2, 2) : null;
     }
 
     /**
@@ -1971,8 +1925,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMa != null ?
-                mEstimatedMa.getElementAt(0, 1) : null;
+        return mEstimatedMa != null ? mEstimatedMa.getElementAt(0, 1) : null;
     }
 
     /**
@@ -1982,8 +1935,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMa != null ?
-                mEstimatedMa.getElementAt(0, 2) : null;
+        return mEstimatedMa != null ? mEstimatedMa.getElementAt(0, 2) : null;
     }
 
     /**
@@ -1993,8 +1945,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMa != null ?
-                mEstimatedMa.getElementAt(1, 0) : null;
+        return mEstimatedMa != null ? mEstimatedMa.getElementAt(1, 0) : null;
     }
 
     /**
@@ -2004,8 +1955,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMa != null ?
-                mEstimatedMa.getElementAt(1, 2) : null;
+        return mEstimatedMa != null ? mEstimatedMa.getElementAt(1, 2) : null;
     }
 
     /**
@@ -2015,8 +1965,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMa != null ?
-                mEstimatedMa.getElementAt(2, 0) : null;
+        return mEstimatedMa != null ? mEstimatedMa.getElementAt(2, 0) : null;
     }
 
     /**
@@ -2026,8 +1975,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMa != null ?
-                mEstimatedMa.getElementAt(2, 1) : null;
+        return mEstimatedMa != null ? mEstimatedMa.getElementAt(2, 1) : null;
     }
 
     /**
@@ -2257,8 +2205,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     public Double getEstimatedBiasStandardDeviationAverage() {
         return mEstimatedCovariance != null ?
-                (getEstimatedBiasFxStandardDeviation() +
-                        getEstimatedBiasFyStandardDeviation() +
+                (getEstimatedBiasFxStandardDeviation() + getEstimatedBiasFyStandardDeviation() +
                         getEstimatedBiasFzStandardDeviation()) / 3.0 : null;
     }
 
@@ -2370,18 +2317,6 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     }
 
     /**
-     * Estimates accelerometer calibration parameters containing bias, scale factors
-     * and cross-coupling errors.
-     *
-     * @throws LockedException      if calibrator is currently running.
-     * @throws NotReadyException    if calibrator is not ready.
-     * @throws CalibrationException if estimation fails for numerical reasons.
-     */
-    @Override
-    public abstract void calibrate() throws LockedException, NotReadyException,
-            CalibrationException;
-
-    /**
      * Returns method being used for robust estimation.
      *
      * @return method being used for robust estimation.
@@ -2394,21 +2329,14 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @param method robust estimator method.
      * @return a robust accelerometer calibrator.
      */
-    public static RobustKnownFrameAccelerometerCalibrator create(
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameAccelerometerCalibrator();
-            case LMedS:
-                return new LMedSRobustKnownFrameAccelerometerCalibrator();
-            case MSAC:
-                return new MSACRobustKnownFrameAccelerometerCalibrator();
-            case PROSAC:
-                return new PROSACRobustKnownFrameAccelerometerCalibrator();
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameAccelerometerCalibrator();
-        }
+    public static RobustKnownFrameAccelerometerCalibrator create(final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameAccelerometerCalibrator();
+            case LMEDS -> new LMedSRobustKnownFrameAccelerometerCalibrator();
+            case MSAC -> new MSACRobustKnownFrameAccelerometerCalibrator();
+            case PROSAC -> new PROSACRobustKnownFrameAccelerometerCalibrator();
+            default -> new PROMedSRobustKnownFrameAccelerometerCalibrator();
+        };
     }
 
     /**
@@ -2420,21 +2348,14 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final RobustKnownFrameAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameAccelerometerCalibrator(listener);
-            case LMedS:
-                return new LMedSRobustKnownFrameAccelerometerCalibrator(listener);
-            case MSAC:
-                return new MSACRobustKnownFrameAccelerometerCalibrator(listener);
-            case PROSAC:
-                return new PROSACRobustKnownFrameAccelerometerCalibrator(listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameAccelerometerCalibrator(listener);
-        }
+            final RobustKnownFrameAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameAccelerometerCalibrator(listener);
+            case LMEDS -> new LMedSRobustKnownFrameAccelerometerCalibrator(listener);
+            case MSAC -> new MSACRobustKnownFrameAccelerometerCalibrator(listener);
+            case PROSAC -> new PROSACRobustKnownFrameAccelerometerCalibrator(listener);
+            default -> new PROMedSRobustKnownFrameAccelerometerCalibrator(listener);
+        };
     }
 
     /**
@@ -2447,22 +2368,14 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameAccelerometerCalibrator(measurements);
-            case LMedS:
-                return new LMedSRobustKnownFrameAccelerometerCalibrator(measurements);
-            case MSAC:
-                return new MSACRobustKnownFrameAccelerometerCalibrator(measurements);
-            case PROSAC:
-                return new PROSACRobustKnownFrameAccelerometerCalibrator(measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameAccelerometerCalibrator(
-                        measurements);
-        }
+            final List<StandardDeviationFrameBodyKinematics> measurements, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameAccelerometerCalibrator(measurements);
+            case LMEDS -> new LMedSRobustKnownFrameAccelerometerCalibrator(measurements);
+            case MSAC -> new MSACRobustKnownFrameAccelerometerCalibrator(measurements);
+            case PROSAC -> new PROSACRobustKnownFrameAccelerometerCalibrator(measurements);
+            default -> new PROMedSRobustKnownFrameAccelerometerCalibrator(measurements);
+        };
     }
 
     /**
@@ -2477,26 +2390,14 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
             final List<StandardDeviationFrameBodyKinematics> measurements,
-            final RobustKnownFrameAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameAccelerometerCalibrator(measurements,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownFrameAccelerometerCalibrator(measurements,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownFrameAccelerometerCalibrator(measurements,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownFrameAccelerometerCalibrator(measurements,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameAccelerometerCalibrator(
-                        measurements, listener);
-        }
+            final RobustKnownFrameAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameAccelerometerCalibrator(measurements, listener);
+            case LMEDS -> new LMedSRobustKnownFrameAccelerometerCalibrator(measurements, listener);
+            case MSAC -> new MSACRobustKnownFrameAccelerometerCalibrator(measurements, listener);
+            case PROSAC -> new PROSACRobustKnownFrameAccelerometerCalibrator(measurements, listener);
+            default -> new PROMedSRobustKnownFrameAccelerometerCalibrator(measurements, listener);
+        };
     }
 
     /**
@@ -2508,23 +2409,14 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final boolean commonAxisUsed,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownFrameAccelerometerCalibrator(
-                        commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameAccelerometerCalibrator(
-                        commonAxisUsed);
-        }
+            final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);
+            case MSAC -> new MSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);
+            default -> new PROMedSRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);
+        };
     }
 
     /**
@@ -2537,27 +2429,15 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final boolean commonAxisUsed,
-            final RobustKnownFrameAccelerometerCalibratorListener listener,
+            final boolean commonAxisUsed, final RobustKnownFrameAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownFrameAccelerometerCalibrator(commonAxisUsed,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownFrameAccelerometerCalibrator(
-                        commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameAccelerometerCalibrator(
-                        commonAxisUsed, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownFrameAccelerometerCalibrator(commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownFrameAccelerometerCalibrator(commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -2572,27 +2452,15 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameAccelerometerCalibrator(
-                        measurements, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownFrameAccelerometerCalibrator(
-                        measurements, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownFrameAccelerometerCalibrator(
-                        measurements, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownFrameAccelerometerCalibrator(measurements,
-                        commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameAccelerometerCalibrator(
-                        measurements, commonAxisUsed);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameAccelerometerCalibrator(measurements, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownFrameAccelerometerCalibrator(measurements, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownFrameAccelerometerCalibrator(measurements, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownFrameAccelerometerCalibrator(measurements, commonAxisUsed);
+            default -> new PROMedSRobustKnownFrameAccelerometerCalibrator(measurements, commonAxisUsed);
+        };
     }
 
     /**
@@ -2608,28 +2476,15 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownFrameAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameAccelerometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case LMedS:
-                return new LMedSRobustKnownFrameAccelerometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case MSAC:
-                return new MSACRobustKnownFrameAccelerometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case PROSAC:
-                return new PROSACRobustKnownFrameAccelerometerCalibrator(measurements,
-                        commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameAccelerometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-        }
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
+            final RobustKnownFrameAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameAccelerometerCalibrator(measurements, commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownFrameAccelerometerCalibrator(measurements, commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownFrameAccelerometerCalibrator(measurements, commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownFrameAccelerometerCalibrator(measurements, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownFrameAccelerometerCalibrator(measurements, commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -2642,23 +2497,14 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameAccelerometerCalibrator();
-            case LMedS:
-                return new LMedSRobustKnownFrameAccelerometerCalibrator();
-            case MSAC:
-                return new MSACRobustKnownFrameAccelerometerCalibrator();
-            case PROSAC:
-                return new PROSACRobustKnownFrameAccelerometerCalibrator(
-                        qualityScores);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameAccelerometerCalibrator(
-                        qualityScores);
-        }
+            final double[] qualityScores, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameAccelerometerCalibrator();
+            case LMEDS -> new LMedSRobustKnownFrameAccelerometerCalibrator();
+            case MSAC -> new MSACRobustKnownFrameAccelerometerCalibrator();
+            case PROSAC -> new PROSACRobustKnownFrameAccelerometerCalibrator(qualityScores);
+            default -> new PROMedSRobustKnownFrameAccelerometerCalibrator(qualityScores);
+        };
     }
 
     /**
@@ -2673,24 +2519,15 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final RobustKnownFrameAccelerometerCalibratorListener listener,
+            final double[] qualityScores, final RobustKnownFrameAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameAccelerometerCalibrator(listener);
-            case LMedS:
-                return new LMedSRobustKnownFrameAccelerometerCalibrator(listener);
-            case MSAC:
-                return new MSACRobustKnownFrameAccelerometerCalibrator(listener);
-            case PROSAC:
-                return new PROSACRobustKnownFrameAccelerometerCalibrator(
-                        qualityScores, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameAccelerometerCalibrator(
-                        qualityScores, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameAccelerometerCalibrator(listener);
+            case LMEDS -> new LMedSRobustKnownFrameAccelerometerCalibrator(listener);
+            case MSAC -> new MSACRobustKnownFrameAccelerometerCalibrator(listener);
+            case PROSAC -> new PROSACRobustKnownFrameAccelerometerCalibrator(qualityScores, listener);
+            default -> new PROMedSRobustKnownFrameAccelerometerCalibrator(qualityScores, listener);
+        };
     }
 
     /**
@@ -2706,24 +2543,15 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameAccelerometerCalibrator(measurements);
-            case LMedS:
-                return new LMedSRobustKnownFrameAccelerometerCalibrator(measurements);
-            case MSAC:
-                return new MSACRobustKnownFrameAccelerometerCalibrator(measurements);
-            case PROSAC:
-                return new PROSACRobustKnownFrameAccelerometerCalibrator(qualityScores,
-                        measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameAccelerometerCalibrator(
-                        qualityScores, measurements);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameAccelerometerCalibrator(measurements);
+            case LMEDS -> new LMedSRobustKnownFrameAccelerometerCalibrator(measurements);
+            case MSAC -> new MSACRobustKnownFrameAccelerometerCalibrator(measurements);
+            case PROSAC -> new PROSACRobustKnownFrameAccelerometerCalibrator(qualityScores, measurements);
+            default -> new PROMedSRobustKnownFrameAccelerometerCalibrator(qualityScores, measurements);
+        };
     }
 
     /**
@@ -2740,28 +2568,15 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final RobustKnownFrameAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameAccelerometerCalibrator(measurements,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownFrameAccelerometerCalibrator(measurements,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownFrameAccelerometerCalibrator(measurements,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownFrameAccelerometerCalibrator(qualityScores,
-                        measurements, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameAccelerometerCalibrator(
-                        qualityScores, measurements, listener);
-        }
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
+            final RobustKnownFrameAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameAccelerometerCalibrator(measurements, listener);
+            case LMEDS -> new LMedSRobustKnownFrameAccelerometerCalibrator(measurements, listener);
+            case MSAC -> new MSACRobustKnownFrameAccelerometerCalibrator(measurements, listener);
+            case PROSAC -> new PROSACRobustKnownFrameAccelerometerCalibrator(qualityScores, measurements, listener);
+            default -> new PROMedSRobustKnownFrameAccelerometerCalibrator(qualityScores, measurements, listener);
+        };
     }
 
     /**
@@ -2776,24 +2591,14 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final boolean commonAxisUsed,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownFrameAccelerometerCalibrator(qualityScores,
-                        commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameAccelerometerCalibrator(qualityScores,
-                        commonAxisUsed);
-        }
+            final double[] qualityScores, final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);
+            case MSAC -> new MSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownFrameAccelerometerCalibrator(qualityScores, commonAxisUsed);
+            default -> new PROMedSRobustKnownFrameAccelerometerCalibrator(qualityScores, commonAxisUsed);
+        };
     }
 
     /**
@@ -2809,28 +2614,15 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final boolean commonAxisUsed,
-            final RobustKnownFrameAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownFrameAccelerometerCalibrator(commonAxisUsed,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownFrameAccelerometerCalibrator(qualityScores,
-                        commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameAccelerometerCalibrator(qualityScores,
-                        commonAxisUsed, listener);
-        }
+            final double[] qualityScores, final boolean commonAxisUsed,
+            final RobustKnownFrameAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownFrameAccelerometerCalibrator(commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownFrameAccelerometerCalibrator(qualityScores, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownFrameAccelerometerCalibrator(qualityScores, commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -2848,28 +2640,17 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameAccelerometerCalibrator(
-                        measurements, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownFrameAccelerometerCalibrator(
-                        measurements, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownFrameAccelerometerCalibrator(
-                        measurements, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownFrameAccelerometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameAccelerometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed);
-        }
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameAccelerometerCalibrator(measurements, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownFrameAccelerometerCalibrator(measurements, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownFrameAccelerometerCalibrator(measurements, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownFrameAccelerometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed);
+            default -> new PROMedSRobustKnownFrameAccelerometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed);
+        };
     }
 
     /**
@@ -2888,29 +2669,18 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownFrameAccelerometerCalibratorListener listener,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownFrameAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameAccelerometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case LMedS:
-                return new LMedSRobustKnownFrameAccelerometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case MSAC:
-                return new MSACRobustKnownFrameAccelerometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case PROSAC:
-                return new PROSACRobustKnownFrameAccelerometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameAccelerometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameAccelerometerCalibrator(measurements, commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownFrameAccelerometerCalibrator(measurements, commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownFrameAccelerometerCalibrator(measurements, commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownFrameAccelerometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownFrameAccelerometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -2969,8 +2739,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      *                       accelerometer and gyroscope.
      * @return a robust accelerometer calibrator.
      */
-    public static RobustKnownFrameAccelerometerCalibrator create(
-            final boolean commonAxisUsed) {
+    public static RobustKnownFrameAccelerometerCalibrator create(final boolean commonAxisUsed) {
         return create(commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2983,8 +2752,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final boolean commonAxisUsed,
-            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownFrameAccelerometerCalibratorListener listener) {
         return create(commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2999,8 +2767,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         return create(measurements, commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
@@ -3016,8 +2783,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
         return create(measurements, commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -3030,8 +2796,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      *                      the quality of the sample.
      * @return a robust accelerometer calibrator.
      */
-    public static RobustKnownFrameAccelerometerCalibrator create(
-            final double[] qualityScores) {
+    public static RobustKnownFrameAccelerometerCalibrator create(final double[] qualityScores) {
         return create(qualityScores, DEFAULT_ROBUST_METHOD);
     }
 
@@ -3046,8 +2811,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+            final double[] qualityScores, final RobustKnownFrameAccelerometerCalibratorListener listener) {
         return create(qualityScores, listener, DEFAULT_ROBUST_METHOD);
     }
 
@@ -3063,8 +2827,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements) {
         return create(qualityScores, measurements, DEFAULT_ROBUST_METHOD);
     }
 
@@ -3081,8 +2844,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
         return create(qualityScores, measurements, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -3098,8 +2860,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final boolean commonAxisUsed) {
+            final double[] qualityScores, final boolean commonAxisUsed) {
         return create(qualityScores, commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
@@ -3115,8 +2876,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
         return create(qualityScores, commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -3135,8 +2895,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         return create(qualityScores, measurements, commonAxisUsed,
                 DEFAULT_ROBUST_METHOD);
@@ -3157,10 +2916,8 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownFrameAccelerometerCalibratorListener listener) {
         return create(qualityScores, measurements, commonAxisUsed, listener,
                 DEFAULT_ROBUST_METHOD);
     }
@@ -3172,8 +2929,8 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @param preliminaryResult a preliminary result.
      * @return computed error.
      */
-    protected double computeError(final StandardDeviationFrameBodyKinematics measurement,
-                                  final PreliminaryResult preliminaryResult) {
+    protected double computeError(
+            final StandardDeviationFrameBodyKinematics measurement, final PreliminaryResult preliminaryResult) {
         // We know that measured specific force is:
         // fmeas = ba + (I + Ma) * ftrue
 
@@ -3187,9 +2944,8 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
         final ECEFFrame previousEcefFrame = measurement.getPreviousFrame();
         final double timeInterval = measurement.getTimeInterval();
 
-        final BodyKinematics expectedKinematics = ECEFKinematicsEstimator
-                .estimateKinematicsAndReturnNew(timeInterval, ecefFrame,
-                        previousEcefFrame);
+        final BodyKinematics expectedKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                timeInterval, ecefFrame, previousEcefFrame);
 
         final double fMeasX1 = measuredKinematics.getFx();
         final double fMeasY1 = measuredKinematics.getFy();
@@ -3207,8 +2963,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
         final Matrix ma = preliminaryResult.mEstimatedMa;
 
         try {
-            final Matrix m = Matrix.identity(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            final Matrix m = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             m.add(ma);
 
             final Matrix ftrue = new Matrix(BodyKinematics.COMPONENTS, 1);
@@ -3239,8 +2994,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @param samplesIndices indices of samples picked by the robust estimator.
      * @param solutions      list where estimated preliminary solution will be stored.
      */
-    protected void computePreliminarySolutions(final int[] samplesIndices,
-                                               final List<PreliminaryResult> solutions) {
+    protected void computePreliminarySolutions(final int[] samplesIndices, final List<PreliminaryResult> solutions) {
 
         final List<StandardDeviationFrameBodyKinematics> measurements = new ArrayList<>();
 
@@ -3302,8 +3056,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final BitSet inliers = mInliersData.getInliers();
             final int nSamples = mMeasurements.size();
 
-            final List<StandardDeviationFrameBodyKinematics> inlierMeasurements =
-                    new ArrayList<>();
+            final List<StandardDeviationFrameBodyKinematics> inlierMeasurements = new ArrayList<>();
             for (int i = 0; i < nSamples; i++) {
                 if (inliers.get(i)) {
                     // sample is inlier
@@ -3353,8 +3106,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return converted value.
      */
     private static double convertAcceleration(final double value, final AccelerationUnit unit) {
-        return AccelerationConverter.convert(value, unit,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return AccelerationConverter.convert(value, unit, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -3364,8 +3116,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return converted value.
      */
     private static double convertAcceleration(final Acceleration acceleration) {
-        return convertAcceleration(acceleration.getValue().doubleValue(),
-                acceleration.getUnit());
+        return convertAcceleration(acceleration.getValue().doubleValue(), acceleration.getUnit());
     }
 
     /**

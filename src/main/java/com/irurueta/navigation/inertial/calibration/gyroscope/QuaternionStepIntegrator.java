@@ -28,8 +28,7 @@ public abstract class QuaternionStepIntegrator {
     /**
      * Default quaternion step integrator type.
      */
-    public static final QuaternionStepIntegratorType DEFAULT_TYPE =
-            QuaternionStepIntegratorType.RUNGE_KUTTA;
+    public static final QuaternionStepIntegratorType DEFAULT_TYPE = QuaternionStepIntegratorType.RUNGE_KUTTA;
 
     /**
      * Gets type of this integrator.
@@ -59,10 +58,9 @@ public abstract class QuaternionStepIntegrator {
      * @throws RotationException if a numerical error occurs.
      */
     public abstract void integrate(
-            final Quaternion initialAttitude,
-            final double initialWx, final double initialWy, final double initialWz,
-            final double currentWx, final double currentWy, final double currentWz,
-            final double dt, final Quaternion result) throws RotationException;
+            final Quaternion initialAttitude, final double initialWx, final double initialWy, final double initialWz,
+            final double currentWx, final double currentWy, final double currentWz, final double dt,
+            final Quaternion result) throws RotationException;
 
     /**
      * Creates a quaternion step integrator using provided type.
@@ -71,15 +69,11 @@ public abstract class QuaternionStepIntegrator {
      * @return created quaternion step integrator.
      */
     public static QuaternionStepIntegrator create(QuaternionStepIntegratorType type) {
-        switch (type) {
-            case EULER_METHOD:
-                return new EulerQuaternionStepIntegrator();
-            case MID_POINT:
-                return new MidPointQuaternionStepIntegrator();
-            case RUNGE_KUTTA:
-            default:
-                return new RungeKuttaQuaternionStepIntegrator();
-        }
+        return switch (type) {
+            case EULER_METHOD -> new EulerQuaternionStepIntegrator();
+            case MID_POINT -> new MidPointQuaternionStepIntegrator();
+            default -> new RungeKuttaQuaternionStepIntegrator();
+        };
     }
 
     /**
@@ -100,8 +94,7 @@ public abstract class QuaternionStepIntegrator {
      * @param result     instance where computed time derivative will be stored. Must be 4x1.
      */
     protected static void computeTimeDerivative(
-            final Matrix quaternion, final Matrix omegaSkew, final Matrix result)
-            throws WrongSizeException {
+            final Matrix quaternion, final Matrix omegaSkew, final Matrix result) throws WrongSizeException {
 
         // The time derivative of a quaternion at a given angular speed follows expression:
         // q`= 0.5 * W * q
@@ -185,8 +178,7 @@ public abstract class QuaternionStepIntegrator {
      */
     protected static void computeAverageAngularSpeed(
             final double initialWx, final double initialWy, final double initialWz,
-            final double currentWx, final double currentWy, final double currentWz,
-            final Matrix result) {
+            final double currentWx, final double currentWy, final double currentWz, final Matrix result) {
         result.setElementAtIndex(0, 0.5 * (initialWx + currentWx));
         result.setElementAtIndex(1, 0.5 * (initialWy + currentWy));
         result.setElementAtIndex(2, 0.5 * (initialWz + currentWz));

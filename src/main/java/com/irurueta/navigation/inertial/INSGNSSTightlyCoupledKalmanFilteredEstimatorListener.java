@@ -25,32 +25,28 @@ public interface INSGNSSTightlyCoupledKalmanFilteredEstimatorListener {
      *
      * @param estimator estimator raising the event.
      */
-    void onUpdateGNSSMeasurementsStart(
-            final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator);
+    void onUpdateGNSSMeasurementsStart(final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator);
 
     /**
      * Called when GNSS measurements update ends.
      *
      * @param estimator estimator raising the event.
      */
-    void onUpdateGNSSMeasurementsEnd(
-            final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator);
+    void onUpdateGNSSMeasurementsEnd(final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator);
 
     /**
      * Called when inertial INS measurements update starts.
      *
      * @param estimator estimator raising the event.
      */
-    void onUpdateBodyKinematicsStart(
-            final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator);
+    void onUpdateBodyKinematicsStart(final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator);
 
     /**
      * Called when inertial INS measurements update ends.
      *
      * @param estimator estimator raising the event.
      */
-    void onUpdateBodyKinematicsEnd(
-            final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator);
+    void onUpdateBodyKinematicsEnd(final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator);
 
     /**
      * Called when Kalman filter propagation starts.

@@ -202,8 +202,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *
      * @throws IOException if initialization of world magnetic model fails.
      */
-    public BodyMagneticFluxDensityBiasEstimator()
-            throws IOException {
+    public BodyMagneticFluxDensityBiasEstimator() throws IOException {
         this(new Date(), (WorldMagneticModel) null);
     }
 
@@ -224,8 +223,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       world magnetic model
      *                                                       fails.
      */
-    public BodyMagneticFluxDensityBiasEstimator(
-            final CoordinateTransformation nedC)
+    public BodyMagneticFluxDensityBiasEstimator(final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(nedC, new Date(), (WorldMagneticModel) null);
     }
@@ -244,8 +242,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final double latitude, final double longitude, final double height)
-            throws IOException {
+            final double latitude, final double longitude, final double height) throws IOException {
         this(latitude, longitude, height, new Date(), (WorldMagneticModel) null);
     }
 
@@ -263,8 +260,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final Angle latitude, final Angle longitude, final double height)
-            throws IOException {
+            final Angle latitude, final Angle longitude, final double height) throws IOException {
         this(latitude, longitude, height, new Date(), (WorldMagneticModel) null);
     }
 
@@ -282,8 +278,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final Angle latitude, final Angle longitude, final Distance height)
-            throws IOException {
+            final Angle latitude, final Angle longitude, final Distance height) throws IOException {
         this(latitude, longitude, height, new Date(), (WorldMagneticModel) null);
     }
 
@@ -343,8 +338,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws IOException {
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(new Date());
         mListener = listener;
     }
@@ -368,8 +362,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final CoordinateTransformation nedC,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            final CoordinateTransformation nedC, final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(nedC, new Date());
         mListener = listener;
@@ -391,8 +384,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public BodyMagneticFluxDensityBiasEstimator(
             final double latitude, final double longitude, final double height,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws IOException {
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, new Date());
         mListener = listener;
     }
@@ -413,8 +405,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public BodyMagneticFluxDensityBiasEstimator(
             final Angle latitude, final Angle longitude, final double height,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws IOException {
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, new Date());
         mListener = listener;
     }
@@ -435,8 +426,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public BodyMagneticFluxDensityBiasEstimator(
             final Angle latitude, final Angle longitude, final Distance height,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws IOException {
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, new Date());
         mListener = listener;
     }
@@ -500,8 +490,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @param year time expressed as decimal year.
      * @throws IOException if initialization of world magnetic model fails.
      */
-    public BodyMagneticFluxDensityBiasEstimator(final double year)
-            throws IOException {
+    public BodyMagneticFluxDensityBiasEstimator(final double year) throws IOException {
         this(year, (WorldMagneticModel) null);
     }
 
@@ -522,8 +511,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       world magnetic model
      *                                                       fails.
      */
-    public BodyMagneticFluxDensityBiasEstimator(
-            final CoordinateTransformation nedC, final double year)
+    public BodyMagneticFluxDensityBiasEstimator(final CoordinateTransformation nedC, final double year)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(nedC, year, (WorldMagneticModel) null);
     }
@@ -542,8 +530,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final double latitude, final double longitude, final double height,
-            final double year) throws IOException {
+            final double latitude, final double longitude, final double height, final double year) throws IOException {
         this(latitude, longitude, height, year, (WorldMagneticModel) null);
     }
 
@@ -561,8 +548,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final Angle latitude, final Angle longitude, final double height,
-            final double year) throws IOException {
+            final Angle latitude, final Angle longitude, final double height, final double year) throws IOException {
         this(latitude, longitude, height, year, (WorldMagneticModel) null);
     }
 
@@ -580,8 +566,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final Angle latitude, final Angle longitude, final Distance height,
-            final double year) throws IOException {
+            final Angle latitude, final Angle longitude, final Distance height, final double year) throws IOException {
         this(latitude, longitude, height, year, (WorldMagneticModel) null);
     }
 
@@ -602,8 +587,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final NEDPosition position, final CoordinateTransformation nedC,
-            final double year)
+            final NEDPosition position, final CoordinateTransformation nedC, final double year)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, year, (WorldMagneticModel) null);
     }
@@ -625,8 +609,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final ECEFPosition position, final CoordinateTransformation nedC,
-            final double year)
+            final ECEFPosition position, final CoordinateTransformation nedC, final double year)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, year, (WorldMagneticModel) null);
     }
@@ -643,9 +626,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final double year,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws IOException {
+            final double year, final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(year);
         mListener = listener;
     }
@@ -669,8 +650,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final CoordinateTransformation nedC,
-            final double year,
+            final CoordinateTransformation nedC, final double year,
             final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(nedC, year);
@@ -692,10 +672,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final double latitude, final double longitude, final double height,
-            final double year,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws IOException {
+            final double latitude, final double longitude, final double height, final double year,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, year);
         mListener = listener;
     }
@@ -715,10 +693,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final Angle latitude, final Angle longitude, final double height,
-            final double year,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws IOException {
+            final Angle latitude, final Angle longitude, final double height, final double year,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, year);
         mListener = listener;
     }
@@ -739,9 +715,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public BodyMagneticFluxDensityBiasEstimator(
             final Angle latitude, final Angle longitude, final Distance height,
-            final double year,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws IOException {
+            final double year, final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, year);
         mListener = listener;
     }
@@ -764,8 +738,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final NEDPosition position, final CoordinateTransformation nedC,
-            final double year,
+            final NEDPosition position, final CoordinateTransformation nedC, final double year,
             final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, year);
@@ -791,8 +764,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public BodyMagneticFluxDensityBiasEstimator(
             final ECEFPosition position, final CoordinateTransformation nedC,
-            final double year,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            final double year, final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, year);
         mListener = listener;
@@ -829,8 +801,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       world magnetic model
      *                                                       fails.
      */
-    public BodyMagneticFluxDensityBiasEstimator(
-            final CoordinateTransformation nedC, final Date date)
+    public BodyMagneticFluxDensityBiasEstimator(final CoordinateTransformation nedC, final Date date)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(nedC, convertTime(date));
     }
@@ -849,8 +820,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final double latitude, final double longitude, final double height,
-            final Date date) throws IOException {
+            final double latitude, final double longitude, final double height, final Date date) throws IOException {
         this(latitude, longitude, height, convertTime(date));
     }
 
@@ -868,8 +838,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final Angle latitude, final Angle longitude, final double height,
-            final Date date) throws IOException {
+            final Angle latitude, final Angle longitude, final double height, final Date date) throws IOException {
         this(latitude, longitude, height, convertTime(date));
     }
 
@@ -887,8 +856,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final Angle latitude, final Angle longitude, final Distance height,
-            final Date date) throws IOException {
+            final Angle latitude, final Angle longitude, final Distance height, final Date date) throws IOException {
         this(latitude, longitude, height, convertTime(date));
     }
 
@@ -910,8 +878,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public BodyMagneticFluxDensityBiasEstimator(
             final NEDPosition position, final CoordinateTransformation nedC,
-            final Date date)
-            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+            final Date date) throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, convertTime(date));
     }
 
@@ -933,8 +900,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public BodyMagneticFluxDensityBiasEstimator(
             final ECEFPosition position, final CoordinateTransformation nedC,
-            final Date date)
-            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+            final Date date) throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, convertTime(date));
     }
 
@@ -950,9 +916,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final Date date,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws IOException {
+            final Date date, final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(convertTime(date), listener);
     }
 
@@ -975,8 +939,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final CoordinateTransformation nedC,
-            final Date date,
+            final CoordinateTransformation nedC, final Date date,
             final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(nedC, convertTime(date), listener);
@@ -998,9 +961,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public BodyMagneticFluxDensityBiasEstimator(
             final double latitude, final double longitude, final double height,
-            final Date date,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws IOException {
+            final Date date, final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, convertTime(date), listener);
     }
 
@@ -1019,10 +980,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final Angle latitude, final Angle longitude, final double height,
-            final Date date,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws IOException {
+            final Angle latitude, final Angle longitude, final double height, final Date date,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, convertTime(date), listener);
     }
 
@@ -1041,10 +1000,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final Angle latitude, final Angle longitude, final Distance height,
-            final Date date,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws IOException {
+            final Angle latitude, final Angle longitude, final Distance height, final Date date,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, convertTime(date), listener);
     }
 
@@ -1066,8 +1023,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final NEDPosition position, final CoordinateTransformation nedC,
-            final Date date,
+            final NEDPosition position, final CoordinateTransformation nedC, final Date date,
             final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, convertTime(date), listener);
@@ -1091,8 +1047,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final ECEFPosition position, final CoordinateTransformation nedC,
-            final Date date,
+            final ECEFPosition position, final CoordinateTransformation nedC, final Date date,
             final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, convertTime(date), listener);
@@ -1111,10 +1066,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final double year, final WorldMagneticModel magneticModel)
-            throws IOException {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                new NEDFrame());
+            final double year, final WorldMagneticModel magneticModel) throws IOException {
+        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame());
         mYear = year;
         mMagneticModel = magneticModel;
         initialize();
@@ -1139,11 +1092,9 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final CoordinateTransformation nedC, final double year,
-            final WorldMagneticModel magneticModel)
+            final CoordinateTransformation nedC, final double year, final WorldMagneticModel magneticModel)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                new NEDFrame(nedC));
+        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(nedC));
         mYear = year;
         mMagneticModel = magneticModel;
         initialize();
@@ -1166,10 +1117,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public BodyMagneticFluxDensityBiasEstimator(
             final double latitude, final double longitude, final double height,
-            final double year, final WorldMagneticModel magneticModel)
-            throws IOException {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                new NEDFrame(latitude, longitude, height));
+            final double year, final WorldMagneticModel magneticModel) throws IOException {
+        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));
         mYear = year;
         mMagneticModel = magneticModel;
         initialize();
@@ -1192,10 +1141,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public BodyMagneticFluxDensityBiasEstimator(
             final Angle latitude, final Angle longitude, final double height,
-            final double year, final WorldMagneticModel magneticModel)
-            throws IOException {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                new NEDFrame(latitude, longitude, height));
+            final double year, final WorldMagneticModel magneticModel) throws IOException {
+        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));
         mYear = year;
         mMagneticModel = magneticModel;
         initialize();
@@ -1218,10 +1165,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public BodyMagneticFluxDensityBiasEstimator(
             final Angle latitude, final Angle longitude, final Distance height,
-            final double year, final WorldMagneticModel magneticModel)
-            throws IOException {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                new NEDFrame(latitude, longitude, height));
+            final double year, final WorldMagneticModel magneticModel) throws IOException {
+        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));
         mYear = year;
         mMagneticModel = magneticModel;
         initialize();
@@ -1249,8 +1194,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final NEDPosition position, final CoordinateTransformation nedC,
             final double year, final WorldMagneticModel magneticModel)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                new NEDFrame(position, nedC));
+        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(position, nedC));
         mYear = year;
         mMagneticModel = magneticModel;
         initialize();
@@ -1279,8 +1223,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
             final double year, final WorldMagneticModel magneticModel)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         mFrame = new ECEFFrame(position);
-        final NEDFrame nedFrame = ECEFtoNEDFrameConverter
-                .convertECEFtoNEDAndReturnNew(mFrame);
+        final NEDFrame nedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mFrame);
         nedFrame.setCoordinateTransformation(nedC);
         NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
         mYear = year;
@@ -1303,8 +1246,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public BodyMagneticFluxDensityBiasEstimator(
             final double year, final WorldMagneticModel magneticModel,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws IOException {
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(year, magneticModel);
         mListener = listener;
     }
@@ -1330,8 +1272,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final CoordinateTransformation nedC,
-            final double year, final WorldMagneticModel magneticModel,
+            final CoordinateTransformation nedC, final double year, final WorldMagneticModel magneticModel,
             final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(nedC, year, magneticModel);
@@ -1357,8 +1298,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public BodyMagneticFluxDensityBiasEstimator(
             final double latitude, final double longitude, final double height,
             final double year, final WorldMagneticModel magneticModel,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws IOException {
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, year, magneticModel);
         mListener = listener;
     }
@@ -1380,10 +1320,9 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final Angle latitude, final Angle longitude, final double height,
-            final double year, final WorldMagneticModel magneticModel,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws IOException {
+            final Angle latitude, final Angle longitude, final double height, final double year,
+            final WorldMagneticModel magneticModel,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, year, magneticModel);
         mListener = listener;
     }
@@ -1407,8 +1346,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public BodyMagneticFluxDensityBiasEstimator(
             final Angle latitude, final Angle longitude, final Distance height,
             final double year, final WorldMagneticModel magneticModel,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws IOException {
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(latitude, longitude, height, year, magneticModel);
         mListener = listener;
     }
@@ -1433,10 +1371,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final NEDPosition position, final CoordinateTransformation nedC,
-            final double year,
-            final WorldMagneticModel magneticModel,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            final NEDPosition position, final CoordinateTransformation nedC, final double year,
+            final WorldMagneticModel magneticModel, final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, year, magneticModel);
         mListener = listener;
@@ -1483,8 +1419,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final Date date, final WorldMagneticModel magneticModel)
-            throws IOException {
+            final Date date, final WorldMagneticModel magneticModel) throws IOException {
         this(convertTime(date), magneticModel);
     }
 
@@ -1508,8 +1443,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final CoordinateTransformation nedC, final Date date,
-            final WorldMagneticModel magneticModel)
+            final CoordinateTransformation nedC, final Date date, final WorldMagneticModel magneticModel)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(nedC, convertTime(date), magneticModel);
     }
@@ -1531,8 +1465,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public BodyMagneticFluxDensityBiasEstimator(
             final double latitude, final double longitude, final double height,
-            final Date date, final WorldMagneticModel magneticModel)
-            throws IOException {
+            final Date date, final WorldMagneticModel magneticModel) throws IOException {
         this(latitude, longitude, height, convertTime(date), magneticModel);
     }
 
@@ -1553,8 +1486,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public BodyMagneticFluxDensityBiasEstimator(
             final Angle latitude, final Angle longitude, final double height,
-            final Date date, final WorldMagneticModel magneticModel)
-            throws IOException {
+            final Date date, final WorldMagneticModel magneticModel) throws IOException {
         this(latitude, longitude, height, convertTime(date), magneticModel);
     }
 
@@ -1575,8 +1507,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public BodyMagneticFluxDensityBiasEstimator(
             final Angle latitude, final Angle longitude, final Distance height,
-            final Date date, final WorldMagneticModel magneticModel)
-            throws IOException {
+            final Date date, final WorldMagneticModel magneticModel) throws IOException {
         this(latitude, longitude, height, convertTime(date), magneticModel);
     }
 
@@ -1599,9 +1530,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final NEDPosition position, final CoordinateTransformation nedC,
-            final Date date, final WorldMagneticModel magneticModel)
-            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+            final NEDPosition position, final CoordinateTransformation nedC, final Date date,
+            final WorldMagneticModel magneticModel) throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, convertTime(date), magneticModel);
     }
 
@@ -1624,9 +1554,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final ECEFPosition position, final CoordinateTransformation nedC,
-            final Date date, final WorldMagneticModel magneticModel)
-            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+            final ECEFPosition position, final CoordinateTransformation nedC, final Date date,
+            final WorldMagneticModel magneticModel) throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(position, nedC, convertTime(date), magneticModel);
     }
 
@@ -1645,8 +1574,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public BodyMagneticFluxDensityBiasEstimator(
             final Date date, final WorldMagneticModel magneticModel,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws IOException {
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
         this(convertTime(date), magneticModel, listener);
     }
 
@@ -1671,8 +1599,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                                       fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final CoordinateTransformation nedC,
-            final Date date, final WorldMagneticModel magneticModel,
+            final CoordinateTransformation nedC, final Date date, final WorldMagneticModel magneticModel,
             final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException, IOException {
         this(nedC, convertTime(date), magneticModel, listener);
@@ -1697,10 +1624,8 @@ public class BodyMagneticFluxDensityBiasEstimator {
     public BodyMagneticFluxDensityBiasEstimator(
             final double latitude, final double longitude, final double height,
             final Date date, final WorldMagneticModel magneticModel,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws IOException {
-        this(latitude, longitude, height, convertTime(date), magneticModel,
-                listener);
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+        this(latitude, longitude, height, convertTime(date), magneticModel, listener);
     }
 
     /**
@@ -1720,12 +1645,10 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final Angle latitude, final Angle longitude, final double height,
-            final Date date, final WorldMagneticModel magneticModel,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            final Angle latitude, final Angle longitude, final double height, final Date date,
+            final WorldMagneticModel magneticModel, final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws IOException {
-        this(latitude, longitude, height, convertTime(date), magneticModel,
-                listener);
+        this(latitude, longitude, height, convertTime(date), magneticModel, listener);
     }
 
     /**
@@ -1745,12 +1668,10 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws IOException if initialization of world magnetic model fails.
      */
     public BodyMagneticFluxDensityBiasEstimator(
-            final Angle latitude, final Angle longitude, final Distance height,
-            final Date date, final WorldMagneticModel magneticModel,
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            final Angle latitude, final Angle longitude, final Distance height, final Date date,
+            final WorldMagneticModel magneticModel, final BodyMagneticFluxDensityBiasEstimatorListener listener)
             throws IOException {
-        this(latitude, longitude, height, convertTime(date), magneticModel,
-                listener);
+        this(latitude, longitude, height, convertTime(date), magneticModel, listener);
     }
 
     /**
@@ -1911,8 +1832,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @param z z position resolved around ECEF axes and expressed in meters (m).
      * @throws LockedException if estimator is currently running.
      */
-    public void setEcefPosition(final double x, final double y, final double z)
-            throws LockedException {
+    public void setEcefPosition(final double x, final double y, final double z) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1931,8 +1851,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void setEcefPosition(
-            final Distance x, final Distance y, final Distance z)
-            throws LockedException {
+            final Distance x, final Distance y, final Distance z) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2030,8 +1949,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @param position current body position to be set.
      * @throws LockedException if estimator is currently running.
      */
-    public void setNedPosition(final NEDPosition position)
-            throws LockedException {
+    public void setNedPosition(final NEDPosition position) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2051,8 +1969,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @param height    height NED coordinate expressed in meters (m).
      * @throws LockedException if estimator is currently running.
      */
-    public void setNedPosition(
-            final double latitude, final double longitude, final double height)
+    public void setNedPosition(final double latitude, final double longitude, final double height)
             throws LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -2074,8 +1991,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void setNedPosition(
-            final Angle latitude, final Angle longitude, final double height)
-            throws LockedException {
+            final Angle latitude, final Angle longitude, final double height) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2096,8 +2012,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void setNedPosition(
-            final Angle latitude, final Angle longitude, final Distance height)
-            throws LockedException {
+            final Angle latitude, final Angle longitude, final Distance height) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2277,8 +2192,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @see #setNedC(CoordinateTransformation)
      */
     public void setNedPositionAndNedOrientation(
-            final double latitude, final double longitude, final double height,
-            final CoordinateTransformation nedC)
+            final double latitude, final double longitude, final double height, final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -2309,8 +2223,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @see #setNedC(CoordinateTransformation)
      */
     public void setNedPositionAndNedOrientation(
-            final Angle latitude, final Angle longitude, final double height,
-            final CoordinateTransformation nedC)
+            final Angle latitude, final Angle longitude, final double height, final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -2341,8 +2254,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @see #setNedC(CoordinateTransformation)
      */
     public void setNedPositionAndNedOrientation(
-            final Angle latitude, final Angle longitude, final Distance height,
-            final CoordinateTransformation nedC)
+            final Angle latitude, final Angle longitude, final Distance height, final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -2400,8 +2312,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @see #setEcefC(CoordinateTransformation)
      */
     public void setEcefPositionAndEcefOrientation(
-            final double x, final double y, final double z,
-            final CoordinateTransformation ecefC)
+            final double x, final double y, final double z, final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -2430,8 +2341,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @see #setEcefC(CoordinateTransformation)
      */
     public void setEcefPositionAndEcefOrientation(
-            final Distance x, final Distance y, final Distance z,
-            final CoordinateTransformation ecefC)
+            final Distance x, final Distance y, final Distance z, final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -2486,8 +2396,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @see #setEcefC(CoordinateTransformation)
      */
     public void setNedPositionAndEcefOrientation(
-            final NEDPosition position,
-            final CoordinateTransformation ecefC)
+            final NEDPosition position, final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -2519,8 +2428,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @see #setEcefC(CoordinateTransformation)
      */
     public void setNedPositionAndEcefOrientation(
-            final double latitude, final double longitude, final double height,
-            final CoordinateTransformation ecefC)
+            final double latitude, final double longitude, final double height, final CoordinateTransformation ecefC)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -2654,8 +2562,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public void setEcefPositionAndNedOrientation(
             final double x, final double y, final double z,
-            final CoordinateTransformation nedC)
-            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+            final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2690,8 +2597,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public void setEcefPositionAndNedOrientation(
             final Distance x, final Distance y, final Distance z,
-            final CoordinateTransformation nedC)
-            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+            final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2785,8 +2691,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @param calendar a calendar instance containing a timestamp.
      * @throws LockedException if estimator is running.
      */
-    public void setTime(final GregorianCalendar calendar)
-            throws LockedException {
+    public void setTime(final GregorianCalendar calendar) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2813,8 +2718,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws LockedException if calibrator is currently running.
      * @throws IOException     if initialization of world magnetic model fails.
      */
-    public void setMagneticModel(final WorldMagneticModel magneticModel)
-            throws LockedException, IOException {
+    public void setMagneticModel(final WorldMagneticModel magneticModel) throws LockedException, IOException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2838,8 +2742,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @throws LockedException if this estimator is running.
      */
     public void setListener(
-            final BodyMagneticFluxDensityBiasEstimatorListener listener)
-            throws LockedException {
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2854,8 +2757,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return last provided body magnetic flux density values or null.
      */
     public BodyMagneticFluxDensity getLastBodyMagneticFluxDensity() {
-        return mLastBodyMagneticFluxDensity != null ?
-                new BodyMagneticFluxDensity(mLastBodyMagneticFluxDensity) : null;
+        return mLastBodyMagneticFluxDensity != null ? new BodyMagneticFluxDensity(mLastBodyMagneticFluxDensity) : null;
     }
 
     /**
@@ -2985,8 +2887,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return estimated bias of magnetic flux density.
      */
     public MagneticFluxDensityTriad getBiasTriad() {
-        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,
-                mBiasX, mBiasY, mBiasZ);
+        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, mBiasX, mBiasY, mBiasZ);
     }
 
     /**
@@ -2996,8 +2897,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *               be stored.
      */
     public void getBiasTriad(final MagneticFluxDensityTriad result) {
-        result.setValueCoordinatesAndUnit(mBiasX, mBiasY, mBiasZ,
-                MagneticFluxDensityUnit.TESLA);
+        result.setValueCoordinatesAndUnit(mBiasX, mBiasY, mBiasZ, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -3049,8 +2949,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * flux density.
      */
     public MagneticFluxDensity getStandardDeviationXAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(getStandardDeviationX(),
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(getStandardDeviationX(), MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -3085,8 +2984,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * flux density.
      */
     public MagneticFluxDensity getStandardDeviationYAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(getStandardDeviationY(),
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(getStandardDeviationY(), MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -3121,8 +3019,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * flux density.
      */
     public MagneticFluxDensity getStandardDeviationZAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(getStandardDeviationZ(),
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(getStandardDeviationZ(), MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -3145,9 +3042,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      */
     public MagneticFluxDensityTriad getStandardDeviationTriad() {
         return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,
-                getStandardDeviationX(),
-                getStandardDeviationY(),
-                getStandardDeviationZ());
+                getStandardDeviationX(), getStandardDeviationY(), getStandardDeviationZ());
     }
 
     /**
@@ -3157,8 +3052,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *               flux density will be stored.
      */
     public void getStandardDeviationTriad(final MagneticFluxDensityTriad result) {
-        result.setValueCoordinatesAndUnit(getStandardDeviationX(),
-                getStandardDeviationY(), getStandardDeviationZ(),
+        result.setValueCoordinatesAndUnit(getStandardDeviationX(), getStandardDeviationY(), getStandardDeviationZ(),
                 MagneticFluxDensityUnit.TESLA);
     }
 
@@ -3170,8 +3064,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * density.
      */
     public double getAverageStandardDeviation() {
-        return (getStandardDeviationX() + getStandardDeviationY()
-                + getStandardDeviationZ()) / 3.0;
+        return (getStandardDeviationX() + getStandardDeviationY() + getStandardDeviationZ()) / 3.0;
     }
 
     /**
@@ -3181,8 +3074,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * density.
      */
     public MagneticFluxDensity getAverageStandardDeviationAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(getAverageStandardDeviation(),
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(getAverageStandardDeviation(), MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -3318,8 +3210,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @param result instance where expected body magnetic flux density will be
      *               stored.
      */
-    public void getExpectedBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity result) {
+    public void getExpectedBodyMagneticFluxDensity(final BodyMagneticFluxDensity result) {
         mExpectedBodyMagneticFluxDensity.copyTo(result);
     }
 
@@ -3330,8 +3221,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      *                                and processed.
      * @throws LockedException if estimator is currently running.
      */
-    public void addBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity bodyMagneticFluxDensity)
+    public void addBodyMagneticFluxDensity(final BodyMagneticFluxDensity bodyMagneticFluxDensity)
             throws LockedException {
 
         if (mRunning) {
@@ -3357,8 +3247,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
         final double diffBz = bz - expectedBz;
 
         // compute biases
-        final double tmp = (double) mNumberOfProcessedSamples
-                / (double) mNumberOfProcessedSamplesPlusOne;
+        final double tmp = (double) mNumberOfProcessedSamples / (double) mNumberOfProcessedSamplesPlusOne;
         mBiasX = mBiasX * tmp + diffBx / mNumberOfProcessedSamplesPlusOne;
         mBiasY = mBiasY * tmp + diffBy / mNumberOfProcessedSamplesPlusOne;
         mBiasZ = mBiasZ * tmp + diffBz / mNumberOfProcessedSamplesPlusOne;
@@ -3372,12 +3261,9 @@ public class BodyMagneticFluxDensityBiasEstimator {
         final double diffBiasY2 = diffBiasY * diffBiasY;
         final double diffBiasZ2 = diffBiasZ * diffBiasZ;
 
-        mVarianceX = mVarianceX * tmp
-                + diffBiasX2 / mNumberOfProcessedSamplesPlusOne;
-        mVarianceY = mVarianceY * tmp
-                + diffBiasY2 / mNumberOfProcessedSamplesPlusOne;
-        mVarianceZ = mVarianceZ * tmp
-                + diffBiasZ2 / mNumberOfProcessedSamplesPlusOne;
+        mVarianceX = mVarianceX * tmp + diffBiasX2 / mNumberOfProcessedSamplesPlusOne;
+        mVarianceY = mVarianceY * tmp + diffBiasY2 / mNumberOfProcessedSamplesPlusOne;
+        mVarianceZ = mVarianceZ * tmp + diffBiasZ2 / mNumberOfProcessedSamplesPlusOne;
 
         mLastBodyMagneticFluxDensity = bodyMagneticFluxDensity;
 
@@ -3459,8 +3345,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * @return obtained conversion in seconds.
      */
     private static double convertTime(final Time time) {
-        return TimeConverter.convert(time.getValue().doubleValue(),
-                time.getUnit(), TimeUnit.SECOND);
+        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);
     }
 
     /**
@@ -3484,8 +3369,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * location and body orientation.
      */
     private void rebuildExpectedBodyMagneticFluxDensity() {
-        final NEDFrame nedFrame = ECEFtoNEDFrameConverter
-                .convertECEFtoNEDAndReturnNew(mFrame);
+        final NEDFrame nedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mFrame);
 
         final double latitude = nedFrame.getLatitude();
         final double longitude = nedFrame.getLongitude();
@@ -3498,8 +3382,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
         nedFrame.getCoordinateTransformation(cbn);
         cbn.inverse(cnb);
 
-        final NEDMagneticFluxDensity earthB = mWmmEstimator.estimate(
-                latitude, longitude, height, mYear);
+        final NEDMagneticFluxDensity earthB = mWmmEstimator.estimate(latitude, longitude, height, mYear);
 
         // estimate expected body magnetic flux density taking into
         // account body attitude (inverse of frame orientation) and
@@ -3507,7 +3390,6 @@ public class BodyMagneticFluxDensityBiasEstimator {
         if (mExpectedBodyMagneticFluxDensity == null) {
             mExpectedBodyMagneticFluxDensity = new BodyMagneticFluxDensity();
         }
-        BodyMagneticFluxDensityEstimator.estimate(earthB, cnb,
-                mExpectedBodyMagneticFluxDensity);
+        BodyMagneticFluxDensityEstimator.estimate(earthB, cnb, mExpectedBodyMagneticFluxDensity);
     }
 }

@@ -21,5 +21,6 @@ package com.irurueta.navigation.inertial.calibration.magnetometer;
  * orientation is unknown.
  */
 public interface KnownHardIronPositionAndInstantMagnetometerCalibratorListener extends
-        BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener<KnownHardIronPositionAndInstantMagnetometerCalibrator> {
+        BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener<
+                KnownHardIronPositionAndInstantMagnetometerCalibrator> {
 }

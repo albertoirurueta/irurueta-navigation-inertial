@@ -90,19 +90,18 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * Required minimum number of measurements when common z-axis is assumed.
      */
     public static final int MINIMUM_MEASUREMENTS_COMMON_Z_AXIS =
-            KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS;
+            BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS;
 
     /**
      * Required minimum number of measurements for the general case.
      */
     public static final int MINIMUM_MEASUREMENTS_GENERAL =
-            KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
+            BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
 
     /**
      * Default robust estimator method when none is provided.
      */
-    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD =
-            RobustEstimatorMethod.LMedS;
+    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD = RobustEstimatorMethod.LMEDS;
 
     /**
      * Indicates that result is refined by default.
@@ -436,8 +435,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-    protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final boolean commonAxisUsed) {
+    protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final boolean commonAxisUsed) {
         mCommonAxisUsed = commonAxisUsed;
     }
 
@@ -447,8 +445,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @param magneticModel Earth's magnetic model. If null, a default model
      *                      will be used instead.
      */
-    protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final WorldMagneticModel magneticModel) {
+    protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final WorldMagneticModel magneticModel) {
         mMagneticModel = magneticModel;
     }
 
@@ -459,8 +456,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] hardIron) {
+    protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final double[] hardIron) {
         try {
             setHardIron(hardIron);
         } catch (final LockedException ignore) {
@@ -475,8 +471,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final Matrix hardIron) {
+    protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final Matrix hardIron) {
         try {
             setHardIron(hardIron);
         } catch (final LockedException ignore) {
@@ -510,8 +505,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @param position position where body magnetic flux density measurements
      *                 have been taken.
      */
-    protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position) {
+    protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final NEDPosition position) {
         mPosition = position;
     }
 
@@ -527,8 +521,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                     orientations.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         this(position);
         mMeasurements = measurements;
     }
@@ -546,8 +539,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @param listener     listener to handle events raised by this calibrator.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         this(position, measurements);
         mListener = listener;
@@ -567,8 +559,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
         this(position, measurements);
         mCommonAxisUsed = commonAxisUsed;
@@ -589,8 +580,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @param listener       listener to handle events raised by this calibrator.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         this(position, measurements, commonAxisUsed);
@@ -612,8 +602,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron) {
         this(hardIron);
         mPosition = position;
@@ -636,8 +625,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         this(position, measurements, hardIron);
@@ -661,8 +649,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron) {
         this(position, measurements, hardIron);
         mCommonAxisUsed = commonAxisUsed;
@@ -686,8 +673,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         this(position, measurements, commonAxisUsed, hardIron);
@@ -709,8 +695,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron) {
         this(hardIron);
         mPosition = position;
@@ -733,10 +718,8 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final Matrix hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         this(position, measurements, hardIron);
         mListener = listener;
     }
@@ -758,8 +741,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron) {
         this(position, measurements, hardIron);
         mCommonAxisUsed = commonAxisUsed;
@@ -783,8 +765,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         this(position, measurements, commonAxisUsed, hardIron);
@@ -809,8 +790,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm) {
         this(hardIron, initialMm);
         mPosition = position;
@@ -836,8 +816,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         this(position, measurements, hardIron, initialMm);
@@ -864,10 +843,8 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm) {
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm) {
         this(position, measurements, hardIron, initialMm);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -893,13 +870,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        this(position, measurements, commonAxisUsed, hardIron,
-                initialMm);
+        this(position, measurements, commonAxisUsed, hardIron, initialMm);
         mListener = listener;
     }
 
@@ -909,8 +883,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @param position position where body magnetic flux density measurements
      *                 have been taken.
      */
-    protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position) {
+    protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final ECEFPosition position) {
         this(convertPosition(position));
     }
 
@@ -926,8 +899,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                     orientations.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         this(convertPosition(position), measurements);
     }
 
@@ -944,8 +916,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @param listener     listener to handle events raised by this calibrator.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         this(convertPosition(position), measurements, listener);
     }
@@ -964,8 +935,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
         this(convertPosition(position), measurements, commonAxisUsed);
     }
@@ -985,12 +955,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @param listener       listener to handle events raised by this calibrator.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        this(convertPosition(position), measurements, commonAxisUsed,
-                listener);
+        this(convertPosition(position), measurements, commonAxisUsed, listener);
     }
 
     /**
@@ -1008,11 +976,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron) {
-        this(convertPosition(position), measurements,
-                hardIron);
+        this(convertPosition(position), measurements, hardIron);
     }
 
     /**
@@ -1031,12 +997,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        this(convertPosition(position), measurements, hardIron,
-                listener);
+        this(convertPosition(position), measurements, hardIron, listener);
     }
 
     /**
@@ -1056,11 +1020,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron) {
-        this(convertPosition(position), measurements, commonAxisUsed,
-                hardIron);
+        this(convertPosition(position), measurements, commonAxisUsed, hardIron);
     }
 
     /**
@@ -1081,12 +1043,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        this(convertPosition(position), measurements, commonAxisUsed,
-                hardIron, listener);
+        this(convertPosition(position), measurements, commonAxisUsed, hardIron, listener);
     }
 
     /**
@@ -1104,8 +1064,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron) {
         this(convertPosition(position), measurements, hardIron);
     }
@@ -1126,12 +1085,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        this(convertPosition(position), measurements, hardIron,
-                listener);
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final Matrix hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+        this(convertPosition(position), measurements, hardIron, listener);
     }
 
     /**
@@ -1151,11 +1107,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron) {
-        this(convertPosition(position), measurements, commonAxisUsed,
-                hardIron);
+        this(convertPosition(position), measurements, commonAxisUsed, hardIron);
     }
 
     /**
@@ -1176,12 +1130,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        this(convertPosition(position), measurements, commonAxisUsed,
-                hardIron, listener);
+        this(convertPosition(position), measurements, commonAxisUsed, hardIron, listener);
     }
 
     /**
@@ -1202,11 +1154,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm) {
-        this(convertPosition(position), measurements, hardIron,
-                initialMm);
+        this(convertPosition(position), measurements, hardIron, initialMm);
     }
 
     /**
@@ -1228,12 +1178,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        this(convertPosition(position), measurements, hardIron,
-                initialMm, listener);
+        this(convertPosition(position), measurements, hardIron, initialMm, listener);
     }
 
     /**
@@ -1256,12 +1204,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm) {
-        this(convertPosition(position), measurements, commonAxisUsed,
-                hardIron, initialMm);
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm) {
+        this(convertPosition(position), measurements, commonAxisUsed, hardIron, initialMm);
     }
 
     /**
@@ -1285,13 +1230,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     protected RobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        this(convertPosition(position), measurements, commonAxisUsed,
-                hardIron, initialMm, listener);
+        this(convertPosition(position), measurements, commonAxisUsed, hardIron, initialMm, listener);
     }
 
     /**
@@ -1343,8 +1285,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronX(final double hardIronX)
-            throws LockedException {
+    public void setHardIronX(final double hardIronX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1371,8 +1312,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronY(final double hardIronY)
-            throws LockedException {
+    public void setHardIronY(final double hardIronY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1399,8 +1339,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronZ(final double hardIronZ)
-            throws LockedException {
+    public void setHardIronZ(final double hardIronZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1414,8 +1353,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public MagneticFluxDensity getHardIronXAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mHardIronX,
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(mHardIronX, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -1424,8 +1362,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @param result instance where result will be stored.
      */
     @Override
-    public void getHardIronXAsMagneticFluxDensity(
-            final MagneticFluxDensity result) {
+    public void getHardIronXAsMagneticFluxDensity(final MagneticFluxDensity result) {
         result.setValue(mHardIronX);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
@@ -1437,8 +1374,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronX(final MagneticFluxDensity hardIronX)
-            throws LockedException {
+    public void setHardIronX(final MagneticFluxDensity hardIronX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1452,8 +1388,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public MagneticFluxDensity getHardIronYAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mHardIronY,
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(mHardIronY, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -1462,8 +1397,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @param result instance where result will be stored.
      */
     @Override
-    public void getHardIronYAsMagneticFluxDensity(
-            final MagneticFluxDensity result) {
+    public void getHardIronYAsMagneticFluxDensity(final MagneticFluxDensity result) {
         result.setValue(mHardIronY);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
@@ -1475,8 +1409,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronY(final MagneticFluxDensity hardIronY)
-            throws LockedException {
+    public void setHardIronY(final MagneticFluxDensity hardIronY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1490,8 +1423,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public MagneticFluxDensity getHardIronZAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mHardIronZ,
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(mHardIronZ, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -1500,8 +1432,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @param result instance where result will be stored.
      */
     @Override
-    public void getHardIronZAsMagneticFluxDensity(
-            final MagneticFluxDensity result) {
+    public void getHardIronZAsMagneticFluxDensity(final MagneticFluxDensity result) {
         result.setValue(mHardIronZ);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
@@ -1513,8 +1444,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronZ(final MagneticFluxDensity hardIronZ)
-            throws LockedException {
+    public void setHardIronZ(final MagneticFluxDensity hardIronZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1535,9 +1465,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public void setHardIronCoordinates(
-            final double hardIronX,
-            final double hardIronY,
-            final double hardIronZ) throws LockedException {
+            final double hardIronX, final double hardIronY, final double hardIronZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1556,8 +1484,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public void setHardIronCoordinates(
-            final MagneticFluxDensity hardIronX,
-            final MagneticFluxDensity hardIronY,
+            final MagneticFluxDensity hardIronX, final MagneticFluxDensity hardIronY,
             final MagneticFluxDensity hardIronZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -1574,8 +1501,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public MagneticFluxDensityTriad getHardIronAsTriad() {
-        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,
-                mHardIronX, mHardIronY, mHardIronZ);
+        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, mHardIronX, mHardIronY, mHardIronZ);
     }
 
     /**
@@ -1585,9 +1511,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public void getHardIronAsTriad(final MagneticFluxDensityTriad result) {
-        result.setValueCoordinatesAndUnit(
-                mHardIronX, mHardIronY, mHardIronZ,
-                MagneticFluxDensityUnit.TESLA);
+        result.setValueCoordinatesAndUnit(mHardIronX, mHardIronY, mHardIronZ, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -1597,8 +1521,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIron(final MagneticFluxDensityTriad hardIron)
-            throws LockedException {
+    public void setHardIron(final MagneticFluxDensityTriad hardIron) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1625,8 +1548,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSx(final double initialSx)
-            throws LockedException {
+    public void setInitialSx(final double initialSx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1650,8 +1572,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSy(final double initialSy)
-            throws LockedException {
+    public void setInitialSy(final double initialSy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1675,8 +1596,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSz(final double initialSz)
-            throws LockedException {
+    public void setInitialSz(final double initialSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1700,8 +1620,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMxy(final double initialMxy)
-            throws LockedException {
+    public void setInitialMxy(final double initialMxy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1725,8 +1644,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMxz(final double initialMxz)
-            throws LockedException {
+    public void setInitialMxz(final double initialMxz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1750,8 +1668,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMyx(final double initialMyx)
-            throws LockedException {
+    public void setInitialMyx(final double initialMyx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1775,8 +1692,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMyz(final double initialMyz)
-            throws LockedException {
+    public void setInitialMyz(final double initialMyz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1800,8 +1716,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMzx(final double initialMzx)
-            throws LockedException {
+    public void setInitialMzx(final double initialMzx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1825,8 +1740,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMzy(final double initialMzy)
-            throws LockedException {
+    public void setInitialMzy(final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1843,10 +1757,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx,
-            final double initialSy,
-            final double initialSz)
-            throws LockedException {
+            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1868,13 +1779,8 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public void setInitialCrossCouplingErrors(
-            final double initialMxy,
-            final double initialMxz,
-            final double initialMyx,
-            final double initialMyz,
-            final double initialMzx,
-            final double initialMzy)
-            throws LockedException {
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1902,22 +1808,14 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public void setInitialScalingFactorsAndCrossCouplingErrors(
-            final double initialSx,
-            final double initialSy,
-            final double initialSz,
-            final double initialMxy,
-            final double initialMxz,
-            final double initialMyx,
-            final double initialMyz,
-            final double initialMzx,
-            final double initialMzy)
-            throws LockedException {
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
+        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
     }
 
     /**
@@ -1928,8 +1826,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public double[] getHardIron() {
-        final double[] result = new double[
-                BodyMagneticFluxDensity.COMPONENTS];
+        final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
         getHardIron(result);
         return result;
     }
@@ -1961,8 +1858,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     @Override
-    public void setHardIron(final double[] hardIron)
-            throws LockedException {
+    public void setHardIron(final double[] hardIron) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1984,8 +1880,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
     public Matrix getHardIronMatrix() {
         Matrix result;
         try {
-            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                    1);
+            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
             getHardIronMatrix(result);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -2002,8 +1897,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public void getHardIronMatrix(final Matrix result) {
-        if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mHardIronX);
@@ -2019,13 +1913,11 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     @Override
-    public void setHardIron(final Matrix hardIron)
-            throws LockedException {
+    public void setHardIron(final Matrix hardIron) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
-        if (hardIron.getRows() != BodyMagneticFluxDensity.COMPONENTS
-                || hardIron.getColumns() != 1) {
+        if (hardIron.getRows() != BodyMagneticFluxDensity.COMPONENTS || hardIron.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -2043,8 +1935,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
     public Matrix getInitialMm() {
         Matrix result;
         try {
-            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                    BodyMagneticFluxDensity.COMPONENTS);
+            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
             getInitialMm(result);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -2061,8 +1952,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public void getInitialMm(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS ||
-                result.getColumns() != BodyKinematics.COMPONENTS) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mInitialSx);
@@ -2086,13 +1976,11 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setInitialMm(final Matrix initialMm)
-            throws LockedException {
+    public void setInitialMm(final Matrix initialMm) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
-        if (initialMm.getRows() != BodyKinematics.COMPONENTS ||
-                initialMm.getColumns() != BodyKinematics.COMPONENTS) {
+        if (initialMm.getRows() != BodyKinematics.COMPONENTS || initialMm.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -2128,8 +2016,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                 have been taken.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setPosition(final NEDPosition position)
-            throws LockedException {
+    public void setPosition(final NEDPosition position) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2166,9 +2053,8 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
         if (mPosition != null) {
             final ECEFVelocity velocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                    mPosition.getLatitude(), mPosition.getLongitude(),
-                    mPosition.getHeight(), 0.0, 0.0, 0.0,
-                    result, velocity);
+                    mPosition.getLatitude(), mPosition.getLongitude(), mPosition.getHeight(),
+                    0.0, 0.0, 0.0, result, velocity);
             return true;
         } else {
             return false;
@@ -2183,8 +2069,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                 taken.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setPosition(final ECEFPosition position)
-            throws LockedException {
+    public void setPosition(final ECEFPosition position) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2252,8 +2137,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @param calendar a calendar instance containing a timestamp.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setTime(final GregorianCalendar calendar)
-            throws LockedException {
+    public void setTime(final GregorianCalendar calendar) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2285,8 +2169,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public void setMeasurements(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements)
-            throws LockedException {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2338,8 +2221,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException if estimator is currently running.
      */
     @Override
-    public void setCommonAxisUsed(final boolean commonAxisUsed)
-            throws LockedException {
+    public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2363,8 +2245,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException if calibrator is currently running.
      */
     public void setListener(
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener)
-            throws LockedException {
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2379,8 +2260,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public int getMinimumRequiredMeasurements() {
-        return mCommonAxisUsed ? MINIMUM_MEASUREMENTS_COMMON_Z_AXIS :
-                MINIMUM_MEASUREMENTS_GENERAL;
+        return mCommonAxisUsed ? MINIMUM_MEASUREMENTS_COMMON_Z_AXIS : MINIMUM_MEASUREMENTS_GENERAL;
     }
 
     /**
@@ -2390,8 +2270,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public boolean isReady() {
-        return mMeasurements != null
-                && mMeasurements.size() >= getMinimumRequiredMeasurements()
+        return mMeasurements != null && mMeasurements.size() >= getMinimumRequiredMeasurements()
                 && mPosition != null && mYear != null;
     }
 
@@ -2420,8 +2299,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @param magneticModel Earth's magnetic model to be set.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setMagneticModel(final WorldMagneticModel magneticModel)
-            throws LockedException {
+    public void setMagneticModel(final WorldMagneticModel magneticModel) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2452,8 +2330,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
         if (mRunning) {
             throw new LockedException();
         }
-        if (progressDelta < MIN_PROGRESS_DELTA ||
-                progressDelta > MAX_PROGRESS_DELTA) {
+        if (progressDelta < MIN_PROGRESS_DELTA || progressDelta > MAX_PROGRESS_DELTA) {
             throw new IllegalArgumentException();
         }
         mProgressDelta = progressDelta;
@@ -2605,8 +2482,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setQualityScores(final double[] qualityScores)
-            throws LockedException {
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
     }
 
     /**
@@ -2664,8 +2540,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(0, 0) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 0) : null;
     }
 
     /**
@@ -2675,8 +2550,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(1, 1) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 1) : null;
     }
 
     /**
@@ -2686,8 +2560,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(2, 2) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 2) : null;
     }
 
     /**
@@ -2697,8 +2570,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(0, 1) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 1) : null;
     }
 
     /**
@@ -2708,8 +2580,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(0, 2) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 2) : null;
     }
 
     /**
@@ -2719,8 +2590,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(1, 0) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 0) : null;
     }
 
     /**
@@ -2730,8 +2600,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(1, 2) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 2) : null;
     }
 
     /**
@@ -2741,8 +2610,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(2, 0) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 0) : null;
     }
 
     /**
@@ -2752,8 +2620,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(2, 1) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 1) : null;
     }
 
     /**
@@ -2807,8 +2674,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided value is less than {@link #MINIMUM_MEASUREMENTS_COMMON_Z_AXIS}.
      */
-    public void setPreliminarySubsetSize(final int preliminarySubsetSize)
-            throws LockedException {
+    public void setPreliminarySubsetSize(final int preliminarySubsetSize) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2818,18 +2684,6 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
 
         mPreliminarySubsetSize = preliminarySubsetSize;
     }
-
-    /**
-     * Estimates magnetometer calibration parameters containing soft-iron
-     * scale factors and cross-coupling errors.
-     *
-     * @throws LockedException      if calibrator is currently running.
-     * @throws NotReadyException    if calibrator is not ready.
-     * @throws CalibrationException if estimation fails for numerical reasons.
-     */
-    @Override
-    public abstract void calibrate() throws LockedException, NotReadyException,
-            CalibrationException;
 
     /**
      * Returns method being used for robust estimation.
@@ -2846,19 +2700,13 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator();
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator();
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator();
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator();
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator();
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator();
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator();
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator();
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator();
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator();
+        };
     }
 
     /**
@@ -2871,19 +2719,13 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(listener);
+        };
     }
 
     /**
@@ -2898,26 +2740,14 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        measurements);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        measurements);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        measurements);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        measurements);
-        }
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(measurements);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(measurements);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(measurements);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(measurements);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(measurements);
+        };
     }
 
     /**
@@ -2930,24 +2760,13 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
             final boolean commonAxisUsed, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        commonAxisUsed);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(commonAxisUsed);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(commonAxisUsed);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(commonAxisUsed);
+        };
     }
 
     /**
@@ -2959,26 +2778,14 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final WorldMagneticModel magneticModel,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        magneticModel);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        magneticModel);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        magneticModel);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        magneticModel);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        magneticModel);
-        }
+            final WorldMagneticModel magneticModel, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(magneticModel);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(magneticModel);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(magneticModel);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(magneticModel);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(magneticModel);
+        };
     }
 
     /**
@@ -2991,26 +2798,14 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron);
-        }
+            final double[] hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron);
+        };
     }
 
     /**
@@ -3024,24 +2819,13 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
             final Matrix hardIron, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron);
+        };
     }
 
     /**
@@ -3057,26 +2841,14 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final Matrix hardIron, final Matrix initialMm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron, initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron, initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron, initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron, initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron, initialMm);
-        }
+            final Matrix hardIron, final Matrix initialMm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron, initialMm);
+        };
     }
 
     /**
@@ -3089,24 +2861,13 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
             final NEDPosition position, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(position);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(position);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(position);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(position);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(position);
+        };
     }
 
     /**
@@ -3123,27 +2884,20 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements);
+        };
     }
 
     /**
@@ -3161,28 +2915,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, listener);
+        };
     }
 
     /**
@@ -3201,28 +2948,20 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed);
-        }
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed);
+        };
     }
 
     /**
@@ -3242,29 +2981,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -3284,28 +3016,20 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-        }
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+        };
     }
 
     /**
@@ -3326,29 +3050,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+        };
     }
 
     /**
@@ -3370,28 +3086,20 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-        }
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final double[] hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+        };
     }
 
     /**
@@ -3414,34 +3122,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+        };
     }
 
     /**
@@ -3461,28 +3157,20 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-        }
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final Matrix hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+        };
     }
 
     /**
@@ -3503,29 +3191,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final Matrix hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+        };
     }
 
     /**
@@ -3547,28 +3227,20 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-        }
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+        };
     }
 
     /**
@@ -3591,34 +3263,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+        };
     }
 
     /**
@@ -3641,28 +3301,20 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm);
-        }
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final Matrix hardIron, final Matrix initialMm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm);
+        };
     }
 
     /**
@@ -3686,29 +3338,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm, listener);
+        };
     }
 
     /**
@@ -3733,34 +3378,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm);
+        };
     }
 
     /**
@@ -3786,35 +3418,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+        };
     }
 
     /**
@@ -3826,26 +3445,14 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position);
-        }
+            final ECEFPosition position, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(position);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(position);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(position);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(position);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(position);
+        };
     }
 
     /**
@@ -3862,27 +3469,20 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements);
+        };
     }
 
     /**
@@ -3900,28 +3500,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, listener);
+        };
     }
 
     /**
@@ -3940,28 +3533,20 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed);
-        }
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed);
+        };
     }
 
     /**
@@ -3981,29 +3566,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -4023,28 +3601,20 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-        }
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+        };
     }
 
     /**
@@ -4065,29 +3635,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+        };
     }
 
     /**
@@ -4109,28 +3671,20 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-        }
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final double[] hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+        };
     }
 
     /**
@@ -4153,34 +3707,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+        };
     }
 
     /**
@@ -4200,28 +3742,20 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-        }
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final Matrix hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+        };
     }
 
     /**
@@ -4242,29 +3776,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final Matrix hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+        };
     }
 
     /**
@@ -4286,28 +3812,20 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-        }
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+        };
     }
 
     /**
@@ -4330,34 +3848,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+        };
     }
 
     /**
@@ -4380,28 +3886,20 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm);
-        }
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final Matrix hardIron, final Matrix initialMm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm);
+        };
     }
 
     /**
@@ -4425,29 +3923,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm, listener);
+        };
     }
 
     /**
@@ -4472,34 +3963,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm);
+        };
     }
 
     /**
@@ -4525,35 +4003,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+        };
     }
 
     /**
@@ -4573,27 +4038,17 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        measurements);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        measurements);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        measurements);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, measurements);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(measurements);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(measurements);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(measurements);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, measurements);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, measurements);
+        };
     }
 
     /**
@@ -4610,27 +4065,19 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final boolean commonAxisUsed,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, commonAxisUsed);
-        }
+            final double[] qualityScores, final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    commonAxisUsed);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, commonAxisUsed);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, commonAxisUsed);
+        };
     }
 
     /**
@@ -4647,27 +4094,16 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final WorldMagneticModel magneticModel,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        magneticModel);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        magneticModel);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        magneticModel);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, magneticModel);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, magneticModel);
-        }
+            final double[] qualityScores, final WorldMagneticModel magneticModel, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(magneticModel);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(magneticModel);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(magneticModel);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, magneticModel);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, magneticModel);
+        };
     }
 
     /**
@@ -4685,27 +4121,16 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final double[] hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, hardIron);
-        }
+            final double[] qualityScores, final double[] hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, hardIron);
+        };
     }
 
     /**
@@ -4722,27 +4147,16 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Matrix hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, hardIron);
-        }
+            final double[] qualityScores, final Matrix hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, hardIron);
+        };
     }
 
     /**
@@ -4762,27 +4176,17 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Matrix hardIron, final Matrix initialMm,
+            final double[] qualityScores, final Matrix hardIron, final Matrix initialMm,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron, initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron, initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron, initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, hardIron, initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, hardIron, initialMm);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(qualityScores,
+                    hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(qualityScores,
+                    hardIron, initialMm);
+        };
     }
 
     /**
@@ -4799,27 +4203,16 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position);
-        }
+            final double[] qualityScores, final NEDPosition position, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(position);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(position);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(position);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(qualityScores,
+                    position);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(qualityScores,
+                    position);
+        };
     }
 
     /**
@@ -4841,28 +4234,20 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements);
-        }
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements);
+        };
     }
 
     /**
@@ -4885,29 +4270,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final NEDPosition position,
+            final double[] qualityScores, final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, listener);
+        };
     }
 
     /**
@@ -4931,29 +4309,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed);
+        };
     }
 
     /**
@@ -4978,32 +4348,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -5028,29 +4388,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron);
+        };
     }
 
     /**
@@ -5076,32 +4428,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron, listener);
+        };
     }
 
     /**
@@ -5128,31 +4470,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron);
-        }
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron);
+        };
     }
 
     /**
@@ -5180,35 +4512,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron, listener);
+        };
     }
 
     /**
@@ -5232,29 +4551,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron);
+        };
     }
 
     /**
@@ -5276,32 +4587,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron, listener);
+        };
     }
 
     /**
@@ -5327,31 +4628,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron);
-        }
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron);
+        };
     }
 
     /**
@@ -5378,35 +4669,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron, listener);
+        };
     }
 
     /**
@@ -5433,31 +4711,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron,
-                        initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron,
-                        initialMm);
-        }
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron, initialMm);
+        };
     }
 
     /**
@@ -5485,35 +4753,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron,
-                        initialMm, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron,
-                        initialMm, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron, initialMm, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron, initialMm, listener);
+        };
     }
 
     /**
@@ -5542,35 +4797,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron, initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron, initialMm);
-        }
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron, initialMm);
+        };
     }
 
     /**
@@ -5600,36 +4841,23 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron, initialMm, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron, initialMm, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+        };
     }
 
     /**
@@ -5646,27 +4874,16 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position);
-        }
+            final double[] qualityScores, final ECEFPosition position, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(position);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(position);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(position);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position);
+        };
     }
 
     /**
@@ -5688,28 +4905,20 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements);
-        }
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements);
+        };
     }
 
     /**
@@ -5732,29 +4941,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final ECEFPosition position,
+            final double[] qualityScores, final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, listener);
+        };
     }
 
     /**
@@ -5778,29 +4980,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed);
+        };
     }
 
     /**
@@ -5825,32 +5019,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -5875,29 +5059,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron);
+        };
     }
 
     /**
@@ -5923,32 +5099,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements,
-                        hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements,
-                        hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron, listener);
+        };
     }
 
     /**
@@ -5975,31 +5141,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron);
-        }
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron);
+        };
     }
 
     /**
@@ -6027,35 +5183,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron, listener);
+        };
     }
 
     /**
@@ -6079,29 +5222,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron);
+        };
     }
 
     /**
@@ -6126,32 +5261,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron, listener);
+        };
     }
 
     /**
@@ -6174,31 +5299,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final ECEFPosition position,
+            final double[] qualityScores, final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron);
-        }
+            final boolean commonAxisUsed, final Matrix hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron);
+        };
     }
 
     /**
@@ -6225,35 +5340,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron, listener);
+        };
     }
 
     /**
@@ -6280,31 +5382,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron,
-                        initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron,
-                        initialMm);
-        }
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron, initialMm);
+        };
     }
 
     /**
@@ -6332,35 +5424,22 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, hardIron, initialMm,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron,
-                        initialMm, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, hardIron,
-                        initialMm, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, hardIron, initialMm, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron, initialMm, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, hardIron, initialMm, listener);
+        };
     }
 
     /**
@@ -6389,35 +5468,21 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron, initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron, initialMm);
-        }
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron, initialMm);
+        };
     }
 
     /**
@@ -6447,36 +5512,23 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        position, measurements, commonAxisUsed, hardIron,
-                        initialMm, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron, initialMm, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        qualityScores, position, measurements, commonAxisUsed,
-                        hardIron, initialMm, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case MSAC -> new MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            default -> new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
+                    qualityScores, position, measurements, commonAxisUsed, hardIron, initialMm, listener);
+        };
     }
 
     /**
@@ -6521,8 +5573,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                       for the accelerometer, gyroscope and magnetometer.
      * @return a robust magnetometer calibrator.
      */
-    public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final boolean commonAxisUsed) {
+    public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(final boolean commonAxisUsed) {
         return create(commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6546,8 +5597,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final double[] hardIron) {
+    public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(final double[] hardIron) {
         return create(hardIron, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6559,8 +5609,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final Matrix hardIron) {
+    public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(final Matrix hardIron) {
         return create(hardIron, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6587,8 +5636,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                 have been taken.
      * @return a robust magnetometer calibrator.
      */
-    public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position) {
+    public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(final NEDPosition position) {
         return create(position, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6605,8 +5653,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         return create(position, measurements, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6624,8 +5671,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         return create(position, measurements, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -6645,11 +5691,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
-        return create(position, measurements, commonAxisUsed,
-                DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6668,12 +5712,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        return create(position, measurements, commonAxisUsed, listener,
-                DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6692,11 +5734,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron) {
-        return create(position, measurements, hardIron,
-                DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6716,12 +5756,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        return create(position, measurements, hardIron, listener,
-                DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, hardIron, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6742,11 +5780,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron) {
-        return create(position, measurements, commonAxisUsed, hardIron,
-                DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, commonAxisUsed, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6768,12 +5804,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        return create(position, measurements, commonAxisUsed,
-                hardIron, listener, DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, commonAxisUsed, hardIron, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6792,11 +5826,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron) {
-        return create(position, measurements, hardIron,
-                DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6816,12 +5848,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        return create(position, measurements, hardIron, listener,
-                DEFAULT_ROBUST_METHOD);
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final Matrix hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+        return create(position, measurements, hardIron, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6842,11 +5871,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron) {
-        return create(position, measurements, commonAxisUsed,
-                hardIron, DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, commonAxisUsed, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6868,12 +5895,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        return create(position, measurements, commonAxisUsed,
-                hardIron, listener, DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, commonAxisUsed, hardIron, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6895,11 +5920,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm) {
-        return create(position, measurements, hardIron, initialMm,
-                DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, hardIron, initialMm, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6922,12 +5945,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        return create(position, measurements, hardIron, initialMm,
-                listener, DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, hardIron, initialMm, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6951,12 +5972,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm) {
-        return create(position, measurements, commonAxisUsed,
-                hardIron, initialMm, DEFAULT_ROBUST_METHOD);
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm) {
+        return create(position, measurements, commonAxisUsed, hardIron, initialMm, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6981,13 +5999,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        return create(position, measurements, commonAxisUsed,
-                hardIron, initialMm, listener, DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, commonAxisUsed, hardIron, initialMm, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6997,8 +6012,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                 have been taken.
      * @return a robust magnetometer calibrator.
      */
-    public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position) {
+    public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(final ECEFPosition position) {
         return create(position, DEFAULT_ROBUST_METHOD);
     }
 
@@ -7015,8 +6029,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         return create(position, measurements, DEFAULT_ROBUST_METHOD);
     }
 
@@ -7034,11 +6047,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        return create(position, measurements, listener,
-                DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7056,11 +6067,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
-        return create(position, measurements, commonAxisUsed,
-                DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7079,12 +6088,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        return create(position, measurements, commonAxisUsed, listener,
-                DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7103,11 +6110,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron) {
-        return create(position, measurements, hardIron,
-                DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7127,12 +6132,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        return create(position, measurements, hardIron,
-                listener, DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, hardIron, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7153,11 +6156,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron) {
-        return create(position, measurements, commonAxisUsed,
-                hardIron, DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, commonAxisUsed, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7179,12 +6180,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  not have length 3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        return create(position, measurements, commonAxisUsed,
-                hardIron, listener, DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, commonAxisUsed, hardIron, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7203,11 +6202,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron) {
-        return create(position, measurements, hardIron,
-                DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7227,12 +6224,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        return create(position, measurements, hardIron, listener,
-                DEFAULT_ROBUST_METHOD);
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final Matrix hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+        return create(position, measurements, hardIron, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7253,11 +6247,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron) {
-        return create(position, measurements, commonAxisUsed,
-                hardIron, DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, commonAxisUsed, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7279,12 +6271,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x1.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        return create(position, measurements, commonAxisUsed,
-                hardIron, listener, DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, commonAxisUsed, hardIron, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7306,11 +6296,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm) {
-        return create(position, measurements, hardIron, initialMm,
-                DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, hardIron, initialMm, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7333,12 +6321,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        return create(position, measurements, hardIron,
-                initialMm, listener, DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, hardIron, initialMm, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7362,12 +6348,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm) {
-        return create(position, measurements, commonAxisUsed,
-                hardIron, initialMm, DEFAULT_ROBUST_METHOD);
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm) {
+        return create(position, measurements, commonAxisUsed, hardIron, initialMm, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7392,14 +6375,10 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *                                  3x3.
      */
     public static RobustKnownHardIronPositionAndInstantMagnetometerCalibrator create(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        return create(position, measurements, commonAxisUsed,
-                hardIron, initialMm, listener,
-                DEFAULT_ROBUST_METHOD);
+        return create(position, measurements, commonAxisUsed, hardIron, initialMm, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7417,8 +6396,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
         }
 
         final NEDPosition position = getNedPosition();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, mYear);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, mYear);
         mMagneticDensityNorm = earthB.getNorm();
     }
 
@@ -7430,8 +6408,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return computed error.
      */
     protected double computeError(
-            final StandardDeviationBodyMagneticFluxDensity measurement,
-            final Matrix preliminaryResult) {
+            final StandardDeviationBodyMagneticFluxDensity measurement, final Matrix preliminaryResult) {
 
         try {
             // The magnetometer model is:
@@ -7445,14 +6422,11 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
             // Earth magnetic field at provided location
 
             if (mIdentity == null) {
-                mIdentity = Matrix.identity(
-                        BodyMagneticFluxDensity.COMPONENTS,
-                        BodyMagneticFluxDensity.COMPONENTS);
+                mIdentity = Matrix.identity(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
             }
 
             if (mTmp1 == null) {
-                mTmp1 = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                        BodyMagneticFluxDensity.COMPONENTS);
+                mTmp1 = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
             }
 
             if (mTmp2 == null) {
@@ -7471,8 +6445,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
 
             Utils.inverse(mTmp1, mTmp2);
 
-            final BodyMagneticFluxDensity measuredMagneticFluxDensity =
-                    measurement.getMagneticFluxDensity();
+            final BodyMagneticFluxDensity measuredMagneticFluxDensity = measurement.getMagneticFluxDensity();
             final double bMeasX = measuredMagneticFluxDensity.getBx();
             final double bMeasY = measuredMagneticFluxDensity.getBy();
             final double bMeasZ = measuredMagneticFluxDensity.getBz();
@@ -7499,11 +6472,9 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @param samplesIndices indices of samples picked by the robust estimator.
      * @param solutions      list where estimated preliminary solution will be stored.
      */
-    protected void computePreliminarySolutions(
-            final int[] samplesIndices, final List<Matrix> solutions) {
+    protected void computePreliminarySolutions(final int[] samplesIndices, final List<Matrix> solutions) {
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                new ArrayList<>();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
 
         for (final int samplesIndex : samplesIndices) {
             measurements.add(mMeasurements.get(samplesIndex));
@@ -7512,8 +6483,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
         try {
             final Matrix result = getInitialMm();
 
-            mInnerCalibrator.setHardIronCoordinates(
-                    mHardIronX, mHardIronY, mHardIronZ);
+            mInnerCalibrator.setHardIronCoordinates(mHardIronX, mHardIronY, mHardIronZ);
             mInnerCalibrator.setInitialMm(result);
             mInnerCalibrator.setCommonAxisUsed(mCommonAxisUsed);
             mInnerCalibrator.setPosition(mPosition);
@@ -7544,8 +6514,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
             final BitSet inliers = mInliersData.getInliers();
             final int nSamples = mMeasurements.size();
 
-            final List<StandardDeviationBodyMagneticFluxDensity> inlierMeasurements =
-                    new ArrayList<>();
+            final List<StandardDeviationBodyMagneticFluxDensity> inlierMeasurements = new ArrayList<>();
             for (int i = 0; i < nSamples; i++) {
                 if (inliers.get(i)) {
                     // sample is inlier
@@ -7554,8 +6523,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
             }
 
             try {
-                mInnerCalibrator.setHardIronCoordinates(
-                        mHardIronX, mHardIronY, mHardIronZ);
+                mInnerCalibrator.setHardIronCoordinates(mHardIronX, mHardIronY, mHardIronZ);
                 mInnerCalibrator.setInitialMm(preliminaryResult);
                 mInnerCalibrator.setCommonAxisUsed(mCommonAxisUsed);
                 mInnerCalibrator.setPosition(mPosition);
@@ -7662,8 +6630,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return converted value.
      */
     private static double convertMagneticFluxDensity(final double value, final MagneticFluxDensityUnit unit) {
-        return MagneticFluxDensityConverter.convert(value, unit,
-                MagneticFluxDensityUnit.TESLA);
+        return MagneticFluxDensityConverter.convert(value, unit, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -7673,7 +6640,6 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * @return converted value.
      */
     private static double convertMagneticFluxDensity(final MagneticFluxDensity magneticFluxDensity) {
-        return convertMagneticFluxDensity(magneticFluxDensity.getValue().doubleValue(),
-                magneticFluxDensity.getUnit());
+        return convertMagneticFluxDensity(magneticFluxDensity.getValue().doubleValue(), magneticFluxDensity.getUnit());
     }
 }

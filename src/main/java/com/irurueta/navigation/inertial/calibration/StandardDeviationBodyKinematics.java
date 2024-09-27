@@ -23,6 +23,7 @@ import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -37,6 +38,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -82,8 +84,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      *                                  angular rate standard deviation is negative.
      */
     public StandardDeviationBodyKinematics(
-            final double specificForceStandardDeviation,
-            final double angularRateStandardDeviation) {
+            final double specificForceStandardDeviation, final double angularRateStandardDeviation) {
         setSpecificForceStandardDeviation(specificForceStandardDeviation);
         setAngularRateStandardDeviation(angularRateStandardDeviation);
     }
@@ -101,8 +102,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      *                                  angular rate standard deviation is negative.
      */
     public StandardDeviationBodyKinematics(
-            final BodyKinematics kinematics,
-            final double specificForceStandardDeviation,
+            final BodyKinematics kinematics, final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
         this(kinematics);
         setSpecificForceStandardDeviation(specificForceStandardDeviation);
@@ -120,8 +120,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      *                                  angular rate standard deviation is negative.
      */
     public StandardDeviationBodyKinematics(
-            final Acceleration specificForceStandardDeviation,
-            final AngularSpeed angularRateStandardDeviation) {
+            final Acceleration specificForceStandardDeviation, final AngularSpeed angularRateStandardDeviation) {
         this(convertAcceleration(specificForceStandardDeviation),
                 convertAngularSpeed(angularRateStandardDeviation));
     }
@@ -138,8 +137,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      *                                  angular rate standard deviation is negative.
      */
     public StandardDeviationBodyKinematics(
-            final BodyKinematics kinematics,
-            final Acceleration specificForceStandardDeviation,
+            final BodyKinematics kinematics, final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
         this(kinematics, convertAcceleration(specificForceStandardDeviation),
                 convertAngularSpeed(angularRateStandardDeviation));
@@ -191,8 +189,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      * @param specificForceStandardDeviation standard deviation of measured specific force.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    public void setSpecificForceStandardDeviation(
-            final double specificForceStandardDeviation) {
+    public void setSpecificForceStandardDeviation(final double specificForceStandardDeviation) {
         if (specificForceStandardDeviation < 0.0) {
             throw new IllegalArgumentException();
         }
@@ -206,8 +203,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      * @return standard deviation of measured specific force.
      */
     public Acceleration getSpecificForceStandardDeviationAsAcceleration() {
-        return new Acceleration(mSpecificForceStandardDeviation,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mSpecificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -216,8 +212,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      * @param result instance where standard deviation of measured specific force will be
      *               stored.
      */
-    public void getSpecificForceStandardDeviationAsAcceleration(
-            final Acceleration result) {
+    public void getSpecificForceStandardDeviationAsAcceleration(final Acceleration result) {
         result.setValue(mSpecificForceStandardDeviation);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
@@ -228,10 +223,8 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      * @param specificForceStandardDeviation standard deviation of measured specific force.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    public void setSpecificForceStandardDeviation(
-            final Acceleration specificForceStandardDeviation) {
-        setSpecificForceStandardDeviation(convertAcceleration(
-                specificForceStandardDeviation));
+    public void setSpecificForceStandardDeviation(final Acceleration specificForceStandardDeviation) {
+        setSpecificForceStandardDeviation(convertAcceleration(specificForceStandardDeviation));
     }
 
     /**
@@ -263,8 +256,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      * @return standard deviation of measured angular rate.
      */
     public AngularSpeed getAngularRateStandardDeviationAsAngularSpeed() {
-        return new AngularSpeed(mAngularRateStandardDeviation,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mAngularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -284,8 +276,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      * @param angularRateStandardDeviation standard deviation of measured angular rate.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    public void setAngularRateStandardDeviation(
-            final AngularSpeed angularRateStandardDeviation) {
+    public void setAngularRateStandardDeviation(final AngularSpeed angularRateStandardDeviation) {
         setAngularRateStandardDeviation(convertAngularSpeed(
                 angularRateStandardDeviation));
     }
@@ -400,8 +391,8 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      * @return converted value.
      */
     private static double convertAcceleration(final Acceleration acceleration) {
-        return AccelerationConverter.convert(acceleration.getValue().doubleValue(),
-                acceleration.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return AccelerationConverter.convert(acceleration.getValue().doubleValue(), acceleration.getUnit(),
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -411,7 +402,7 @@ public class StandardDeviationBodyKinematics implements Serializable, Cloneable 
      * @return converted value.
      */
     private static double convertAngularSpeed(final AngularSpeed angularSpeed) {
-        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(),
-                angularSpeed.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(), angularSpeed.getUnit(),
+                AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 }

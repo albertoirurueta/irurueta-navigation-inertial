@@ -153,8 +153,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-    public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final boolean commonAxisUsed) {
+    public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(final boolean commonAxisUsed) {
         super(commonAxisUsed);
     }
 
@@ -166,8 +165,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
         super(commonAxisUsed, listener);
     }
 
@@ -181,8 +179,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -197,8 +194,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
     }
@@ -212,8 +208,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      * @throws IllegalArgumentException if provided quality scores length
      *                                  is smaller than 3 samples.
      */
-    public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final double[] qualityScores) {
+    public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(final double[] qualityScores) {
         super();
         internalSetQualityScores(qualityScores);
     }
@@ -230,8 +225,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      *                                  is smaller than 3 samples.
      */
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final double[] qualityScores,
-            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
+            final double[] qualityScores, final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
         super(listener);
         internalSetQualityScores(qualityScores);
     }
@@ -249,8 +243,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      *                                  is smaller than 3 samples.
      */
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements) {
         super(measurements);
         internalSetQualityScores(qualityScores);
     }
@@ -269,8 +262,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      *                                  is smaller than 3 samples.
      */
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
         super(measurements, listener);
         internalSetQualityScores(qualityScores);
@@ -288,8 +280,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      *                                  is smaller than 3 samples.
      */
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final double[] qualityScores,
-            final boolean commonAxisUsed) {
+            final double[] qualityScores, final boolean commonAxisUsed) {
         super(commonAxisUsed);
         internalSetQualityScores(qualityScores);
     }
@@ -307,8 +298,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      *                                  is smaller than 3 samples.
      */
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final double[] qualityScores,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final boolean commonAxisUsed,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
         super(commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
@@ -329,8 +319,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      *                                  is smaller than 3 samples.
      */
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
         internalSetQualityScores(qualityScores);
@@ -352,10 +341,8 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      *                                  is smaller than 3 samples.
      */
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
     }
@@ -436,8 +423,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setQualityScores(final double[] qualityScores)
-            throws LockedException {
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -451,8 +437,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      */
     @Override
     public boolean isReady() {
-        return super.isReady() && mQualityScores != null &&
-                mQualityScores.length == mMeasurements.size();
+        return super.isReady() && mQualityScores != null && mQualityScores.length == mMeasurements.size();
     }
 
     /**
@@ -474,7 +459,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
         }
 
         final PROMedSRobustEstimator<Matrix> innerEstimator =
-                new PROMedSRobustEstimator<>(new PROMedSRobustEstimatorListener<Matrix>() {
+                new PROMedSRobustEstimator<>(new PROMedSRobustEstimatorListener<>() {
                     @Override
                     public double[] getQualityScores() {
                         return mQualityScores;
@@ -496,16 +481,12 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
                     }
 
                     @Override
-                    public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List<Matrix> solutions) {
+                    public void estimatePreliminarSolutions(final int[] samplesIndices, final List<Matrix> solutions) {
                         computePreliminarySolutions(samplesIndices, solutions);
                     }
 
                     @Override
-                    public double computeResidual(
-                            final Matrix currentEstimation,
-                            final int i) {
+                    public double computeResidual(final Matrix currentEstimation, final int i) {
                         return computeError(mMeasurements.get(i), currentEstimation);
                     }
 
@@ -515,24 +496,20 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
                     }
 
                     @Override
-                    public void onEstimateStart(
-                            final RobustEstimator<Matrix> estimator) {
+                    public void onEstimateStart(final RobustEstimator<Matrix> estimator) {
                         // no action needed
                     }
 
                     @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator<Matrix> estimator) {
+                    public void onEstimateEnd(final RobustEstimator<Matrix> estimator) {
                         // no action needed
                     }
 
                     @Override
-                    public void onEstimateNextIteration(
-                            final RobustEstimator<Matrix> estimator, final int iteration) {
+                    public void onEstimateNextIteration(final RobustEstimator<Matrix> estimator, final int iteration) {
                         if (mListener != null) {
                             mListener.onCalibrateNextIteration(
-                                    PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator.this,
-                                    iteration);
+                                    PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator.this, iteration);
                         }
                     }
 
@@ -541,8 +518,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
                             final RobustEstimator<Matrix> estimator, final float progress) {
                         if (mListener != null) {
                             mListener.onCalibrateProgressChange(
-                                    PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator.this,
-                                    progress);
+                                    PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator.this, progress);
                         }
                     }
                 });
@@ -589,7 +565,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.PROMedS;
+        return RobustEstimatorMethod.PROMEDS;
     }
 
     /**
@@ -613,8 +589,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      *                                  is smaller than 3 samples.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-        if (qualityScores == null ||
-                qualityScores.length < MINIMUM_MEASUREMENTS) {
+        if (qualityScores == null || qualityScores.length < MINIMUM_MEASUREMENTS) {
             throw new IllegalArgumentException();
         }
 

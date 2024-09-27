@@ -19,6 +19,8 @@ import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityConverter;
 import com.irurueta.units.MagneticFluxDensityUnit;
 
+import java.io.Serial;
+
 /**
  * Contains a triad of magnetic flux density measurements.
  */
@@ -33,6 +35,7 @@ public class MagneticFluxDensityTriad extends Triad<MagneticFluxDensityUnit, Mag
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -58,8 +61,7 @@ public class MagneticFluxDensityTriad extends Triad<MagneticFluxDensityUnit, Mag
      * @param valueY y-coordinate of measurement value expressed in default unit.
      * @param valueZ z-coordinate of measurement value expressed in default unit.
      */
-    public MagneticFluxDensityTriad(
-            final double valueX, final double valueY, final double valueZ) {
+    public MagneticFluxDensityTriad(final double valueX, final double valueY, final double valueZ) {
         this(DEFAULT_UNIT, valueX, valueY, valueZ);
     }
 
@@ -75,8 +77,7 @@ public class MagneticFluxDensityTriad extends Triad<MagneticFluxDensityUnit, Mag
      *               provided unit.
      */
     public MagneticFluxDensityTriad(
-            final MagneticFluxDensityUnit unit,
-            final double valueX, final double valueY, final double valueZ) {
+            final MagneticFluxDensityUnit unit, final double valueX, final double valueY, final double valueZ) {
         super(unit, valueX, valueY, valueZ);
     }
 
@@ -88,8 +89,7 @@ public class MagneticFluxDensityTriad extends Triad<MagneticFluxDensityUnit, Mag
      * @param measurementZ z-coordinate of measurement.
      */
     public MagneticFluxDensityTriad(
-            final MagneticFluxDensity measurementX,
-            final MagneticFluxDensity measurementY,
+            final MagneticFluxDensity measurementX, final MagneticFluxDensity measurementY,
             final MagneticFluxDensity measurementZ) {
         super(DEFAULT_UNIT);
         setMeasurementCoordinates(measurementX, measurementY, measurementZ);
@@ -133,8 +133,8 @@ public class MagneticFluxDensityTriad extends Triad<MagneticFluxDensityUnit, Mag
      */
     @Override
     public void setMeasurementX(final MagneticFluxDensity measurementX) {
-        setValueX(MagneticFluxDensityConverter.convert(measurementX.getValue(),
-                measurementX.getUnit(), getUnit()).doubleValue());
+        setValueX(MagneticFluxDensityConverter.convert(measurementX.getValue(), measurementX.getUnit(),
+                getUnit()).doubleValue());
     }
 
     /**
@@ -166,8 +166,8 @@ public class MagneticFluxDensityTriad extends Triad<MagneticFluxDensityUnit, Mag
      */
     @Override
     public void setMeasurementY(final MagneticFluxDensity measurementY) {
-        setValueY(MagneticFluxDensityConverter.convert(measurementY.getValue(),
-                measurementY.getUnit(), getUnit()).doubleValue());
+        setValueY(MagneticFluxDensityConverter.convert(measurementY.getValue(), measurementY.getUnit(),
+                getUnit()).doubleValue());
     }
 
     /**
@@ -199,8 +199,8 @@ public class MagneticFluxDensityTriad extends Triad<MagneticFluxDensityUnit, Mag
      */
     @Override
     public void setMeasurementZ(final MagneticFluxDensity measurementZ) {
-        setValueZ(MagneticFluxDensityConverter.convert(measurementZ.getValue(),
-                measurementZ.getUnit(), getUnit()).doubleValue());
+        setValueZ(MagneticFluxDensityConverter.convert(measurementZ.getValue(), measurementZ.getUnit(),
+                getUnit()).doubleValue());
     }
 
     /**
@@ -212,8 +212,7 @@ public class MagneticFluxDensityTriad extends Triad<MagneticFluxDensityUnit, Mag
      */
     @Override
     public void setMeasurementCoordinates(
-            final MagneticFluxDensity measurementX,
-            final MagneticFluxDensity measurementY,
+            final MagneticFluxDensity measurementX, final MagneticFluxDensity measurementY,
             final MagneticFluxDensity measurementZ) {
         setMeasurementX(measurementX);
         setMeasurementY(measurementY);
@@ -238,8 +237,7 @@ public class MagneticFluxDensityTriad extends Triad<MagneticFluxDensityUnit, Mag
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final MagneticFluxDensityTriad result =
-                (MagneticFluxDensityTriad) super.clone();
+        final MagneticFluxDensityTriad result = (MagneticFluxDensityTriad) super.clone();
         copyTo(result);
         return result;
     }

@@ -27,7 +27,9 @@ import com.irurueta.units.DistanceUnit;
  * Calculates acceleration due to gravity resolved about ECEF frame.
  * This implementation is based on the equations defined in "Principles of GNSS, Inertial, and Multisensor
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
- * https://github.com/ymjdz/MATLAB-Codes/blob/master/Gravity_ECEF.m
+ * <a href="https://github.com/ymjdz/MATLAB-Codes/blob/master/Gravity_ECEF.m">
+ *     https://github.com/ymjdz/MATLAB-Codes/blob/master/Gravity_ECEF.m
+ * </a>
  */
 public class ECEFGravityEstimator {
 
@@ -253,10 +255,8 @@ public class ECEFGravityEstimator {
      * @param z      cartesian z coordinate of body position with respect ECEF frame, resolved along ECEF-frame axes.
      * @param result instance where estimated acceleration due to gravity will be stored.
      */
-    public static void estimateGravity(final Distance x, final Distance y,
-                                       final Distance z, final ECEFGravity result) {
-        estimateGravity(convertToMeters(x), convertToMeters(y), convertToMeters(z),
-                result);
+    public static void estimateGravity(final Distance x, final Distance y, final Distance z, final ECEFGravity result) {
+        estimateGravity(convertToMeters(x), convertToMeters(y), convertToMeters(z), result);
     }
 
     /**
@@ -267,9 +267,7 @@ public class ECEFGravityEstimator {
      * @param z cartesian z coordinate of body position with respect ECEF frame, resolved along ECEF-frame axes.
      * @return a new gravity instance containing estimated acceleration due to gravity.
      */
-    public static ECEFGravity estimateGravityAndReturnNew(final Distance x,
-                                                          final Distance y,
-                                                          final Distance z) {
+    public static ECEFGravity estimateGravityAndReturnNew(final Distance x, final Distance y, final Distance z) {
         final ECEFGravity result = new ECEFGravity();
         estimateGravity(x, y, z, result);
         return result;
@@ -282,7 +280,6 @@ public class ECEFGravityEstimator {
      * @return converted distance expressed in meters.
      */
     private static double convertToMeters(final Distance distance) {
-        return DistanceConverter.convert(distance.getValue().doubleValue(),
-                distance.getUnit(), DistanceUnit.METER);
+        return DistanceConverter.convert(distance.getValue().doubleValue(), distance.getUnit(), DistanceUnit.METER);
     }
 }

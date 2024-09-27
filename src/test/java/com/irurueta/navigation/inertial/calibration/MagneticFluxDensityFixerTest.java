@@ -66,10 +66,8 @@ public class MagneticFluxDensityFixerTest {
     private static final long END_TIMESTAMP_MILLIS;
 
     static {
-        START_CALENDAR.set(2020, Calendar.JANUARY, 1,
-                0, 0, 0);
-        END_CALENDAR.set(2025, Calendar.DECEMBER, 31,
-                23, 59, 59);
+        START_CALENDAR.set(2020, Calendar.JANUARY, 1, 0, 0, 0);
+        END_CALENDAR.set(2025, Calendar.DECEMBER, 31, 23, 59, 59);
 
         START_TIMESTAMP_MILLIS = START_CALENDAR.getTimeInMillis();
         END_TIMESTAMP_MILLIS = END_CALENDAR.getTimeInMillis();
@@ -80,73 +78,69 @@ public class MagneticFluxDensityFixerTest {
         final MagneticFluxDensityFixer fixer = new MagneticFluxDensityFixer();
 
         // check default values
-        assertEquals(fixer.getBias(), new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), fixer.getBias());
         final Matrix b = new Matrix(3, 1);
         fixer.getBias(b);
-        assertEquals(b, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), b);
 
-        assertArrayEquals(fixer.getBiasArray(), new double[3], 0.0);
+        assertArrayEquals(new double[3], fixer.getBiasArray(), 0.0);
         final double[] b2 = new double[3];
         fixer.getBiasArray(b2);
-        assertArrayEquals(b2, new double[3], 0.0);
-        assertEquals(fixer.getBiasX(), 0.0, 0.0);
-        assertEquals(fixer.getBiasY(), 0.0, 0.0);
-        assertEquals(fixer.getBiasZ(), 0.0, 0.0);
+        assertArrayEquals(new double[3], b2, 0.0);
+        assertEquals(0.0, fixer.getBiasX(), 0.0);
+        assertEquals(0.0, fixer.getBiasY(), 0.0);
+        assertEquals(0.0, fixer.getBiasZ(), 0.0);
 
         final BodyMagneticFluxDensity bb1 = fixer.getBiasAsBodyMagneticFluxDensity();
-        assertEquals(bb1.getBx(), 0.0, 0.0);
-        assertEquals(bb1.getBy(), 0.0, 0.0);
-        assertEquals(bb1.getBz(), 0.0, 0.0);
+        assertEquals(0.0, bb1.getBx(), 0.0);
+        assertEquals(0.0, bb1.getBy(), 0.0);
+        assertEquals(0.0, bb1.getBz(), 0.0);
         final BodyMagneticFluxDensity bb2 = new BodyMagneticFluxDensity();
         fixer.getBiasAsBodyMagneticFluxDensity(bb2);
         assertEquals(bb1, bb2);
 
         final MagneticFluxDensityTriad triad1 = fixer.getBiasAsTriad();
-        assertEquals(triad1.getValueX(), 0.0, 0.0);
-        assertEquals(triad1.getValueY(), 0.0, 0.0);
-        assertEquals(triad1.getValueZ(), 0.0, 0.0);
+        assertEquals(0.0, triad1.getValueX(), 0.0);
+        assertEquals(0.0, triad1.getValueY(), 0.0);
+        assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, triad1.getUnit());
         final MagneticFluxDensityTriad triad2 = new MagneticFluxDensityTriad();
         fixer.getBiasAsTriad(triad2);
         assertEquals(triad1, triad2);
 
-        assertEquals(fixer.getCrossCouplingErrors(),
-                new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), fixer.getCrossCouplingErrors());
         final Matrix m = new Matrix(3, 3);
         fixer.getCrossCouplingErrors(m);
-        assertEquals(m, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), m);
 
         final MagneticFluxDensity bx1 = fixer.getBiasXAsMagneticFluxDensity();
-        assertEquals(bx1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bx1.getUnit());
-        final MagneticFluxDensity bx2 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity bx2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         fixer.getBiasXAsMagneticFluxDensity(bx2);
         assertEquals(bx1, bx2);
         final MagneticFluxDensity by1 = fixer.getBiasYAsMagneticFluxDensity();
-        assertEquals(by1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, by1.getUnit());
-        final MagneticFluxDensity by2 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity by2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         fixer.getBiasYAsMagneticFluxDensity(by2);
         assertEquals(by1, by2);
         final MagneticFluxDensity bz1 = fixer.getBiasZAsMagneticFluxDensity();
-        assertEquals(bz1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bz1.getUnit());
-        final MagneticFluxDensity bz2 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity bz2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         fixer.getBiasZAsMagneticFluxDensity(bz2);
         assertEquals(bz1, bz2);
 
-        assertEquals(fixer.getSx(), 0.0, 0.0);
-        assertEquals(fixer.getSy(), 0.0, 0.0);
-        assertEquals(fixer.getSz(), 0.0, 0.0);
-        assertEquals(fixer.getMxy(), 0.0, 0.0);
-        assertEquals(fixer.getMxz(), 0.0, 0.0);
-        assertEquals(fixer.getMyx(), 0.0, 0.0);
-        assertEquals(fixer.getMyz(), 0.0, 0.0);
-        assertEquals(fixer.getMzx(), 0.0, 0.0);
-        assertEquals(fixer.getMzy(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getSx(), 0.0);
+        assertEquals(0.0, fixer.getSy(), 0.0);
+        assertEquals(0.0, fixer.getSz(), 0.0);
+        assertEquals(0.0, fixer.getMxy(), 0.0);
+        assertEquals(0.0, fixer.getMxz(), 0.0);
+        assertEquals(0.0, fixer.getMyx(), 0.0);
+        assertEquals(0.0, fixer.getMyz(), 0.0);
+        assertEquals(0.0, fixer.getMzx(), 0.0);
+        assertEquals(0.0, fixer.getMzy(), 0.0);
     }
 
     @Test
@@ -158,7 +152,7 @@ public class MagneticFluxDensityFixerTest {
         final Matrix b2 = new Matrix(1, 1);
         fixer.getBias(b2);
 
-        assertEquals(b1, new Matrix(3, 1));
+        assertEquals(new Matrix(3, 1), b1);
         assertEquals(b1, b2);
 
         // set new value
@@ -175,16 +169,10 @@ public class MagneticFluxDensityFixerTest {
         assertEquals(b3, b5);
 
         // Force IllegalArgumentException
-        try {
-            fixer.setBias(new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.setBias(new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.setBias(m1));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.setBias(m2));
     }
 
     @Test
@@ -213,16 +201,8 @@ public class MagneticFluxDensityFixerTest {
         assertArrayEquals(b3, b5, 0.0);
 
         // Force IllegalArgumentException
-        try {
-            fixer.getBiasArray(new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.setBias(new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> fixer.getBiasArray(new double[1]));
+        assertThrows(IllegalArgumentException.class, () -> fixer.setBias(new double[1]));
     }
 
     @Test
@@ -234,16 +214,15 @@ public class MagneticFluxDensityFixerTest {
         final BodyMagneticFluxDensity b2 = new BodyMagneticFluxDensity();
         fixer.getBiasAsBodyMagneticFluxDensity(b2);
 
-        assertEquals(b1.getBx(), 0.0, 0.0);
-        assertEquals(b1.getBy(), 0.0, 0.0);
-        assertEquals(b1.getBz(), 0.0, 0.0);
+        assertEquals(0.0, b1.getBx(), 0.0);
+        assertEquals(0.0, b1.getBy(), 0.0);
+        assertEquals(0.0, b1.getBz(), 0.0);
         assertEquals(b1, b2);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double[] b = generateHardIron(randomizer);
-        final BodyMagneticFluxDensity b3 = new BodyMagneticFluxDensity(
-                b[0], b[1], b[2]);
+        final BodyMagneticFluxDensity b3 = new BodyMagneticFluxDensity(b[0], b[1], b[2]);
         fixer.setBias(b3);
 
         // check
@@ -261,9 +240,9 @@ public class MagneticFluxDensityFixerTest {
 
         // check default value
         final MagneticFluxDensityTriad triad1 = fixer.getBiasAsTriad();
-        assertEquals(triad1.getValueX(), 0.0, 0.0);
-        assertEquals(triad1.getValueY(), 0.0, 0.0);
-        assertEquals(triad1.getValueZ(), 0.0, 0.0);
+        assertEquals(0.0, triad1.getValueX(), 0.0);
+        assertEquals(0.0, triad1.getValueY(), 0.0);
+        assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, triad1.getUnit());
 
         // set new value
@@ -286,7 +265,7 @@ public class MagneticFluxDensityFixerTest {
         final MagneticFluxDensityFixer fixer = new MagneticFluxDensityFixer();
 
         // check default value
-        assertEquals(fixer.getBiasX(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getBiasX(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -303,7 +282,7 @@ public class MagneticFluxDensityFixerTest {
         final MagneticFluxDensityFixer fixer = new MagneticFluxDensityFixer();
 
         // check default value
-        assertEquals(fixer.getBiasY(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getBiasY(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -320,7 +299,7 @@ public class MagneticFluxDensityFixerTest {
         final MagneticFluxDensityFixer fixer = new MagneticFluxDensityFixer();
 
         // check default value
-        assertEquals(fixer.getBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getBiasZ(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -337,9 +316,9 @@ public class MagneticFluxDensityFixerTest {
         final MagneticFluxDensityFixer fixer = new MagneticFluxDensityFixer();
 
         // check default value
-        assertEquals(fixer.getBiasX(), 0.0, 0.0);
-        assertEquals(fixer.getBiasY(), 0.0, 0.0);
-        assertEquals(fixer.getBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getBiasX(), 0.0);
+        assertEquals(0.0, fixer.getBiasY(), 0.0);
+        assertEquals(0.0, fixer.getBiasZ(), 0.0);
 
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -361,21 +340,19 @@ public class MagneticFluxDensityFixerTest {
 
         // check default value
         final MagneticFluxDensity bx1 = fixer.getBiasXAsMagneticFluxDensity();
-        assertEquals(bx1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bx1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double[] b = generateHardIron(randomizer);
         final double bx = b[0];
-        final MagneticFluxDensity bx2 = new MagneticFluxDensity(
-                bx, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity bx2 = new MagneticFluxDensity(bx, MagneticFluxDensityUnit.TESLA);
         fixer.setBiasX(bx2);
 
         // check
         final MagneticFluxDensity bx3 = fixer.getBiasXAsMagneticFluxDensity();
-        final MagneticFluxDensity bx4 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity bx4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         fixer.getBiasXAsMagneticFluxDensity(bx4);
 
         assertEquals(bx2, bx3);
@@ -388,7 +365,7 @@ public class MagneticFluxDensityFixerTest {
 
         // check default value
         final MagneticFluxDensity by1 = fixer.getBiasYAsMagneticFluxDensity();
-        assertEquals(by1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, by1.getUnit());
 
         // set new value
@@ -415,21 +392,19 @@ public class MagneticFluxDensityFixerTest {
 
         // check default value
         final MagneticFluxDensity bz1 = fixer.getBiasZAsMagneticFluxDensity();
-        assertEquals(bz1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bz1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double[] b = generateHardIron(randomizer);
         final double bz = b[2];
-        final MagneticFluxDensity bz2 = new MagneticFluxDensity(
-                bz, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity bz2 = new MagneticFluxDensity(bz, MagneticFluxDensityUnit.TESLA);
         fixer.setBiasZ(bz2);
 
         // check
         final MagneticFluxDensity bz3 = fixer.getBiasZAsMagneticFluxDensity();
-        final MagneticFluxDensity bz4 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity bz4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         fixer.getBiasZAsMagneticFluxDensity(bz4);
 
         assertEquals(bz2, bz3);
@@ -442,15 +417,15 @@ public class MagneticFluxDensityFixerTest {
 
         // check default values
         final MagneticFluxDensity bx1 = fixer.getBiasXAsMagneticFluxDensity();
-        assertEquals(bx1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bx1.getUnit());
 
         final MagneticFluxDensity by1 = fixer.getBiasYAsMagneticFluxDensity();
-        assertEquals(by1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, by1.getUnit());
 
         final MagneticFluxDensity bz1 = fixer.getBiasZAsMagneticFluxDensity();
-        assertEquals(bz1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, bz1.getUnit());
 
         // set new values
@@ -459,12 +434,9 @@ public class MagneticFluxDensityFixerTest {
         final double bx = b[0];
         final double by = b[1];
         final double bz = b[2];
-        final MagneticFluxDensity bx2 = new MagneticFluxDensity(
-                bx, MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity by2 = new MagneticFluxDensity(
-                by, MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity bz2 = new MagneticFluxDensity(
-                bz, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity bx2 = new MagneticFluxDensity(bx, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity by2 = new MagneticFluxDensity(by, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity bz2 = new MagneticFluxDensity(bz, MagneticFluxDensityUnit.TESLA);
         fixer.setBias(bx2, by2, bz2);
 
         // check
@@ -523,25 +495,15 @@ public class MagneticFluxDensityFixerTest {
         assertEquals(mzy, fixer.getMzy(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            fixer.setCrossCouplingErrors(new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.setCrossCouplingErrors(new Matrix(3, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m6 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.setCrossCouplingErrors(m6));
+        final var m7 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.setCrossCouplingErrors(m7));
 
         // Force AlgebraException
-        try {
-            final Matrix wrong = Matrix.identity(3, 3);
-            wrong.multiplyByScalar(-1.0);
-            fixer.setCrossCouplingErrors(wrong);
-            fail("AlgebraException expected but not thrown");
-        } catch (final AlgebraException ignore) {
-        }
+        final Matrix wrong = Matrix.identity(3, 3);
+        wrong.multiplyByScalar(-1.0);
+        assertThrows(AlgebraException.class, () -> fixer.setCrossCouplingErrors(wrong));
     }
 
     @Test
@@ -549,7 +511,7 @@ public class MagneticFluxDensityFixerTest {
         final MagneticFluxDensityFixer fixer = new MagneticFluxDensityFixer();
 
         // check default value
-        assertEquals(fixer.getSx(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getSx(), 0.0);
 
         // set new value
         final Matrix m = generateSoftIronGeneral();
@@ -567,7 +529,7 @@ public class MagneticFluxDensityFixerTest {
         final MagneticFluxDensityFixer fixer = new MagneticFluxDensityFixer();
 
         // check default value
-        assertEquals(fixer.getSy(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getSy(), 0.0);
 
         // set new value
         final Matrix m = generateSoftIronGeneral();
@@ -585,7 +547,7 @@ public class MagneticFluxDensityFixerTest {
         final MagneticFluxDensityFixer fixer = new MagneticFluxDensityFixer();
 
         // check default value
-        assertEquals(fixer.getSz(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getSz(), 0.0);
 
         // set new value
         final Matrix m = generateSoftIronGeneral();
@@ -603,7 +565,7 @@ public class MagneticFluxDensityFixerTest {
         final MagneticFluxDensityFixer fixer = new MagneticFluxDensityFixer();
 
         // check default value
-        assertEquals(fixer.getMxy(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getMxy(), 0.0);
 
         // set new value
         final Matrix m = generateSoftIronGeneral();
@@ -621,7 +583,7 @@ public class MagneticFluxDensityFixerTest {
         final MagneticFluxDensityFixer fixer = new MagneticFluxDensityFixer();
 
         // check default value
-        assertEquals(fixer.getMxz(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getMxz(), 0.0);
 
         // set new value
         final Matrix m = generateSoftIronGeneral();
@@ -639,7 +601,7 @@ public class MagneticFluxDensityFixerTest {
         final MagneticFluxDensityFixer fixer = new MagneticFluxDensityFixer();
 
         // check default value
-        assertEquals(fixer.getMyx(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getMyx(), 0.0);
 
         // set new value
         final Matrix m = generateSoftIronGeneral();
@@ -657,7 +619,7 @@ public class MagneticFluxDensityFixerTest {
         final MagneticFluxDensityFixer fixer = new MagneticFluxDensityFixer();
 
         // check default value
-        assertEquals(fixer.getMyz(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getMyz(), 0.0);
 
         // set new value
         final Matrix m = generateSoftIronGeneral();
@@ -675,7 +637,7 @@ public class MagneticFluxDensityFixerTest {
         final MagneticFluxDensityFixer fixer = new MagneticFluxDensityFixer();
 
         // check default value
-        assertEquals(fixer.getMzx(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getMzx(), 0.0);
 
         // set new value
         final Matrix m = generateSoftIronGeneral();
@@ -693,7 +655,7 @@ public class MagneticFluxDensityFixerTest {
         final MagneticFluxDensityFixer fixer = new MagneticFluxDensityFixer();
 
         // check default value
-        assertEquals(fixer.getMzy(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getMzy(), 0.0);
 
         // set new value
         final Matrix m = generateSoftIronGeneral();
@@ -711,9 +673,9 @@ public class MagneticFluxDensityFixerTest {
         final MagneticFluxDensityFixer fixer = new MagneticFluxDensityFixer();
 
         // check default values
-        assertEquals(fixer.getSx(), 0.0, 0.0);
-        assertEquals(fixer.getSy(), 0.0, 0.0);
-        assertEquals(fixer.getSz(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getSx(), 0.0);
+        assertEquals(0.0, fixer.getSy(), 0.0);
+        assertEquals(0.0, fixer.getSz(), 0.0);
 
         // set new values
         final Matrix m = generateSoftIronGeneral();
@@ -725,9 +687,9 @@ public class MagneticFluxDensityFixerTest {
         fixer.setScalingFactors(sx, sy, sz);
 
         // check
-        assertEquals(fixer.getSx(), sx, 0.0);
-        assertEquals(fixer.getSy(), sy, 0.0);
-        assertEquals(fixer.getSz(), sz, 0.0);
+        assertEquals(sx, fixer.getSx(), 0.0);
+        assertEquals(sy, fixer.getSy(), 0.0);
+        assertEquals(sz, fixer.getSz(), 0.0);
     }
 
     @Test
@@ -735,12 +697,12 @@ public class MagneticFluxDensityFixerTest {
         final MagneticFluxDensityFixer fixer = new MagneticFluxDensityFixer();
 
         // check default values
-        assertEquals(fixer.getMxy(), 0.0, 0.0);
-        assertEquals(fixer.getMxz(), 0.0, 0.0);
-        assertEquals(fixer.getMyx(), 0.0, 0.0);
-        assertEquals(fixer.getMyz(), 0.0, 0.0);
-        assertEquals(fixer.getMzx(), 0.0, 0.0);
-        assertEquals(fixer.getMzy(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getMxy(), 0.0);
+        assertEquals(0.0, fixer.getMxz(), 0.0);
+        assertEquals(0.0, fixer.getMyx(), 0.0);
+        assertEquals(0.0, fixer.getMyz(), 0.0);
+        assertEquals(0.0, fixer.getMzx(), 0.0);
+        assertEquals(0.0, fixer.getMzy(), 0.0);
 
         // set new values
         final Matrix m = generateSoftIronGeneral();
@@ -764,20 +726,19 @@ public class MagneticFluxDensityFixerTest {
     }
 
     @Test
-    public void testSetScalingFactorsAndCrossCouplingErrors()
-            throws AlgebraException {
+    public void testSetScalingFactorsAndCrossCouplingErrors() throws AlgebraException {
         final MagneticFluxDensityFixer fixer = new MagneticFluxDensityFixer();
 
         // check default values
-        assertEquals(fixer.getSx(), 0.0, 0.0);
-        assertEquals(fixer.getSy(), 0.0, 0.0);
-        assertEquals(fixer.getSz(), 0.0, 0.0);
-        assertEquals(fixer.getMxy(), 0.0, 0.0);
-        assertEquals(fixer.getMxz(), 0.0, 0.0);
-        assertEquals(fixer.getMyx(), 0.0, 0.0);
-        assertEquals(fixer.getMyz(), 0.0, 0.0);
-        assertEquals(fixer.getMzx(), 0.0, 0.0);
-        assertEquals(fixer.getMzy(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getSx(), 0.0);
+        assertEquals(0.0, fixer.getSy(), 0.0);
+        assertEquals(0.0, fixer.getSz(), 0.0);
+        assertEquals(0.0, fixer.getMxy(), 0.0);
+        assertEquals(0.0, fixer.getMxz(), 0.0);
+        assertEquals(0.0, fixer.getMyx(), 0.0);
+        assertEquals(0.0, fixer.getMyz(), 0.0);
+        assertEquals(0.0, fixer.getMzx(), 0.0);
+        assertEquals(0.0, fixer.getMzy(), 0.0);
 
         // set new values
         final Matrix m = generateSoftIronGeneral();
@@ -792,13 +753,12 @@ public class MagneticFluxDensityFixerTest {
         final double mzx = m.getElementAt(2, 0);
         final double mzy = m.getElementAt(2, 1);
 
-        fixer.setScalingFactorsAndCrossCouplingErrors(sx, sy, sz,
-                mxy, mxz, myx, myz, mzx, mzy);
+        fixer.setScalingFactorsAndCrossCouplingErrors(sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
 
         // check
-        assertEquals(fixer.getSx(), sx, 0.0);
-        assertEquals(fixer.getSy(), sy, 0.0);
-        assertEquals(fixer.getSz(), sz, 0.0);
+        assertEquals(sx, fixer.getSx(), 0.0);
+        assertEquals(sy, fixer.getSy(), 0.0);
+        assertEquals(sz, fixer.getSz(), 0.0);
         assertEquals(mxy, fixer.getMxy(), 0.0);
         assertEquals(mxz, fixer.getMxz(), 0.0);
         assertEquals(myx, fixer.getMyx(), 0.0);
@@ -819,37 +779,29 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
         final double trueBx = trueB.getBx();
         final double trueBy = trueB.getBy();
         final double trueBz = trueB.getBz();
 
-        final BodyMagneticFluxDensity measuredB =
-                BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
+        final BodyMagneticFluxDensity measuredB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
 
         final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
         fixer.fix(measuredB, result);
 
         // check
-        assertEquals(result[0], trueBx, ABSOLUTE_ERROR);
-        assertEquals(result[1], trueBy, ABSOLUTE_ERROR);
-        assertEquals(result[2], trueBz, ABSOLUTE_ERROR);
+        assertEquals(trueBx, result[0], ABSOLUTE_ERROR);
+        assertEquals(trueBy, result[1], ABSOLUTE_ERROR);
+        assertEquals(trueBz, result[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(measuredB, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, new double[1]));
     }
 
     @Test
@@ -864,37 +816,30 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
         final double trueBx = trueB.getBx();
         final double trueBy = trueB.getBy();
         final double trueBz = trueB.getBz();
 
-        final MagneticFluxDensityTriad measuredB = BodyMagneticFluxDensityGenerator
-                .generate(trueB, b, m).getCoordinatesAsTriad();
+        final MagneticFluxDensityTriad measuredB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m)
+                .getCoordinatesAsTriad();
 
         final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];
         fixer.fix(measuredB, result);
 
         // check
-        assertEquals(result[0], trueBx, ABSOLUTE_ERROR);
-        assertEquals(result[1], trueBy, ABSOLUTE_ERROR);
-        assertEquals(result[2], trueBz, ABSOLUTE_ERROR);
+        assertEquals(trueBx, result[0], ABSOLUTE_ERROR);
+        assertEquals(trueBy, result[1], ABSOLUTE_ERROR);
+        assertEquals(trueBz, result[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(measuredB, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, new double[1]));
     }
 
     @Test
@@ -909,43 +854,32 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
         final double trueBx = trueB.getBx();
         final double trueBy = trueB.getBy();
         final double trueBz = trueB.getBz();
 
-        final BodyMagneticFluxDensity measuredB =
-                BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
+        final BodyMagneticFluxDensity measuredB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
 
-        final Matrix result = new Matrix(
-                BodyMagneticFluxDensity.COMPONENTS, 1);
+        final Matrix result = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
         fixer.fix(measuredB, result);
 
         // check
-        assertEquals(result.getElementAtIndex(0), trueBx, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(1), trueBy, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(2), trueBz, ABSOLUTE_ERROR);
+        assertEquals(trueBx, result.getElementAtIndex(0), ABSOLUTE_ERROR);
+        assertEquals(trueBy, result.getElementAtIndex(1), ABSOLUTE_ERROR);
+        assertEquals(trueBz, result.getElementAtIndex(2), ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(measuredB, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, m1));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, m2));
     }
 
     @Test
@@ -960,43 +894,33 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
         final double trueBx = trueB.getBx();
         final double trueBy = trueB.getBy();
         final double trueBz = trueB.getBz();
 
-        final MagneticFluxDensityTriad measuredB = BodyMagneticFluxDensityGenerator
-                .generate(trueB, b, m).getCoordinatesAsTriad();
+        final MagneticFluxDensityTriad measuredB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m)
+                .getCoordinatesAsTriad();
 
-        final Matrix result = new Matrix(
-                MagneticFluxDensityTriad.COMPONENTS, 1);
+        final Matrix result = new Matrix(MagneticFluxDensityTriad.COMPONENTS, 1);
         fixer.fix(measuredB, result);
 
         // check
-        assertEquals(result.getElementAtIndex(0), trueBx, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(1), trueBy, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(2), trueBz, ABSOLUTE_ERROR);
+        assertEquals(trueBx, result.getElementAtIndex(0), ABSOLUTE_ERROR);
+        assertEquals(trueBy, result.getElementAtIndex(1), ABSOLUTE_ERROR);
+        assertEquals(trueBz, result.getElementAtIndex(2), ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(measuredB, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, m1));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, m2));
     }
 
     @Test
@@ -1011,19 +935,15 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
 
-        final BodyMagneticFluxDensity measuredB =
-                BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
+        final BodyMagneticFluxDensity measuredB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
 
         final BodyMagneticFluxDensity result = new BodyMagneticFluxDensity();
         fixer.fix(measuredB, result);
@@ -1044,19 +964,16 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
 
-        final MagneticFluxDensityTriad measuredB = BodyMagneticFluxDensityGenerator
-                .generate(trueB, b, m).getCoordinatesAsTriad();
+        final MagneticFluxDensityTriad measuredB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m)
+                .getCoordinatesAsTriad();
 
         final MagneticFluxDensityTriad result = new MagneticFluxDensityTriad();
         fixer.fix(measuredB, result);
@@ -1077,19 +994,15 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
 
-        final BodyMagneticFluxDensity measuredB =
-                BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
+        final BodyMagneticFluxDensity measuredB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final MagneticFluxDensity measuredBx = measuredB.getBxAsMagneticFluxDensity();
         final MagneticFluxDensity measuredBy = measuredB.getByAsMagneticFluxDensity();
         final MagneticFluxDensity measuredBz = measuredB.getBzAsMagneticFluxDensity();
@@ -1113,19 +1026,15 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
 
-        final BodyMagneticFluxDensity measuredB =
-                BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
+        final BodyMagneticFluxDensity measuredB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final MagneticFluxDensity measuredBx = measuredB.getBxAsMagneticFluxDensity();
         final MagneticFluxDensity measuredBy = measuredB.getByAsMagneticFluxDensity();
         final MagneticFluxDensity measuredBz = measuredB.getBzAsMagneticFluxDensity();
@@ -1149,43 +1058,31 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
         final double trueBx = trueB.getBx();
         final double trueBy = trueB.getBy();
         final double trueBz = trueB.getBz();
 
-        final BodyMagneticFluxDensity measB =
-                BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final double[] measuredB = measB.asArray();
 
         final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
         fixer.fix(measuredB, result);
 
         // check
-        assertEquals(result[0], trueBx, ABSOLUTE_ERROR);
-        assertEquals(result[1], trueBy, ABSOLUTE_ERROR);
-        assertEquals(result[2], trueBz, ABSOLUTE_ERROR);
+        assertEquals(trueBx, result[0], ABSOLUTE_ERROR);
+        assertEquals(trueBy, result[1], ABSOLUTE_ERROR);
+        assertEquals(trueBz, result[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(new double[1], result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(new double[1], result));
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, new double[1]));
     }
 
     @Test
@@ -1200,48 +1097,34 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
         final double trueBx = trueB.getBx();
         final double trueBy = trueB.getBy();
         final double trueBz = trueB.getBz();
 
-        final BodyMagneticFluxDensity measB =
-                BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final Matrix measuredB = measB.asMatrix();
 
         final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
         fixer.fix(measuredB, result);
 
         // check
-        assertEquals(result[0], trueBx, ABSOLUTE_ERROR);
-        assertEquals(result[1], trueBy, ABSOLUTE_ERROR);
-        assertEquals(result[2], trueBz, ABSOLUTE_ERROR);
+        assertEquals(trueBx, result[0], ABSOLUTE_ERROR);
+        assertEquals(trueBy, result[1], ABSOLUTE_ERROR);
+        assertEquals(trueBz, result[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(new Matrix(1, 1), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(new Matrix(3, 3), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(m1, result));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(m2, result));
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, new double[1]));
     }
 
     @Test
@@ -1256,53 +1139,37 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
         final double trueBx = trueB.getBx();
         final double trueBy = trueB.getBy();
         final double trueBz = trueB.getBz();
 
-        final BodyMagneticFluxDensity measB =
-                BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final Matrix measuredB = measB.asMatrix();
 
         final Matrix result = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
         fixer.fix(measuredB, result);
 
         // check
-        assertEquals(result.getElementAtIndex(0), trueBx, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(1), trueBy, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(2), trueBz, ABSOLUTE_ERROR);
+        assertEquals(trueBx, result.getElementAtIndex(0), ABSOLUTE_ERROR);
+        assertEquals(trueBy, result.getElementAtIndex(1), ABSOLUTE_ERROR);
+        assertEquals(trueBz, result.getElementAtIndex(2), ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(new Matrix(1, 1), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(new Matrix(3, 3), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(m1, result));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(m2, result));
+        final var m3 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, m3));
+        final var m4 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, m4));
     }
 
     @Test
@@ -1317,22 +1184,18 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
         final double trueBx = trueB.getBx();
         final double trueBy = trueB.getBy();
         final double trueBz = trueB.getBz();
 
-        final BodyMagneticFluxDensity measuredB =
-                BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
+        final BodyMagneticFluxDensity measuredB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final double measBx = measuredB.getBx();
         final double measBy = measuredB.getBy();
         final double measBz = measuredB.getBz();
@@ -1341,16 +1204,12 @@ public class MagneticFluxDensityFixerTest {
         fixer.fix(measBx, measBy, measBz, result);
 
         // check
-        assertEquals(result[0], trueBx, ABSOLUTE_ERROR);
-        assertEquals(result[1], trueBy, ABSOLUTE_ERROR);
-        assertEquals(result[2], trueBz, ABSOLUTE_ERROR);
+        assertEquals(trueBx, result[0], ABSOLUTE_ERROR);
+        assertEquals(trueBy, result[1], ABSOLUTE_ERROR);
+        assertEquals(trueBz, result[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(measBx, measBy, measBz, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measBx, measBy, measBz, new double[1]));
     }
 
     @Test
@@ -1365,46 +1224,35 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
         final double trueBx = trueB.getBx();
         final double trueBy = trueB.getBy();
         final double trueBz = trueB.getBz();
 
-        final BodyMagneticFluxDensity measuredB =
-                BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
+        final BodyMagneticFluxDensity measuredB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final double measBx = measuredB.getBx();
         final double measBy = measuredB.getBy();
         final double measBz = measuredB.getBz();
 
-        final Matrix result = new Matrix(
-                BodyMagneticFluxDensity.COMPONENTS, 1);
+        final Matrix result = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
         fixer.fix(measBx, measBy, measBz, result);
 
         // check
-        assertEquals(result.getElementAtIndex(0), trueBx, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(1), trueBy, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(2), trueBz, ABSOLUTE_ERROR);
+        assertEquals(trueBx, result.getElementAtIndex(0), ABSOLUTE_ERROR);
+        assertEquals(trueBy, result.getElementAtIndex(1), ABSOLUTE_ERROR);
+        assertEquals(trueBz, result.getElementAtIndex(2), ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(measBx, measBy, measBz, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measBx, measBy, measBz, new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measBx, measBy, measBz, m1));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measBx, measBy, measBz, m2));
     }
 
     @Test
@@ -1416,63 +1264,39 @@ public class MagneticFluxDensityFixerTest {
         final Matrix m = generateSoftIronGeneral();
         assertNotNull(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
         final double trueBx = trueB.getBx();
         final double trueBy = trueB.getBy();
         final double trueBz = trueB.getBz();
 
-        final BodyMagneticFluxDensity measB =
-                BodyMagneticFluxDensityGenerator.generate(trueB, b.getBuffer(), m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b.getBuffer(), m);
         final double[] measuredB = measB.asArray();
 
         final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
         fixer.fix(measuredB, b, m, result);
 
         // check
-        assertEquals(result[0], trueBx, ABSOLUTE_ERROR);
-        assertEquals(result[1], trueBy, ABSOLUTE_ERROR);
-        assertEquals(result[2], trueBz, ABSOLUTE_ERROR);
+        assertEquals(trueBx, result[0], ABSOLUTE_ERROR);
+        assertEquals(trueBy, result[1], ABSOLUTE_ERROR);
+        assertEquals(trueBz, result[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(new double[1], b, m, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, new Matrix(1, 1), m, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, new Matrix(3, 3), m, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, b, new Matrix(1, 1), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, b, new Matrix(1, 3), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, b, m, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(new double[1], b, m, result));
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, m1, m, result));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, m2, m, result));
+        final var m3 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, b, m3, result));
+        final var m4 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, b, m4, result));
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, b, m, new double[1]));
     }
 
     @Test
@@ -1484,68 +1308,42 @@ public class MagneticFluxDensityFixerTest {
         final Matrix m = generateSoftIronGeneral();
         assertNotNull(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
         final double trueBx = trueB.getBx();
         final double trueBy = trueB.getBy();
         final double trueBz = trueB.getBz();
 
-        final BodyMagneticFluxDensity measB =
-                BodyMagneticFluxDensityGenerator.generate(trueB, b.getBuffer(), m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b.getBuffer(), m);
         final Matrix measuredB = measB.asMatrix();
 
         final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
         fixer.fix(measuredB, b, m, result);
 
         // check
-        assertEquals(result[0], trueBx, ABSOLUTE_ERROR);
-        assertEquals(result[1], trueBy, ABSOLUTE_ERROR);
-        assertEquals(result[2], trueBz, ABSOLUTE_ERROR);
+        assertEquals(trueBx, result[0], ABSOLUTE_ERROR);
+        assertEquals(trueBy, result[1], ABSOLUTE_ERROR);
+        assertEquals(trueBz, result[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(new Matrix(1, 1), b, m, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(new Matrix(3, 3), b, m, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, new Matrix(1, 1), m, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, new Matrix(3, 3), m, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, b, new Matrix(1, 1), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, b, new Matrix(1, 3), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, b, m, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(m1, b, m, result));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(m2, b, m, result));
+        final var m3 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, m3, m, result));
+        final var m4 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, m4, m, result));
+        final var m5 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, b, m5, result));
+        final var m6 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, b, m6, result));
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, b, m, new double[1]));
     }
 
     @Test
@@ -1557,73 +1355,45 @@ public class MagneticFluxDensityFixerTest {
         final Matrix m = generateSoftIronGeneral();
         assertNotNull(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
         final double trueBx = trueB.getBx();
         final double trueBy = trueB.getBy();
         final double trueBz = trueB.getBz();
 
-        final BodyMagneticFluxDensity measB =
-                BodyMagneticFluxDensityGenerator.generate(trueB, b.getBuffer(), m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b.getBuffer(), m);
         final Matrix measuredB = measB.asMatrix();
 
         final Matrix result = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
         fixer.fix(measuredB, b, m, result);
 
         // check
-        assertEquals(result.getElementAtIndex(0), trueBx, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(1), trueBy, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(2), trueBz, ABSOLUTE_ERROR);
+        assertEquals(trueBx, result.getElementAtIndex(0), ABSOLUTE_ERROR);
+        assertEquals(trueBy, result.getElementAtIndex(1), ABSOLUTE_ERROR);
+        assertEquals(trueBz, result.getElementAtIndex(2), ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(new Matrix(1, 1), b, m, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(new Matrix(3, 3), b, m, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, new Matrix(1, 1), m, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, new Matrix(3, 3), m, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, b, new Matrix(1, 1), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, b, new Matrix(1, 3), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, b, m, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredB, b, m, new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(m1, b, m, result));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(m2, b, m, result));
+        final var m3 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, m3, m, result));
+        final var m4 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, m4, m, result));
+        final var m5 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, b, m5, result));
+        final var m6 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, b, m6, result));
+        final var m7 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, b, m, m7));
+        final var m8 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredB, b, m, m8));
     }
 
     @Test
@@ -1638,22 +1408,18 @@ public class MagneticFluxDensityFixerTest {
         final Matrix m = generateSoftIronGeneral();
         assertNotNull(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
         final double trueBx = trueB.getBx();
         final double trueBy = trueB.getBy();
         final double trueBz = trueB.getBz();
 
-        final BodyMagneticFluxDensity measB =
-                BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final double measBx = measB.getBx();
         final double measBy = measB.getBy();
         final double measBz = measB.getBz();
@@ -1662,29 +1428,19 @@ public class MagneticFluxDensityFixerTest {
         fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ, m, result);
 
         // check
-        assertEquals(result[0], trueBx, ABSOLUTE_ERROR);
-        assertEquals(result[1], trueBy, ABSOLUTE_ERROR);
-        assertEquals(result[2], trueBz, ABSOLUTE_ERROR);
+        assertEquals(trueBx, result[0], ABSOLUTE_ERROR);
+        assertEquals(trueBy, result[1], ABSOLUTE_ERROR);
+        assertEquals(trueBz, result[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ,
-                    new Matrix(1, 1), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ,
-                    new Matrix(3, 1), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ, m,
-                    new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ, m1,
+                result));
+        final var m2 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ, m2,
+                result));
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ, m,
+                new double[1]));
     }
 
     @Test
@@ -1699,22 +1455,18 @@ public class MagneticFluxDensityFixerTest {
         final Matrix m = generateSoftIronGeneral();
         assertNotNull(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
         final double trueBx = trueB.getBx();
         final double trueBy = trueB.getBy();
         final double trueBz = trueB.getBz();
 
-        final BodyMagneticFluxDensity measB =
-                BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final double measBx = measB.getBx();
         final double measBy = measB.getBy();
         final double measBz = measB.getBz();
@@ -1723,35 +1475,23 @@ public class MagneticFluxDensityFixerTest {
         fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ, m, result);
 
         // check
-        assertEquals(result.getElementAtIndex(0), trueBx, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(1), trueBy, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(2), trueBz, ABSOLUTE_ERROR);
+        assertEquals(trueBx, result.getElementAtIndex(0), ABSOLUTE_ERROR);
+        assertEquals(trueBy, result.getElementAtIndex(1), ABSOLUTE_ERROR);
+        assertEquals(trueBz, result.getElementAtIndex(2), ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ,
-                    new Matrix(1, 1), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ,
-                    new Matrix(3, 1), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ, m,
-                    new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ, m,
-                    new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ, m1,
+                result));
+        final var m2 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ, m2,
+                result));
+        final var m3 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ, m,
+                m3));
+        final var m4 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ, m,
+                m4));
     }
 
     @Test
@@ -1777,43 +1517,33 @@ public class MagneticFluxDensityFixerTest {
         final double mzy = m.getElementAt(2, 1);
 
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
         final double trueBx = trueB.getBx();
         final double trueBy = trueB.getBy();
         final double trueBz = trueB.getBz();
 
-        final BodyMagneticFluxDensity measB =
-                BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final double measBx = measB.getBx();
         final double measBy = measB.getBy();
         final double measBz = measB.getBz();
 
         final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
-        fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ,
-                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, result);
+        fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, result);
 
         // check
-        assertEquals(result[0], trueBx, ABSOLUTE_ERROR);
-        assertEquals(result[1], trueBy, ABSOLUTE_ERROR);
-        assertEquals(result[2], trueBz, ABSOLUTE_ERROR);
+        assertEquals(trueBx, result[0], ABSOLUTE_ERROR);
+        assertEquals(trueBy, result[1], ABSOLUTE_ERROR);
+        assertEquals(trueBz, result[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ,
-                    sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
-                    new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ,
+                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, new double[1]));
     }
 
     @Test
@@ -1839,50 +1569,37 @@ public class MagneticFluxDensityFixerTest {
         final double mzy = m.getElementAt(2, 1);
 
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
         final double trueBx = trueB.getBx();
         final double trueBy = trueB.getBy();
         final double trueBz = trueB.getBz();
 
-        final BodyMagneticFluxDensity measB =
-                BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final double measBx = measB.getBx();
         final double measBy = measB.getBy();
         final double measBz = measB.getBz();
 
         final Matrix result = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
-        fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ,
-                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, result);
+        fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, result);
 
         // check
-        assertEquals(result.getElementAtIndex(0), trueBx, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(1), trueBy, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(2), trueBz, ABSOLUTE_ERROR);
+        assertEquals(trueBx, result.getElementAtIndex(0), ABSOLUTE_ERROR);
+        assertEquals(trueBy, result.getElementAtIndex(1), ABSOLUTE_ERROR);
+        assertEquals(trueBz, result.getElementAtIndex(2), ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ,
-                    sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
-                    new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ,
-                    sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
-                    new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ,
+                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, m1));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measBx, measBy, measBz, biasX, biasY, biasZ,
+                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, m2));
     }
 
     @Test
@@ -1897,19 +1614,16 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
 
-        final MagneticFluxDensityTriad measuredB = BodyMagneticFluxDensityGenerator
-                .generate(trueB, b, m).getCoordinatesAsTriad();
+        final MagneticFluxDensityTriad measuredB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m)
+                .getCoordinatesAsTriad();
 
         final MagneticFluxDensityTriad result = fixer.fixAndReturnNew(measuredB);
 
@@ -1929,28 +1643,20 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
 
-        final BodyMagneticFluxDensity measuredB = BodyMagneticFluxDensityGenerator
-                .generate(trueB, b, m);
-        final MagneticFluxDensity measuredBx = measuredB
-                .getBxAsMagneticFluxDensity();
-        final MagneticFluxDensity measuredBy = measuredB
-                .getByAsMagneticFluxDensity();
-        final MagneticFluxDensity measuredBz = measuredB
-                .getBzAsMagneticFluxDensity();
+        final BodyMagneticFluxDensity measuredB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
+        final MagneticFluxDensity measuredBx = measuredB.getBxAsMagneticFluxDensity();
+        final MagneticFluxDensity measuredBy = measuredB.getByAsMagneticFluxDensity();
+        final MagneticFluxDensity measuredBz = measuredB.getBzAsMagneticFluxDensity();
 
-        final MagneticFluxDensityTriad result = fixer.fixAndReturnNew(
-                measuredBx, measuredBy, measuredBz);
+        final MagneticFluxDensityTriad result = fixer.fixAndReturnNew(measuredBx, measuredBy, measuredBz);
 
         // check
         assertTrue(result.equals(trueB.getCoordinatesAsTriad(), ABSOLUTE_ERROR));
@@ -1968,19 +1674,15 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
 
-        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator
-                .generate(trueB, b, m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final double[] measuredB = measB.asArray();
 
         final double[] result = fixer.fixAndReturnNew(measuredB);
@@ -1989,11 +1691,7 @@ public class MagneticFluxDensityFixerTest {
         assertArrayEquals(result, trueB.asArray(), ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fixAndReturnNew(new double[1]);
-            fail("IllegalArgumentException expected but ot thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(new double[1]));
     }
 
     @Test
@@ -2008,19 +1706,15 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
 
-        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator
-                .generate(trueB, b, m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final Matrix measuredB = measB.asMatrix();
 
         final double[] result = fixer.fixAndReturnNew(measuredB);
@@ -2029,16 +1723,10 @@ public class MagneticFluxDensityFixerTest {
         assertArrayEquals(result, trueB.asArray(), ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fixAndReturnNew(new Matrix(1, 1));
-            fail("IllegalArgumentException expected but ot thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(new Matrix(3, 3));
-            fail("IllegalArgumentException expected but ot thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(m1));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(m2));
     }
 
     @Test
@@ -2053,19 +1741,15 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
 
-        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator
-                .generate(trueB, b, m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final Matrix measuredB = measB.asMatrix();
 
         final Matrix result = fixer.fixAndReturnNewMatrix(measuredB);
@@ -2074,16 +1758,10 @@ public class MagneticFluxDensityFixerTest {
         assertTrue(result.equals(trueB.asMatrix(), ABSOLUTE_ERROR));
 
         // Force IllegalArgumentException
-        try {
-            fixer.fixAndReturnNewMatrix(new Matrix(1, 1));
-            fail("IllegalArgumentException expected but ot thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNewMatrix(new Matrix(3, 3));
-            fail("IllegalArgumentException expected but ot thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(m1));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(m2));
     }
 
     @Test
@@ -2098,25 +1776,20 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
 
-        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator
-                .generate(trueB, b, m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final double measuredBx = measB.getBx();
         final double measuredBy = measB.getBy();
         final double measuredBz = measB.getBz();
 
-        final double[] result = fixer.fixAndReturnNew(
-                measuredBx, measuredBy, measuredBz);
+        final double[] result = fixer.fixAndReturnNew(measuredBx, measuredBy, measuredBz);
 
         // check
         assertArrayEquals(result, trueB.asArray(), ABSOLUTE_ERROR);
@@ -2134,25 +1807,20 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
 
-        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator
-                .generate(trueB, b, m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final double measuredBx = measB.getBx();
         final double measuredBy = measB.getBy();
         final double measuredBz = measB.getBz();
 
-        final Matrix result = fixer.fixAndReturnNewMatrix(
-                measuredBx, measuredBy, measuredBz);
+        final Matrix result = fixer.fixAndReturnNewMatrix(measuredBx, measuredBy, measuredBz);
 
         // check
         assertTrue(result.equals(trueB.asMatrix(), ABSOLUTE_ERROR));
@@ -2170,19 +1838,15 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
 
-        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator
-                .generate(trueB, b.getBuffer(), m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b.getBuffer(), m);
         final double[] measuredB = measB.asArray();
 
         final double[] result = fixer.fixAndReturnNew(measuredB, b, m);
@@ -2203,19 +1867,15 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
 
-        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator
-                .generate(trueB, b.getBuffer(), m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b.getBuffer(), m);
         final Matrix measuredB = measB.asMatrix();
 
         final double[] result = fixer.fixAndReturnNew(measuredB, b, m);
@@ -2236,19 +1896,15 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
 
-        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator
-                .generate(trueB, b.getBuffer(), m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b.getBuffer(), m);
         final Matrix measuredB = measB.asMatrix();
 
         final Matrix result = fixer.fixAndReturnNewMatrix(measuredB, b, m);
@@ -2272,25 +1928,20 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
 
-        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator
-                .generate(trueB, b, m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final double measuredBx = measB.getBx();
         final double measuredBy = measB.getBy();
         final double measuredBz = measB.getBz();
 
-        final double[] result = fixer.fixAndReturnNew(
-                measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, m);
+        final double[] result = fixer.fixAndReturnNew(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, m);
 
         // check
         assertArrayEquals(result, trueB.asArray(), ABSOLUTE_ERROR);
@@ -2311,25 +1962,20 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
 
-        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator
-                .generate(trueB, b, m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final double measuredBx = measB.getBx();
         final double measuredBy = measB.getBy();
         final double measuredBz = measB.getBz();
 
-        final Matrix result = fixer.fixAndReturnNewMatrix(
-                measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, m);
+        final Matrix result = fixer.fixAndReturnNewMatrix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, m);
 
         // check
         assertTrue(result.equals(trueB.asMatrix(), ABSOLUTE_ERROR));
@@ -2359,25 +2005,20 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
 
-        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator
-                .generate(trueB, b, m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final double measuredBx = measB.getBx();
         final double measuredBy = measB.getBy();
         final double measuredBz = measB.getBz();
 
-        final double[] result = fixer.fixAndReturnNew(
-                measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ,
+        final double[] result = fixer.fixAndReturnNew(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ,
                 sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
 
         // check
@@ -2408,25 +2049,20 @@ public class MagneticFluxDensityFixerTest {
         fixer.setBias(b);
         fixer.setCrossCouplingErrors(m);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity trueB =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity trueB = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
 
-        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator
-                .generate(trueB, b, m);
+        final BodyMagneticFluxDensity measB = BodyMagneticFluxDensityGenerator.generate(trueB, b, m);
         final double measuredBx = measB.getBx();
         final double measuredBy = measB.getBy();
         final double measuredBz = measB.getBz();
 
-        final Matrix result = fixer.fixAndReturnNewMatrix(
-                measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ,
+        final Matrix result = fixer.fixAndReturnNewMatrix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ,
                 sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
 
         // check
@@ -2434,26 +2070,16 @@ public class MagneticFluxDensityFixerTest {
     }
 
 
-    private static CoordinateTransformation generateBodyC(
-            final UniformRandomizer randomizer) {
+    private static CoordinateTransformation generateBodyC(final UniformRandomizer randomizer) {
 
-        final double roll = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        return new CoordinateTransformation(
-                roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        return new CoordinateTransformation(roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
     }
 
-    private static double[] generateHardIron(
-            final UniformRandomizer randomizer) {
+    private static double[] generateHardIron(final UniformRandomizer randomizer) {
         final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
         randomizer.fill(result, MIN_HARD_IRON, MAX_HARD_IRON);
         return result;
@@ -2461,8 +2087,7 @@ public class MagneticFluxDensityFixerTest {
 
     private static Matrix generateSoftIronGeneral() {
         try {
-            return Matrix.createWithUniformRandomValues(
-                    BodyMagneticFluxDensity.COMPONENTS,
+            return Matrix.createWithUniformRandomValues(BodyMagneticFluxDensity.COMPONENTS,
                     BodyMagneticFluxDensity.COMPONENTS, MIN_SOFT_IRON, MAX_SOFT_IRON);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -2470,20 +2095,15 @@ public class MagneticFluxDensityFixerTest {
         }
     }
 
-    private static NEDPosition createPosition(
-            final UniformRandomizer randomizer) {
-        final double latitude = Math.toRadians(randomizer.nextDouble(
-                MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(
-                MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(
-                MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
+    private static NEDPosition createPosition(final UniformRandomizer randomizer) {
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double height = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
 
         return new NEDPosition(latitude, longitude, height);
     }
 
     private static long createTimestamp(final UniformRandomizer randomizer) {
-        return randomizer.nextLong(
-                START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS);
+        return randomizer.nextLong(START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS);
     }
 }

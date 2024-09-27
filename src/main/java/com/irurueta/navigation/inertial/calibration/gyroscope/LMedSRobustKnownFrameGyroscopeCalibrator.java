@@ -56,8 +56,7 @@ import java.util.List;
  * - ftrue is ground-truth specific force. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
-public class LMedSRobustKnownFrameGyroscopeCalibrator extends
-        RobustKnownFrameGyroscopeCalibrator {
+public class LMedSRobustKnownFrameGyroscopeCalibrator extends RobustKnownFrameGyroscopeCalibrator {
 
     /**
      * Default value to be used for stop threshold. Stop threshold can be used to
@@ -113,8 +112,7 @@ public class LMedSRobustKnownFrameGyroscopeCalibrator extends
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    public LMedSRobustKnownFrameGyroscopeCalibrator(
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
+    public LMedSRobustKnownFrameGyroscopeCalibrator(final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(listener);
     }
 
@@ -125,8 +123,7 @@ public class LMedSRobustKnownFrameGyroscopeCalibrator extends
      *                     deviations taken at different frames (positions, orientations
      *                     and velocities).
      */
-    public LMedSRobustKnownFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements) {
+    public LMedSRobustKnownFrameGyroscopeCalibrator(final List<StandardDeviationFrameBodyKinematics> measurements) {
         super(measurements);
     }
 
@@ -163,8 +160,7 @@ public class LMedSRobustKnownFrameGyroscopeCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public LMedSRobustKnownFrameGyroscopeCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(commonAxisUsed, listener);
     }
 
@@ -178,8 +174,7 @@ public class LMedSRobustKnownFrameGyroscopeCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public LMedSRobustKnownFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -194,8 +189,7 @@ public class LMedSRobustKnownFrameGyroscopeCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public LMedSRobustKnownFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
     }
@@ -274,7 +268,7 @@ public class LMedSRobustKnownFrameGyroscopeCalibrator extends
         }
 
         final LMedSRobustEstimator<PreliminaryResult> innerEstimator =
-                new LMedSRobustEstimator<>(new LMedSRobustEstimatorListener<PreliminaryResult>() {
+                new LMedSRobustEstimator<>(new LMedSRobustEstimatorListener<>() {
                     @Override
                     public int getTotalSamples() {
                         return mMeasurements.size();
@@ -287,8 +281,7 @@ public class LMedSRobustKnownFrameGyroscopeCalibrator extends
 
                     @Override
                     public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List<PreliminaryResult> solutions) {
+                            final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                         computePreliminarySolutions(samplesIndices, solutions);
                     }
 
@@ -304,14 +297,12 @@ public class LMedSRobustKnownFrameGyroscopeCalibrator extends
                     }
 
                     @Override
-                    public void onEstimateStart(
-                            final RobustEstimator<PreliminaryResult> estimator) {
+                    public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                         // no action needed
                     }
 
                     @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator<PreliminaryResult> estimator) {
+                    public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                         // no action needed
                     }
 
@@ -373,7 +364,7 @@ public class LMedSRobustKnownFrameGyroscopeCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.LMedS;
+        return RobustEstimatorMethod.LMEDS;
     }
 
     /**

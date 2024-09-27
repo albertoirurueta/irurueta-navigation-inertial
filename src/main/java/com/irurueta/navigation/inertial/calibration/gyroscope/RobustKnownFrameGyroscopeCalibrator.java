@@ -69,9 +69,8 @@ import java.util.List;
  * - w is measurement noise. This is a 3x1 vector.
  */
 public abstract class RobustKnownFrameGyroscopeCalibrator implements
-        GyroscopeNonLinearCalibrator, UnknownBiasNonLinearGyroscopeCalibrator,
-        GyroscopeCalibrationSource, GyroscopeBiasUncertaintySource,
-        OrderedStandardDeviationFrameBodyKinematicsGyroscopeCalibrator,
+        GyroscopeNonLinearCalibrator, UnknownBiasNonLinearGyroscopeCalibrator, GyroscopeCalibrationSource,
+        GyroscopeBiasUncertaintySource, OrderedStandardDeviationFrameBodyKinematicsGyroscopeCalibrator,
         QualityScoredGyroscopeCalibrator {
 
     /**
@@ -99,8 +98,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
     /**
      * Default robust estimator method when none is provided.
      */
-    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD =
-            RobustEstimatorMethod.LMedS;
+    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD = RobustEstimatorMethod.LMEDS;
 
     /**
      * Indicates that result is refined by default using a non-linear calibrator
@@ -401,8 +399,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     protected RobustKnownFrameGyroscopeCalibrator() {
         try {
-            mInitialGg = new Matrix(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            mInitialGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         } catch (final WrongSizeException ignore) {
             // never happens
         }
@@ -414,8 +411,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    protected RobustKnownFrameGyroscopeCalibrator(
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
+    protected RobustKnownFrameGyroscopeCalibrator(final RobustKnownFrameGyroscopeCalibratorListener listener) {
         this();
         mListener = listener;
     }
@@ -427,8 +423,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      *                     deviations taken at different frames (positions, orientations
      *                     and velocities).
      */
-    protected RobustKnownFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements) {
+    protected RobustKnownFrameGyroscopeCalibrator(final List<StandardDeviationFrameBodyKinematics> measurements) {
         this();
         mMeasurements = measurements;
     }
@@ -468,8 +463,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @param listener       listener to handle events raised by this calibrator.
      */
     protected RobustKnownFrameGyroscopeCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownFrameGyroscopeCalibratorListener listener) {
         this(commonAxisUsed);
         mListener = listener;
     }
@@ -484,8 +478,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      *                       accelerometer and gyroscope.
      */
     protected RobustKnownFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         this(measurements);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -501,8 +494,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @param listener       listener to handle events raised by this calibrator.
      */
     protected RobustKnownFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownFrameGyroscopeCalibratorListener listener) {
         this(measurements, commonAxisUsed);
         mListener = listener;
@@ -599,8 +591,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     @Override
     public AngularSpeed getInitialBiasAngularSpeedX() {
-        return new AngularSpeed(mInitialBiasX,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mInitialBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -621,8 +612,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBiasX(final AngularSpeed initialBiasX)
-            throws LockedException {
+    public void setInitialBiasX(final AngularSpeed initialBiasX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -636,8 +626,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     @Override
     public AngularSpeed getInitialBiasAngularSpeedY() {
-        return new AngularSpeed(mInitialBiasY,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mInitialBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -658,8 +647,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBiasY(final AngularSpeed initialBiasY)
-            throws LockedException {
+    public void setInitialBiasY(final AngularSpeed initialBiasY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -673,8 +661,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     @Override
     public AngularSpeed getInitialBiasAngularSpeedZ() {
-        return new AngularSpeed(mInitialBiasZ,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mInitialBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -695,8 +682,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBiasZ(final AngularSpeed initialBiasZ)
-            throws LockedException {
+    public void setInitialBiasZ(final AngularSpeed initialBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -713,8 +699,8 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBias(final double initialBiasX, final double initialBiasY,
-                               final double initialBiasZ) throws LockedException {
+    public void setInitialBias(final double initialBiasX, final double initialBiasY, final double initialBiasZ)
+            throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -732,9 +718,8 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBias(final AngularSpeed initialBiasX,
-                               final AngularSpeed initialBiasY,
-                               final AngularSpeed initialBiasZ)
+    public void setInitialBias(
+            final AngularSpeed initialBiasX, final AngularSpeed initialBiasY, final AngularSpeed initialBiasZ)
             throws LockedException {
 
         if (mRunning) {
@@ -990,8 +975,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx, final double initialSy, final double initialSz)
-            throws LockedException {
+            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1015,8 +999,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
     @Override
     public void setInitialCrossCouplingErrors(
             final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy)
-            throws LockedException {
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1047,14 +1030,12 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
     public void setInitialScalingFactorsAndCrossCouplingErrors(
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy)
-            throws LockedException {
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
+        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
     }
 
     /**
@@ -1137,8 +1118,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     @Override
     public void getInitialBiasAsMatrix(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mInitialBiasX);
@@ -1159,8 +1139,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
         if (mRunning) {
             throw new LockedException();
         }
-        if (initialBias.getRows() != BodyKinematics.COMPONENTS
-                || initialBias.getColumns() != 1) {
+        if (initialBias.getRows() != BodyKinematics.COMPONENTS || initialBias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -1176,8 +1155,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     @Override
     public AngularSpeedTriad getInitialBiasAsTriad() {
-        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,
-                mInitialBiasX, mInitialBiasY, mInitialBiasZ);
+        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND, mInitialBiasX, mInitialBiasY, mInitialBiasZ);
     }
 
     /**
@@ -1188,8 +1166,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
     @Override
     public void getInitialBiasAsTriad(final AngularSpeedTriad result) {
         result.setValueCoordinatesAndUnit(
-                mInitialBiasX, mInitialBiasY, mInitialBiasZ,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+                mInitialBiasX, mInitialBiasY, mInitialBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -1204,12 +1181,9 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
             throw new LockedException();
         }
 
-        mInitialBiasX = convertAngularSpeed(
-                initialBias.getValueX(), initialBias.getUnit());
-        mInitialBiasY = convertAngularSpeed(
-                initialBias.getValueY(), initialBias.getUnit());
-        mInitialBiasZ = convertAngularSpeed(
-                initialBias.getValueZ(), initialBias.getUnit());
+        mInitialBiasX = convertAngularSpeed(initialBias.getValueX(), initialBias.getUnit());
+        mInitialBiasY = convertAngularSpeed(initialBias.getValueY(), initialBias.getUnit());
+        mInitialBiasZ = convertAngularSpeed(initialBias.getValueZ(), initialBias.getUnit());
     }
 
     /**
@@ -1221,8 +1195,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
     public Matrix getInitialMg() {
         Matrix result;
         try {
-            result = new Matrix(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            result = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             getInitialMg(result);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -1239,8 +1212,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     @Override
     public void getInitialMg(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS ||
-                result.getColumns() != BodyKinematics.COMPONENTS) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mInitialSx);
@@ -1268,8 +1240,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
         if (mRunning) {
             throw new LockedException();
         }
-        if (initialMg.getRows() != BodyKinematics.COMPONENTS ||
-                initialMg.getColumns() != BodyKinematics.COMPONENTS) {
+        if (initialMg.getRows() != BodyKinematics.COMPONENTS || initialMg.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -1307,8 +1278,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
     @Override
     public void getInitialGg(final Matrix result) {
 
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != BodyKinematics.COMPONENTS) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -1329,8 +1299,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
             throw new LockedException();
         }
 
-        if (initialGg.getRows() != BodyKinematics.COMPONENTS
-                || initialGg.getColumns() != BodyKinematics.COMPONENTS) {
+        if (initialGg.getRows() != BodyKinematics.COMPONENTS || initialGg.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -1378,9 +1347,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setMeasurements(
-            final List<StandardDeviationFrameBodyKinematics> measurements)
-            throws LockedException {
+    public void setMeasurements(final List<StandardDeviationFrameBodyKinematics> measurements) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1431,8 +1398,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setCommonAxisUsed(final boolean commonAxisUsed)
-            throws LockedException {
+    public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1455,8 +1421,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @param listener listener to handle events raised by this estimator.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setListener(final RobustKnownFrameGyroscopeCalibratorListener listener)
-            throws LockedException {
+    public void setListener(final RobustKnownFrameGyroscopeCalibratorListener listener) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1513,8 +1478,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      *                             or not for preliminary solutions.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setLinearCalibratorUsed(final boolean linearCalibratorUsed)
-            throws LockedException {
+    public void setLinearCalibratorUsed(final boolean linearCalibratorUsed) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1544,8 +1508,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      *                                   initial linear solution, false otherwise.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setPreliminarySolutionRefined(final boolean preliminarySolutionRefined)
-            throws LockedException {
+    public void setPreliminarySolutionRefined(final boolean preliminarySolutionRefined) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1577,8 +1540,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
         if (mRunning) {
             throw new LockedException();
         }
-        if (progressDelta < MIN_PROGRESS_DELTA ||
-                progressDelta > MAX_PROGRESS_DELTA) {
+        if (progressDelta < MIN_PROGRESS_DELTA || progressDelta > MAX_PROGRESS_DELTA) {
             throw new IllegalArgumentException();
         }
         mProgressDelta = progressDelta;
@@ -1697,8 +1659,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      *                       false otherwise.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setCovarianceKept(final boolean keepCovariance)
-            throws LockedException {
+    public void setCovarianceKept(final boolean keepCovariance) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1731,8 +1692,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setQualityScores(final double[] qualityScores)
-            throws LockedException {
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
     }
 
     /**
@@ -1757,8 +1717,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
     @Override
     public boolean getEstimatedBiases(final double[] result) {
         if (mEstimatedBiases != null) {
-            System.arraycopy(mEstimatedBiases, 0, result,
-                    0, mEstimatedBiases.length);
+            System.arraycopy(mEstimatedBiases, 0, result, 0, mEstimatedBiases.length);
             return true;
         } else {
             return false;
@@ -1786,8 +1745,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @throws WrongSizeException if provided result instance has invalid size.
      */
     @Override
-    public boolean getEstimatedBiasesAsMatrix(final Matrix result)
-            throws WrongSizeException {
+    public boolean getEstimatedBiasesAsMatrix(final Matrix result) throws WrongSizeException {
         if (mEstimatedBiases != null) {
             result.fromArray(mEstimatedBiases);
             return true;
@@ -1837,8 +1795,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
     @Override
     public AngularSpeed getEstimatedBiasAngularSpeedX() {
         return mEstimatedBiases != null ?
-                new AngularSpeed(mEstimatedBiases[0],
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+                new AngularSpeed(mEstimatedBiases[0], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -1866,8 +1823,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
     @Override
     public AngularSpeed getEstimatedBiasAngularSpeedY() {
         return mEstimatedBiases != null ?
-                new AngularSpeed(mEstimatedBiases[1],
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+                new AngularSpeed(mEstimatedBiases[1], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -1895,8 +1851,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
     @Override
     public AngularSpeed getEstimatedBiasAngularSpeedZ() {
         return mEstimatedBiases != null ?
-                new AngularSpeed(mEstimatedBiases[2],
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+                new AngularSpeed(mEstimatedBiases[2], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -2001,8 +1956,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(0, 0) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 0) : null;
     }
 
     /**
@@ -2012,8 +1966,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(1, 1) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 1) : null;
     }
 
     /**
@@ -2023,8 +1976,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(2, 2) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 2) : null;
     }
 
     /**
@@ -2034,8 +1986,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(0, 1) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 1) : null;
     }
 
     /**
@@ -2045,8 +1996,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(0, 2) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 2) : null;
     }
 
     /**
@@ -2056,8 +2006,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(1, 0) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 0) : null;
     }
 
     /**
@@ -2067,8 +2016,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(1, 2) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 2) : null;
     }
 
     /**
@@ -2078,8 +2026,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(2, 0) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 0) : null;
     }
 
     /**
@@ -2089,8 +2036,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(2, 1) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 1) : null;
     }
 
     /**
@@ -2170,8 +2116,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     public AngularSpeed getEstimatedBiasXStandardDeviationAsAngularSpeed() {
         return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasXStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) :
-                null;
+                new AngularSpeed(getEstimatedBiasXStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -2220,8 +2165,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     public AngularSpeed getEstimatedBiasYStandardDeviationAsAngularSpeed() {
         return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasYStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) :
-                null;
+                new AngularSpeed(getEstimatedBiasYStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -2270,8 +2214,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     public AngularSpeed getEstimatedBiasZStandardDeviationAsAngularSpeed() {
         return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasZStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) :
-                null;
+                new AngularSpeed(getEstimatedBiasZStandardDeviation(), AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -2333,8 +2276,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     public Double getEstimatedBiasStandardDeviationAverage() {
         return mEstimatedCovariance != null ?
-                (getEstimatedBiasXStandardDeviation() +
-                        getEstimatedBiasYStandardDeviation() +
+                (getEstimatedBiasXStandardDeviation() + getEstimatedBiasYStandardDeviation() +
                         getEstimatedBiasZStandardDeviation()) / 3.0 : null;
     }
 
@@ -2392,8 +2334,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     public AngularSpeed getEstimatedBiasStandardDeviationNormAsAngularSpeed() {
         return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasStandardDeviationNorm(),
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+                new AngularSpeed(getEstimatedBiasStandardDeviationNorm(), AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -2446,18 +2387,6 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
     }
 
     /**
-     * Estimates gyroscope calibration parameters containing bias, scale factors
-     * cross-coupling errors and g-dependant cross biases.
-     *
-     * @throws LockedException      if calibrator is currently running.
-     * @throws NotReadyException    if calibrator is not ready.
-     * @throws CalibrationException if estimation fails for numerical reasons.
-     */
-    @Override
-    public abstract void calibrate() throws LockedException, NotReadyException,
-            CalibrationException;
-
-    /**
      * Returns method being used for robust estimation.
      *
      * @return method being used for robust estimation.
@@ -2470,21 +2399,14 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @param method robust estimator method.
      * @return a robust gyroscope calibrator.
      */
-    public static RobustKnownFrameGyroscopeCalibrator create(
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameGyroscopeCalibrator();
-            case LMedS:
-                return new LMedSRobustKnownFrameGyroscopeCalibrator();
-            case MSAC:
-                return new MSACRobustKnownFrameGyroscopeCalibrator();
-            case PROSAC:
-                return new PROSACRobustKnownFrameGyroscopeCalibrator();
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameGyroscopeCalibrator();
-        }
+    public static RobustKnownFrameGyroscopeCalibrator create(final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameGyroscopeCalibrator();
+            case LMEDS -> new LMedSRobustKnownFrameGyroscopeCalibrator();
+            case MSAC -> new MSACRobustKnownFrameGyroscopeCalibrator();
+            case PROSAC -> new PROSACRobustKnownFrameGyroscopeCalibrator();
+            default -> new PROMedSRobustKnownFrameGyroscopeCalibrator();
+        };
     }
 
     /**
@@ -2496,21 +2418,14 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final RobustKnownFrameGyroscopeCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameGyroscopeCalibrator(listener);
-            case LMedS:
-                return new LMedSRobustKnownFrameGyroscopeCalibrator(listener);
-            case MSAC:
-                return new MSACRobustKnownFrameGyroscopeCalibrator(listener);
-            case PROSAC:
-                return new PROSACRobustKnownFrameGyroscopeCalibrator(listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameGyroscopeCalibrator(listener);
-        }
+            final RobustKnownFrameGyroscopeCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameGyroscopeCalibrator(listener);
+            case LMEDS -> new LMedSRobustKnownFrameGyroscopeCalibrator(listener);
+            case MSAC -> new MSACRobustKnownFrameGyroscopeCalibrator(listener);
+            case PROSAC -> new PROSACRobustKnownFrameGyroscopeCalibrator(listener);
+            default -> new PROMedSRobustKnownFrameGyroscopeCalibrator(listener);
+        };
     }
 
     /**
@@ -2523,21 +2438,14 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameGyroscopeCalibrator(measurements);
-            case LMedS:
-                return new LMedSRobustKnownFrameGyroscopeCalibrator(measurements);
-            case MSAC:
-                return new MSACRobustKnownFrameGyroscopeCalibrator(measurements);
-            case PROSAC:
-                return new PROSACRobustKnownFrameGyroscopeCalibrator(measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameGyroscopeCalibrator(measurements);
-        }
+            final List<StandardDeviationFrameBodyKinematics> measurements, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameGyroscopeCalibrator(measurements);
+            case LMEDS -> new LMedSRobustKnownFrameGyroscopeCalibrator(measurements);
+            case MSAC -> new MSACRobustKnownFrameGyroscopeCalibrator(measurements);
+            case PROSAC -> new PROSACRobustKnownFrameGyroscopeCalibrator(measurements);
+            default -> new PROMedSRobustKnownFrameGyroscopeCalibrator(measurements);
+        };
     }
 
     /**
@@ -2552,26 +2460,14 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
             final List<StandardDeviationFrameBodyKinematics> measurements,
-            final RobustKnownFrameGyroscopeCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameGyroscopeCalibrator(measurements,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownFrameGyroscopeCalibrator(measurements,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownFrameGyroscopeCalibrator(measurements,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownFrameGyroscopeCalibrator(measurements,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameGyroscopeCalibrator(measurements,
-                        listener);
-        }
+            final RobustKnownFrameGyroscopeCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameGyroscopeCalibrator(measurements, listener);
+            case LMEDS -> new LMedSRobustKnownFrameGyroscopeCalibrator(measurements, listener);
+            case MSAC -> new MSACRobustKnownFrameGyroscopeCalibrator(measurements, listener);
+            case PROSAC -> new PROSACRobustKnownFrameGyroscopeCalibrator(measurements, listener);
+            default -> new PROMedSRobustKnownFrameGyroscopeCalibrator(measurements, listener);
+        };
     }
 
     /**
@@ -2583,21 +2479,14 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final boolean commonAxisUsed,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownFrameGyroscopeCalibrator(commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameGyroscopeCalibrator(commonAxisUsed);
-        }
+            final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownFrameGyroscopeCalibrator(commonAxisUsed);
+            case MSAC -> new MSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed);
+            default -> new PROMedSRobustKnownFrameGyroscopeCalibrator(commonAxisUsed);
+        };
     }
 
     /**
@@ -2610,27 +2499,15 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final boolean commonAxisUsed,
-            final RobustKnownFrameGyroscopeCalibratorListener listener,
+            final boolean commonAxisUsed, final RobustKnownFrameGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownFrameGyroscopeCalibrator(commonAxisUsed,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameGyroscopeCalibrator(commonAxisUsed,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownFrameGyroscopeCalibrator(commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownFrameGyroscopeCalibrator(commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -2645,27 +2522,15 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameGyroscopeCalibrator(
-                        measurements, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownFrameGyroscopeCalibrator(
-                        measurements, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownFrameGyroscopeCalibrator(
-                        measurements, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownFrameGyroscopeCalibrator(
-                        measurements, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameGyroscopeCalibrator(
-                        measurements, commonAxisUsed);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameGyroscopeCalibrator(measurements, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownFrameGyroscopeCalibrator(measurements, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownFrameGyroscopeCalibrator(measurements, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownFrameGyroscopeCalibrator(measurements, commonAxisUsed);
+            default -> new PROMedSRobustKnownFrameGyroscopeCalibrator(measurements, commonAxisUsed);
+        };
     }
 
     /**
@@ -2681,28 +2546,15 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownFrameGyroscopeCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameGyroscopeCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case LMedS:
-                return new LMedSRobustKnownFrameGyroscopeCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case MSAC:
-                return new MSACRobustKnownFrameGyroscopeCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case PROSAC:
-                return new PROSACRobustKnownFrameGyroscopeCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameGyroscopeCalibrator(
-                        measurements, commonAxisUsed, listener);
-        }
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
+            final RobustKnownFrameGyroscopeCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameGyroscopeCalibrator(measurements, commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownFrameGyroscopeCalibrator(measurements, commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownFrameGyroscopeCalibrator(measurements, commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownFrameGyroscopeCalibrator(measurements, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownFrameGyroscopeCalibrator(measurements, commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -2715,21 +2567,14 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final double[] qualityScores,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameGyroscopeCalibrator();
-            case LMedS:
-                return new LMedSRobustKnownFrameGyroscopeCalibrator();
-            case MSAC:
-                return new MSACRobustKnownFrameGyroscopeCalibrator();
-            case PROSAC:
-                return new PROSACRobustKnownFrameGyroscopeCalibrator(qualityScores);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores);
-        }
+            final double[] qualityScores, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameGyroscopeCalibrator();
+            case LMEDS -> new LMedSRobustKnownFrameGyroscopeCalibrator();
+            case MSAC -> new MSACRobustKnownFrameGyroscopeCalibrator();
+            case PROSAC -> new PROSACRobustKnownFrameGyroscopeCalibrator(qualityScores);
+            default -> new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores);
+        };
     }
 
     /**
@@ -2744,24 +2589,15 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final double[] qualityScores,
-            final RobustKnownFrameGyroscopeCalibratorListener listener,
+            final double[] qualityScores, final RobustKnownFrameGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameGyroscopeCalibrator(listener);
-            case LMedS:
-                return new LMedSRobustKnownFrameGyroscopeCalibrator(listener);
-            case MSAC:
-                return new MSACRobustKnownFrameGyroscopeCalibrator(listener);
-            case PROSAC:
-                return new PROSACRobustKnownFrameGyroscopeCalibrator(
-                        qualityScores, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameGyroscopeCalibrator(
-                        qualityScores, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameGyroscopeCalibrator(listener);
+            case LMEDS -> new LMedSRobustKnownFrameGyroscopeCalibrator(listener);
+            case MSAC -> new MSACRobustKnownFrameGyroscopeCalibrator(listener);
+            case PROSAC -> new PROSACRobustKnownFrameGyroscopeCalibrator(qualityScores, listener);
+            default -> new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, listener);
+        };
     }
 
     /**
@@ -2777,24 +2613,15 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameGyroscopeCalibrator(measurements);
-            case LMedS:
-                return new LMedSRobustKnownFrameGyroscopeCalibrator(measurements);
-            case MSAC:
-                return new MSACRobustKnownFrameGyroscopeCalibrator(measurements);
-            case PROSAC:
-                return new PROSACRobustKnownFrameGyroscopeCalibrator(qualityScores,
-                        measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores,
-                        measurements);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameGyroscopeCalibrator(measurements);
+            case LMEDS -> new LMedSRobustKnownFrameGyroscopeCalibrator(measurements);
+            case MSAC -> new MSACRobustKnownFrameGyroscopeCalibrator(measurements);
+            case PROSAC -> new PROSACRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements);
+            default -> new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements);
+        };
     }
 
     /**
@@ -2811,28 +2638,15 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final RobustKnownFrameGyroscopeCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameGyroscopeCalibrator(measurements,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownFrameGyroscopeCalibrator(measurements,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownFrameGyroscopeCalibrator(measurements,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownFrameGyroscopeCalibrator(qualityScores,
-                        measurements, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores,
-                        measurements, listener);
-        }
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
+            final RobustKnownFrameGyroscopeCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameGyroscopeCalibrator(measurements, listener);
+            case LMEDS -> new LMedSRobustKnownFrameGyroscopeCalibrator(measurements, listener);
+            case MSAC -> new MSACRobustKnownFrameGyroscopeCalibrator(measurements, listener);
+            case PROSAC -> new PROSACRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements, listener);
+            default -> new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements, listener);
+        };
     }
 
     /**
@@ -2847,24 +2661,14 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final double[] qualityScores,
-            final boolean commonAxisUsed,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownFrameGyroscopeCalibrator(commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownFrameGyroscopeCalibrator(qualityScores,
-                        commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores,
-                        commonAxisUsed);
-        }
+            final double[] qualityScores, final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownFrameGyroscopeCalibrator(commonAxisUsed);
+            case MSAC -> new MSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownFrameGyroscopeCalibrator(qualityScores, commonAxisUsed);
+            default -> new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, commonAxisUsed);
+        };
     }
 
     /**
@@ -2880,28 +2684,15 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final double[] qualityScores,
-            final boolean commonAxisUsed,
-            final RobustKnownFrameGyroscopeCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownFrameGyroscopeCalibrator(commonAxisUsed,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownFrameGyroscopeCalibrator(qualityScores,
-                        commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores,
-                        commonAxisUsed, listener);
-        }
+            final double[] qualityScores, final boolean commonAxisUsed,
+            final RobustKnownFrameGyroscopeCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownFrameGyroscopeCalibrator(commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownFrameGyroscopeCalibrator(commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownFrameGyroscopeCalibrator(qualityScores, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -2919,28 +2710,15 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameGyroscopeCalibrator(
-                        measurements, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownFrameGyroscopeCalibrator(
-                        measurements, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownFrameGyroscopeCalibrator(
-                        measurements, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownFrameGyroscopeCalibrator(
-                        qualityScores, measurements, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameGyroscopeCalibrator(
-                        qualityScores, measurements, commonAxisUsed);
-        }
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameGyroscopeCalibrator(measurements, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownFrameGyroscopeCalibrator(measurements, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownFrameGyroscopeCalibrator(measurements, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements, commonAxisUsed);
+            default -> new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements, commonAxisUsed);
+        };
     }
 
     /**
@@ -2959,29 +2737,18 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownFrameGyroscopeCalibratorListener listener,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownFrameGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownFrameGyroscopeCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case LMedS:
-                return new LMedSRobustKnownFrameGyroscopeCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case MSAC:
-                return new MSACRobustKnownFrameGyroscopeCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case PROSAC:
-                return new PROSACRobustKnownFrameGyroscopeCalibrator(
-                        qualityScores, measurements, commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownFrameGyroscopeCalibrator(
-                        qualityScores, measurements, commonAxisUsed, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownFrameGyroscopeCalibrator(measurements, commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownFrameGyroscopeCalibrator(measurements, commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownFrameGyroscopeCalibrator(measurements, commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements, commonAxisUsed,
+                    listener);
+            default -> new PROMedSRobustKnownFrameGyroscopeCalibrator(qualityScores, measurements, commonAxisUsed,
+                    listener);
+        };
     }
 
     /**
@@ -3040,8 +2807,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      *                       accelerometer and gyroscope.
      * @return a robust accelerometer calibrator.
      */
-    public static RobustKnownFrameGyroscopeCalibrator create(
-            final boolean commonAxisUsed) {
+    public static RobustKnownFrameGyroscopeCalibrator create(final boolean commonAxisUsed) {
         return create(commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
@@ -3054,8 +2820,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final boolean commonAxisUsed,
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownFrameGyroscopeCalibratorListener listener) {
         return create(commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);
     }
 
@@ -3070,8 +2835,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         return create(measurements, commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
@@ -3087,8 +2851,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownFrameGyroscopeCalibratorListener listener) {
         return create(measurements, commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -3101,8 +2864,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      *                      the quality of the sample.
      * @return a robust gyroscope calibrator.
      */
-    public static RobustKnownFrameGyroscopeCalibrator create(
-            final double[] qualityScores) {
+    public static RobustKnownFrameGyroscopeCalibrator create(final double[] qualityScores) {
         return create(qualityScores, DEFAULT_ROBUST_METHOD);
     }
 
@@ -3117,8 +2879,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final double[] qualityScores,
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
+            final double[] qualityScores, final RobustKnownFrameGyroscopeCalibratorListener listener) {
         return create(qualityScores, listener, DEFAULT_ROBUST_METHOD);
     }
 
@@ -3134,8 +2895,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements) {
         return create(qualityScores, measurements, DEFAULT_ROBUST_METHOD);
     }
 
@@ -3152,8 +2912,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final RobustKnownFrameGyroscopeCalibratorListener listener) {
         return create(qualityScores, measurements, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -3169,8 +2928,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final double[] qualityScores,
-            final boolean commonAxisUsed) {
+            final double[] qualityScores, final boolean commonAxisUsed) {
         return create(qualityScores, commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
@@ -3186,8 +2944,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final double[] qualityScores,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final boolean commonAxisUsed,
             final RobustKnownFrameGyroscopeCalibratorListener listener) {
         return create(qualityScores, commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -3206,11 +2963,9 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final boolean commonAxisUsed) {
-        return create(qualityScores, measurements, commonAxisUsed,
-                DEFAULT_ROBUST_METHOD);
+        return create(qualityScores, measurements, commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -3228,12 +2983,9 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return a robust gyroscope calibrator.
      */
     public static RobustKnownFrameGyroscopeCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
-        return create(qualityScores, measurements, commonAxisUsed, listener,
-                DEFAULT_ROBUST_METHOD);
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownFrameGyroscopeCalibratorListener listener) {
+        return create(qualityScores, measurements, commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);
     }
 
 
@@ -3245,8 +2997,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return computed error.
      */
     protected double computeError(
-            final StandardDeviationFrameBodyKinematics measurement,
-            final PreliminaryResult preliminaryResult) {
+            final StandardDeviationFrameBodyKinematics measurement, final PreliminaryResult preliminaryResult) {
         // We know that measured angular rate is:
         // Ωmeas = bg + (I + Mg) * Ωtrue + Gg * ftrue
 
@@ -3260,9 +3011,8 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
         final ECEFFrame previousEcefFrame = measurement.getPreviousFrame();
         final double timeInterval = measurement.getTimeInterval();
 
-        final BodyKinematics expectedKinematics = ECEFKinematicsEstimator
-                .estimateKinematicsAndReturnNew(timeInterval, ecefFrame,
-                        previousEcefFrame);
+        final BodyKinematics expectedKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                timeInterval, ecefFrame, previousEcefFrame);
 
         final double angularRateMeasX1 = measuredKinematics.getAngularRateX();
         final double angularRateMeasY1 = measuredKinematics.getAngularRateY();
@@ -3286,8 +3036,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
         final Matrix gg = preliminaryResult.mEstimatedGg;
 
         try {
-            final Matrix m1 = Matrix.identity(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            final Matrix m1 = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             m1.add(mg);
 
             final Matrix angularRateTrue = new Matrix(BodyKinematics.COMPONENTS, 1);
@@ -3326,9 +3075,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @param samplesIndices indices of samples picked by the robust estimator.
      * @param solutions      list where estimated preliminary solution will be stored.
      */
-    protected void computePreliminarySolutions(
-            final int[] samplesIndices,
-            final List<PreliminaryResult> solutions) {
+    protected void computePreliminarySolutions(final int[] samplesIndices, final List<PreliminaryResult> solutions) {
 
         final List<StandardDeviationFrameBodyKinematics> measurements = new ArrayList<>();
 
@@ -3394,8 +3141,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
             final BitSet inliers = mInliersData.getInliers();
             final int nSamples = mMeasurements.size();
 
-            final List<StandardDeviationFrameBodyKinematics> inlierMeasurements =
-                    new ArrayList<>();
+            final List<StandardDeviationFrameBodyKinematics> inlierMeasurements = new ArrayList<>();
             for (int i = 0; i < nSamples; i++) {
                 if (inliers.get(i)) {
                     // sample is inlier
@@ -3460,8 +3206,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      * @return converted value.
      */
     private static double convertAngularSpeed(final AngularSpeed angularSpeed) {
-        return convertAngularSpeed(angularSpeed.getValue().doubleValue(),
-                angularSpeed.getUnit());
+        return convertAngularSpeed(angularSpeed.getValue().doubleValue(), angularSpeed.getUnit());
     }
 
     /**

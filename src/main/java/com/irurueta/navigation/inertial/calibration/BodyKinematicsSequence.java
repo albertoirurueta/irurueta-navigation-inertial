@@ -19,10 +19,9 @@ import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,13 +38,13 @@ import java.util.Objects;
  *
  * @param <T> a type of {@link TimedBodyKinematics}.
  */
-public class BodyKinematicsSequence<T extends TimedBodyKinematics>
-        implements Serializable, Cloneable {
+public class BodyKinematicsSequence<T extends TimedBodyKinematics> implements Serializable, Cloneable {
 
     /**
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -143,16 +142,10 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      *                     Expressed in meters per squared second (m/s^2).
      */
     public BodyKinematicsSequence(
-            final double beforeMeanFx,
-            final double beforeMeanFy,
-            final double beforeMeanFz,
-            final double afterMeanFx,
-            final double afterMeanFy,
-            final double afterMeanFz) {
-        setBeforeMeanSpecificForceCoordinates(
-                beforeMeanFx, beforeMeanFy, beforeMeanFz);
-        setAfterMeanSpecificForceCoordinates(
-                afterMeanFx, afterMeanFy, afterMeanFz);
+            final double beforeMeanFx, final double beforeMeanFy, final double beforeMeanFz,
+            final double afterMeanFx, final double afterMeanFy, final double afterMeanFz) {
+        setBeforeMeanSpecificForceCoordinates(beforeMeanFx, beforeMeanFy, beforeMeanFz);
+        setAfterMeanSpecificForceCoordinates(afterMeanFx, afterMeanFy, afterMeanFz);
     }
 
     /**
@@ -185,13 +178,9 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
             final Acceleration afterMeanSpecificForceY,
             final Acceleration afterMeanSpecificForceZ) {
         setBeforeMeanSpecificForceCoordinates(
-                beforeMeanSpecificForceX,
-                beforeMeanSpecificForceY,
-                beforeMeanSpecificForceZ);
+                beforeMeanSpecificForceX, beforeMeanSpecificForceY, beforeMeanSpecificForceZ);
         setAfterMeanSpecificForceCoordinates(
-                afterMeanSpecificForceX,
-                afterMeanSpecificForceY,
-                afterMeanSpecificForceZ);
+                afterMeanSpecificForceX, afterMeanSpecificForceY, afterMeanSpecificForceZ);
     }
 
     /**
@@ -217,18 +206,11 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      *                     Expressed in meters per squared second (m/s^2).
      */
     public BodyKinematicsSequence(
-            final List<T> items,
-            final double beforeMeanFx,
-            final double beforeMeanFy,
-            final double beforeMeanFz,
-            final double afterMeanFx,
-            final double afterMeanFy,
-            final double afterMeanFz) {
+            final List<T> items, final double beforeMeanFx, final double beforeMeanFy, final double beforeMeanFz,
+            final double afterMeanFx, final double afterMeanFy, final double afterMeanFz) {
         this(items);
-        setBeforeMeanSpecificForceCoordinates(
-                beforeMeanFx, beforeMeanFy, beforeMeanFz);
-        setAfterMeanSpecificForceCoordinates(
-                afterMeanFx, afterMeanFy, afterMeanFz);
+        setBeforeMeanSpecificForceCoordinates(beforeMeanFx, beforeMeanFy, beforeMeanFz);
+        setAfterMeanSpecificForceCoordinates(afterMeanFx, afterMeanFy, afterMeanFz);
     }
 
     /**
@@ -265,13 +247,9 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
             final Acceleration afterMeanSpecificForceZ) {
         this(items);
         setBeforeMeanSpecificForceCoordinates(
-                beforeMeanSpecificForceX,
-                beforeMeanSpecificForceY,
-                beforeMeanSpecificForceZ);
+                beforeMeanSpecificForceX, beforeMeanSpecificForceY, beforeMeanSpecificForceZ);
         setAfterMeanSpecificForceCoordinates(
-                afterMeanSpecificForceX,
-                afterMeanSpecificForceY,
-                afterMeanSpecificForceZ);
+                afterMeanSpecificForceX, afterMeanSpecificForceY, afterMeanSpecificForceZ);
     }
 
     /**
@@ -279,8 +257,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      *
      * @param input instance to copy data from.
      */
-    public BodyKinematicsSequence(
-            final BodyKinematicsSequence<T> input) {
+    public BodyKinematicsSequence(final BodyKinematicsSequence<T> input) {
         copyFrom(input);
     }
 
@@ -301,13 +278,10 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
 
         if (mItems != null) {
             mSortedItems = new ArrayList<>(mItems);
-            Collections.sort(mSortedItems, new Comparator<T>() {
-                @Override
-                public int compare(final T o1, final T o2) {
-                    final double t1 = o1.getTimestampSeconds();
-                    final double t2 = o2.getTimestampSeconds();
-                    return Double.compare(t1, t2);
-                }
+            mSortedItems.sort((o1, o2) -> {
+                final double t1 = o1.getTimestampSeconds();
+                final double t2 = o2.getTimestampSeconds();
+                return Double.compare(t1, t2);
             });
 
             result.clear();
@@ -433,9 +407,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      * @param beforeMeanFz z-coordinate of mean specific force.
      */
     public void setBeforeMeanSpecificForceCoordinates(
-            final double beforeMeanFx,
-            final double beforeMeanFy,
-            final double beforeMeanFz) {
+            final double beforeMeanFx, final double beforeMeanFy, final double beforeMeanFz) {
         mBeforeMeanFx = beforeMeanFx;
         mBeforeMeanFy = beforeMeanFy;
         mBeforeMeanFz = beforeMeanFz;
@@ -459,8 +431,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      * @return x-coordinate of mean specific force.
      */
     public Acceleration getBeforeMeanSpecificForceX() {
-        return new Acceleration(mBeforeMeanFx,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mBeforeMeanFx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -469,8 +440,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      *
      * @param beforeMeanSpecificForceX x-coordinate of mean specific force.
      */
-    public void setBeforeMeanSpecificForceX(
-            final Acceleration beforeMeanSpecificForceX) {
+    public void setBeforeMeanSpecificForceX(final Acceleration beforeMeanSpecificForceX) {
         mBeforeMeanFx = convertAcceleration(beforeMeanSpecificForceX);
     }
 
@@ -492,8 +462,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      * @return y-coordinate of mean specific force.
      */
     public Acceleration getBeforeMeanSpecificForceY() {
-        return new Acceleration(mBeforeMeanFy,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mBeforeMeanFy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -502,8 +471,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      *
      * @param beforeMeanSpecificForceY y-coordinate of mean specific force.
      */
-    public void setBeforeMeanSpecificForceY(
-            final Acceleration beforeMeanSpecificForceY) {
+    public void setBeforeMeanSpecificForceY(final Acceleration beforeMeanSpecificForceY) {
         mBeforeMeanFy = convertAcceleration(beforeMeanSpecificForceY);
     }
 
@@ -525,8 +493,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      * @return z-coordinate of mean specific force.
      */
     public Acceleration getBeforeMeanSpecificForceZ() {
-        return new Acceleration(mBeforeMeanFz,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mBeforeMeanFz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -535,8 +502,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      *
      * @param beforeMeanSpecificForceZ z-coordinate of mean specific force.
      */
-    public void setBeforeMeanSpecificForceZ(
-            final Acceleration beforeMeanSpecificForceZ) {
+    public void setBeforeMeanSpecificForceZ(final Acceleration beforeMeanSpecificForceZ) {
         mBeforeMeanFz = convertAcceleration(beforeMeanSpecificForceZ);
     }
 
@@ -549,8 +515,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      * @param beforeMeanSpecificForceZ z-coordinate of mean specific force.
      */
     public void setBeforeMeanSpecificForceCoordinates(
-            final Acceleration beforeMeanSpecificForceX,
-            final Acceleration beforeMeanSpecificForceY,
+            final Acceleration beforeMeanSpecificForceX, final Acceleration beforeMeanSpecificForceY,
             final Acceleration beforeMeanSpecificForceZ) {
         setBeforeMeanSpecificForceX(beforeMeanSpecificForceX);
         setBeforeMeanSpecificForceY(beforeMeanSpecificForceY);
@@ -633,9 +598,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      * @param afterMeanFz z-coordinate of mean specific force.
      */
     public void setAfterMeanSpecificForceCoordinates(
-            final double afterMeanFx,
-            final double afterMeanFy,
-            final double afterMeanFz) {
+            final double afterMeanFx, final double afterMeanFy, final double afterMeanFz) {
         mAfterMeanFx = afterMeanFx;
         mAfterMeanFy = afterMeanFy;
         mAfterMeanFz = afterMeanFz;
@@ -669,8 +632,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      *
      * @param afterMeanSpecificForceX x-coordinate of mean specific force.
      */
-    public void setAfterMeanSpecificForceX(
-            final Acceleration afterMeanSpecificForceX) {
+    public void setAfterMeanSpecificForceX(final Acceleration afterMeanSpecificForceX) {
         mAfterMeanFx = convertAcceleration(afterMeanSpecificForceX);
     }
 
@@ -692,8 +654,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      * @return y-coordinate of mean specific force.
      */
     public Acceleration getAfterMeanSpecificForceY() {
-        return new Acceleration(mAfterMeanFy,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mAfterMeanFy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -702,8 +663,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      *
      * @param afterMeanSpecificForceY y-coordinate of mean specific force.
      */
-    public void setAfterMeanSpecificForceY(
-            final Acceleration afterMeanSpecificForceY) {
+    public void setAfterMeanSpecificForceY(final Acceleration afterMeanSpecificForceY) {
         mAfterMeanFy = convertAcceleration(afterMeanSpecificForceY);
     }
 
@@ -725,8 +685,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      * @return z-coordinate of mean specific force.
      */
     public Acceleration getAfterMeanSpecificForceZ() {
-        return new Acceleration(mAfterMeanFz,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mAfterMeanFz, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -735,8 +694,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      *
      * @param afterMeanSpecificForceZ z-coordinate of mean specific force.
      */
-    public void setAfterMeanSpecificForceZ(
-            final Acceleration afterMeanSpecificForceZ) {
+    public void setAfterMeanSpecificForceZ(final Acceleration afterMeanSpecificForceZ) {
         mAfterMeanFz = convertAcceleration(afterMeanSpecificForceZ);
     }
 
@@ -749,8 +707,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      * @param afterMeanSpecificForceZ z-coordinate of mean specific force.
      */
     public void setAfterMeanSpecificForceCoordinates(
-            final Acceleration afterMeanSpecificForceX,
-            final Acceleration afterMeanSpecificForceY,
+            final Acceleration afterMeanSpecificForceX, final Acceleration afterMeanSpecificForceY,
             final Acceleration afterMeanSpecificForceZ) {
         setAfterMeanSpecificForceX(afterMeanSpecificForceX);
         setAfterMeanSpecificForceY(afterMeanSpecificForceY);
@@ -841,8 +798,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
     @Override
     protected Object clone() throws CloneNotSupportedException {
         //noinspection unchecked
-        final BodyKinematicsSequence<T> result =
-                (BodyKinematicsSequence<T>) super.clone();
+        final BodyKinematicsSequence<T> result = (BodyKinematicsSequence<T>) super.clone();
         copyTo(result);
         return result;
     }
@@ -863,13 +819,11 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
         final ArrayList<T> result = new ArrayList<>();
         for (final T item : list) {
             if (item instanceof StandardDeviationTimedBodyKinematics) {
-                final StandardDeviationTimedBodyKinematics newItem =
-                        new StandardDeviationTimedBodyKinematics();
+                final StandardDeviationTimedBodyKinematics newItem = new StandardDeviationTimedBodyKinematics();
                 newItem.copyFrom(item);
                 result.add((T) newItem);
             } else {
-                final TimedBodyKinematics newItem =
-                        new TimedBodyKinematics(item);
+                final TimedBodyKinematics newItem = new TimedBodyKinematics(item);
                 result.add((T) newItem);
             }
         }
@@ -886,7 +840,6 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      */
     private static double convertAcceleration(final Acceleration acceleration) {
         return AccelerationConverter.convert(acceleration.getValue().doubleValue(),
-                acceleration.getUnit(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+                acceleration.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 }

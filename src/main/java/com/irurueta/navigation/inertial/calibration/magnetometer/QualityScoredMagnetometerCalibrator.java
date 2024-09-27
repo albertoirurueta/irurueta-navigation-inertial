@@ -21,8 +21,7 @@ import com.irurueta.navigation.LockedException;
  * Indicates that a magnetometer calibrator can accept quality scores for
  * each measurement being provided.
  */
-public interface QualityScoredMagnetometerCalibrator extends
-        MagnetometerCalibrator {
+public interface QualityScoredMagnetometerCalibrator extends MagnetometerCalibrator {
 
     /**
      * Returns quality scores corresponding to each measurement.

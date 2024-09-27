@@ -133,8 +133,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-    public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final boolean commonAxisUsed) {
+    public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(final boolean commonAxisUsed) {
         super(commonAxisUsed);
     }
 
@@ -145,8 +144,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final double[] initialHardIron) {
+    public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(final double[] initialHardIron) {
         super(initialHardIron);
     }
 
@@ -157,8 +155,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final Matrix initialHardIron) {
+    public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(final Matrix initialHardIron) {
         super(initialHardIron);
     }
 
@@ -205,8 +202,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -223,8 +219,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      * @param listener       listener to handle events raised by this calibrator.
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
     }
@@ -242,8 +237,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      *                                  not have length 3.
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] initialHardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] initialHardIron) {
         super(measurements, initialHardIron);
     }
 
@@ -261,8 +255,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      *                                  not have length 3.
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] initialHardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] initialHardIron,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(measurements, initialHardIron, listener);
     }
@@ -282,8 +275,8 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      *                                  not have length 3.
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] initialHardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] initialHardIron) {
         super(measurements, commonAxisUsed, initialHardIron);
     }
 
@@ -303,8 +296,8 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      *                                  not have length 3.
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] initialHardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] initialHardIron,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, initialHardIron, listener);
     }
@@ -322,8 +315,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      *                                  3x1.
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix initialHardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron) {
         super(measurements, initialHardIron);
     }
 
@@ -341,8 +333,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      *                                  3x1.
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix initialHardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(measurements, initialHardIron, listener);
     }
@@ -362,8 +353,8 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      *                                  3x1.
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron) {
         super(measurements, commonAxisUsed, initialHardIron);
     }
 
@@ -383,8 +374,8 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      *                                  3x1.
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, initialHardIron, listener);
     }
@@ -405,8 +396,8 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      *                                  3x3.
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix initialHardIron, final Matrix initialMm) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron,
+            final Matrix initialMm) {
         super(measurements, initialHardIron, initialMm);
     }
 
@@ -427,9 +418,8 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      *                                  3x3.
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix initialHardIron, final Matrix initialMm,
-            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron,
+            final Matrix initialMm, final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(measurements, initialHardIron, initialMm, listener);
     }
 
@@ -451,9 +441,8 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      *                                  3x3.
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron,
-            final Matrix initialMm) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron, final Matrix initialMm) {
         super(measurements, commonAxisUsed, initialHardIron, initialMm);
     }
 
@@ -477,8 +466,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron,
-            final Matrix initialMm,
+            final boolean commonAxisUsed, final Matrix initialHardIron, final Matrix initialMm,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, initialHardIron, initialMm, listener);
     }
@@ -533,8 +521,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final boolean commonAxisUsed) {
+            final Double groundTruthMagneticFluxDensityNorm, final boolean commonAxisUsed) {
         super(groundTruthMagneticFluxDensityNorm, commonAxisUsed);
     }
 
@@ -548,8 +535,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      *                                  not have length 3.
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final double[] initialHardIron) {
+            final Double groundTruthMagneticFluxDensityNorm, final double[] initialHardIron) {
         super(groundTruthMagneticFluxDensityNorm, initialHardIron);
     }
 
@@ -563,8 +549,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      *                                  3x1.
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final Matrix initialHardIron) {
+            final Double groundTruthMagneticFluxDensityNorm, final Matrix initialHardIron) {
         super(groundTruthMagneticFluxDensityNorm, initialHardIron);
     }
 
@@ -581,8 +566,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      *                                  3x3.
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final Matrix initialHardIron, final Matrix initialMm) {
+            final Double groundTruthMagneticFluxDensityNorm, final Matrix initialHardIron, final Matrix initialMm) {
         super(groundTruthMagneticFluxDensityNorm, initialHardIron, initialMm);
     }
 
@@ -620,8 +604,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
     }
 
@@ -641,8 +624,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
     }
@@ -662,8 +644,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] initialHardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] initialHardIron) {
         super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron);
     }
 
@@ -683,8 +664,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] initialHardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] initialHardIron,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, listener);
     }
@@ -706,8 +686,8 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] initialHardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] initialHardIron) {
         super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron);
     }
 
@@ -729,8 +709,8 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] initialHardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] initialHardIron,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron, listener);
     }
@@ -750,8 +730,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix initialHardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron) {
         super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron);
     }
 
@@ -771,8 +750,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix initialHardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, listener);
     }
@@ -794,8 +772,8 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron) {
         super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron);
     }
 
@@ -817,8 +795,8 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron, listener);
     }
@@ -841,8 +819,8 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix initialHardIron, final Matrix initialMm) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron,
+            final Matrix initialMm) {
         super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, initialMm);
     }
 
@@ -865,9 +843,8 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix initialHardIron, final Matrix initialMm,
-            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron,
+            final Matrix initialMm, final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, initialMm, listener);
     }
 
@@ -891,9 +868,8 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron,
-            final Matrix initialMm) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron, final Matrix initialMm) {
         super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron, initialMm);
     }
 
@@ -918,9 +894,8 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      */
     public RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron,
-            final Matrix initialMm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron, final Matrix initialMm,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron, initialMm, listener);
     }
@@ -972,8 +947,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      *                              false if inliers only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers)
-            throws LockedException {
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -997,8 +971,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      *                                false if residuals only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals)
-            throws LockedException {
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1015,8 +988,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
      */
     @SuppressWarnings("DuplicatedCode")
     @Override
-    public void calibrate() throws LockedException, NotReadyException,
-            CalibrationException {
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1026,7 +998,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
 
         final RANSACRobustEstimator<PreliminaryResult> innerEstimator =
                 new RANSACRobustEstimator<>(
-                        new RANSACRobustEstimatorListener<PreliminaryResult>() {
+                        new RANSACRobustEstimatorListener<>() {
                             @Override
                             public double getThreshold() {
                                 return mThreshold;
@@ -1044,15 +1016,12 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
 
                             @Override
                             public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<PreliminaryResult> solutions) {
+                                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                                 computePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override
-                            public double computeResidual(
-                                    final PreliminaryResult currentEstimation,
-                                    final int i) {
+                            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
                                 return computeError(mMeasurements.get(i), currentEstimation);
                             }
 
@@ -1073,8 +1042,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
 
                             @Override
                             public void onEstimateNextIteration(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final int iteration) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                                 if (mListener != null) {
                                     mListener.onCalibrateNextIteration(
                                             RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator.this,
@@ -1084,8 +1052,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
 
                             @Override
                             public void onEstimateProgressChange(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final float progress) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                                 if (mListener != null) {
                                     mListener.onCalibrateProgressChange(
                                             RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator.this,
@@ -1103,10 +1070,8 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exte
 
             mInliersData = null;
 
-            innerEstimator.setComputeAndKeepInliersEnabled(
-                    mComputeAndKeepInliers || mRefineResult);
-            innerEstimator.setComputeAndKeepResidualsEnabled(
-                    mComputeAndKeepResiduals || mRefineResult);
+            innerEstimator.setComputeAndKeepInliersEnabled(mComputeAndKeepInliers || mRefineResult);
+            innerEstimator.setComputeAndKeepResidualsEnabled(mComputeAndKeepResiduals || mRefineResult);
             innerEstimator.setConfidence(mConfidence);
             innerEstimator.setMaxIterations(mMaxIterations);
             innerEstimator.setProgressDelta(mProgressDelta);

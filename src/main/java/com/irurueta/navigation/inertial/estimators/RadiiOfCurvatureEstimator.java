@@ -25,7 +25,9 @@ import com.irurueta.units.AngleUnit;
  * Calculates radii of curvature at a given latitude.
  * This implementation is based on the equations defined in "Principles of GNSS, Inertial, and Multisensor
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
- * https://github.com/ymjdz/MATLAB-Codes/blob/master/Radii_of_curvature.m
+ * <a href="https://github.com/ymjdz/MATLAB-Codes/blob/master/Radii_of_curvature.m">
+ *     https://github.com/ymjdz/MATLAB-Codes/blob/master/Radii_of_curvature.m
+ * </a>
  */
 public class RadiiOfCurvatureEstimator {
     /**
@@ -91,8 +93,8 @@ public class RadiiOfCurvatureEstimator {
      * @param latitude geodetic latitude expressed in radians (rad).
      * @param result   instance where estimated radii of curvature will be stored.
      */
-    public static void estimateRadiiOfCurvature(final double latitude,
-                                                final RadiiOfCurvature result) {
+    public static void estimateRadiiOfCurvature(
+            final double latitude, final RadiiOfCurvature result) {
         final double tmp = 1.0 - Math.pow(EARTH_ECCENTRICITY * Math.sin(latitude), 2.0);
 
         // Calculate meridian radius of curvature using (2.105)
@@ -126,11 +128,9 @@ public class RadiiOfCurvatureEstimator {
      * @param latitude geodetic latitude.
      * @param result   instance where estimated radii of curvature will be stored.
      */
-    public static void estimateRadiiOfCurvature(final Angle latitude,
-                                                final RadiiOfCurvature result) {
+    public static void estimateRadiiOfCurvature(final Angle latitude, final RadiiOfCurvature result) {
         estimateRadiiOfCurvature(AngleConverter.convert(
-                latitude.getValue().doubleValue(), latitude.getUnit(), AngleUnit.RADIANS),
-                result);
+                latitude.getValue().doubleValue(), latitude.getUnit(), AngleUnit.RADIANS), result);
     }
 
     /**

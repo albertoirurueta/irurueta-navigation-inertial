@@ -24,8 +24,7 @@ import java.util.List;
  * Defines a magnetometer calibrator using ordered lists of
  * {@link StandardDeviationBodyMagneticFluxDensity} measurements.
  */
-public interface OrderedStandardDeviationBodyMagneticFluxDensityMagnetometerCalibrator extends
-        MagnetometerCalibrator {
+public interface OrderedStandardDeviationBodyMagneticFluxDensityMagnetometerCalibrator extends MagnetometerCalibrator {
 
     /**
      * Gets collection of body magnetic flux density measurements taken
@@ -47,7 +46,5 @@ public interface OrderedStandardDeviationBodyMagneticFluxDensityMagnetometerCali
      *                     with unknown orientations.
      * @throws LockedException if calibrator is currently running.
      */
-    void setMeasurements(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements)
-            throws LockedException;
+    void setMeasurements(final List<StandardDeviationBodyMagneticFluxDensity> measurements) throws LockedException;
 }

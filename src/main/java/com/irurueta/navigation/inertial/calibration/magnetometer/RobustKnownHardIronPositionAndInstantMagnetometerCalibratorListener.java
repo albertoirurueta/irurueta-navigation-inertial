@@ -27,16 +27,14 @@ public interface RobustKnownHardIronPositionAndInstantMagnetometerCalibratorList
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateStart(
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator);
+    void onCalibrateStart(final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator);
 
     /**
      * Called when calibration ends.
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateEnd(
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator);
+    void onCalibrateEnd(final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator);
 
     /**
      * Called when calibrator iterates to refine a possible solution.
@@ -45,8 +43,7 @@ public interface RobustKnownHardIronPositionAndInstantMagnetometerCalibratorList
      * @param iteration  current iteration.
      */
     void onCalibrateNextIteration(
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator,
-            final int iteration);
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator, final int iteration);
 
     /**
      * Called when calibration progress changes significantly.
@@ -55,6 +52,5 @@ public interface RobustKnownHardIronPositionAndInstantMagnetometerCalibratorList
      * @param progress   progress of calibration expressed as a value between 0.0 and 1.0.
      */
     void onCalibrateProgressChange(
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator,
-            final float progress);
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator, final float progress);
 }

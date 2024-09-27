@@ -45,8 +45,7 @@ import com.irurueta.units.AngularSpeedUnit;
  */
 public class AccumulatedAngularSpeedTriadNoiseEstimator extends
         AccumulatedTriadNoiseEstimator<AngularSpeedUnit, AngularSpeed, AngularSpeedTriad,
-                AccumulatedAngularSpeedTriadNoiseEstimator,
-                AccumulatedAngularSpeedTriadNoiseEstimatorListener>
+                AccumulatedAngularSpeedTriadNoiseEstimator, AccumulatedAngularSpeedTriadNoiseEstimatorListener>
         implements GyroscopeNoiseRootPsdSource {
 
     /**
@@ -77,8 +76,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimator extends
      */
     @Override
     protected AngularSpeedTriad createTriad(
-            final double valueX, final double valueY, final double valueZ,
-            final AngularSpeedUnit unit) {
+            final double valueX, final double valueY, final double valueZ, final AngularSpeedUnit unit) {
         return new AngularSpeedTriad(unit, valueX, valueY, valueZ);
     }
 

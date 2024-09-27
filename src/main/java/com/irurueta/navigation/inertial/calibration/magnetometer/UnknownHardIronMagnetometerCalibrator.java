@@ -63,8 +63,7 @@ public interface UnknownHardIronMagnetometerCalibrator {
      * @return true if result was updated, false otherwise.
      * @throws WrongSizeException if provided result instance has invalid size.
      */
-    boolean getEstimatedHardIronAsMatrix(final Matrix result)
-            throws WrongSizeException;
+    boolean getEstimatedHardIronAsMatrix(final Matrix result) throws WrongSizeException;
 
     /**
      * Gets x coordinate of estimated magnetometer bias expressed in

@@ -22,6 +22,7 @@ import com.irurueta.units.Speed;
 import com.irurueta.units.SpeedConverter;
 import com.irurueta.units.SpeedUnit;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -35,6 +36,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -110,17 +112,12 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param rangeRateSD           pseudo-range rate measurement noise SD (Standard
      *                              Deviation) expressed in meters per second (m/s).
      */
-    public INSTightlyCoupledKalmanConfig(final double gyroNoisePSD,
-                                         final double accelerometerNoisePSD,
-                                         final double accelerometerBiasPSD,
-                                         final double gyroBiasPSD,
-                                         final double clockFrequencyPSD,
-                                         final double clockPhasePSD,
-                                         final double pseudoRangeSD,
-                                         final double rangeRateSD) {
-        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
-                gyroBiasPSD, clockFrequencyPSD, clockPhasePSD, pseudoRangeSD,
-                rangeRateSD);
+    public INSTightlyCoupledKalmanConfig(
+            final double gyroNoisePSD, final double accelerometerNoisePSD, final double accelerometerBiasPSD,
+            final double gyroBiasPSD, final double clockFrequencyPSD, final double clockPhasePSD,
+            final double pseudoRangeSD, final double rangeRateSD) {
+        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
+                clockPhasePSD, pseudoRangeSD, rangeRateSD);
     }
 
     /**
@@ -144,17 +141,12 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param rangeRateSD           pseudo-range rate measurement noise SD (Standard
      *                              Deviation) expressed in meters per second (m/s).
      */
-    public INSTightlyCoupledKalmanConfig(final double gyroNoisePSD,
-                                         final double accelerometerNoisePSD,
-                                         final double accelerometerBiasPSD,
-                                         final double gyroBiasPSD,
-                                         final double clockFrequencyPSD,
-                                         final double clockPhasePSD,
-                                         final Distance pseudoRangeSD,
-                                         final Speed rangeRateSD) {
-        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
-                gyroBiasPSD, clockFrequencyPSD, clockPhasePSD, pseudoRangeSD,
-                rangeRateSD);
+    public INSTightlyCoupledKalmanConfig(
+            final double gyroNoisePSD, final double accelerometerNoisePSD, final double accelerometerBiasPSD,
+            final double gyroBiasPSD, final double clockFrequencyPSD, final double clockPhasePSD,
+            final Distance pseudoRangeSD, final Speed rangeRateSD) {
+        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
+                clockPhasePSD, pseudoRangeSD, rangeRateSD);
     }
 
     /**
@@ -346,14 +338,10 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param rangeRateSD           pseudo-range rate measurement noise SD (Standard
      *                              Deviation) expressed in meters per second (m/s).
      */
-    public void setValues(final double gyroNoisePSD,
-                          final double accelerometerNoisePSD,
-                          final double accelerometerBiasPSD,
-                          final double gyroBiasPSD,
-                          final double clockFrequencyPSD,
-                          final double clockPhasePSD,
-                          final double pseudoRangeSD,
-                          final double rangeRateSD) {
+    public void setValues(
+            final double gyroNoisePSD, final double accelerometerNoisePSD, final double accelerometerBiasPSD,
+            final double gyroBiasPSD, final double clockFrequencyPSD, final double clockPhasePSD,
+            final double pseudoRangeSD, final double rangeRateSD) {
         mGyroNoisePSD = gyroNoisePSD;
         mAccelerometerNoisePSD = accelerometerNoisePSD;
         mAccelerometerBiasPSD = accelerometerBiasPSD;
@@ -389,9 +377,8 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param pseudoRangeSD pseudo-range measurement noise SD.
      */
     public void setPseudoRangeSD(final Distance pseudoRangeSD) {
-        mPseudoRangeSD = DistanceConverter.convert(
-                pseudoRangeSD.getValue().doubleValue(),
-                pseudoRangeSD.getUnit(), DistanceUnit.METER);
+        mPseudoRangeSD = DistanceConverter.convert(pseudoRangeSD.getValue().doubleValue(), pseudoRangeSD.getUnit(),
+                DistanceUnit.METER);
     }
 
     /**
@@ -420,8 +407,8 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param rangeRateSD pseudo-range rate measurement noise SD.
      */
     public void setRangeRateSD(final Speed rangeRateSD) {
-        mRangeRateSD = SpeedConverter.convert(rangeRateSD.getValue().doubleValue(),
-                rangeRateSD.getUnit(), SpeedUnit.METERS_PER_SECOND);
+        mRangeRateSD = SpeedConverter.convert(rangeRateSD.getValue().doubleValue(), rangeRateSD.getUnit(),
+                SpeedUnit.METERS_PER_SECOND);
     }
 
     /**
@@ -445,14 +432,10 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param rangeRateSD           pseudo-range rate measurement noise SD (Standard
      *                              Deviation) expressed in meters per second (m/s).
      */
-    public void setValues(final double gyroNoisePSD,
-                          final double accelerometerNoisePSD,
-                          final double accelerometerBiasPSD,
-                          final double gyroBiasPSD,
-                          final double clockFrequencyPSD,
-                          final double clockPhasePSD,
-                          final Distance pseudoRangeSD,
-                          final Speed rangeRateSD) {
+    public void setValues(
+            final double gyroNoisePSD, final double accelerometerNoisePSD, final double accelerometerBiasPSD,
+            final double gyroBiasPSD, final double clockFrequencyPSD, final double clockPhasePSD,
+            final Distance pseudoRangeSD, final Speed rangeRateSD) {
         mGyroNoisePSD = gyroNoisePSD;
         mAccelerometerNoisePSD = accelerometerNoisePSD;
         mAccelerometerBiasPSD = accelerometerBiasPSD;
@@ -503,9 +486,8 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(mGyroNoisePSD, mAccelerometerNoisePSD,
-                mAccelerometerBiasPSD, mGyroBiasPSD, mClockFrequencyPSD,
-                mClockPhasePSD, mPseudoRangeSD, mRangeRateSD);
+        return Objects.hash(mGyroNoisePSD, mAccelerometerNoisePSD, mAccelerometerBiasPSD, mGyroBiasPSD,
+                mClockFrequencyPSD, mClockPhasePSD, mPseudoRangeSD, mRangeRateSD);
     }
 
     /**
@@ -546,8 +528,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return true if both instances are considered to be equal (up to provided threshold),
      * false otherwise.
      */
-    public boolean equals(final INSTightlyCoupledKalmanConfig other,
-                          final double threshold) {
+    public boolean equals(final INSTightlyCoupledKalmanConfig other, final double threshold) {
         if (other == null) {
             return false;
         }
@@ -570,8 +551,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final INSTightlyCoupledKalmanConfig result =
-                (INSTightlyCoupledKalmanConfig) super.clone();
+        final INSTightlyCoupledKalmanConfig result = (INSTightlyCoupledKalmanConfig) super.clone();
         copyTo(result);
         return result;
     }

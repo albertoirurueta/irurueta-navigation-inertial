@@ -50,8 +50,7 @@ import java.util.List;
  * - ftrue is ground-truth specific force.
  * - w is measurement noise.
  */
-public class LMedSRobustKnownFrameAccelerometerCalibrator extends
-        RobustKnownFrameAccelerometerCalibrator {
+public class LMedSRobustKnownFrameAccelerometerCalibrator extends RobustKnownFrameAccelerometerCalibrator {
 
     /**
      * Default value to be used for stop threshold. Stop threshold can be used to
@@ -156,8 +155,7 @@ public class LMedSRobustKnownFrameAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public LMedSRobustKnownFrameAccelerometerCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownFrameAccelerometerCalibratorListener listener) {
         super(commonAxisUsed, listener);
     }
 
@@ -171,8 +169,7 @@ public class LMedSRobustKnownFrameAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public LMedSRobustKnownFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -187,8 +184,7 @@ public class LMedSRobustKnownFrameAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public LMedSRobustKnownFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
     }
@@ -267,7 +263,7 @@ public class LMedSRobustKnownFrameAccelerometerCalibrator extends
         }
 
         final LMedSRobustEstimator<PreliminaryResult> innerEstimator =
-                new LMedSRobustEstimator<>(new LMedSRobustEstimatorListener<PreliminaryResult>() {
+                new LMedSRobustEstimator<>(new LMedSRobustEstimatorListener<>() {
                     @Override
                     public int getTotalSamples() {
                         return mMeasurements.size();
@@ -280,8 +276,7 @@ public class LMedSRobustKnownFrameAccelerometerCalibrator extends
 
                     @Override
                     public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List<PreliminaryResult> solutions) {
+                            final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                         computePreliminarySolutions(samplesIndices, solutions);
                     }
 
@@ -297,36 +292,30 @@ public class LMedSRobustKnownFrameAccelerometerCalibrator extends
                     }
 
                     @Override
-                    public void onEstimateStart(
-                            final RobustEstimator<PreliminaryResult> estimator) {
+                    public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                         // no action needed
                     }
 
                     @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator<PreliminaryResult> estimator) {
+                    public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                         // no action needed
                     }
 
                     @Override
                     public void onEstimateNextIteration(
-                            final RobustEstimator<PreliminaryResult> estimator,
-                            final int iteration) {
+                            final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                         if (mListener != null) {
                             mListener.onCalibrateNextIteration(
-                                    LMedSRobustKnownFrameAccelerometerCalibrator.this,
-                                    iteration);
+                                    LMedSRobustKnownFrameAccelerometerCalibrator.this, iteration);
                         }
                     }
 
                     @Override
                     public void onEstimateProgressChange(
-                            final RobustEstimator<PreliminaryResult> estimator,
-                            final float progress) {
+                            final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                         if (mListener != null) {
                             mListener.onCalibrateProgressChange(
-                                    LMedSRobustKnownFrameAccelerometerCalibrator.this,
-                                    progress);
+                                    LMedSRobustKnownFrameAccelerometerCalibrator.this, progress);
                         }
                     }
                 });
@@ -370,7 +359,7 @@ public class LMedSRobustKnownFrameAccelerometerCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.LMedS;
+        return RobustEstimatorMethod.LMEDS;
     }
 
     /**

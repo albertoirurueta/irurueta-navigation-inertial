@@ -15,7 +15,6 @@
  */
 package com.irurueta.navigation.inertial;
 
-import com.irurueta.navigation.inertial.calibration.BodyKinematicsSequence;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Distance;
 import com.irurueta.units.DistanceUnit;
@@ -42,14 +41,14 @@ public class INSTightlyCoupledKalmanConfigTest {
         INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
 
         // check default values
-        assertEquals(config.getGyroNoisePSD(), 0.0, 0.0);
-        assertEquals(config.getAccelerometerNoisePSD(), 0.0, 0.0);
-        assertEquals(config.getAccelerometerBiasPSD(), 0.0, 0.0);
-        assertEquals(config.getGyroBiasPSD(), 0.0, 0.0);
-        assertEquals(config.getClockFrequencyPSD(), 0.0, 0.0);
-        assertEquals(config.getClockPhasePSD(), 0.0, 0.0);
-        assertEquals(config.getPseudoRangeSD(), 0.0, 0.0);
-        assertEquals(config.getRangeRateSD(), 0.0, 0.0);
+        assertEquals(0.0, config.getGyroNoisePSD(), 0.0);
+        assertEquals(0.0, config.getAccelerometerNoisePSD(), 0.0);
+        assertEquals(0.0, config.getAccelerometerBiasPSD(), 0.0);
+        assertEquals(0.0, config.getGyroBiasPSD(), 0.0);
+        assertEquals(0.0, config.getClockFrequencyPSD(), 0.0);
+        assertEquals(0.0, config.getClockPhasePSD(), 0.0);
+        assertEquals(0.0, config.getPseudoRangeSD(), 0.0);
+        assertEquals(0.0, config.getRangeRateSD(), 0.0);
 
         // test constructor with values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -62,65 +61,56 @@ public class INSTightlyCoupledKalmanConfigTest {
         final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        config = new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
-                accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
-                pseudoRangeSD, rangeRateSD);
+        config = new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
+                gyroBiasPSD, clockFrequencyPSD, clockPhasePSD, pseudoRangeSD, rangeRateSD);
 
         // check default values
-        assertEquals(config.getGyroNoisePSD(), gyroNoisePSD, 0.0);
-        assertEquals(config.getAccelerometerNoisePSD(), accelerometerNoisePSD,
-                0.0);
-        assertEquals(config.getAccelerometerBiasPSD(), accelerometerBiasPSD, 0.0);
-        assertEquals(config.getGyroBiasPSD(), gyroBiasPSD, 0.0);
-        assertEquals(config.getClockFrequencyPSD(), clockFrequencyPSD, 0.0);
-        assertEquals(config.getClockPhasePSD(), clockPhasePSD, 0.0);
-        assertEquals(config.getPseudoRangeSD(), pseudoRangeSD, 0.0);
-        assertEquals(config.getRangeRateSD(), rangeRateSD, 0.0);
+        assertEquals(gyroNoisePSD, config.getGyroNoisePSD(), 0.0);
+        assertEquals(accelerometerNoisePSD, config.getAccelerometerNoisePSD(), 0.0);
+        assertEquals(accelerometerBiasPSD, config.getAccelerometerBiasPSD(), 0.0);
+        assertEquals(gyroBiasPSD, config.getGyroBiasPSD(), 0.0);
+        assertEquals(clockFrequencyPSD, config.getClockFrequencyPSD(), 0.0);
+        assertEquals(clockPhasePSD, config.getClockPhasePSD(), 0.0);
+        assertEquals(pseudoRangeSD, config.getPseudoRangeSD(), 0.0);
+        assertEquals(rangeRateSD, config.getRangeRateSD(), 0.0);
 
         // test constructor with values
-        final Distance pseudoRangeSDDistance = new Distance(pseudoRangeSD,
-                DistanceUnit.METER);
-        final Speed rangeRateSDSpeed = new Speed(rangeRateSD,
-                SpeedUnit.METERS_PER_SECOND);
+        final Distance pseudoRangeSDDistance = new Distance(pseudoRangeSD, DistanceUnit.METER);
+        final Speed rangeRateSDSpeed = new Speed(rangeRateSD, SpeedUnit.METERS_PER_SECOND);
 
-        config = new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
-                accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
-                pseudoRangeSDDistance, rangeRateSDSpeed);
+        config = new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
+                gyroBiasPSD, clockFrequencyPSD, clockPhasePSD, pseudoRangeSDDistance, rangeRateSDSpeed);
 
         // check default values
-        assertEquals(config.getGyroNoisePSD(), gyroNoisePSD, 0.0);
-        assertEquals(config.getAccelerometerNoisePSD(), accelerometerNoisePSD,
-                0.0);
-        assertEquals(config.getAccelerometerBiasPSD(), accelerometerBiasPSD, 0.0);
-        assertEquals(config.getGyroBiasPSD(), gyroBiasPSD, 0.0);
-        assertEquals(config.getClockFrequencyPSD(), clockFrequencyPSD, 0.0);
-        assertEquals(config.getClockPhasePSD(), clockPhasePSD, 0.0);
-        assertEquals(config.getPseudoRangeSD(), pseudoRangeSD, 0.0);
-        assertEquals(config.getRangeRateSD(), rangeRateSD, 0.0);
+        assertEquals(gyroNoisePSD, config.getGyroNoisePSD(), 0.0);
+        assertEquals(accelerometerNoisePSD, config.getAccelerometerNoisePSD(), 0.0);
+        assertEquals(accelerometerBiasPSD, config.getAccelerometerBiasPSD(), 0.0);
+        assertEquals(gyroBiasPSD, config.getGyroBiasPSD(), 0.0);
+        assertEquals(clockFrequencyPSD, config.getClockFrequencyPSD(), 0.0);
+        assertEquals(clockPhasePSD, config.getClockPhasePSD(), 0.0);
+        assertEquals(pseudoRangeSD, config.getPseudoRangeSD(), 0.0);
+        assertEquals(rangeRateSD, config.getRangeRateSD(), 0.0);
 
         // test copy constructor
-        final INSTightlyCoupledKalmanConfig config2 =
-                new INSTightlyCoupledKalmanConfig(config);
+        final INSTightlyCoupledKalmanConfig config2 = new INSTightlyCoupledKalmanConfig(config);
 
         // check default values
-        assertEquals(config2.getGyroNoisePSD(), gyroNoisePSD, 0.0);
-        assertEquals(config2.getAccelerometerNoisePSD(), accelerometerNoisePSD,
-                0.0);
-        assertEquals(config2.getAccelerometerBiasPSD(), accelerometerBiasPSD, 0.0);
-        assertEquals(config2.getGyroBiasPSD(), gyroBiasPSD, 0.0);
-        assertEquals(config2.getClockFrequencyPSD(), clockFrequencyPSD, 0.0);
-        assertEquals(config2.getClockPhasePSD(), clockPhasePSD, 0.0);
-        assertEquals(config2.getPseudoRangeSD(), pseudoRangeSD, 0.0);
-        assertEquals(config2.getRangeRateSD(), rangeRateSD, 0.0);
+        assertEquals(gyroNoisePSD, config2.getGyroNoisePSD(), 0.0);
+        assertEquals(accelerometerNoisePSD, config2.getAccelerometerNoisePSD(), 0.0);
+        assertEquals(accelerometerBiasPSD, config2.getAccelerometerBiasPSD(), 0.0);
+        assertEquals(gyroBiasPSD, config2.getGyroBiasPSD(), 0.0);
+        assertEquals(clockFrequencyPSD, config2.getClockFrequencyPSD(), 0.0);
+        assertEquals(clockPhasePSD, config2.getClockPhasePSD(), 0.0);
+        assertEquals(pseudoRangeSD, config2.getPseudoRangeSD(), 0.0);
+        assertEquals(rangeRateSD, config2.getRangeRateSD(), 0.0);
     }
 
     @Test
     public void testGetSetGyroNoisePSD() {
-        final INSTightlyCoupledKalmanConfig config =
-                new INSTightlyCoupledKalmanConfig();
+        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
-        assertEquals(config.getGyroNoisePSD(), 0.0, 0.0);
+        assertEquals(0.0, config.getGyroNoisePSD(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -134,51 +124,44 @@ public class INSTightlyCoupledKalmanConfigTest {
 
     @Test
     public void testGetSetAccelerometerNoisePSD() {
-        final INSTightlyCoupledKalmanConfig config =
-                new INSTightlyCoupledKalmanConfig();
+        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
-        assertEquals(config.getAccelerometerNoisePSD(), 0.0, 0.0);
+        assertEquals(0.0, config.getAccelerometerNoisePSD(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double accelerometerNoisePSD =
-                randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         config.setAccelerometerNoisePSD(accelerometerNoisePSD);
 
         // check
-        assertEquals(accelerometerNoisePSD, config.getAccelerometerNoisePSD(),
-                0.0);
+        assertEquals(accelerometerNoisePSD, config.getAccelerometerNoisePSD(), 0.0);
     }
 
     @Test
     public void testGetSetAccelerometerBiasPSD() {
-        final INSTightlyCoupledKalmanConfig config =
-                new INSTightlyCoupledKalmanConfig();
+        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
-        assertEquals(config.getAccelerometerBiasPSD(), 0.0, 0.0);
+        assertEquals(0.0, config.getAccelerometerBiasPSD(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double accelerometerBiasPSD =
-                randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         config.setAccelerometerBiasPSD(accelerometerBiasPSD);
 
         // check
-        assertEquals(accelerometerBiasPSD, config.getAccelerometerBiasPSD(),
-                0.0);
+        assertEquals(accelerometerBiasPSD, config.getAccelerometerBiasPSD(), 0.0);
     }
 
     @Test
     public void testGetSetGyroBiasPSD() {
-        final INSTightlyCoupledKalmanConfig config =
-                new INSTightlyCoupledKalmanConfig();
+        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
-        assertEquals(config.getGyroBiasPSD(), 0.0, 0.0);
+        assertEquals(0.0, config.getGyroBiasPSD(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -192,11 +175,10 @@ public class INSTightlyCoupledKalmanConfigTest {
 
     @Test
     public void testGetSetClockFrequencyPSD() {
-        final INSTightlyCoupledKalmanConfig config =
-                new INSTightlyCoupledKalmanConfig();
+        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
-        assertEquals(config.getClockFrequencyPSD(), 0.0, 0.0);
+        assertEquals(0.0, config.getClockFrequencyPSD(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -210,11 +192,10 @@ public class INSTightlyCoupledKalmanConfigTest {
 
     @Test
     public void testGetSetClockPhasePSD() {
-        final INSTightlyCoupledKalmanConfig config =
-                new INSTightlyCoupledKalmanConfig();
+        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
-        assertEquals(config.getClockPhasePSD(), 0.0, 0.0);
+        assertEquals(0.0, config.getClockPhasePSD(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -228,11 +209,10 @@ public class INSTightlyCoupledKalmanConfigTest {
 
     @Test
     public void testGetSetPseudoRangeSD() {
-        final INSTightlyCoupledKalmanConfig config =
-                new INSTightlyCoupledKalmanConfig();
+        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
-        assertEquals(config.getPseudoRangeSD(), 0.0, 0.0);
+        assertEquals(0.0, config.getPseudoRangeSD(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -246,11 +226,10 @@ public class INSTightlyCoupledKalmanConfigTest {
 
     @Test
     public void testGetSetRangeRateSD() {
-        final INSTightlyCoupledKalmanConfig config =
-                new INSTightlyCoupledKalmanConfig();
+        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
-        assertEquals(config.getRangeRateSD(), 0.0, 0.0);
+        assertEquals(0.0, config.getRangeRateSD(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -264,18 +243,17 @@ public class INSTightlyCoupledKalmanConfigTest {
 
     @Test
     public void testSetValues() {
-        final INSTightlyCoupledKalmanConfig config =
-                new INSTightlyCoupledKalmanConfig();
+        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
 
         // check default values
-        assertEquals(config.getGyroNoisePSD(), 0.0, 0.0);
-        assertEquals(config.getAccelerometerNoisePSD(), 0.0, 0.0);
-        assertEquals(config.getAccelerometerBiasPSD(), 0.0, 0.0);
-        assertEquals(config.getGyroBiasPSD(), 0.0, 0.0);
-        assertEquals(config.getClockFrequencyPSD(), 0.0, 0.0);
-        assertEquals(config.getClockPhasePSD(), 0.0, 0.0);
-        assertEquals(config.getPseudoRangeSD(), 0.0, 0.0);
-        assertEquals(config.getRangeRateSD(), 0.0, 0.0);
+        assertEquals(0.0, config.getGyroNoisePSD(), 0.0);
+        assertEquals(0.0, config.getAccelerometerNoisePSD(), 0.0);
+        assertEquals(0.0, config.getAccelerometerBiasPSD(), 0.0);
+        assertEquals(0.0, config.getGyroBiasPSD(), 0.0);
+        assertEquals(0.0, config.getClockFrequencyPSD(), 0.0);
+        assertEquals(0.0, config.getClockPhasePSD(), 0.0);
+        assertEquals(0.0, config.getPseudoRangeSD(), 0.0);
+        assertEquals(0.0, config.getRangeRateSD(), 0.0);
 
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -288,32 +266,29 @@ public class INSTightlyCoupledKalmanConfigTest {
         final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        config.setValues(gyroNoisePSD, accelerometerNoisePSD,
-                accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
+        config.setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
                 clockPhasePSD, pseudoRangeSD, rangeRateSD);
 
         // check
-        assertEquals(config.getGyroNoisePSD(), gyroNoisePSD, 0.0);
-        assertEquals(config.getAccelerometerNoisePSD(), accelerometerNoisePSD,
-                0.0);
-        assertEquals(config.getAccelerometerBiasPSD(), accelerometerBiasPSD, 0.0);
-        assertEquals(config.getGyroBiasPSD(), gyroBiasPSD, 0.0);
-        assertEquals(config.getClockFrequencyPSD(), clockFrequencyPSD, 0.0);
-        assertEquals(config.getClockPhasePSD(), clockPhasePSD, 0.0);
-        assertEquals(config.getPseudoRangeSD(), pseudoRangeSD, 0.0);
-        assertEquals(config.getRangeRateSD(), rangeRateSD, 0.0);
+        assertEquals(gyroNoisePSD, config.getGyroNoisePSD(), 0.0);
+        assertEquals(accelerometerNoisePSD, config.getAccelerometerNoisePSD(), 0.0);
+        assertEquals(accelerometerBiasPSD, config.getAccelerometerBiasPSD(), 0.0);
+        assertEquals(gyroBiasPSD, config.getGyroBiasPSD(), 0.0);
+        assertEquals(clockFrequencyPSD, config.getClockFrequencyPSD(), 0.0);
+        assertEquals(clockPhasePSD, config.getClockPhasePSD(), 0.0);
+        assertEquals(pseudoRangeSD, config.getPseudoRangeSD(), 0.0);
+        assertEquals(rangeRateSD, config.getRangeRateSD(), 0.0);
     }
 
     @Test
     public void testGetSetPseudoRangeSDDistance() {
-        final INSTightlyCoupledKalmanConfig config =
-                new INSTightlyCoupledKalmanConfig();
+        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
         final Distance distance1 = config.getPseudoRangeSDDistance();
 
-        assertEquals(distance1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(distance1.getUnit(), DistanceUnit.METER);
+        assertEquals(0.0, distance1.getValue().doubleValue(), 0.0);
+        assertEquals(DistanceUnit.METER, distance1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -334,14 +309,13 @@ public class INSTightlyCoupledKalmanConfigTest {
 
     @Test
     public void testGetSetRangeRateSDSpeed() {
-        final INSTightlyCoupledKalmanConfig config =
-                new INSTightlyCoupledKalmanConfig();
+        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
 
         // check default value
         final Speed speed1 = config.getRangeRateSDSpeed();
 
-        assertEquals(speed1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(speed1.getUnit(), SpeedUnit.METERS_PER_SECOND);
+        assertEquals(0.0, speed1.getValue().doubleValue(), 0.0);
+        assertEquals(SpeedUnit.METERS_PER_SECOND, speed1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -362,18 +336,17 @@ public class INSTightlyCoupledKalmanConfigTest {
 
     @Test
     public void testSetValues2() {
-        final INSTightlyCoupledKalmanConfig config =
-                new INSTightlyCoupledKalmanConfig();
+        final INSTightlyCoupledKalmanConfig config = new INSTightlyCoupledKalmanConfig();
 
         // check default values
-        assertEquals(config.getGyroNoisePSD(), 0.0, 0.0);
-        assertEquals(config.getAccelerometerNoisePSD(), 0.0, 0.0);
-        assertEquals(config.getAccelerometerBiasPSD(), 0.0, 0.0);
-        assertEquals(config.getGyroBiasPSD(), 0.0, 0.0);
-        assertEquals(config.getClockFrequencyPSD(), 0.0, 0.0);
-        assertEquals(config.getClockPhasePSD(), 0.0, 0.0);
-        assertEquals(config.getPseudoRangeSD(), 0.0, 0.0);
-        assertEquals(config.getRangeRateSD(), 0.0, 0.0);
+        assertEquals(0.0, config.getGyroNoisePSD(), 0.0);
+        assertEquals(0.0, config.getAccelerometerNoisePSD(), 0.0);
+        assertEquals(0.0, config.getAccelerometerBiasPSD(), 0.0);
+        assertEquals(0.0, config.getGyroBiasPSD(), 0.0);
+        assertEquals(0.0, config.getClockFrequencyPSD(), 0.0);
+        assertEquals(0.0, config.getClockPhasePSD(), 0.0);
+        assertEquals(0.0, config.getPseudoRangeSD(), 0.0);
+        assertEquals(0.0, config.getRangeRateSD(), 0.0);
 
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -386,25 +359,21 @@ public class INSTightlyCoupledKalmanConfigTest {
         final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final Distance pseudoRangeSDDistance = new Distance(pseudoRangeSD,
-                DistanceUnit.METER);
-        final Speed rangeRateSDSpeed = new Speed(rangeRateSD,
-                SpeedUnit.METERS_PER_SECOND);
+        final Distance pseudoRangeSDDistance = new Distance(pseudoRangeSD, DistanceUnit.METER);
+        final Speed rangeRateSDSpeed = new Speed(rangeRateSD, SpeedUnit.METERS_PER_SECOND);
 
-        config.setValues(gyroNoisePSD, accelerometerNoisePSD,
-                accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
+        config.setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
                 clockPhasePSD, pseudoRangeSDDistance, rangeRateSDSpeed);
 
         // check
-        assertEquals(config.getGyroNoisePSD(), gyroNoisePSD, 0.0);
-        assertEquals(config.getAccelerometerNoisePSD(), accelerometerNoisePSD,
-                0.0);
-        assertEquals(config.getAccelerometerBiasPSD(), accelerometerBiasPSD, 0.0);
-        assertEquals(config.getGyroBiasPSD(), gyroBiasPSD, 0.0);
-        assertEquals(config.getClockFrequencyPSD(), clockFrequencyPSD, 0.0);
-        assertEquals(config.getClockPhasePSD(), clockPhasePSD, 0.0);
-        assertEquals(config.getPseudoRangeSD(), pseudoRangeSD, 0.0);
-        assertEquals(config.getRangeRateSD(), rangeRateSD, 0.0);
+        assertEquals(gyroNoisePSD, config.getGyroNoisePSD(), 0.0);
+        assertEquals(accelerometerNoisePSD, config.getAccelerometerNoisePSD(), 0.0);
+        assertEquals(accelerometerBiasPSD, config.getAccelerometerBiasPSD(), 0.0);
+        assertEquals(gyroBiasPSD, config.getGyroBiasPSD(), 0.0);
+        assertEquals(clockFrequencyPSD, config.getClockFrequencyPSD(), 0.0);
+        assertEquals(clockPhasePSD, config.getClockPhasePSD(), 0.0);
+        assertEquals(pseudoRangeSD, config.getPseudoRangeSD(), 0.0);
+        assertEquals(rangeRateSD, config.getRangeRateSD(), 0.0);
     }
 
     @Test
@@ -419,25 +388,22 @@ public class INSTightlyCoupledKalmanConfigTest {
         final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final INSTightlyCoupledKalmanConfig config1 =
-                new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
-                        accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
-                        clockPhasePSD, pseudoRangeSD, rangeRateSD);
-        final INSTightlyCoupledKalmanConfig config2 =
-                new INSTightlyCoupledKalmanConfig();
+        final INSTightlyCoupledKalmanConfig config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
+                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
+                pseudoRangeSD, rangeRateSD);
+        final INSTightlyCoupledKalmanConfig config2 = new INSTightlyCoupledKalmanConfig();
 
         config1.copyTo(config2);
 
         // check
-        assertEquals(config2.getGyroNoisePSD(), gyroNoisePSD, 0.0);
-        assertEquals(config2.getAccelerometerNoisePSD(), accelerometerNoisePSD,
-                0.0);
-        assertEquals(config2.getAccelerometerBiasPSD(), accelerometerBiasPSD, 0.0);
-        assertEquals(config2.getGyroBiasPSD(), gyroBiasPSD, 0.0);
-        assertEquals(config2.getClockFrequencyPSD(), clockFrequencyPSD, 0.0);
-        assertEquals(config2.getClockPhasePSD(), clockPhasePSD, 0.0);
-        assertEquals(config2.getPseudoRangeSD(), pseudoRangeSD, 0.0);
-        assertEquals(config2.getRangeRateSD(), rangeRateSD, 0.0);
+        assertEquals(gyroNoisePSD, config2.getGyroNoisePSD(), 0.0);
+        assertEquals(accelerometerNoisePSD, config2.getAccelerometerNoisePSD(), 0.0);
+        assertEquals(accelerometerBiasPSD, config2.getAccelerometerBiasPSD(), 0.0);
+        assertEquals(gyroBiasPSD, config2.getGyroBiasPSD(), 0.0);
+        assertEquals(clockFrequencyPSD, config2.getClockFrequencyPSD(), 0.0);
+        assertEquals(clockPhasePSD, config2.getClockPhasePSD(), 0.0);
+        assertEquals(pseudoRangeSD, config2.getPseudoRangeSD(), 0.0);
+        assertEquals(rangeRateSD, config2.getRangeRateSD(), 0.0);
     }
 
     @Test
@@ -452,25 +418,22 @@ public class INSTightlyCoupledKalmanConfigTest {
         final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final INSTightlyCoupledKalmanConfig config1 =
-                new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
-                        accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
-                        clockPhasePSD, pseudoRangeSD, rangeRateSD);
-        final INSTightlyCoupledKalmanConfig config2 =
-                new INSTightlyCoupledKalmanConfig();
+        final INSTightlyCoupledKalmanConfig config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
+                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
+                pseudoRangeSD, rangeRateSD);
+        final INSTightlyCoupledKalmanConfig config2 = new INSTightlyCoupledKalmanConfig();
 
         config2.copyFrom(config1);
 
         // check
-        assertEquals(config2.getGyroNoisePSD(), gyroNoisePSD, 0.0);
-        assertEquals(config2.getAccelerometerNoisePSD(), accelerometerNoisePSD,
-                0.0);
-        assertEquals(config2.getAccelerometerBiasPSD(), accelerometerBiasPSD, 0.0);
-        assertEquals(config2.getGyroBiasPSD(), gyroBiasPSD, 0.0);
-        assertEquals(config2.getClockFrequencyPSD(), clockFrequencyPSD, 0.0);
-        assertEquals(config2.getClockPhasePSD(), clockPhasePSD, 0.0);
-        assertEquals(config2.getPseudoRangeSD(), pseudoRangeSD, 0.0);
-        assertEquals(config2.getRangeRateSD(), rangeRateSD, 0.0);
+        assertEquals(gyroNoisePSD, config2.getGyroNoisePSD(), 0.0);
+        assertEquals(accelerometerNoisePSD, config2.getAccelerometerNoisePSD(), 0.0);
+        assertEquals(accelerometerBiasPSD, config2.getAccelerometerBiasPSD(), 0.0);
+        assertEquals(gyroBiasPSD, config2.getGyroBiasPSD(), 0.0);
+        assertEquals(clockFrequencyPSD, config2.getClockFrequencyPSD(), 0.0);
+        assertEquals(clockPhasePSD, config2.getClockPhasePSD(), 0.0);
+        assertEquals(pseudoRangeSD, config2.getPseudoRangeSD(), 0.0);
+        assertEquals(rangeRateSD, config2.getRangeRateSD(), 0.0);
     }
 
     @Test
@@ -485,16 +448,13 @@ public class INSTightlyCoupledKalmanConfigTest {
         final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final INSTightlyCoupledKalmanConfig config1 =
-                new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
-                        accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
-                        clockPhasePSD, pseudoRangeSD, rangeRateSD);
-        final INSTightlyCoupledKalmanConfig config2 =
-                new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
-                        accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
-                        clockPhasePSD, pseudoRangeSD, rangeRateSD);
-        final INSTightlyCoupledKalmanConfig config3 =
-                new INSTightlyCoupledKalmanConfig();
+        final INSTightlyCoupledKalmanConfig config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
+                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
+                pseudoRangeSD, rangeRateSD);
+        final INSTightlyCoupledKalmanConfig config2 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
+                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
+                pseudoRangeSD, rangeRateSD);
+        final INSTightlyCoupledKalmanConfig config3 = new INSTightlyCoupledKalmanConfig();
 
         assertEquals(config1.hashCode(), config2.hashCode());
         assertNotEquals(config1.hashCode(), config3.hashCode());
@@ -512,28 +472,23 @@ public class INSTightlyCoupledKalmanConfigTest {
         final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final INSTightlyCoupledKalmanConfig config1 =
-                new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
-                        accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
-                        clockPhasePSD, pseudoRangeSD, rangeRateSD);
-        final INSTightlyCoupledKalmanConfig config2 =
-                new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
-                        accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
-                        clockPhasePSD, pseudoRangeSD, rangeRateSD);
-        final INSTightlyCoupledKalmanConfig config3 =
-                new INSTightlyCoupledKalmanConfig();
+        final INSTightlyCoupledKalmanConfig config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
+                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
+                pseudoRangeSD, rangeRateSD);
+        final INSTightlyCoupledKalmanConfig config2 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
+                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
+                pseudoRangeSD, rangeRateSD);
+        final INSTightlyCoupledKalmanConfig config3 = new INSTightlyCoupledKalmanConfig();
 
-        //noinspection ConstantConditions,SimplifiableJUnitAssertion
-        assertTrue(config1.equals((Object) config1));
+        //noinspection EqualsWithItself
+        assertEquals(config1, config1);
         //noinspection EqualsWithItself
         assertTrue(config1.equals(config1));
         assertTrue(config1.equals(config2));
         assertFalse(config1.equals(config3));
-        //noinspection SimplifiableJUnitAssertion,ConstantConditions
-        assertFalse(config1.equals((Object) null));
+        assertNotEquals(config1, null);
         assertFalse(config1.equals(null));
-        //noinspection SimplifiableJUnitAssertion
-        assertFalse(config1.equals(new Object()));
+        assertNotEquals(config1, new Object());
     }
 
     @Test
@@ -548,16 +503,13 @@ public class INSTightlyCoupledKalmanConfigTest {
         final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final INSTightlyCoupledKalmanConfig config1 =
-                new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
-                        accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
-                        clockPhasePSD, pseudoRangeSD, rangeRateSD);
-        final INSTightlyCoupledKalmanConfig config2 =
-                new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
-                        accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
-                        clockPhasePSD, pseudoRangeSD, rangeRateSD);
-        final INSTightlyCoupledKalmanConfig config3 =
-                new INSTightlyCoupledKalmanConfig();
+        final INSTightlyCoupledKalmanConfig config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
+                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
+                pseudoRangeSD, rangeRateSD);
+        final INSTightlyCoupledKalmanConfig config2 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
+                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
+                pseudoRangeSD, rangeRateSD);
+        final INSTightlyCoupledKalmanConfig config3 = new INSTightlyCoupledKalmanConfig();
 
         assertTrue(config1.equals(config1, THRESHOLD));
         assertTrue(config1.equals(config2, THRESHOLD));
@@ -577,10 +529,9 @@ public class INSTightlyCoupledKalmanConfigTest {
         final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final INSTightlyCoupledKalmanConfig config1 =
-                new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
-                        accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
-                        clockPhasePSD, pseudoRangeSD, rangeRateSD);
+        final INSTightlyCoupledKalmanConfig config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
+                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
+                pseudoRangeSD, rangeRateSD);
 
         final Object config2 = config1.clone();
 
@@ -599,10 +550,9 @@ public class INSTightlyCoupledKalmanConfigTest {
         final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final INSTightlyCoupledKalmanConfig config1 =
-                new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
-                        accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
-                        clockPhasePSD, pseudoRangeSD, rangeRateSD);
+        final INSTightlyCoupledKalmanConfig config1 = new INSTightlyCoupledKalmanConfig(gyroNoisePSD,
+                accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
+                pseudoRangeSD, rangeRateSD);
 
         final byte[] bytes = SerializationHelper.serialize(config1);
 

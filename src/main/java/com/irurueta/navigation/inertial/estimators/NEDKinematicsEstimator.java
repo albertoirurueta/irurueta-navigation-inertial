@@ -33,7 +33,9 @@ import com.irurueta.units.*;
  * along north, east, and down.
  * This implementation is based on the equations defined in "Principles of GNSS, Inertial, and Multisensor
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
- * https://github.com/ymjdz/MATLAB-Codes/blob/master/Kinematics_NED.m
+ * <a href="https://github.com/ymjdz/MATLAB-Codes/blob/master/Kinematics_NED.m">
+ *     https://github.com/ymjdz/MATLAB-Codes/blob/master/Kinematics_NED.m
+ * </a>
  */
 public class NEDKinematicsEstimator {
 
@@ -84,16 +86,14 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final double vn, final double ve, final double vd,
-                         final double oldVn, final double oldVe, final double oldVd,
-                         final double latitude, final double height,
-                         final double oldLatitude, final double oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double latitude, final double height, final double oldLatitude, final double oldHeight,
+            final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
     }
 
     /**
@@ -122,16 +122,14 @@ public class NEDKinematicsEstimator {
      * @param result       instance where estimated body kinematics will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinate
      */
-    public void estimate(final Time timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final double vn, final double ve, final double vd,
-                         final double oldVn, final double oldVe, final double oldVd,
-                         final double latitude, final double height,
-                         final double oldLatitude, final double oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double latitude, final double height, final double oldLatitude, final double oldHeight,
+            final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
     }
 
     /**
@@ -152,16 +150,12 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final NEDVelocity velocity,
-                         final NEDVelocity oldVelocity,
-                         final double latitude, final double height,
-                         final double oldLatitude, final double oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,
-                latitude, height, oldLatitude, oldHeight, result);
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final double latitude, final double height,
+            final double oldLatitude, final double oldHeight, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, latitude, height, oldLatitude, oldHeight,
+                result);
     }
 
     /**
@@ -182,16 +176,12 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final NEDVelocity velocity,
-                         final NEDVelocity oldVelocity,
-                         final double latitude, final double height,
-                         final double oldLatitude, final double oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,
-                latitude, height, oldLatitude, oldHeight, result);
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final double latitude, final double height,
+            final double oldLatitude, final double oldHeight, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, latitude, height, oldLatitude, oldHeight,
+                result);
     }
 
     /**
@@ -212,16 +202,12 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final NEDVelocity velocity,
-                         final NEDVelocity oldVelocity,
-                         final Angle latitude, final Distance height,
-                         final Angle oldLatitude, final Distance oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,
-                latitude, height, oldLatitude, oldHeight, result);
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final Angle latitude, final Distance height,
+            final Angle oldLatitude, final Distance oldHeight, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, latitude, height, oldLatitude, oldHeight,
+                result);
     }
 
     /**
@@ -242,16 +228,12 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final NEDVelocity velocity,
-                         final NEDVelocity oldVelocity,
-                         final Angle latitude, final Distance height,
-                         final Angle oldLatitude, final Distance oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,
-                latitude, height, oldLatitude, oldHeight, result);
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final Angle latitude, final Distance height,
+            final Angle oldLatitude, final Distance oldHeight, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, latitude, height, oldLatitude, oldHeight,
+                result);
     }
 
     /**
@@ -279,15 +261,12 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final double vn, final double ve, final double vd,
-                         final double oldVn, final double oldVe, final double oldVd,
-                         final NEDPosition position, final NEDPosition oldPosition,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                position, oldPosition, result);
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final NEDPosition position,
+            final NEDPosition oldPosition, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, position, oldPosition, result);
     }
 
     /**
@@ -315,15 +294,12 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final double vn, final double ve, final double vd,
-                         final double oldVn, final double oldVe, final double oldVd,
-                         final NEDPosition position, final NEDPosition oldPosition,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                position, oldPosition, result);
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final NEDPosition position,
+            final NEDPosition oldPosition, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, position, oldPosition, result);
     }
 
     /**
@@ -351,15 +327,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final Speed vn, final Speed ve, final Speed vd,
-                         final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                         final NEDPosition position, final NEDPosition oldPosition,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                position, oldPosition, result);
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final NEDPosition position, final NEDPosition oldPosition, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, position, oldPosition, result);
     }
 
     /**
@@ -387,15 +359,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final Speed vn, final Speed ve, final Speed vd,
-                         final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                         final NEDPosition position, final NEDPosition oldPosition,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                position, oldPosition, result);
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final NEDPosition position, final NEDPosition oldPosition, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, position, oldPosition, result);
     }
 
     /**
@@ -414,16 +382,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final NEDVelocity velocity,
-                         final NEDVelocity oldVelocity,
-                         final NEDPosition position,
-                         final NEDPosition oldPosition,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,
-                position, oldPosition, result);
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final NEDPosition position,
+            final NEDPosition oldPosition, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, position, oldPosition, result);
     }
 
     /**
@@ -442,16 +405,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final NEDVelocity velocity,
-                         final NEDVelocity oldVelocity,
-                         final NEDPosition position,
-                         final NEDPosition oldPosition,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,
-                position, oldPosition, result);
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final NEDPosition position,
+            final NEDPosition oldPosition, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, position, oldPosition, result);
     }
 
     /**
@@ -473,14 +431,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final NEDFrame frame,
-                         final CoordinateTransformation oldC,
-                         final double oldVn, final double oldVe, final double oldVd,
-                         final double oldLatitude, final double oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,
-                oldLatitude, oldHeight, result);
+    public void estimate(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double oldLatitude, final double oldHeight, final BodyKinematics result) {
+        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldLatitude, oldHeight, result);
     }
 
     /**
@@ -502,14 +457,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final NEDFrame frame,
-                         final CoordinateTransformation oldC,
-                         final double oldVn, final double oldVe, final double oldVd,
-                         final double oldLatitude, final double oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,
-                oldLatitude, oldHeight, result);
+    public void estimate(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double oldLatitude, final double oldHeight, final BodyKinematics result) {
+        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldLatitude, oldHeight, result);
     }
 
     /**
@@ -527,14 +479,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final NEDFrame frame,
-                         final CoordinateTransformation oldC,
-                         final NEDVelocity oldVelocity,
-                         final double oldLatitude, final double oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, frame, oldC,
-                oldVelocity, oldLatitude, oldHeight, result);
+    public void estimate(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final double oldLatitude, final double oldHeight,
+            final BodyKinematics result) {
+        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldLatitude, oldHeight, result);
     }
 
     /**
@@ -552,14 +501,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final NEDFrame frame,
-                         final CoordinateTransformation oldC,
-                         final NEDVelocity oldVelocity,
-                         final double oldLatitude, final double oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, frame, oldC, oldVelocity,
-                oldLatitude, oldHeight, result);
+    public void estimate(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final double oldLatitude, final double oldHeight,
+            final BodyKinematics result) {
+        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldLatitude, oldHeight, result);
     }
 
     /**
@@ -577,14 +523,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final NEDFrame frame,
-                         final CoordinateTransformation oldC,
-                         final NEDVelocity oldVelocity,
-                         final Angle oldLatitude, final Distance oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, frame, oldC, oldVelocity,
-                oldLatitude, oldHeight, result);
+    public void estimate(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final Angle oldLatitude, final Distance oldHeight,
+            final BodyKinematics result) {
+        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldLatitude, oldHeight, result);
     }
 
     /**
@@ -602,14 +545,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final NEDFrame frame,
-                         final CoordinateTransformation oldC,
-                         final NEDVelocity oldVelocity,
-                         final Angle oldLatitude, final Distance oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, frame, oldC, oldVelocity,
-                oldLatitude, oldHeight, result);
+    public void estimate(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final Angle oldLatitude, final Distance oldHeight,
+            final BodyKinematics result) {
+        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldLatitude, oldHeight, result);
     }
 
     /**
@@ -630,13 +570,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final NEDFrame frame,
-                         final CoordinateTransformation oldC,
-                         final double oldVn, final double oldVe, final double oldVd,
-                         final NEDPosition oldPosition, final BodyKinematics result) {
-        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,
-                oldPosition, result);
+    public void estimate(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final double oldVn, final double oldVe, final double oldVd, final NEDPosition oldPosition,
+            final BodyKinematics result) {
+        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldPosition, result);
     }
 
     /**
@@ -657,13 +595,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final NEDFrame frame,
-                         final CoordinateTransformation oldC,
-                         final double oldVn, final double oldVe, final double oldVd,
-                         final NEDPosition oldPosition, final BodyKinematics result) {
-        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,
-                oldPosition, result);
+    public void estimate(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final double oldVn, final double oldVe, final double oldVd, final NEDPosition oldPosition,
+            final BodyKinematics result) {
+        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldPosition, result);
     }
 
     /**
@@ -684,13 +620,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final NEDFrame frame,
-                         final CoordinateTransformation oldC,
-                         final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                         final NEDPosition oldPosition, final BodyKinematics result) {
-        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,
-                oldPosition, result);
+    public void estimate(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final NEDPosition oldPosition,
+            final BodyKinematics result) {
+        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldPosition, result);
     }
 
     /**
@@ -711,13 +645,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final NEDFrame frame,
-                         final CoordinateTransformation oldC,
-                         final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                         final NEDPosition oldPosition, final BodyKinematics result) {
-        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,
-                oldPosition, result);
+    public void estimate(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final NEDPosition oldPosition,
+            final BodyKinematics result) {
+        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldPosition, result);
     }
 
     /**
@@ -734,13 +666,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final NEDFrame frame,
-                         final CoordinateTransformation oldC,
-                         final NEDVelocity oldVelocity,
-                         final NEDPosition oldPosition, final BodyKinematics result) {
-        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldPosition,
-                result);
+    public void estimate(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final NEDPosition oldPosition, final BodyKinematics result) {
+        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldPosition, result);
     }
 
     /**
@@ -757,13 +686,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final NEDFrame frame,
-                         final CoordinateTransformation oldC,
-                         final NEDVelocity oldVelocity,
-                         final NEDPosition oldPosition, final BodyKinematics result) {
-        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldPosition,
-                result);
+    public void estimate(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final NEDPosition oldPosition, final BodyKinematics result) {
+        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldPosition, result);
     }
 
     /**
@@ -785,13 +711,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final CoordinateTransformation c,
-                         final double vn, final double ve, final double vd,
-                         final double latitude, final double height,
-                         final NEDFrame oldFrame, final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, vn, ve, vd, latitude, height, oldFrame,
-                result);
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c,
+            final double vn, final double ve, final double vd, final double latitude, final double height,
+            final NEDFrame oldFrame, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, vn, ve, vd, latitude, height, oldFrame, result);
     }
 
     /**
@@ -813,13 +737,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final CoordinateTransformation c,
-                         final double vn, final double ve, final double vd,
-                         final double latitude, final double height,
-                         final NEDFrame oldFrame, final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, vn, ve, vd, latitude, height, oldFrame,
-                result);
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c,
+            final double vn, final double ve, final double vd, final double latitude, final double height,
+            final NEDFrame oldFrame, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, vn, ve, vd, latitude, height, oldFrame, result);
     }
 
     /**
@@ -836,13 +758,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final CoordinateTransformation c,
-                         final NEDVelocity velocity,
-                         final double latitude, final double height,
-                         final NEDFrame oldFrame, final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame,
-                result);
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final double latitude, final double height, final NEDFrame oldFrame, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame, result);
     }
 
     /**
@@ -859,13 +778,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final CoordinateTransformation c,
-                         final NEDVelocity velocity,
-                         final double latitude, final double height,
-                         final NEDFrame oldFrame, final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame,
-                result);
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final double latitude, final double height, final NEDFrame oldFrame, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame, result);
     }
 
     /**
@@ -882,14 +798,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final CoordinateTransformation c,
-                         final NEDVelocity velocity,
-                         final Angle latitude, final Distance height,
-                         final NEDFrame oldFrame,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame,
-                result);
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final Angle latitude, final Distance height, final NEDFrame oldFrame, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame, result);
     }
 
     /**
@@ -906,14 +818,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final CoordinateTransformation c,
-                         final NEDVelocity velocity,
-                         final Angle latitude, final Distance height,
-                         final NEDFrame oldFrame,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame,
-                result);
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c, final NEDVelocity velocity, final Angle latitude,
+            final Distance height, final NEDFrame oldFrame, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame, result);
     }
 
     /**
@@ -934,11 +842,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final CoordinateTransformation c,
-                         final double vn, final double ve, final double vd,
-                         final NEDPosition position,
-                         final NEDFrame oldFrame, final BodyKinematics result) {
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c,
+            final double vn, final double ve, final double vd, final NEDPosition position, final NEDFrame oldFrame,
+            final BodyKinematics result) {
         estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);
     }
 
@@ -960,11 +867,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final CoordinateTransformation c,
-                         final double vn, final double ve, final double vd,
-                         final NEDPosition position,
-                         final NEDFrame oldFrame, final BodyKinematics result) {
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c,
+            final double vn, final double ve, final double vd, final NEDPosition position, final NEDFrame oldFrame,
+            final BodyKinematics result) {
         estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);
     }
 
@@ -986,11 +892,9 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final CoordinateTransformation c,
-                         final Speed vn, final Speed ve, final Speed vd,
-                         final NEDPosition position,
-                         final NEDFrame oldFrame, final BodyKinematics result) {
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition position, final NEDFrame oldFrame, final BodyKinematics result) {
         estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);
     }
 
@@ -1012,11 +916,9 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final CoordinateTransformation c,
-                         final Speed vn, final Speed ve, final Speed vd,
-                         final NEDPosition position,
-                         final NEDFrame oldFrame, final BodyKinematics result) {
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition position, final NEDFrame oldFrame, final BodyKinematics result) {
         estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);
     }
 
@@ -1033,11 +935,9 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final CoordinateTransformation c,
-                         final NEDVelocity velocity,
-                         final NEDPosition position,
-                         final NEDFrame oldFrame, final BodyKinematics result) {
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final NEDPosition position, final NEDFrame oldFrame, final BodyKinematics result) {
         estimateKinematics(timeInterval, c, velocity, position, oldFrame, result);
     }
 
@@ -1054,11 +954,9 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final CoordinateTransformation c,
-                         final NEDVelocity velocity,
-                         final NEDPosition position,
-                         final NEDFrame oldFrame, final BodyKinematics result) {
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final NEDPosition position, final NEDFrame oldFrame, final BodyKinematics result) {
         estimateKinematics(timeInterval, c, velocity, position, oldFrame, result);
     }
 
@@ -1072,9 +970,8 @@ public class NEDKinematicsEstimator {
      * @param result       instance where estimated body kinematics will be stored.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
-    public void estimate(final double timeInterval,
-                         final NEDFrame frame, final NEDFrame oldFrame,
-                         final BodyKinematics result) {
+    public void estimate(
+            final double timeInterval, final NEDFrame frame, final NEDFrame oldFrame, final BodyKinematics result) {
         estimateKinematics(timeInterval, frame, oldFrame, result);
     }
 
@@ -1088,9 +985,8 @@ public class NEDKinematicsEstimator {
      * @param result       instance where estimated body kinematics will be stored.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
-    public void estimate(final Time timeInterval,
-                         final NEDFrame frame, final NEDFrame oldFrame,
-                         final BodyKinematics result) {
+    public void estimate(
+            final Time timeInterval, final NEDFrame frame, final NEDFrame oldFrame, final BodyKinematics result) {
         estimateKinematics(timeInterval, frame, oldFrame, result);
     }
 
@@ -1121,16 +1017,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final Speed vn, final Speed ve, final Speed vd,
-                         final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                         final double latitude, final double height,
-                         final double oldLatitude, final double oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final double latitude, final double height, final double oldLatitude, final double oldHeight,
+            final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
     }
 
     /**
@@ -1160,16 +1053,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final Speed vn, final Speed ve, final Speed vd,
-                         final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                         final double latitude, final double height,
-                         final double oldLatitude, final double oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final double latitude, final double height, final double oldLatitude, final double oldHeight,
+            final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
     }
 
     /**
@@ -1199,16 +1089,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final double vn, final double ve, final double vd,
-                         final double oldVn, final double oldVe, final double oldVd,
-                         final Angle latitude, final double height,
-                         final Angle oldLatitude, final double oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final Angle latitude, final double height,
+            final Angle oldLatitude, final double oldHeight, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
     }
 
     /**
@@ -1238,16 +1125,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final double vn, final double ve, final double vd,
-                         final double oldVn, final double oldVe, final double oldVd,
-                         final Angle latitude, final double height,
-                         final Angle oldLatitude, final double oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final Angle latitude, final double height,
+            final Angle oldLatitude, final double oldHeight, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
     }
 
     /**
@@ -1277,16 +1161,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final double vn, final double ve, final double vd,
-                         final double oldVn, final double oldVe, final double oldVd,
-                         final double latitude, final Distance height,
-                         final double oldLatitude, final Distance oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final double latitude, final Distance height,
+            final double oldLatitude, final Distance oldHeight, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
     }
 
     /**
@@ -1316,16 +1197,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final double vn, final double ve, final double vd,
-                         final double oldVn, final double oldVe, final double oldVd,
-                         final double latitude, final Distance height,
-                         final double oldLatitude, final Distance oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final double latitude, final Distance height,
+            final double oldLatitude, final Distance oldHeight, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
     }
 
     /**
@@ -1355,16 +1233,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final double timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final Speed vn, final Speed ve, final Speed vd,
-                         final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                         final Angle latitude, final Distance height,
-                         final Angle oldLatitude, final Distance oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+    public void estimate(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final Angle latitude, final Distance height, final Angle oldLatitude, final Distance oldHeight,
+            final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
     }
 
     /**
@@ -1394,16 +1269,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public void estimate(final Time timeInterval,
-                         final CoordinateTransformation c,
-                         final CoordinateTransformation oldC,
-                         final Speed vn, final Speed ve, final Speed vd,
-                         final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                         final Angle latitude, final Distance height,
-                         final Angle oldLatitude, final Distance oldHeight,
-                         final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+    public void estimate(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final Angle latitude, final Distance height, final Angle oldLatitude, final Distance oldHeight,
+            final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
     }
 
     /**
@@ -1433,398 +1305,12 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final double vn, final double ve, final double vd,
-                                               final double oldVn, final double oldVe, final double oldVd,
-                                               final double latitude, final double height,
-                                               final double oldLatitude, final double oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
-    }
-
-    /**
-     * Estimates body kinematics (specific force applied to a body and its angular rates)
-     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param c            body-to-NED coordinate transformation.
-     * @param oldC         previous body-to-NED coordinate transformation.
-     * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down and expressed in meters per second (m/s).
-     * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down and expressed in meters per second (m/s).
-     * @param vd           down coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down and expressed in meters per second (m/s).
-     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down and expressed in meters per second (m/s).
-     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down and expressed in meters per second (m/s).
-     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down and expressed in meters per second (m/s).
-     * @param latitude     current latitude expressed in radians (rad).
-     * @param height       current height expressed in meters (m).
-     * @param oldLatitude  previous latitude expressed in radians (rad).
-     * @param oldHeight    previous height expressed in meters (m).
-     * @return a new body kinematics instance.
-     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
-     *                                  matrices are not NED frame valid.
-     */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final double vn, final double ve, final double vd,
-                                               final double oldVn, final double oldVe, final double oldVd,
-                                               final double latitude, final double height,
-                                               final double oldLatitude, final double oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
-    }
-
-    /**
-     * Estimates body kinematics (specific force applied to a body and its angular rates)
-     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param c            body-to-NED coordinate transformation.
-     * @param oldC         previous body-to-NED coordinate transformation.
-     * @param velocity     velocity of body frame with respect NED frame, resolved along north, east and down.
-     * @param oldVelocity  previous velocity of body frame with respect NED frame, resolved along north, east and
-     *                     down.
-     * @param latitude     current latitude expressed in radians (rad).
-     * @param height       current height expressed in meters (m).
-     * @param oldLatitude  previous latitude expressed in radians (rad).
-     * @param oldHeight    previous height expressed in meters (m).
-     * @return a new body kinematics instance.
-     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
-     *                                  matrices are not NED frame valid.
-     */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final NEDVelocity velocity,
-                                               final NEDVelocity oldVelocity,
-                                               final double latitude,
-                                               final double height,
-                                               final double oldLatitude,
-                                               final double oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC,
-                velocity, oldVelocity, latitude, height, oldLatitude, oldHeight);
-    }
-
-    /**
-     * Estimates body kinematics (specific force applied to a body and its angular rates)
-     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param c            body-to-NED coordinate transformation.
-     * @param oldC         previous body-to-NED coordinate transformation.
-     * @param velocity     velocity of body frame with respect NED frame, resolved along north, east and down.
-     * @param oldVelocity  previous velocity of body frame with respect NED frame, resolved along north, east and
-     *                     down.
-     * @param latitude     current latitude expressed in radians (rad).
-     * @param height       current height expressed in meters (m).
-     * @param oldLatitude  previous latitude expressed in radians (rad).
-     * @param oldHeight    previous height expressed in meters (m).
-     * @return a new body kinematics instance.
-     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
-     *                                  matrices are not NED frame valid.
-     */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final NEDVelocity velocity,
-                                               final NEDVelocity oldVelocity,
-                                               final double latitude,
-                                               final double height,
-                                               final double oldLatitude,
-                                               final double oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, velocity,
-                oldVelocity, latitude, height, oldLatitude, oldHeight);
-    }
-
-    /**
-     * Estimates body kinematics (specific force applied to a body and its angular rates)
-     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param c            body-to-NED coordinate transformation.
-     * @param oldC         previous body-to-NED coordinate transformation.
-     * @param velocity     velocity of body frame with respect NED frame, resolved along north, east and down.
-     * @param oldVelocity  previous velocity of body frame with respect NED frame, resolved along north, east and
-     *                     down.
-     * @param latitude     current latitude.
-     * @param height       current height.
-     * @param oldLatitude  previous latitude.
-     * @param oldHeight    previous height.
-     * @return a new body kinematics instance.
-     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
-     *                                  matrices are not NED frame valid.
-     */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final NEDVelocity velocity,
-                                               final NEDVelocity oldVelocity,
-                                               final Angle latitude,
-                                               final Distance height,
-                                               final Angle oldLatitude,
-                                               final Distance oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC,
-                velocity, oldVelocity, latitude, height, oldLatitude, oldHeight);
-    }
-
-    /**
-     * Estimates body kinematics (specific force applied to a body and its angular rates)
-     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param c            body-to-NED coordinate transformation.
-     * @param oldC         previous body-to-NED coordinate transformation.
-     * @param velocity     velocity of body frame with respect NED frame, resolved along north, east and down.
-     * @param oldVelocity  previous velocity of body frame with respect NED frame, resolved along north, east and
-     *                     down.
-     * @param latitude     current latitude.
-     * @param height       current height.
-     * @param oldLatitude  previous latitude.
-     * @param oldHeight    previous height.
-     * @return a new body kinematics instance.
-     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
-     *                                  matrices are not NED frame valid.
-     */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final NEDVelocity velocity,
-                                               final NEDVelocity oldVelocity,
-                                               final Angle latitude,
-                                               final Distance height,
-                                               final Angle oldLatitude,
-                                               final Distance oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC,
-                velocity, oldVelocity, latitude, height, oldLatitude, oldHeight);
-    }
-
-    /**
-     * Estimates body kinematics (specific force applied to a body and its angular rates)
-     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param c            body-to-NED coordinate transformation.
-     * @param oldC         previous body-to-NED coordinate transformation.
-     * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down and expressed in meters per second (m/s).
-     * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down and expressed in meters per second (m/s).
-     * @param vd           down coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down and expressed in meters per second (m/s).
-     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down and expressed in meters per second (m/s).
-     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down and expressed in meters per second (m/s).
-     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down and expressed in meters per second (m/s).
-     * @param position     current curvilinear position expressed in terms of latitude, longitude and height.
-     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
-     * @return a new body kinematics instance.
-     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
-     *                                  matrices are not NED frame valid.
-     */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final double vn, final double ve, final double vd,
-                                               final double oldVn, final double oldVe, final double oldVd,
-                                               final NEDPosition position, final NEDPosition oldPosition) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, position, oldPosition);
-    }
-
-    /**
-     * Estimates body kinematics (specific force applied to a body and its angular rates)
-     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param c            body-to-NED coordinate transformation.
-     * @param oldC         previous body-to-NED coordinate transformation.
-     * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down and expressed in meters per second (m/s).
-     * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down and expressed in meters per second (m/s).
-     * @param vd           down coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down and expressed in meters per second (m/s).
-     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down and expressed in meters per second (m/s).
-     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down and expressed in meters per second (m/s).
-     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down and expressed in meters per second (m/s).
-     * @param position     current curvilinear position expressed in terms of latitude, longitude and height.
-     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
-     * @return a new body kinematics instance.
-     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
-     *                                  matrices are not NED frame valid.
-     */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final double vn, final double ve, final double vd,
-                                               final double oldVn, final double oldVe, final double oldVd,
-                                               final NEDPosition position, final NEDPosition oldPosition) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, position, oldPosition);
-    }
-
-    /**
-     * Estimates body kinematics (specific force applied to a body and its angular rates)
-     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param c            body-to-NED coordinate transformation.
-     * @param oldC         previous body-to-NED coordinate transformation.
-     * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down.
-     * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down.
-     * @param vd           down coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down.
-     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down.
-     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down.
-     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down.
-     * @param position     current curvilinear position expressed in terms of latitude, longitude and height.
-     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
-     * @return a new body kinematics instance.
-     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
-     *                                  matrices are not NED frame valid.
-     */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final Speed vn, final Speed ve, final Speed vd,
-                                               final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                               final NEDPosition position, final NEDPosition oldPosition) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, position, oldPosition);
-    }
-
-    /**
-     * Estimates body kinematics (specific force applied to a body and its angular rates)
-     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param c            body-to-NED coordinate transformation.
-     * @param oldC         previous body-to-NED coordinate transformation.
-     * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down.
-     * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down.
-     * @param vd           down coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down.
-     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down.
-     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down.
-     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down.
-     * @param position     current curvilinear position expressed in terms of latitude, longitude and height.
-     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
-     * @return a new body kinematics instance.
-     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
-     *                                  matrices are not NED frame valid.
-     */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final Speed vn, final Speed ve, final Speed vd,
-                                               final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                               final NEDPosition position, final NEDPosition oldPosition) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, position, oldPosition);
-    }
-
-    /**
-     * Estimates body kinematics (specific force applied to a body and its angular rates)
-     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param c            body-to-NED coordinate transformation.
-     * @param oldC         previous body-to-NED coordinate transformation.
-     * @param velocity     velocity of body frame with respect NED frame, resolved along north, east and down.
-     * @param oldVelocity  previous velocity of body frame with respect NED frame, resolved along north, east and
-     *                     down.
-     * @param position     current curvilinear position expressed in terms of latitude, longitude and height.
-     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
-     * @return a new body kinematics instance.
-     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
-     *                                  matrices are not NED frame valid.
-     */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final NEDVelocity velocity,
-                                               final NEDVelocity oldVelocity,
-                                               final NEDPosition position,
-                                               final NEDPosition oldPosition) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC,
-                velocity, oldVelocity, position, oldPosition);
-    }
-
-    /**
-     * Estimates body kinematics (specific force applied to a body and its angular rates)
-     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param c            body-to-NED coordinate transformation.
-     * @param oldC         previous body-to-NED coordinate transformation.
-     * @param velocity     velocity of body frame with respect NED frame, resolved along north, east and down.
-     * @param oldVelocity  previous velocity of body frame with respect NED frame, resolved along north, east and
-     *                     down.
-     * @param position     current curvilinear position expressed in terms of latitude, longitude and height.
-     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
-     * @return a new body kinematics instance.
-     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
-     *                                  matrices are not NED frame valid.
-     */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final NEDVelocity velocity,
-                                               final NEDVelocity oldVelocity,
-                                               final NEDPosition position,
-                                               final NEDPosition oldPosition) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC,
-                velocity, oldVelocity, position, oldPosition);
-    }
-
-    /**
-     * Estimates body kinematics (specific force applied to a body and its angular rates)
-     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param frame        NED frame containing current position, velocity and body-to-NED coordinate transformation.
-     * @param oldC         previous body-to-NED coordinate transformation.
-     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down and expressed in meters per second (m/s).
-     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down and expressed in meters per second (m/s).
-     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down and expressed in meters per second (m/s).
-     * @param oldLatitude  previous latitude expressed in radians (rad).
-     * @param oldHeight    previous height expressed in meters (m).
-     * @return a new body kinematics instance.
-     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
-     *                                  matrices are not NED frame valid.
-     */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final NEDFrame frame,
-                                               final CoordinateTransformation oldC,
-                                               final double oldVn, final double oldVe, final double oldVd,
-                                               final double oldLatitude, final double oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVn, oldVe, oldVd,
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final double latitude, final double height,
+            final double oldLatitude, final double oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
                 oldLatitude, oldHeight);
     }
 
@@ -1833,6 +1319,326 @@ public class NEDKinematicsEstimator {
      * with respect NED frame and resolved along body-frame axes, averaged over time interval.
      *
      * @param timeInterval time interval between epochs.
+     * @param c            body-to-NED coordinate transformation.
+     * @param oldC         previous body-to-NED coordinate transformation.
+     * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down and expressed in meters per second (m/s).
+     * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down and expressed in meters per second (m/s).
+     * @param vd           down coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down and expressed in meters per second (m/s).
+     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down and expressed in meters per second (m/s).
+     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down and expressed in meters per second (m/s).
+     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down and expressed in meters per second (m/s).
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
+     *                                  matrices are not NED frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final double latitude, final double height,
+            final double oldLatitude, final double oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight);
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)
+     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-NED coordinate transformation.
+     * @param oldC         previous body-to-NED coordinate transformation.
+     * @param velocity     velocity of body frame with respect NED frame, resolved along north, east and down.
+     * @param oldVelocity  previous velocity of body frame with respect NED frame, resolved along north, east and
+     *                     down.
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
+     *                                  matrices are not NED frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final double latitude, final double height,
+            final double oldLatitude, final double oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, velocity, oldVelocity, latitude, height,
+                oldLatitude, oldHeight);
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)
+     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-NED coordinate transformation.
+     * @param oldC         previous body-to-NED coordinate transformation.
+     * @param velocity     velocity of body frame with respect NED frame, resolved along north, east and down.
+     * @param oldVelocity  previous velocity of body frame with respect NED frame, resolved along north, east and
+     *                     down.
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
+     *                                  matrices are not NED frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final double latitude, final double height,
+            final double oldLatitude, final double oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, velocity, oldVelocity, latitude, height,
+                oldLatitude, oldHeight);
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)
+     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-NED coordinate transformation.
+     * @param oldC         previous body-to-NED coordinate transformation.
+     * @param velocity     velocity of body frame with respect NED frame, resolved along north, east and down.
+     * @param oldVelocity  previous velocity of body frame with respect NED frame, resolved along north, east and
+     *                     down.
+     * @param latitude     current latitude.
+     * @param height       current height.
+     * @param oldLatitude  previous latitude.
+     * @param oldHeight    previous height.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
+     *                                  matrices are not NED frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final Angle latitude, final Distance height,
+            final Angle oldLatitude, final Distance oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, velocity, oldVelocity, latitude, height,
+                oldLatitude, oldHeight);
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)
+     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-NED coordinate transformation.
+     * @param oldC         previous body-to-NED coordinate transformation.
+     * @param velocity     velocity of body frame with respect NED frame, resolved along north, east and down.
+     * @param oldVelocity  previous velocity of body frame with respect NED frame, resolved along north, east and
+     *                     down.
+     * @param latitude     current latitude.
+     * @param height       current height.
+     * @param oldLatitude  previous latitude.
+     * @param oldHeight    previous height.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
+     *                                  matrices are not NED frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final Angle latitude, final Distance height,
+            final Angle oldLatitude, final Distance oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, velocity, oldVelocity, latitude, height,
+                oldLatitude, oldHeight);
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)
+     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-NED coordinate transformation.
+     * @param oldC         previous body-to-NED coordinate transformation.
+     * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down and expressed in meters per second (m/s).
+     * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down and expressed in meters per second (m/s).
+     * @param vd           down coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down and expressed in meters per second (m/s).
+     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down and expressed in meters per second (m/s).
+     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down and expressed in meters per second (m/s).
+     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down and expressed in meters per second (m/s).
+     * @param position     current curvilinear position expressed in terms of latitude, longitude and height.
+     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
+     *                                  matrices are not NED frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final NEDPosition position,
+            final NEDPosition oldPosition) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, position,
+                oldPosition);
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)
+     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-NED coordinate transformation.
+     * @param oldC         previous body-to-NED coordinate transformation.
+     * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down and expressed in meters per second (m/s).
+     * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down and expressed in meters per second (m/s).
+     * @param vd           down coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down and expressed in meters per second (m/s).
+     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down and expressed in meters per second (m/s).
+     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down and expressed in meters per second (m/s).
+     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down and expressed in meters per second (m/s).
+     * @param position     current curvilinear position expressed in terms of latitude, longitude and height.
+     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
+     *                                  matrices are not NED frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final NEDPosition position,
+            final NEDPosition oldPosition) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, position,
+                oldPosition);
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)
+     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-NED coordinate transformation.
+     * @param oldC         previous body-to-NED coordinate transformation.
+     * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down.
+     * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down.
+     * @param vd           down coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down.
+     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down.
+     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down.
+     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down.
+     * @param position     current curvilinear position expressed in terms of latitude, longitude and height.
+     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
+     *                                  matrices are not NED frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final NEDPosition position, final NEDPosition oldPosition) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, position,
+                oldPosition);
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)
+     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-NED coordinate transformation.
+     * @param oldC         previous body-to-NED coordinate transformation.
+     * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down.
+     * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down.
+     * @param vd           down coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down.
+     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down.
+     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down.
+     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down.
+     * @param position     current curvilinear position expressed in terms of latitude, longitude and height.
+     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
+     *                                  matrices are not NED frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final NEDPosition position, final NEDPosition oldPosition) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, position,
+                oldPosition);
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)
+     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-NED coordinate transformation.
+     * @param oldC         previous body-to-NED coordinate transformation.
+     * @param velocity     velocity of body frame with respect NED frame, resolved along north, east and down.
+     * @param oldVelocity  previous velocity of body frame with respect NED frame, resolved along north, east and
+     *                     down.
+     * @param position     current curvilinear position expressed in terms of latitude, longitude and height.
+     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
+     *                                  matrices are not NED frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final NEDPosition position,
+            final NEDPosition oldPosition) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, velocity, oldVelocity, position, oldPosition);
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)
+     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-NED coordinate transformation.
+     * @param oldC         previous body-to-NED coordinate transformation.
+     * @param velocity     velocity of body frame with respect NED frame, resolved along north, east and down.
+     * @param oldVelocity  previous velocity of body frame with respect NED frame, resolved along north, east and
+     *                     down.
+     * @param position     current curvilinear position expressed in terms of latitude, longitude and height.
+     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
+     *                                  matrices are not NED frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final NEDPosition position,
+            final NEDPosition oldPosition) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, velocity, oldVelocity, position, oldPosition);
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)
+     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
      * @param frame        NED frame containing current position, velocity and body-to-NED coordinate transformation.
      * @param oldC         previous body-to-NED coordinate transformation.
      * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
@@ -1847,13 +1653,37 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final NEDFrame frame,
-                                               final CoordinateTransformation oldC,
-                                               final double oldVn, final double oldVe, final double oldVd,
-                                               final double oldLatitude, final double oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVn, oldVe, oldVd,
-                oldLatitude, oldHeight);
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double oldLatitude, final double oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldLatitude, oldHeight);
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)
+     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param frame        NED frame containing current position, velocity and body-to-NED coordinate transformation.
+     * @param oldC         previous body-to-NED coordinate transformation.
+     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down and expressed in meters per second (m/s).
+     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down and expressed in meters per second (m/s).
+     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down and expressed in meters per second (m/s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @return a new body kinematics instance.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
+     *                                  matrices are not NED frame valid.
+     */
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double oldLatitude, final double oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldLatitude, oldHeight);
     }
 
     /**
@@ -1871,13 +1701,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final NEDFrame frame,
-                                               final CoordinateTransformation oldC,
-                                               final NEDVelocity oldVelocity,
-                                               final double oldLatitude, final double oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,
-                oldVelocity, oldLatitude, oldHeight);
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final double oldLatitude, final double oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVelocity, oldLatitude, oldHeight);
     }
 
     /**
@@ -1895,13 +1722,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final NEDFrame frame,
-                                               final CoordinateTransformation oldC,
-                                               final NEDVelocity oldVelocity,
-                                               final double oldLatitude, final double oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVelocity,
-                oldLatitude, oldHeight);
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final double oldLatitude, final double oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVelocity, oldLatitude, oldHeight);
     }
 
     /**
@@ -1919,13 +1743,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final NEDFrame frame,
-                                               final CoordinateTransformation oldC,
-                                               final NEDVelocity oldVelocity,
-                                               final Angle oldLatitude, final Distance oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVelocity,
-                oldLatitude, oldHeight);
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final Angle oldLatitude, final Distance oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVelocity, oldLatitude, oldHeight);
     }
 
     /**
@@ -1943,13 +1764,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final NEDFrame frame,
-                                               final CoordinateTransformation oldC,
-                                               final NEDVelocity oldVelocity,
-                                               final Angle oldLatitude, final Distance oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVelocity,
-                oldLatitude, oldHeight);
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final Angle oldLatitude, final Distance oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVelocity, oldLatitude, oldHeight);
     }
 
     /**
@@ -1970,13 +1788,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final NEDFrame frame,
-                                               final CoordinateTransformation oldC,
-                                               final double oldVn, final double oldVe, final double oldVd,
-                                               final NEDPosition oldPosition) {
-        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,
-                oldVn, oldVe, oldVd, oldPosition);
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final double oldVn, final double oldVe, final double oldVd, final NEDPosition oldPosition) {
+        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldPosition);
     }
 
     /**
@@ -1997,13 +1812,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final NEDFrame frame,
-                                               final CoordinateTransformation oldC,
-                                               final double oldVn, final double oldVe, final double oldVd,
-                                               final NEDPosition oldPosition) {
-        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,
-                oldVn, oldVe, oldVd, oldPosition);
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final double oldVn, final double oldVe, final double oldVd, final NEDPosition oldPosition) {
+        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldPosition);
     }
 
     /**
@@ -2024,13 +1836,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final NEDFrame frame,
-                                               final CoordinateTransformation oldC,
-                                               final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                               final NEDPosition oldPosition) {
-        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,
-                oldVn, oldVe, oldVd, oldPosition);
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final NEDPosition oldPosition) {
+        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldPosition);
     }
 
     /**
@@ -2051,13 +1860,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final NEDFrame frame,
-                                               final CoordinateTransformation oldC,
-                                               final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                               final NEDPosition oldPosition) {
-        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,
-                oldVn, oldVe, oldVd, oldPosition);
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final NEDPosition oldPosition) {
+        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldPosition);
     }
 
     /**
@@ -2074,13 +1880,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final NEDFrame frame,
-                                               final CoordinateTransformation oldC,
-                                               final NEDVelocity oldVelocity,
-                                               final NEDPosition oldPosition) {
-        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,
-                oldVelocity, oldPosition);
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final NEDPosition oldPosition) {
+        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVelocity, oldPosition);
     }
 
     /**
@@ -2097,13 +1900,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final NEDFrame frame,
-                                               final CoordinateTransformation oldC,
-                                               final NEDVelocity oldVelocity,
-                                               final NEDPosition oldPosition) {
-        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,
-                oldVelocity, oldPosition);
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final NEDPosition oldPosition) {
+        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVelocity, oldPosition);
     }
 
     /**
@@ -2125,13 +1925,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final CoordinateTransformation c,
-                                               final double vn, final double ve, final double vd,
-                                               final double latitude, final double height,
-                                               final NEDFrame oldFrame) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd, latitude, height,
-                oldFrame);
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c,
+            final double vn, final double ve, final double vd, final double latitude, final double height,
+            final NEDFrame oldFrame) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd, latitude, height, oldFrame);
     }
 
     /**
@@ -2153,13 +1951,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final CoordinateTransformation c,
-                                               final double vn, final double ve, final double vd,
-                                               final double latitude, final double height,
-                                               final NEDFrame oldFrame) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd, latitude, height,
-                oldFrame);
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c,
+            final double vn, final double ve, final double vd, final double latitude, final double height,
+            final NEDFrame oldFrame) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd, latitude, height, oldFrame);
     }
 
     /**
@@ -2176,13 +1972,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final CoordinateTransformation c,
-                                               final NEDVelocity velocity,
-                                               final double latitude, final double height,
-                                               final NEDFrame oldFrame) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, velocity,
-                latitude, height, oldFrame);
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final double latitude, final double height, final NEDFrame oldFrame) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, velocity, latitude, height, oldFrame);
     }
 
     /**
@@ -2199,13 +1992,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final CoordinateTransformation c,
-                                               final NEDVelocity velocity,
-                                               final double latitude, final double height,
-                                               final NEDFrame oldFrame) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, velocity,
-                latitude, height, oldFrame);
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final double latitude, final double height, final NEDFrame oldFrame) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, velocity, latitude, height, oldFrame);
     }
 
     /**
@@ -2222,13 +2012,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final CoordinateTransformation c,
-                                               final NEDVelocity velocity,
-                                               final Angle latitude, final Distance height,
-                                               final NEDFrame oldFrame) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, velocity,
-                latitude, height, oldFrame);
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final Angle latitude, final Distance height, final NEDFrame oldFrame) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, velocity, latitude, height, oldFrame);
     }
 
     /**
@@ -2245,13 +2032,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final CoordinateTransformation c,
-                                               final NEDVelocity velocity,
-                                               final Angle latitude, final Distance height,
-                                               final NEDFrame oldFrame) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, velocity,
-                latitude, height, oldFrame);
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final Angle latitude, final Distance height, final NEDFrame oldFrame) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, velocity, latitude, height, oldFrame);
     }
 
     /**
@@ -2272,13 +2056,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final CoordinateTransformation c,
-                                               final double vn, final double ve, final double vd,
-                                               final NEDPosition position,
-                                               final NEDFrame oldFrame) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd,
-                position, oldFrame);
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c,
+            final double vn, final double ve, final double vd, final NEDPosition position, final NEDFrame oldFrame) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd, position, oldFrame);
     }
 
     /**
@@ -2299,13 +2080,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final CoordinateTransformation c,
-                                               final double vn, final double ve, final double vd,
-                                               final NEDPosition position,
-                                               final NEDFrame oldFrame) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd,
-                position, oldFrame);
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c,
+            final double vn, final double ve, final double vd, final NEDPosition position, final NEDFrame oldFrame) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd, position, oldFrame);
     }
 
     /**
@@ -2326,13 +2104,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final CoordinateTransformation c,
-                                               final Speed vn, final Speed ve, final Speed vd,
-                                               final NEDPosition position,
-                                               final NEDFrame oldFrame) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd,
-                position, oldFrame);
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition position, final NEDFrame oldFrame) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd, position, oldFrame);
     }
 
     /**
@@ -2353,13 +2128,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final CoordinateTransformation c,
-                                               final Speed vn, final Speed ve, final Speed vd,
-                                               final NEDPosition position,
-                                               final NEDFrame oldFrame) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd,
-                position, oldFrame);
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition position, final NEDFrame oldFrame) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd, position, oldFrame);
     }
 
     /**
@@ -2375,13 +2147,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final CoordinateTransformation c,
-                                               final NEDVelocity velocity,
-                                               final NEDPosition position,
-                                               final NEDFrame oldFrame) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, velocity,
-                position, oldFrame);
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final NEDPosition position, final NEDFrame oldFrame) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, velocity, position, oldFrame);
     }
 
     /**
@@ -2397,13 +2166,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final CoordinateTransformation c,
-                                               final NEDVelocity velocity,
-                                               final NEDPosition position,
-                                               final NEDFrame oldFrame) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, velocity,
-                position, oldFrame);
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final NEDPosition position, final NEDFrame oldFrame) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, velocity, position, oldFrame);
     }
 
     /**
@@ -2416,9 +2182,8 @@ public class NEDKinematicsEstimator {
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final NEDFrame frame,
-                                               final NEDFrame oldFrame) {
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final NEDFrame frame, final NEDFrame oldFrame) {
         return estimateKinematicsAndReturnNew(timeInterval, frame, oldFrame);
     }
 
@@ -2432,9 +2197,8 @@ public class NEDKinematicsEstimator {
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final NEDFrame frame,
-                                               final NEDFrame oldFrame) {
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final NEDFrame frame, final NEDFrame oldFrame) {
         return estimateKinematicsAndReturnNew(timeInterval, frame, oldFrame);
     }
 
@@ -2465,15 +2229,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final Speed vn, final Speed ve, final Speed vd,
-                                               final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                               final double latitude, final double height,
-                                               final double oldLatitude, final double oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final double latitude, final double height, final double oldLatitude, final double oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight);
     }
 
     /**
@@ -2503,15 +2265,12 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final Speed vn, final Speed ve, final Speed vd,
-                                               final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                               final double latitude, final double height,
-                                               final double oldLatitude, final double oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final double latitude, final double height, final double oldLatitude, final double oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight);
     }
 
     /**
@@ -2541,15 +2300,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final double vn, final double ve, final double vd,
-                                               final double oldVn, final double oldVe, final double oldVd,
-                                               final Angle latitude, final double height,
-                                               final Angle oldLatitude, final double oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final Angle latitude, final double height,
+            final Angle oldLatitude, final double oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight);
     }
 
     /**
@@ -2579,15 +2336,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final double vn, final double ve, final double vd,
-                                               final double oldVn, final double oldVe, final double oldVd,
-                                               final Angle latitude, final double height,
-                                               final Angle oldLatitude, final double oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final Angle latitude, final double height,
+            final Angle oldLatitude, final double oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight);
     }
 
     /**
@@ -2617,15 +2372,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final double vn, final double ve, final double vd,
-                                               final double oldVn, final double oldVe, final double oldVd,
-                                               final double latitude, final Distance height,
-                                               final double oldLatitude, final Distance oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final double latitude, final Distance height,
+            final double oldLatitude, final Distance oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight);
     }
 
     /**
@@ -2655,15 +2408,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final double vn, final double ve, final double vd,
-                                               final double oldVn, final double oldVe, final double oldVd,
-                                               final double latitude, final Distance height,
-                                               final double oldLatitude, final Distance oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final double latitude, final Distance height,
+            final double oldLatitude, final Distance oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight);
     }
 
     /**
@@ -2693,15 +2444,12 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final double timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final Speed vn, final Speed ve, final Speed vd,
-                                               final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                               final Angle latitude, final Distance height,
-                                               final Angle oldLatitude, final Distance oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
+    public BodyKinematics estimateAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final Angle latitude, final Distance height, final Angle oldLatitude, final Distance oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight);
     }
 
     /**
@@ -2731,15 +2479,12 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public BodyKinematics estimateAndReturnNew(final Time timeInterval,
-                                               final CoordinateTransformation c,
-                                               final CoordinateTransformation oldC,
-                                               final Speed vn, final Speed ve, final Speed vd,
-                                               final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                               final Angle latitude, final Distance height,
-                                               final Angle oldLatitude, final Distance oldHeight) {
-        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
+    public BodyKinematics estimateAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final Angle latitude, final Distance height, final Angle oldLatitude, final Distance oldHeight) {
+        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight);
     }
 
     /**
@@ -2769,17 +2514,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final double vn, final double ve, final double vd,
-                                          final double oldVn, final double oldVe, final double oldVd,
-                                          final double latitude, final double height,
-                                          final double oldLatitude, final double oldHeight,
-                                          final BodyKinematics result) {
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final double latitude, final double height,
+            final double oldLatitude, final double oldHeight, final BodyKinematics result) {
 
-        if (timeInterval < 0.0
-                || !NEDFrame.isValidCoordinateTransformation(c)
+        if (timeInterval < 0.0 || !NEDFrame.isValidCoordinateTransformation(c)
                 || !NEDFrame.isValidCoordinateTransformation(oldC)) {
             throw new IllegalArgumentException();
         }
@@ -2789,10 +2530,8 @@ public class NEDKinematicsEstimator {
                 // From (2.123), determine the angular rate of the NED frame
                 // with respect the ECI frame, resolved about NED
                 final Matrix omegaIen = new Matrix(ROWS, 1);
-                omegaIen.setElementAtIndex(0,
-                        EARTH_ROTATION_RATE * Math.cos(oldLatitude));
-                omegaIen.setElementAtIndex(2,
-                        -EARTH_ROTATION_RATE * Math.sin(oldLatitude));
+                omegaIen.setElementAtIndex(0, EARTH_ROTATION_RATE * Math.cos(oldLatitude));
+                omegaIen.setElementAtIndex(2, -EARTH_ROTATION_RATE * Math.sin(oldLatitude));
 
                 // From (5.44), determine the angular rate of the NED frame
                 // with respect the NED frame, resolved about NED
@@ -2807,27 +2546,21 @@ public class NEDKinematicsEstimator {
                 final double re = radiiOfCurvature.getRe();
 
                 final Matrix oldOmegaEnN = new Matrix(ROWS, 1);
-                oldOmegaEnN.setElementAtIndex(0,
-                        oldVe / (oldRe + oldHeight));
-                oldOmegaEnN.setElementAtIndex(1,
-                        -oldVn / (oldRn + oldHeight));
-                oldOmegaEnN.setElementAtIndex(2,
-                        -oldVe * Math.tan(oldLatitude) /
-                                (oldRe + oldHeight));
+                oldOmegaEnN.setElementAtIndex(0, oldVe / (oldRe + oldHeight));
+                oldOmegaEnN.setElementAtIndex(1, -oldVn / (oldRn + oldHeight));
+                oldOmegaEnN.setElementAtIndex(2, -oldVe * Math.tan(oldLatitude) / (oldRe + oldHeight));
 
                 final Matrix omegaEnN = new Matrix(ROWS, 1);
                 omegaEnN.setElementAtIndex(0, ve / (re + height));
                 omegaEnN.setElementAtIndex(1, -vn / (rn + height));
-                omegaEnN.setElementAtIndex(2,
-                        -ve * Math.tan(latitude) / (re + height));
+                omegaEnN.setElementAtIndex(2, -ve * Math.tan(latitude) / (re + height));
 
                 // Obtain coordinate transformation matrix from the old attitude (with
                 // respect the inertial frame) to the new using (5.77)
                 final Matrix cbn = c.getMatrix();
                 cbn.transpose();
 
-                final Matrix omega = omegaIen.addAndReturnNew(
-                        omegaEnN.multiplyByScalarAndReturnNew(0.5));
+                final Matrix omega = omegaIen.addAndReturnNew(omegaEnN.multiplyByScalarAndReturnNew(0.5));
                 omega.add(oldOmegaEnN.multiplyByScalarAndReturnNew(0.5));
                 final Matrix skew1 = Utils.skewMatrix(omega);
                 skew1.multiplyByScalar(timeInterval);
@@ -2868,8 +2601,7 @@ public class NEDKinematicsEstimator {
                 tmp2.setElementAtIndex(1, (ve - oldVe) / timeInterval);
                 tmp2.setElementAtIndex(2, (vd - oldVd) / timeInterval);
 
-                final NEDGravity gravity = NEDGravityEstimator.estimateGravityAndReturnNew(
-                        oldLatitude, oldHeight);
+                final NEDGravity gravity = NEDGravityEstimator.estimateGravityAndReturnNew(oldLatitude, oldHeight);
                 final Matrix g = gravity.asMatrix();
 
                 final Matrix oldVebn = new Matrix(ROWS, 1);
@@ -2923,10 +2655,8 @@ public class NEDKinematicsEstimator {
                 final double specificForceZ = fIbb.getElementAtIndex(2);
 
                 // save result data
-                result.setSpecificForceCoordinates(specificForceX, specificForceY,
-                        specificForceZ);
-                result.setAngularRateCoordinates(angularRateX, angularRateY,
-                        angularRateZ);
+                result.setSpecificForceCoordinates(specificForceX, specificForceY, specificForceZ);
+                result.setAngularRateCoordinates(angularRateX, angularRateY, angularRateZ);
 
             } catch (final AlgebraException ignore) {
                 // never happens
@@ -2964,16 +2694,13 @@ public class NEDKinematicsEstimator {
      * @param result       instance where estimated body kinematics will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinate
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final double vn, final double ve, final double vd,
-                                          final double oldVn, final double oldVe, final double oldVd,
-                                          final double latitude, final double height,
-                                          final double oldLatitude, final double oldHeight,
-                                          final BodyKinematics result) {
-        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight, result);
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final double latitude, final double height,
+            final double oldLatitude, final double oldHeight, final BodyKinematics result) {
+        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
     }
 
     /**
@@ -2994,17 +2721,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final NEDVelocity velocity,
-                                          final NEDVelocity oldVelocity,
-                                          final double latitude, final double height,
-                                          final double oldLatitude, final double oldHeight,
-                                          final BodyKinematics result) {
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final double latitude, final double height,
+            final double oldLatitude, final double oldHeight, final BodyKinematics result) {
         estimateKinematics(timeInterval, c, oldC, velocity.getVn(), velocity.getVe(), velocity.getVd(),
-                oldVelocity.getVn(), oldVelocity.getVe(), oldVelocity.getVd(),
-                latitude, height, oldLatitude, oldHeight, result);
+                oldVelocity.getVn(), oldVelocity.getVe(), oldVelocity.getVd(), latitude, height, oldLatitude, oldHeight,
+                result);
     }
 
     /**
@@ -3025,16 +2748,12 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final NEDVelocity velocity,
-                                          final NEDVelocity oldVelocity,
-                                          final double latitude, final double height,
-                                          final double oldLatitude, final double oldHeight,
-                                          final BodyKinematics result) {
-        estimateKinematics(convertTime(timeInterval), c, oldC, velocity, oldVelocity, latitude,
-                height, oldLatitude, oldHeight, result);
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final double latitude, final double height,
+            final double oldLatitude, final double oldHeight, final BodyKinematics result) {
+        estimateKinematics(convertTime(timeInterval), c, oldC, velocity, oldVelocity, latitude, height,
+                oldLatitude, oldHeight, result);
     }
 
     /**
@@ -3055,18 +2774,12 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final NEDVelocity velocity,
-                                          final NEDVelocity oldVelocity,
-                                          final Angle latitude, final Distance height,
-                                          final Angle oldLatitude, final Distance oldHeight,
-                                          final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,
-                convertAngle(latitude), convertDistance(height),
-                convertAngle(oldLatitude), convertDistance(oldHeight),
-                result);
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final Angle latitude, final Distance height,
+            final Angle oldLatitude, final Distance oldHeight, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, convertAngle(latitude), convertDistance(height),
+                convertAngle(oldLatitude), convertDistance(oldHeight), result);
     }
 
     /**
@@ -3087,16 +2800,12 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final NEDVelocity velocity,
-                                          final NEDVelocity oldVelocity,
-                                          final Angle latitude, final Distance height,
-                                          final Angle oldLatitude, final Distance oldHeight,
-                                          final BodyKinematics result) {
-        estimateKinematics(convertTime(timeInterval), c, oldC, velocity, oldVelocity,
-                latitude, height, oldLatitude, oldHeight, result);
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final Angle latitude, final Distance height,
+            final Angle oldLatitude, final Distance oldHeight, final BodyKinematics result) {
+        estimateKinematics(convertTime(timeInterval), c, oldC, velocity, oldVelocity, latitude, height,
+                oldLatitude, oldHeight, result);
     }
 
     /**
@@ -3124,16 +2833,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final double vn, final double ve, final double vd,
-                                          final double oldVn, final double oldVe, final double oldVd,
-                                          final NEDPosition position, final NEDPosition oldPosition,
-                                          final BodyKinematics result) {
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final NEDPosition position,
+            final NEDPosition oldPosition, final BodyKinematics result) {
         estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                position.getLatitude(), position.getHeight(),
-                oldPosition.getLatitude(), oldPosition.getHeight(),
+                position.getLatitude(), position.getHeight(), oldPosition.getLatitude(), oldPosition.getHeight(),
                 result);
     }
 
@@ -3162,117 +2868,12 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final double vn, final double ve, final double vd,
-                                          final double oldVn, final double oldVe, final double oldVd,
-                                          final NEDPosition position, final NEDPosition oldPosition,
-                                          final BodyKinematics result) {
-        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                position, oldPosition, result);
-    }
-
-    /**
-     * Estimates body kinematics (specific force applied to a body and its angular rates)
-     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param c            body-to-NED coordinate transformation.
-     * @param oldC         previous body-to-NED coordinate transformation.
-     * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down.
-     * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down.
-     * @param vd           down coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down.
-     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down.
-     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down.
-     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down.
-     * @param position     current curvilinear position expressed in terms of latitude, longitude and height.
-     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
-     * @param result       instance where estimated body kinematics will be stored.
-     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
-     *                                  matrices are not NED frame valid.
-     */
-    public static void estimateKinematics(final double timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final Speed vn, final Speed ve, final Speed vd,
-                                          final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                          final NEDPosition position, final NEDPosition oldPosition,
-                                          final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, convertSpeed(vn),
-                convertSpeed(ve), convertSpeed(vd), convertSpeed(oldVn),
-                convertSpeed(oldVe), convertSpeed(oldVd), position, oldPosition, result);
-    }
-
-    /**
-     * Estimates body kinematics (specific force applied to a body and its angular rates)
-     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param c            body-to-NED coordinate transformation.
-     * @param oldC         previous body-to-NED coordinate transformation.
-     * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down.
-     * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down.
-     * @param vd           down coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down.
-     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down.
-     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down.
-     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down.
-     * @param position     current curvilinear position expressed in terms of latitude, longitude and height.
-     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
-     * @param result       instance where estimated body kinematics will be stored.
-     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
-     *                                  matrices are not NED frame valid.
-     */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final Speed vn, final Speed ve, final Speed vd,
-                                          final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                          final NEDPosition position, final NEDPosition oldPosition,
-                                          final BodyKinematics result) {
-        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, position, oldPosition, result);
-    }
-
-    /**
-     * Estimates body kinematics (specific force applied to a body and its angular rates)
-     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param c            body-to-NED coordinate transformation.
-     * @param oldC         previous body-to-NED coordinate transformation.
-     * @param velocity     velocity of body frame with respect NED frame, resolved along north, east and down.
-     * @param oldVelocity  previous velocity of body frame with respect NED frame, resolved along north, east and
-     *                     down.
-     * @param position     current curvilinear position expressed in terms of latitude, longitude and height.
-     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
-     * @param result       instance where estimated body kinematics will be stored.
-     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
-     *                                  matrices are not NED frame valid.
-     */
-    public static void estimateKinematics(final double timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final NEDVelocity velocity,
-                                          final NEDVelocity oldVelocity,
-                                          final NEDPosition position,
-                                          final NEDPosition oldPosition,
-                                          final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,
-                position.getLatitude(), position.getHeight(),
-                oldPosition.getLatitude(), oldPosition.getHeight(),
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd,
+            final NEDPosition position, final NEDPosition oldPosition, final BodyKinematics result) {
+        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, position, oldPosition,
                 result);
     }
 
@@ -3280,6 +2881,96 @@ public class NEDKinematicsEstimator {
      * Estimates body kinematics (specific force applied to a body and its angular rates)
      * with respect NED frame and resolved along body-frame axes, averaged over time interval.
      *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-NED coordinate transformation.
+     * @param oldC         previous body-to-NED coordinate transformation.
+     * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down.
+     * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down.
+     * @param vd           down coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down.
+     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down.
+     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down.
+     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down.
+     * @param position     current curvilinear position expressed in terms of latitude, longitude and height.
+     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
+     *                                  matrices are not NED frame valid.
+     */
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final NEDPosition position, final NEDPosition oldPosition, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, convertSpeed(vn), convertSpeed(ve), convertSpeed(vd),
+                convertSpeed(oldVn), convertSpeed(oldVe), convertSpeed(oldVd), position, oldPosition, result);
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)
+     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-NED coordinate transformation.
+     * @param oldC         previous body-to-NED coordinate transformation.
+     * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down.
+     * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down.
+     * @param vd           down coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down.
+     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down.
+     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down.
+     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down.
+     * @param position     current curvilinear position expressed in terms of latitude, longitude and height.
+     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
+     *                                  matrices are not NED frame valid.
+     */
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final NEDPosition position, final NEDPosition oldPosition, final BodyKinematics result) {
+        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, position, oldPosition,
+                result);
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)
+     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-NED coordinate transformation.
+     * @param oldC         previous body-to-NED coordinate transformation.
+     * @param velocity     velocity of body frame with respect NED frame, resolved along north, east and down.
+     * @param oldVelocity  previous velocity of body frame with respect NED frame, resolved along north, east and
+     *                     down.
+     * @param position     current curvilinear position expressed in terms of latitude, longitude and height.
+     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
+     *                                  matrices are not NED frame valid.
+     */
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final NEDPosition position,
+            final NEDPosition oldPosition, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, position.getLatitude(), position.getHeight(),
+                oldPosition.getLatitude(), oldPosition.getHeight(), result);
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)
+     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
+     *
      * @param timeInterval time interval between epochs.
      * @param c            body-to-NED coordinate transformation.
      * @param oldC         previous body-to-NED coordinate transformation.
@@ -3292,16 +2983,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final NEDVelocity velocity,
-                                          final NEDVelocity oldVelocity,
-                                          final NEDPosition position,
-                                          final NEDPosition oldPosition,
-                                          final BodyKinematics result) {
-        estimateKinematics(convertTime(timeInterval), c, oldC, velocity, oldVelocity,
-                position, oldPosition, result);
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final NEDPosition position,
+            final NEDPosition oldPosition, final BodyKinematics result) {
+        estimateKinematics(convertTime(timeInterval), c, oldC, velocity, oldVelocity, position, oldPosition, result);
     }
 
     /**
@@ -3323,12 +3009,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final NEDFrame frame,
-                                          final CoordinateTransformation oldC,
-                                          final double oldVn, final double oldVe, final double oldVd,
-                                          final double oldLatitude, final double oldHeight,
-                                          final BodyKinematics result) {
+    public static void estimateKinematics(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double oldLatitude, final double oldHeight, final BodyKinematics result) {
         estimateKinematics(timeInterval, frame.getCoordinateTransformation(), oldC,
                 frame.getVn(), frame.getVe(), frame.getVd(), oldVn, oldVe, oldVd,
                 frame.getLatitude(), frame.getHeight(), oldLatitude, oldHeight, result);
@@ -3353,14 +3037,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final NEDFrame frame,
-                                          final CoordinateTransformation oldC,
-                                          final double oldVn, final double oldVe, final double oldVd,
-                                          final double oldLatitude, final double oldHeight,
-                                          final BodyKinematics result) {
-        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVn, oldVe, oldVd,
-                oldLatitude, oldHeight, result);
+    public static void estimateKinematics(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double oldLatitude, final double oldHeight, final BodyKinematics result) {
+        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVn, oldVe, oldVd, oldLatitude, oldHeight, result);
     }
 
     /**
@@ -3378,12 +3059,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final NEDFrame frame,
-                                          final CoordinateTransformation oldC,
-                                          final NEDVelocity oldVelocity,
-                                          final double oldLatitude, final double oldHeight,
-                                          final BodyKinematics result) {
+    public static void estimateKinematics(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final double oldLatitude, final double oldHeight,
+            final BodyKinematics result) {
         estimateKinematics(timeInterval, frame, oldC, oldVelocity.getVn(), oldVelocity.getVe(), oldVelocity.getVd(),
                 oldLatitude, oldHeight, result);
     }
@@ -3403,14 +3082,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final NEDFrame frame,
-                                          final CoordinateTransformation oldC,
-                                          final NEDVelocity oldVelocity,
-                                          final double oldLatitude, final double oldHeight,
-                                          final BodyKinematics result) {
-        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVelocity, oldLatitude, oldHeight,
-                result);
+    public static void estimateKinematics(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final double oldLatitude, final double oldHeight,
+            final BodyKinematics result) {
+        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVelocity, oldLatitude, oldHeight, result);
     }
 
     /**
@@ -3428,12 +3104,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final NEDFrame frame,
-                                          final CoordinateTransformation oldC,
-                                          final NEDVelocity oldVelocity,
-                                          final Angle oldLatitude, final Distance oldHeight,
-                                          final BodyKinematics result) {
+    public static void estimateKinematics(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final Angle oldLatitude, final Distance oldHeight,
+            final BodyKinematics result) {
         estimateKinematics(timeInterval, frame, oldC, oldVelocity,
                 convertAngle(oldLatitude), convertDistance(oldHeight), result);
     }
@@ -3453,14 +3127,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final NEDFrame frame,
-                                          final CoordinateTransformation oldC,
-                                          final NEDVelocity oldVelocity,
-                                          final Angle oldLatitude, final Distance oldHeight,
-                                          final BodyKinematics result) {
-        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVelocity,
-                oldLatitude, oldHeight, result);
+    public static void estimateKinematics(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final Angle oldLatitude, final Distance oldHeight,
+            final BodyKinematics result) {
+        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVelocity, oldLatitude, oldHeight, result);
     }
 
     /**
@@ -3481,11 +3152,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final NEDFrame frame,
-                                          final CoordinateTransformation oldC,
-                                          final double oldVn, final double oldVe, final double oldVd,
-                                          final NEDPosition oldPosition, final BodyKinematics result) {
+    public static void estimateKinematics(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final double oldVn, final double oldVe, final double oldVd, final NEDPosition oldPosition,
+            final BodyKinematics result) {
         estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,
                 oldPosition.getLatitude(), oldPosition.getHeight(), result);
     }
@@ -3508,12 +3178,36 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final NEDFrame frame,
-                                          final CoordinateTransformation oldC,
-                                          final double oldVn, final double oldVe, final double oldVd,
-                                          final NEDPosition oldPosition, final BodyKinematics result) {
-        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVn, oldVe, oldVd,
+    public static void estimateKinematics(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final double oldVn, final double oldVe, final double oldVd, final NEDPosition oldPosition,
+            final BodyKinematics result) {
+        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVn, oldVe, oldVd, oldPosition, result);
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)
+     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param frame        NED frame containing current position, velocity and body-to-NED coordinate transformation.
+     * @param oldC         previous body-to-NED coordinate transformation.
+     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down.
+     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down.
+     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down.
+     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
+     *                                  matrices are not NED frame valid.
+     */
+    public static void estimateKinematics(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final NEDPosition oldPosition,
+            final BodyKinematics result) {
+        estimateKinematics(timeInterval, frame, oldC, convertSpeed(oldVn), convertSpeed(oldVe), convertSpeed(oldVd),
                 oldPosition, result);
     }
 
@@ -3535,41 +3229,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final NEDFrame frame,
-                                          final CoordinateTransformation oldC,
-                                          final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                          final NEDPosition oldPosition, final BodyKinematics result) {
-        estimateKinematics(timeInterval, frame, oldC, convertSpeed(oldVn),
-                convertSpeed(oldVe), convertSpeed(oldVd), oldPosition,
-                result);
-    }
-
-    /**
-     * Estimates body kinematics (specific force applied to a body and its angular rates)
-     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param frame        NED frame containing current position, velocity and body-to-NED coordinate transformation.
-     * @param oldC         previous body-to-NED coordinate transformation.
-     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down.
-     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down.
-     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down.
-     * @param oldPosition  previous curvilinear position expressed in terms of latitude, longitude and height.
-     * @param result       instance where estimated body kinematics will be stored.
-     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
-     *                                  matrices are not NED frame valid.
-     */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final NEDFrame frame,
-                                          final CoordinateTransformation oldC,
-                                          final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                          final NEDPosition oldPosition, final BodyKinematics result) {
-        estimateKinematics(convertTime(timeInterval), frame, oldC,
-                oldVn, oldVe, oldVd, oldPosition, result);
+    public static void estimateKinematics(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final NEDPosition oldPosition,
+            final BodyKinematics result) {
+        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVn, oldVe, oldVd, oldPosition, result);
     }
 
     /**
@@ -3586,11 +3250,9 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final NEDFrame frame,
-                                          final CoordinateTransformation oldC,
-                                          final NEDVelocity oldVelocity,
-                                          final NEDPosition oldPosition, final BodyKinematics result) {
+    public static void estimateKinematics(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final NEDPosition oldPosition, final BodyKinematics result) {
         estimateKinematics(timeInterval, frame, oldC, oldVelocity.getVn(), oldVelocity.getVe(), oldVelocity.getVd(),
                 oldPosition, result);
     }
@@ -3609,11 +3271,9 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final NEDFrame frame,
-                                          final CoordinateTransformation oldC,
-                                          final NEDVelocity oldVelocity,
-                                          final NEDPosition oldPosition, final BodyKinematics result) {
+    public static void estimateKinematics(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final NEDPosition oldPosition, final BodyKinematics result) {
         estimateKinematics(convertTime(timeInterval), frame, oldC, oldVelocity, oldPosition, result);
     }
 
@@ -3636,14 +3296,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final CoordinateTransformation c,
-                                          final double vn, final double ve, final double vd,
-                                          final double latitude, final double height,
-                                          final NEDFrame oldFrame, final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldFrame.getCoordinateTransformation(),
-                vn, ve, vd, oldFrame.getVn(), oldFrame.getVe(), oldFrame.getVd(),
-                latitude, height, oldFrame.getLatitude(), oldFrame.getHeight(), result);
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c,
+            final double vn, final double ve, final double vd, final double latitude, final double height,
+            final NEDFrame oldFrame, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldFrame.getCoordinateTransformation(), vn, ve, vd,
+                oldFrame.getVn(), oldFrame.getVe(), oldFrame.getVd(), latitude, height,
+                oldFrame.getLatitude(), oldFrame.getHeight(), result);
     }
 
     /**
@@ -3665,13 +3324,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final CoordinateTransformation c,
-                                          final double vn, final double ve, final double vd,
-                                          final double latitude, final double height,
-                                          final NEDFrame oldFrame, final BodyKinematics result) {
-        estimateKinematics(convertTime(timeInterval), c, vn, ve, vd, latitude, height,
-                oldFrame, result);
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c,
+            final double vn, final double ve, final double vd, final double latitude, final double height,
+            final NEDFrame oldFrame, final BodyKinematics result) {
+        estimateKinematics(convertTime(timeInterval), c, vn, ve, vd, latitude, height, oldFrame, result);
     }
 
     /**
@@ -3688,13 +3345,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final CoordinateTransformation c,
-                                          final NEDVelocity velocity,
-                                          final double latitude, final double height,
-                                          final NEDFrame oldFrame, final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, velocity.getVn(), velocity.getVe(), velocity.getVd(),
-                latitude, height, oldFrame, result);
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final double latitude, final double height, final NEDFrame oldFrame, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, velocity.getVn(), velocity.getVe(), velocity.getVd(), latitude, height,
+                oldFrame, result);
     }
 
     /**
@@ -3711,11 +3366,9 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final CoordinateTransformation c,
-                                          final NEDVelocity velocity,
-                                          final double latitude, final double height,
-                                          final NEDFrame oldFrame, final BodyKinematics result) {
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final double latitude, final double height, final NEDFrame oldFrame, final BodyKinematics result) {
         estimateKinematics(convertTime(timeInterval), c, velocity, latitude, height, oldFrame, result);
     }
 
@@ -3733,14 +3386,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final CoordinateTransformation c,
-                                          final NEDVelocity velocity,
-                                          final Angle latitude, final Distance height,
-                                          final NEDFrame oldFrame,
-                                          final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, velocity, convertAngle(latitude),
-                convertDistance(height), oldFrame, result);
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final Angle latitude, final Distance height, final NEDFrame oldFrame, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, velocity, convertAngle(latitude), convertDistance(height), oldFrame,
+                result);
     }
 
     /**
@@ -3757,14 +3407,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final CoordinateTransformation c,
-                                          final NEDVelocity velocity,
-                                          final Angle latitude, final Distance height,
-                                          final NEDFrame oldFrame,
-                                          final BodyKinematics result) {
-        estimateKinematics(convertTime(timeInterval), c, velocity, latitude,
-                height, oldFrame, result);
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final Angle latitude, final Distance height, final NEDFrame oldFrame, final BodyKinematics result) {
+        estimateKinematics(convertTime(timeInterval), c, velocity, latitude, height, oldFrame, result);
     }
 
     /**
@@ -3785,13 +3431,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final CoordinateTransformation c,
-                                          final double vn, final double ve, final double vd,
-                                          final NEDPosition position,
-                                          final NEDFrame oldFrame, final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, vn, ve, vd, position.getLatitude(), position.getHeight(),
-                oldFrame, result);
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c,
+            final double vn, final double ve, final double vd, final NEDPosition position, final NEDFrame oldFrame,
+            final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, vn, ve, vd, position.getLatitude(), position.getHeight(), oldFrame, result);
     }
 
     /**
@@ -3812,11 +3456,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final CoordinateTransformation c,
-                                          final double vn, final double ve, final double vd,
-                                          final NEDPosition position,
-                                          final NEDFrame oldFrame, final BodyKinematics result) {
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c,
+            final double vn, final double ve, final double vd, final NEDPosition position, final NEDFrame oldFrame,
+            final BodyKinematics result) {
         estimateKinematics(convertTime(timeInterval), c, vn, ve, vd, position, oldFrame, result);
     }
 
@@ -3838,13 +3481,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final CoordinateTransformation c,
-                                          final Speed vn, final Speed ve, final Speed vd,
-                                          final NEDPosition position,
-                                          final NEDFrame oldFrame, final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, convertSpeed(vn), convertSpeed(ve),
-                convertSpeed(vd), position, oldFrame, result);
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition position, final NEDFrame oldFrame, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, convertSpeed(vn), convertSpeed(ve), convertSpeed(vd), position, oldFrame,
+                result);
     }
 
     /**
@@ -3865,13 +3506,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final CoordinateTransformation c,
-                                          final Speed vn, final Speed ve, final Speed vd,
-                                          final NEDPosition position,
-                                          final NEDFrame oldFrame, final BodyKinematics result) {
-        estimateKinematics(convertTime(timeInterval), c, vn, ve, vd,
-                position, oldFrame, result);
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition position, final NEDFrame oldFrame, final BodyKinematics result) {
+        estimateKinematics(convertTime(timeInterval), c, vn, ve, vd, position, oldFrame, result);
     }
 
     /**
@@ -3887,13 +3525,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final CoordinateTransformation c,
-                                          final NEDVelocity velocity,
-                                          final NEDPosition position,
-                                          final NEDFrame oldFrame, final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, velocity, position.getLatitude(), position.getHeight(),
-                oldFrame, result);
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final NEDPosition position, final NEDFrame oldFrame, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, velocity, position.getLatitude(), position.getHeight(), oldFrame, result);
     }
 
     /**
@@ -3909,11 +3544,9 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final CoordinateTransformation c,
-                                          final NEDVelocity velocity,
-                                          final NEDPosition position,
-                                          final NEDFrame oldFrame, final BodyKinematics result) {
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final NEDPosition position, final NEDFrame oldFrame, final BodyKinematics result) {
         estimateKinematics(convertTime(timeInterval), c, velocity, position, oldFrame, result);
     }
 
@@ -3927,12 +3560,10 @@ public class NEDKinematicsEstimator {
      * @param result       instance where estimated body kinematics will be stored.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final NEDFrame frame, final NEDFrame oldFrame,
-                                          final BodyKinematics result) {
+    public static void estimateKinematics(
+            final double timeInterval, final NEDFrame frame, final NEDFrame oldFrame, final BodyKinematics result) {
         estimateKinematics(timeInterval, frame.getCoordinateTransformation(),
-                frame.getVn(), frame.getVe(), frame.getVd(),
-                frame.getLatitude(), frame.getHeight(), oldFrame, result);
+                frame.getVn(), frame.getVe(), frame.getVd(), frame.getLatitude(), frame.getHeight(), oldFrame, result);
     }
 
     /**
@@ -3945,9 +3576,8 @@ public class NEDKinematicsEstimator {
      * @param result       instance where estimated body kinematics will be stored.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final NEDFrame frame, final NEDFrame oldFrame,
-                                          final BodyKinematics result) {
+    public static void estimateKinematics(
+            final Time timeInterval, final NEDFrame frame, final NEDFrame oldFrame, final BodyKinematics result) {
         estimateKinematics(convertTime(timeInterval), frame, oldFrame, result);
     }
 
@@ -3978,95 +3608,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final Speed vn, final Speed ve, final Speed vd,
-                                          final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                          final double latitude, final double height,
-                                          final double oldLatitude, final double oldHeight,
-                                          final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, convertSpeed(vn), convertSpeed(ve),
-                convertSpeed(vd), convertSpeed(oldVn), convertSpeed(oldVe),
-                convertSpeed(oldVd), latitude, height, oldLatitude, oldHeight, result);
-    }
-
-    /**
-     * Estimates body kinematics (specific force applied to a body and its angular rates)
-     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
-     *
-     * @param timeInterval time interval between epochs.
-     * @param c            body-to-NED coordinate transformation.
-     * @param oldC         previous body-to-NED coordinate transformation.
-     * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down.
-     * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down.
-     * @param vd           down coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down.
-     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down.
-     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down.
-     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down.
-     * @param latitude     current latitude expressed in radians (rad).
-     * @param height       current height expressed in meters (m).
-     * @param oldLatitude  previous latitude expressed in radians (rad).
-     * @param oldHeight    previous height expressed in meters (m).
-     * @param result       instance where estimated body kinematics will be stored.
-     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
-     *                                  matrices are not NED frame valid.
-     */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final Speed vn, final Speed ve, final Speed vd,
-                                          final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                          final double latitude, final double height,
-                                          final double oldLatitude, final double oldHeight,
-                                          final BodyKinematics result) {
-        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
-    }
-
-    /**
-     * Estimates body kinematics (specific force applied to a body and its angular rates)
-     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
-     *
-     * @param timeInterval time interval between epochs expressed in seconds (s).
-     * @param c            body-to-NED coordinate transformation.
-     * @param oldC         previous body-to-NED coordinate transformation.
-     * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down and expressed in meters per second (m/s).
-     * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down and expressed in meters per second (m/s).
-     * @param vd           down coordinate of velocity of body frame with respect NED frame, resolved along
-     *                     north, east, and down and expressed in meters per second (m/s).
-     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down and expressed in meters per second (m/s).
-     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down and expressed in meters per second (m/s).
-     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
-     *                     along north, east, and down and expressed in meters per second (m/s).
-     * @param latitude     current latitude.
-     * @param height       current height expressed in meters (m).
-     * @param oldLatitude  previous latitude.
-     * @param oldHeight    previous height expressed in meters (m).
-     * @param result       instance where estimated body kinematics will be stored.
-     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
-     *                                  matrices are not NED frame valid.
-     */
-    public static void estimateKinematics(final double timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final double vn, final double ve, final double vd,
-                                          final double oldVn, final double oldVe, final double oldVd,
-                                          final Angle latitude, final double height,
-                                          final Angle oldLatitude, final double oldHeight,
-                                          final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                convertAngle(latitude), height, convertAngle(oldLatitude), oldHeight,
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final double latitude, final double height, final double oldLatitude, final double oldHeight,
+            final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, convertSpeed(vn), convertSpeed(ve), convertSpeed(vd),
+                convertSpeed(oldVn), convertSpeed(oldVe), convertSpeed(oldVd), latitude, height, oldLatitude, oldHeight,
                 result);
     }
 
@@ -4078,6 +3626,42 @@ public class NEDKinematicsEstimator {
      * @param c            body-to-NED coordinate transformation.
      * @param oldC         previous body-to-NED coordinate transformation.
      * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down.
+     * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down.
+     * @param vd           down coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down.
+     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down.
+     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down.
+     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down.
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
+     *                                  matrices are not NED frame valid.
+     */
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final double latitude, final double height, final double oldLatitude, final double oldHeight,
+            final BodyKinematics result) {
+        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)
+     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param c            body-to-NED coordinate transformation.
+     * @param oldC         previous body-to-NED coordinate transformation.
+     * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
      *                     north, east, and down and expressed in meters per second (m/s).
      * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
      *                     north, east, and down and expressed in meters per second (m/s).
@@ -4097,16 +3681,49 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final double vn, final double ve, final double vd,
-                                          final double oldVn, final double oldVe, final double oldVd,
-                                          final Angle latitude, final double height,
-                                          final Angle oldLatitude, final double oldHeight,
-                                          final BodyKinematics result) {
-        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final Angle latitude, final double height,
+            final Angle oldLatitude, final double oldHeight, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, convertAngle(latitude), height,
+                convertAngle(oldLatitude), oldHeight, result);
+    }
+
+    /**
+     * Estimates body kinematics (specific force applied to a body and its angular rates)
+     * with respect NED frame and resolved along body-frame axes, averaged over time interval.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param c            body-to-NED coordinate transformation.
+     * @param oldC         previous body-to-NED coordinate transformation.
+     * @param vn           north coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down and expressed in meters per second (m/s).
+     * @param ve           east coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down and expressed in meters per second (m/s).
+     * @param vd           down coordinate of velocity of body frame with respect NED frame, resolved along
+     *                     north, east, and down and expressed in meters per second (m/s).
+     * @param oldVn        north coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down and expressed in meters per second (m/s).
+     * @param oldVe        east coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down and expressed in meters per second (m/s).
+     * @param oldVd        down coordinate of previous velocity of body frame with respect NED frame, resolved
+     *                     along north, east, and down and expressed in meters per second (m/s).
+     * @param latitude     current latitude.
+     * @param height       current height expressed in meters (m).
+     * @param oldLatitude  previous latitude.
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param result       instance where estimated body kinematics will be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
+     *                                  matrices are not NED frame valid.
+     */
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final Angle latitude, final double height,
+            final Angle oldLatitude, final double oldHeight, final BodyKinematics result) {
+        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
     }
 
     /**
@@ -4136,17 +3753,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final double vn, final double ve, final double vd,
-                                          final double oldVn, final double oldVe, final double oldVd,
-                                          final double latitude, final Distance height,
-                                          final double oldLatitude, final Distance oldHeight,
-                                          final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, convertDistance(height), oldLatitude,
-                convertDistance(oldHeight), result);
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final double latitude, final Distance height,
+            final double oldLatitude, final Distance oldHeight, final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, convertDistance(height),
+                oldLatitude, convertDistance(oldHeight), result);
     }
 
     /**
@@ -4176,16 +3789,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final double vn, final double ve, final double vd,
-                                          final double oldVn, final double oldVe, final double oldVd,
-                                          final double latitude, final Distance height,
-                                          final double oldLatitude, final Distance oldHeight,
-                                          final BodyKinematics result) {
-        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn,
-                oldVe, oldVd, latitude, height, oldLatitude, oldHeight, result);
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd, final double latitude, final Distance height,
+            final double oldLatitude, final Distance oldHeight, final BodyKinematics result) {
+        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
     }
 
     /**
@@ -4215,18 +3825,15 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final double timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final Speed vn, final Speed ve, final Speed vd,
-                                          final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                          final Angle latitude, final Distance height,
-                                          final Angle oldLatitude, final Distance oldHeight,
-                                          final BodyKinematics result) {
-        estimateKinematics(timeInterval, c, oldC, convertSpeed(vn), convertSpeed(ve),
-                convertSpeed(vd), convertSpeed(oldVn), convertSpeed(oldVe),
-                convertSpeed(oldVd), convertAngle(latitude), convertDistance(height),
-                convertAngle(oldLatitude), convertDistance(oldHeight), result);
+    public static void estimateKinematics(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final Angle latitude, final Distance height, final Angle oldLatitude, final Distance oldHeight,
+            final BodyKinematics result) {
+        estimateKinematics(timeInterval, c, oldC, convertSpeed(vn), convertSpeed(ve), convertSpeed(vd),
+                convertSpeed(oldVn), convertSpeed(oldVe), convertSpeed(oldVd),
+                convertAngle(latitude), convertDistance(height), convertAngle(oldLatitude), convertDistance(oldHeight),
+                result);
     }
 
     /**
@@ -4256,16 +3863,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static void estimateKinematics(final Time timeInterval,
-                                          final CoordinateTransformation c,
-                                          final CoordinateTransformation oldC,
-                                          final Speed vn, final Speed ve, final Speed vd,
-                                          final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                          final Angle latitude, final Distance height,
-                                          final Angle oldLatitude, final Distance oldHeight,
-                                          final BodyKinematics result) {
-        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe,
-                oldVd, latitude, height, oldLatitude, oldHeight, result);
+    public static void estimateKinematics(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final Angle latitude, final Distance height, final Angle oldLatitude, final Distance oldHeight,
+            final BodyKinematics result) {
+        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
     }
 
     /**
@@ -4298,12 +3902,11 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final double vn, final double ve, final double vd,
-            final double oldVn, final double oldVe, final double oldVd,
-            final double latitude, final double height,
+            final double oldVn, final double oldVe, final double oldVd, final double latitude, final double height,
             final double oldLatitude, final double oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
         return result;
     }
 
@@ -4335,16 +3938,13 @@ public class NEDKinematicsEstimator {
      *                                  matrices are not NED frame valid.
      */
     public static BodyKinematics estimateKinematicsAndReturnNew(
-            final Time timeInterval,
-            final CoordinateTransformation c,
-            final CoordinateTransformation oldC,
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final double vn, final double ve, final double vd,
-            final double oldVn, final double oldVe, final double oldVd,
-            final double latitude, final double height,
+            final double oldVn, final double oldVe, final double oldVd, final double latitude, final double height,
             final double oldLatitude, final double oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
         return result;
     }
 
@@ -4366,18 +3966,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final NEDVelocity velocity,
-                                                                final NEDVelocity oldVelocity,
-                                                                final double latitude,
-                                                                final double height,
-                                                                final double oldLatitude,
-                                                                final double oldHeight) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final double latitude, final double height,
+            final double oldLatitude, final double oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,
-                latitude, height, oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, latitude, height, oldLatitude, oldHeight,
+                result);
         return result;
     }
 
@@ -4399,18 +3994,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final NEDVelocity velocity,
-                                                                final NEDVelocity oldVelocity,
-                                                                final double latitude,
-                                                                final double height,
-                                                                final double oldLatitude,
-                                                                final double oldHeight) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final double latitude, final double height,
+            final double oldLatitude, final double oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,
-                latitude, height, oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, latitude, height, oldLatitude, oldHeight,
+                result);
         return result;
     }
 
@@ -4432,18 +4022,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final NEDVelocity velocity,
-                                                                final NEDVelocity oldVelocity,
-                                                                final Angle latitude,
-                                                                final Distance height,
-                                                                final Angle oldLatitude,
-                                                                final Distance oldHeight) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final Angle latitude, final Distance height,
+            final Angle oldLatitude, final Distance oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, latitude,
-                height, oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, latitude, height, oldLatitude, oldHeight,
+                result);
         return result;
     }
 
@@ -4465,18 +4050,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final NEDVelocity velocity,
-                                                                final NEDVelocity oldVelocity,
-                                                                final Angle latitude,
-                                                                final Distance height,
-                                                                final Angle oldLatitude,
-                                                                final Distance oldHeight) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final Angle latitude, final Distance height,
+            final Angle oldLatitude, final Distance oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, latitude,
-                height, oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, latitude, height, oldLatitude, oldHeight,
+                result);
         return result;
     }
 
@@ -4508,11 +4088,10 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final double vn, final double ve, final double vd,
-            final double oldVn, final double oldVe, final double oldVd,
-            final NEDPosition position, final NEDPosition oldPosition) {
+            final double oldVn, final double oldVe, final double oldVd, final NEDPosition position,
+            final NEDPosition oldPosition) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                position, oldPosition, result);
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, position, oldPosition, result);
         return result;
     }
 
@@ -4544,11 +4123,10 @@ public class NEDKinematicsEstimator {
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final double vn, final double ve, final double vd,
-            final double oldVn, final double oldVe, final double oldVd,
-            final NEDPosition position, final NEDPosition oldPosition) {
+            final double oldVn, final double oldVe, final double oldVd, final NEDPosition position,
+            final NEDPosition oldPosition) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                position, oldPosition, result);
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, position, oldPosition, result);
         return result;
     }
 
@@ -4579,12 +4157,10 @@ public class NEDKinematicsEstimator {
      */
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
-            final Speed vn, final Speed ve, final Speed vd,
-            final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
             final NEDPosition position, final NEDPosition oldPosition) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                position, oldPosition, result);
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, position, oldPosition, result);
         return result;
     }
 
@@ -4615,12 +4191,10 @@ public class NEDKinematicsEstimator {
      */
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
-            final Speed vn, final Speed ve, final Speed vd,
-            final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
             final NEDPosition position, final NEDPosition oldPosition) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                position, oldPosition, result);
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, position, oldPosition, result);
         return result;
     }
 
@@ -4640,16 +4214,12 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final NEDVelocity velocity,
-                                                                final NEDVelocity oldVelocity,
-                                                                final NEDPosition position,
-                                                                final NEDPosition oldPosition) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final NEDPosition position,
+            final NEDPosition oldPosition) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,
-                position, oldPosition, result);
+        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, position, oldPosition, result);
         return result;
     }
 
@@ -4669,16 +4239,12 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final NEDVelocity velocity,
-                                                                final NEDVelocity oldVelocity,
-                                                                final NEDPosition position,
-                                                                final NEDPosition oldPosition) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final NEDVelocity velocity, final NEDVelocity oldVelocity, final NEDPosition position,
+            final NEDPosition oldPosition) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,
-                position, oldPosition, result);
+        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, position, oldPosition, result);
         return result;
     }
 
@@ -4706,8 +4272,7 @@ public class NEDKinematicsEstimator {
             final double oldVn, final double oldVe, final double oldVd,
             final double oldLatitude, final double oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,
-                oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldLatitude, oldHeight, result);
         return result;
     }
 
@@ -4735,8 +4300,7 @@ public class NEDKinematicsEstimator {
             final double oldVn, final double oldVe, final double oldVd,
             final double oldLatitude, final double oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,
-                oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldLatitude, oldHeight, result);
         return result;
     }
 
@@ -4755,14 +4319,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final NEDFrame frame,
-                                                                final CoordinateTransformation oldC,
-                                                                final NEDVelocity oldVelocity,
-                                                                final double oldLatitude, final double oldHeight) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final double oldLatitude, final double oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, frame, oldC, oldVelocity,
-                oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldLatitude, oldHeight, result);
         return result;
     }
 
@@ -4781,14 +4342,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final NEDFrame frame,
-                                                                final CoordinateTransformation oldC,
-                                                                final NEDVelocity oldVelocity,
-                                                                final double oldLatitude, final double oldHeight) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final double oldLatitude, final double oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, frame, oldC, oldVelocity,
-                oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldLatitude, oldHeight, result);
         return result;
     }
 
@@ -4807,14 +4365,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final NEDFrame frame,
-                                                                final CoordinateTransformation oldC,
-                                                                final NEDVelocity oldVelocity,
-                                                                final Angle oldLatitude, final Distance oldHeight) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final Angle oldLatitude, final Distance oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, frame, oldC, oldVelocity,
-                oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldLatitude, oldHeight, result);
         return result;
     }
 
@@ -4833,14 +4388,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final NEDFrame frame,
-                                                                final CoordinateTransformation oldC,
-                                                                final NEDVelocity oldVelocity,
-                                                                final Angle oldLatitude, final Distance oldHeight) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final Angle oldLatitude, final Distance oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, frame, oldC, oldVelocity,
-                oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldLatitude, oldHeight, result);
         return result;
     }
 
@@ -4864,11 +4416,9 @@ public class NEDKinematicsEstimator {
      */
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
-            final double oldVn, final double oldVe, final double oldVd,
-            final NEDPosition oldPosition) {
+            final double oldVn, final double oldVe, final double oldVd, final NEDPosition oldPosition) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,
-                oldPosition, result);
+        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldPosition, result);
         return result;
     }
 
@@ -4892,11 +4442,9 @@ public class NEDKinematicsEstimator {
      */
     public static BodyKinematics estimateKinematicsAndReturnNew(
             final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
-            final double oldVn, final double oldVe, final double oldVd,
-            final NEDPosition oldPosition) {
+            final double oldVn, final double oldVe, final double oldVd, final NEDPosition oldPosition) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,
-                oldPosition, result);
+        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldPosition, result);
         return result;
     }
 
@@ -4918,14 +4466,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final NEDFrame frame,
-                                                                final CoordinateTransformation oldC,
-                                                                final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                                                final NEDPosition oldPosition) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final NEDPosition oldPosition) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,
-                oldPosition, result);
+        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldPosition, result);
         return result;
     }
 
@@ -4947,14 +4492,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final NEDFrame frame,
-                                                                final CoordinateTransformation oldC,
-                                                                final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                                                final NEDPosition oldPosition) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd, final NEDPosition oldPosition) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,
-                oldPosition, result);
+        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd, oldPosition, result);
         return result;
     }
 
@@ -4972,14 +4514,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final NEDFrame frame,
-                                                                final CoordinateTransformation oldC,
-                                                                final NEDVelocity oldVelocity,
-                                                                final NEDPosition oldPosition) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final NEDPosition oldPosition) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldPosition,
-                result);
+        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldPosition, result);
         return result;
     }
 
@@ -4997,14 +4536,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final NEDFrame frame,
-                                                                final CoordinateTransformation oldC,
-                                                                final NEDVelocity oldVelocity,
-                                                                final NEDPosition oldPosition) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final NEDVelocity oldVelocity, final NEDPosition oldPosition) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldPosition,
-                result);
+        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldPosition, result);
         return result;
     }
 
@@ -5027,11 +4563,10 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final double vn, final double ve, final double vd,
-                                                                final double latitude, final double height,
-                                                                final NEDFrame oldFrame) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c,
+            final double vn, final double ve, final double vd, final double latitude, final double height,
+            final NEDFrame oldFrame) {
         final BodyKinematics result = new BodyKinematics();
         estimateKinematics(timeInterval, c, vn, ve, vd, latitude, height, oldFrame, result);
         return result;
@@ -5056,14 +4591,12 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final double vn, final double ve, final double vd,
-                                                                final double latitude, final double height,
-                                                                final NEDFrame oldFrame) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c,
+            final double vn, final double ve, final double vd, final double latitude, final double height,
+            final NEDFrame oldFrame) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, vn, ve, vd, latitude, height, oldFrame,
-                result);
+        estimateKinematics(timeInterval, c, vn, ve, vd, latitude, height, oldFrame, result);
         return result;
     }
 
@@ -5081,14 +4614,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final NEDVelocity velocity,
-                                                                final double latitude, final double height,
-                                                                final NEDFrame oldFrame) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final double latitude, final double height, final NEDFrame oldFrame) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, velocity, latitude, height,
-                oldFrame, result);
+        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame, result);
         return result;
     }
 
@@ -5106,14 +4636,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final NEDVelocity velocity,
-                                                                final double latitude, final double height,
-                                                                final NEDFrame oldFrame) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final double latitude, final double height, final NEDFrame oldFrame) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, velocity, latitude, height,
-                oldFrame, result);
+        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame, result);
         return result;
     }
 
@@ -5131,14 +4658,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final NEDVelocity velocity,
-                                                                final Angle latitude, final Distance height,
-                                                                final NEDFrame oldFrame) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final Angle latitude, final Distance height, final NEDFrame oldFrame) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, velocity, latitude, height,
-                oldFrame, result);
+        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame, result);
         return result;
     }
 
@@ -5156,14 +4680,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final NEDVelocity velocity,
-                                                                final Angle latitude, final Distance height,
-                                                                final NEDFrame oldFrame) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final Angle latitude, final Distance height, final NEDFrame oldFrame) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, velocity, latitude, height,
-                oldFrame, result);
+        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame, result);
         return result;
     }
 
@@ -5185,14 +4706,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final double vn, final double ve, final double vd,
-                                                                final NEDPosition position,
-                                                                final NEDFrame oldFrame) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c,
+            final double vn, final double ve, final double vd, final NEDPosition position, final NEDFrame oldFrame) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame,
-                result);
+        estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);
         return result;
     }
 
@@ -5214,14 +4732,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final double vn, final double ve, final double vd,
-                                                                final NEDPosition position,
-                                                                final NEDFrame oldFrame) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c,
+            final double vn, final double ve, final double vd, final NEDPosition position, final NEDFrame oldFrame) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame,
-                result);
+        estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);
         return result;
     }
 
@@ -5243,14 +4758,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final Speed vn, final Speed ve, final Speed vd,
-                                                                final NEDPosition position,
-                                                                final NEDFrame oldFrame) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition position, final NEDFrame oldFrame) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, vn, ve, vd, position,
-                oldFrame, result);
+        estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);
         return result;
     }
 
@@ -5272,14 +4784,11 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final Speed vn, final Speed ve, final Speed vd,
-                                                                final NEDPosition position,
-                                                                final NEDFrame oldFrame) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final Speed vn, final Speed ve, final Speed vd,
+            final NEDPosition position, final NEDFrame oldFrame) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, vn, ve, vd, position,
-                oldFrame, result);
+        estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);
         return result;
     }
 
@@ -5296,11 +4805,9 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final NEDVelocity velocity,
-                                                                final NEDPosition position,
-                                                                final NEDFrame oldFrame) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final NEDPosition position, final NEDFrame oldFrame) {
         final BodyKinematics result = new BodyKinematics();
         estimateKinematics(timeInterval, c, velocity, position, oldFrame, result);
         return result;
@@ -5319,11 +4826,9 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final NEDVelocity velocity,
-                                                                final NEDPosition position,
-                                                                final NEDFrame oldFrame) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final NEDVelocity velocity,
+            final NEDPosition position, final NEDFrame oldFrame) {
         final BodyKinematics result = new BodyKinematics();
         estimateKinematics(timeInterval, c, velocity, position, oldFrame, result);
         return result;
@@ -5339,9 +4844,8 @@ public class NEDKinematicsEstimator {
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final NEDFrame frame,
-                                                                final NEDFrame oldFrame) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final NEDFrame frame, final NEDFrame oldFrame) {
         final BodyKinematics result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldFrame, result);
         return result;
@@ -5357,9 +4861,8 @@ public class NEDKinematicsEstimator {
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final NEDFrame frame,
-                                                                final NEDFrame oldFrame) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final NEDFrame frame, final NEDFrame oldFrame) {
         final BodyKinematics result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldFrame, result);
         return result;
@@ -5392,16 +4895,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final Speed vn, final Speed ve, final Speed vd,
-                                                                final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                                                final double latitude, final double height,
-                                                                final double oldLatitude, final double oldHeight) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final double latitude, final double height, final double oldLatitude, final double oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
         return result;
     }
 
@@ -5432,16 +4932,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final Speed vn, final Speed ve, final Speed vd,
-                                                                final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                                                final double latitude, final double height,
-                                                                final double oldLatitude, final double oldHeight) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final double latitude, final double height, final double oldLatitude, final double oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
         return result;
     }
 
@@ -5473,16 +4970,13 @@ public class NEDKinematicsEstimator {
      *                                  matrices are not NED frame valid.
      */
     public static BodyKinematics estimateKinematicsAndReturnNew(
-            final double timeInterval,
-            final CoordinateTransformation c,
-            final CoordinateTransformation oldC,
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final double vn, final double ve, final double vd,
-            final double oldVn, final double oldVe, final double oldVd,
-            final Angle latitude, final double height,
+            final double oldVn, final double oldVe, final double oldVd, final Angle latitude, final double height,
             final Angle oldLatitude, final double oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
         return result;
     }
 
@@ -5514,16 +5008,13 @@ public class NEDKinematicsEstimator {
      *                                  matrices are not NED frame valid.
      */
     public static BodyKinematics estimateKinematicsAndReturnNew(
-            final Time timeInterval,
-            final CoordinateTransformation c,
-            final CoordinateTransformation oldC,
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final double vn, final double ve, final double vd,
-            final double oldVn, final double oldVe, final double oldVd,
-            final Angle latitude, final double height,
+            final double oldVn, final double oldVe, final double oldVd, final Angle latitude, final double height,
             final Angle oldLatitude, final double oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
         return result;
     }
 
@@ -5555,16 +5046,13 @@ public class NEDKinematicsEstimator {
      *                                  matrices are not NED frame valid.
      */
     public static BodyKinematics estimateKinematicsAndReturnNew(
-            final double timeInterval,
-            final CoordinateTransformation c,
-            final CoordinateTransformation oldC,
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final double vn, final double ve, final double vd,
-            final double oldVn, final double oldVe, final double oldVd,
-            final double latitude, final Distance height,
+            final double oldVn, final double oldVe, final double oldVd, final double latitude, final Distance height,
             final double oldLatitude, final Distance oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
         return result;
     }
 
@@ -5596,16 +5084,13 @@ public class NEDKinematicsEstimator {
      *                                  matrices are not NED frame valid.
      */
     public static BodyKinematics estimateKinematicsAndReturnNew(
-            final Time timeInterval,
-            final CoordinateTransformation c,
-            final CoordinateTransformation oldC,
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
             final double vn, final double ve, final double vd,
-            final double oldVn, final double oldVe, final double oldVd,
-            final double latitude, final Distance height,
+            final double oldVn, final double oldVe, final double oldVd, final double latitude, final Distance height,
             final double oldLatitude, final Distance oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
         return result;
     }
 
@@ -5636,16 +5121,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final Speed vn, final Speed ve, final Speed vd,
-                                                                final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                                                final Angle latitude, final Distance height,
-                                                                final Angle oldLatitude, final Distance oldHeight) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final Angle latitude, final Distance height, final Angle oldLatitude, final Distance oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
         return result;
     }
 
@@ -5676,16 +5158,13 @@ public class NEDKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final Speed vn, final Speed ve, final Speed vd,
-                                                                final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                                                final Angle latitude, final Distance height,
-                                                                final Angle oldLatitude, final Distance oldHeight) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd, final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final Angle latitude, final Distance height, final Angle oldLatitude, final Distance oldHeight) {
         final BodyKinematics result = new BodyKinematics();
-        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,
-                latitude, height, oldLatitude, oldHeight, result);
+        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd, latitude, height,
+                oldLatitude, oldHeight, result);
         return result;
     }
 
@@ -5696,8 +5175,7 @@ public class NEDKinematicsEstimator {
      * @return time value expressed in seconds.
      */
     private static double convertTime(final Time time) {
-        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(),
-                TimeUnit.SECOND);
+        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);
     }
 
     /**
@@ -5707,8 +5185,7 @@ public class NEDKinematicsEstimator {
      * @return speed value expressed in meters per second.
      */
     private static double convertSpeed(final Speed speed) {
-        return SpeedConverter.convert(speed.getValue().doubleValue(), speed.getUnit(),
-                SpeedUnit.METERS_PER_SECOND);
+        return SpeedConverter.convert(speed.getValue().doubleValue(), speed.getUnit(), SpeedUnit.METERS_PER_SECOND);
     }
 
     /**
@@ -5718,8 +5195,7 @@ public class NEDKinematicsEstimator {
      * @return angle value expressed in radians.
      */
     private static double convertAngle(final Angle angle) {
-        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(),
-                AngleUnit.RADIANS);
+        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(), AngleUnit.RADIANS);
     }
 
     /**
@@ -5729,7 +5205,6 @@ public class NEDKinematicsEstimator {
      * @return distance value expressed in meters.
      */
     private static double convertDistance(final Distance distance) {
-        return DistanceConverter.convert(distance.getValue().doubleValue(),
-                distance.getUnit(), DistanceUnit.METER);
+        return DistanceConverter.convert(distance.getValue().doubleValue(), distance.getUnit(), DistanceUnit.METER);
     }
 }

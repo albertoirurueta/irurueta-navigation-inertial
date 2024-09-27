@@ -42,10 +42,8 @@ import com.irurueta.units.AccelerationUnit;
  * - (m * s^-1.5) for acceleration root PSD (Power Spectral Density).
  */
 public class WindowedAccelerationMeasurementNoiseEstimator extends
-        WindowedMeasurementNoiseEstimator<AccelerationUnit, Acceleration,
-                WindowedAccelerationMeasurementNoiseEstimator,
-                WindowedAccelerationMeasurementNoiseEstimatorListener>
-        implements AccelerometerNoiseRootPsdSource {
+        WindowedMeasurementNoiseEstimator<AccelerationUnit, Acceleration, WindowedAccelerationMeasurementNoiseEstimator,
+                WindowedAccelerationMeasurementNoiseEstimatorListener> implements AccelerometerNoiseRootPsdSource {
 
     /**
      * Constructor.
@@ -94,8 +92,7 @@ public class WindowedAccelerationMeasurementNoiseEstimator extends
      */
     @Override
     protected double convertToDefaultUnit(final Acceleration value) {
-        return AccelerationConverter.convert(value.getValue().doubleValue(),
-                value.getUnit(), getDefaultUnit());
+        return AccelerationConverter.convert(value.getValue().doubleValue(), value.getUnit(), getDefaultUnit());
     }
 
     /**

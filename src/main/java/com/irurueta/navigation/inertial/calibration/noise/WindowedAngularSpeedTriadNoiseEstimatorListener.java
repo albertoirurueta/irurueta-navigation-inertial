@@ -23,6 +23,6 @@ import com.irurueta.units.AngularSpeedUnit;
  * Listener for {@link WindowedAngularSpeedTriadNoiseEstimator} to handle generated events.
  */
 public interface WindowedAngularSpeedTriadNoiseEstimatorListener extends
-        WindowedTriadNoiseEstimatorListener<AngularSpeedUnit, AngularSpeed,
-                AngularSpeedTriad, WindowedAngularSpeedTriadNoiseEstimator> {
+        WindowedTriadNoiseEstimatorListener<AngularSpeedUnit, AngularSpeed, AngularSpeedTriad,
+                WindowedAngularSpeedTriadNoiseEstimator> {
 }

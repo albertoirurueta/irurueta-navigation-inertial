@@ -56,8 +56,7 @@ import java.util.List;
  * - ftrue is ground-truth specific force. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
-public class MSACRobustKnownFrameGyroscopeCalibrator extends
-        RobustKnownFrameGyroscopeCalibrator {
+public class MSACRobustKnownFrameGyroscopeCalibrator extends RobustKnownFrameGyroscopeCalibrator {
 
     /**
      * Constant defining default threshold to determine whether samples are
@@ -89,8 +88,7 @@ public class MSACRobustKnownFrameGyroscopeCalibrator extends
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    public MSACRobustKnownFrameGyroscopeCalibrator(
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
+    public MSACRobustKnownFrameGyroscopeCalibrator(final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(listener);
     }
 
@@ -101,8 +99,7 @@ public class MSACRobustKnownFrameGyroscopeCalibrator extends
      *                     deviations taken at different frames (positions, orientations
      *                     and velocities).
      */
-    public MSACRobustKnownFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements) {
+    public MSACRobustKnownFrameGyroscopeCalibrator(final List<StandardDeviationFrameBodyKinematics> measurements) {
         super(measurements);
     }
 
@@ -139,8 +136,7 @@ public class MSACRobustKnownFrameGyroscopeCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public MSACRobustKnownFrameGyroscopeCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(commonAxisUsed, listener);
     }
 
@@ -154,8 +150,7 @@ public class MSACRobustKnownFrameGyroscopeCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public MSACRobustKnownFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -170,8 +165,7 @@ public class MSACRobustKnownFrameGyroscopeCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public MSACRobustKnownFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
     }
@@ -223,7 +217,7 @@ public class MSACRobustKnownFrameGyroscopeCalibrator extends
 
         final MSACRobustEstimator<PreliminaryResult> innerEstimator =
                 new MSACRobustEstimator<>(
-                        new MSACRobustEstimatorListener<PreliminaryResult>() {
+                        new MSACRobustEstimatorListener<>() {
                             @Override
                             public double getThreshold() {
                                 return mThreshold;
@@ -241,8 +235,7 @@ public class MSACRobustKnownFrameGyroscopeCalibrator extends
 
                             @Override
                             public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<PreliminaryResult> solutions) {
+                                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                                 computePreliminarySolutions(samplesIndices, solutions);
                             }
 
@@ -258,36 +251,30 @@ public class MSACRobustKnownFrameGyroscopeCalibrator extends
                             }
 
                             @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
                             public void onEstimateNextIteration(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final int iteration) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                                 if (mListener != null) {
                                     mListener.onCalibrateNextIteration(
-                                            MSACRobustKnownFrameGyroscopeCalibrator.this,
-                                            iteration);
+                                            MSACRobustKnownFrameGyroscopeCalibrator.this, iteration);
                                 }
                             }
 
                             @Override
                             public void onEstimateProgressChange(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final float progress) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                                 if (mListener != null) {
                                     mListener.onCalibrateProgressChange(
-                                            MSACRobustKnownFrameGyroscopeCalibrator.this,
-                                            progress);
+                                            MSACRobustKnownFrameGyroscopeCalibrator.this, progress);
                                 }
                             }
                         });

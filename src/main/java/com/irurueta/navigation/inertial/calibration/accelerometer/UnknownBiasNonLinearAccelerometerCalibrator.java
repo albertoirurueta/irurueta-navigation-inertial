@@ -24,8 +24,7 @@ import com.irurueta.units.Acceleration;
  * Interface for non-linear accelerometer calibrator where bias is unknown
  * and needs to be estimated.
  */
-public interface UnknownBiasNonLinearAccelerometerCalibrator
-        extends UnknownBiasAccelerometerCalibrator {
+public interface UnknownBiasNonLinearAccelerometerCalibrator extends UnknownBiasAccelerometerCalibrator {
 
     /**
      * Gets initial x-coordinate of accelerometer bias to be used to find a solution.
@@ -98,8 +97,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator
      * @param initialBiasX initial x-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBiasX(final Acceleration initialBiasX)
-            throws LockedException;
+    void setInitialBiasX(final Acceleration initialBiasX) throws LockedException;
 
     /**
      * Gets initial y-coordinate of accelerometer bias to be used to find a solution.
@@ -121,8 +119,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator
      * @param initialBiasY initial y-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBiasY(final Acceleration initialBiasY)
-            throws LockedException;
+    void setInitialBiasY(final Acceleration initialBiasY) throws LockedException;
 
     /**
      * Gets initial z-coordinate of accelerometer bias to be used to find a solution.
@@ -144,8 +141,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator
      * @param initialBiasZ initial z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBiasZ(final Acceleration initialBiasZ)
-            throws LockedException;
+    void setInitialBiasZ(final Acceleration initialBiasZ) throws LockedException;
 
     /**
      * Sets initial bias coordinates of accelerometer used to find a solution
@@ -156,8 +152,8 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator
      * @param initialBiasZ initial z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBias(final double initialBiasX, final double initialBiasY,
-                        final double initialBiasZ) throws LockedException;
+    void setInitialBias(final double initialBiasX, final double initialBiasY, final double initialBiasZ)
+            throws LockedException;
 
     /**
      * Sets initial bias coordinates of accelerometer used to find a solution.
@@ -167,8 +163,7 @@ public interface UnknownBiasNonLinearAccelerometerCalibrator
      * @param initialBiasZ initial z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialBias(final Acceleration initialBiasX,
-                        final Acceleration initialBiasY,
+    void setInitialBias(final Acceleration initialBiasX, final Acceleration initialBiasY,
                         final Acceleration initialBiasZ) throws LockedException;
 
     /**

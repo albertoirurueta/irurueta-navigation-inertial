@@ -52,8 +52,7 @@ import java.util.List;
  * - mBtrue is ground-truth magnetic flux density. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
-public class RANSACRobustKnownFrameMagnetometerCalibrator extends
-        RobustKnownFrameMagnetometerCalibrator {
+public class RANSACRobustKnownFrameMagnetometerCalibrator extends RobustKnownFrameMagnetometerCalibrator {
 
     /**
      * Constant defining default threshold to determine whether samples are inliers or not.
@@ -106,8 +105,7 @@ public class RANSACRobustKnownFrameMagnetometerCalibrator extends
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    public RANSACRobustKnownFrameMagnetometerCalibrator(
-            final RobustKnownFrameMagnetometerCalibratorListener listener) {
+    public RANSACRobustKnownFrameMagnetometerCalibrator(final RobustKnownFrameMagnetometerCalibratorListener listener) {
         super(listener);
     }
 
@@ -155,8 +153,7 @@ public class RANSACRobustKnownFrameMagnetometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public RANSACRobustKnownFrameMagnetometerCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownFrameMagnetometerCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownFrameMagnetometerCalibratorListener listener) {
         super(commonAxisUsed, listener);
     }
 
@@ -170,8 +167,7 @@ public class RANSACRobustKnownFrameMagnetometerCalibrator extends
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     public RANSACRobustKnownFrameMagnetometerCalibrator(
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -186,8 +182,7 @@ public class RANSACRobustKnownFrameMagnetometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public RANSACRobustKnownFrameMagnetometerCalibrator(
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownFrameMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
     }
@@ -239,8 +234,7 @@ public class RANSACRobustKnownFrameMagnetometerCalibrator extends
      *                              false if inliers only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers)
-            throws LockedException {
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -264,8 +258,7 @@ public class RANSACRobustKnownFrameMagnetometerCalibrator extends
      *                                false if residuals only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals)
-            throws LockedException {
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -292,7 +285,7 @@ public class RANSACRobustKnownFrameMagnetometerCalibrator extends
 
         final RANSACRobustEstimator<PreliminaryResult> innerEstimator =
                 new RANSACRobustEstimator<>(
-                        new RANSACRobustEstimatorListener<PreliminaryResult>() {
+                        new RANSACRobustEstimatorListener<>() {
                             @Override
                             public double getThreshold() {
                                 return mThreshold;
@@ -310,15 +303,12 @@ public class RANSACRobustKnownFrameMagnetometerCalibrator extends
 
                             @Override
                             public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<PreliminaryResult> solutions) {
+                                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                                 computePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override
-                            public double computeResidual(
-                                    final PreliminaryResult currentEstimation,
-                                    final int i) {
+                            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
                                 return computeError(mMeasurements.get(i), currentEstimation);
                             }
 
@@ -328,36 +318,30 @@ public class RANSACRobustKnownFrameMagnetometerCalibrator extends
                             }
 
                             @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
                             public void onEstimateNextIteration(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final int iteration) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                                 if (mListener != null) {
                                     mListener.onCalibrateNextIteration(
-                                            RANSACRobustKnownFrameMagnetometerCalibrator.this,
-                                            iteration);
+                                            RANSACRobustKnownFrameMagnetometerCalibrator.this, iteration);
                                 }
                             }
 
                             @Override
                             public void onEstimateProgressChange(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final float progress) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                                 if (mListener != null) {
                                     mListener.onCalibrateProgressChange(
-                                            RANSACRobustKnownFrameMagnetometerCalibrator.this,
-                                            progress);
+                                            RANSACRobustKnownFrameMagnetometerCalibrator.this, progress);
                                 }
                             }
                         });
@@ -373,10 +357,8 @@ public class RANSACRobustKnownFrameMagnetometerCalibrator extends
 
             setupWmmEstimator();
 
-            innerEstimator.setComputeAndKeepInliersEnabled(
-                    mComputeAndKeepInliers || mRefineResult);
-            innerEstimator.setComputeAndKeepResidualsEnabled(
-                    mComputeAndKeepResiduals || mRefineResult);
+            innerEstimator.setComputeAndKeepInliersEnabled(mComputeAndKeepInliers || mRefineResult);
+            innerEstimator.setComputeAndKeepResidualsEnabled(mComputeAndKeepResiduals || mRefineResult);
             innerEstimator.setConfidence(mConfidence);
             innerEstimator.setMaxIterations(mMaxIterations);
             innerEstimator.setProgressDelta(mProgressDelta);

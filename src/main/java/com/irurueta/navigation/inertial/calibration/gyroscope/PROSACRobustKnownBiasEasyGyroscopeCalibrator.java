@@ -60,8 +60,7 @@ import java.util.List;
  * - ftrue is ground-truth specific force. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
-public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
-        RobustKnownBiasEasyGyroscopeCalibrator {
+public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends RobustKnownBiasEasyGyroscopeCalibrator {
 
     /**
      * Constant defining default threshold to determine whether samples are inliers or not.
@@ -130,10 +129,8 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      *                                  not have proper size.
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences, final Matrix bias,
+            final Matrix initialMg, final Matrix initialGg) {
         super(sequences, bias, initialMg, initialGg);
     }
 
@@ -155,10 +152,8 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      *                                  not have proper size.
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences, final Matrix bias,
+            final Matrix initialMg, final Matrix initialGg,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
         super(sequences, bias, initialMg, initialGg, listener);
     }
@@ -179,10 +174,8 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      *                                  not have proper size.
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences, final double[] bias,
+            final Matrix initialMg, final Matrix initialGg) {
         super(sequences, bias, initialMg, initialGg);
     }
 
@@ -204,10 +197,8 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      *                                  not have proper size.
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences, final double[] bias,
+            final Matrix initialMg, final Matrix initialGg,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
         super(sequences, bias, initialMg, initialGg, listener);
     }
@@ -235,13 +226,9 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa) {
-        super(sequences, bias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+            final double[] bias, final Matrix initialMg, final Matrix initialGg,
+            final double[] accelerometerBias, final Matrix accelerometerMa) {
+        super(sequences, bias, initialMg, initialGg, accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -269,14 +256,9 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-        super(sequences, bias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, listener);
+            final double[] bias, final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
+            final Matrix accelerometerMa, final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
+        super(sequences, bias, initialMg, initialGg, accelerometerBias, accelerometerMa, listener);
     }
 
     /**
@@ -300,14 +282,10 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      *                                  not have proper size.
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences, final Matrix bias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-        super(sequences, bias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+        super(sequences, bias, initialMg, initialGg, accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -333,15 +311,10 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      *                                  not have proper size.
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-        super(sequences, bias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, listener);
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences, final Matrix bias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
+        super(sequences, bias, initialMg, initialGg, accelerometerBias, accelerometerMa, listener);
     }
 
     /**
@@ -367,13 +340,9 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
-        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                bias, initialMg, initialGg);
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases,
+            final Matrix bias, final Matrix initialMg, final Matrix initialGg) {
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg);
     }
 
     /**
@@ -401,14 +370,10 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases,
+            final Matrix bias, final Matrix initialMg, final Matrix initialGg,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                bias, initialMg, initialGg, listener);
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg, listener);
     }
 
     /**
@@ -434,13 +399,9 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
-        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                bias, initialMg, initialGg);
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases,
+            final double[] bias, final Matrix initialMg, final Matrix initialGg) {
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg);
     }
 
     /**
@@ -468,14 +429,10 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] bias,
+            final Matrix initialMg, final Matrix initialGg,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                bias, initialMg, initialGg, listener);
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg, listener);
     }
 
     /**
@@ -508,16 +465,11 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] bias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                bias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg, accelerometerBias,
+                accelerometerMa);
     }
 
     /**
@@ -552,17 +504,11 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-        super(sequences, commonAxisUsed,
-                estimateGDependentCrossBiases, bias, initialMg,
-                initialGg, accelerometerBias, accelerometerMa, listener);
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] bias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
+            final Matrix accelerometerMa, final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg, accelerometerBias,
+                accelerometerMa, listener);
     }
 
     /**
@@ -595,16 +541,11 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix bias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                bias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg, accelerometerBias,
+                accelerometerMa);
     }
 
     /**
@@ -639,17 +580,11 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-        super(sequences, commonAxisUsed,
-                estimateGDependentCrossBiases, bias, initialMg,
-                initialGg, accelerometerBias, accelerometerMa, listener);
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix bias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg, accelerometerBias,
+                accelerometerMa, listener);
     }
 
     /**
@@ -661,8 +596,7 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      * @throws IllegalArgumentException if provided quality scores length
      *                                  is smaller than 10.
      */
-    public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
-            final double[] qualityScores) {
+    public PROSACRobustKnownBiasEasyGyroscopeCalibrator(final double[] qualityScores) {
         super();
         internalSetQualityScores(qualityScores);
     }
@@ -689,10 +623,8 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final double[] qualityScores,
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences, final Matrix bias,
+            final Matrix initialMg, final Matrix initialGg) {
         super(sequences, bias, initialMg, initialGg);
         internalSetQualityScores(qualityScores);
     }
@@ -721,10 +653,8 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final double[] qualityScores,
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences, final Matrix bias,
+            final Matrix initialMg, final Matrix initialGg,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
         super(sequences, bias, initialMg, initialGg, listener);
         internalSetQualityScores(qualityScores);
@@ -752,10 +682,8 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final double[] qualityScores,
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences, final double[] bias,
+            final Matrix initialMg, final Matrix initialGg) {
         super(sequences, bias, initialMg, initialGg);
         internalSetQualityScores(qualityScores);
     }
@@ -784,10 +712,8 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final double[] qualityScores,
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences, final double[] bias,
+            final Matrix initialMg, final Matrix initialGg,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
         super(sequences, bias, initialMg, initialGg, listener);
         internalSetQualityScores(qualityScores);
@@ -821,14 +747,10 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final double[] qualityScores,
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences, final double[] bias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-        super(sequences, bias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+        super(sequences, bias, initialMg, initialGg, accelerometerBias, accelerometerMa);
         internalSetQualityScores(qualityScores);
     }
 
@@ -862,15 +784,10 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final double[] qualityScores,
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-        super(sequences, bias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, listener);
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences, final double[] bias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
+            final Matrix accelerometerMa, final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
+        super(sequences, bias, initialMg, initialGg, accelerometerBias, accelerometerMa, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -901,14 +818,10 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final double[] qualityScores,
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences, final Matrix bias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-        super(sequences, bias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+        super(sequences, bias, initialMg, initialGg, accelerometerBias, accelerometerMa);
         internalSetQualityScores(qualityScores);
     }
 
@@ -941,15 +854,10 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final double[] qualityScores,
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-        super(sequences, bias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, listener);
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences, final Matrix bias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
+        super(sequences, bias, initialMg, initialGg, accelerometerBias, accelerometerMa, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -982,13 +890,9 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
-        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                bias, initialMg, initialGg);
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix bias,
+            final Matrix initialMg, final Matrix initialGg) {
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1023,14 +927,10 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix bias,
+            final Matrix initialMg, final Matrix initialGg,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                bias, initialMg, initialGg, listener);
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1063,13 +963,9 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
-        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                bias, initialMg, initialGg);
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] bias,
+            final Matrix initialMg, final Matrix initialGg) {
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1104,14 +1000,10 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] bias,
+            final Matrix initialMg, final Matrix initialGg,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                bias, initialMg, initialGg, listener);
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1151,16 +1043,11 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] bias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                bias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg, accelerometerBias,
+                accelerometerMa);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1202,17 +1089,11 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-        super(sequences, commonAxisUsed,
-                estimateGDependentCrossBiases, bias, initialMg,
-                initialGg, accelerometerBias, accelerometerMa, listener);
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] bias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
+            final Matrix accelerometerMa, final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg, accelerometerBias,
+                accelerometerMa, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1252,16 +1133,11 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix bias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                bias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg, accelerometerBias,
+                accelerometerMa);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1303,17 +1179,11 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
     public PROSACRobustKnownBiasEasyGyroscopeCalibrator(
             final double[] qualityScores,
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-        super(sequences, commonAxisUsed,
-                estimateGDependentCrossBiases, bias, initialMg,
-                initialGg, accelerometerBias, accelerometerMa, listener);
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix bias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, bias, initialMg, initialGg, accelerometerBias,
+                accelerometerMa, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1368,8 +1238,7 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setQualityScores(final double[] qualityScores)
-            throws LockedException {
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1383,8 +1252,7 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     @Override
     public boolean isReady() {
-        return super.isReady() && mQualityScores != null &&
-                mQualityScores.length == mSequences.size();
+        return super.isReady() && mQualityScores != null && mQualityScores.length == mSequences.size();
     }
 
     /**
@@ -1404,9 +1272,7 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      *                              false if inliers only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepInliersEnabled(
-            final boolean computeAndKeepInliers)
-            throws LockedException {
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1430,9 +1296,7 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      *                                false if residuals only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepResidualsEnabled(
-            final boolean computeAndKeepResiduals)
-            throws LockedException {
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1449,8 +1313,7 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     @SuppressWarnings("DuplicatedCode")
     @Override
-    public void calibrate() throws LockedException, NotReadyException,
-            CalibrationException {
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1460,7 +1323,7 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
 
         final PROSACRobustEstimator<PreliminaryResult> innerEstimator =
                 new PROSACRobustEstimator<>(
-                        new PROSACRobustEstimatorListener<PreliminaryResult>() {
+                        new PROSACRobustEstimatorListener<>() {
                             @Override
                             public double[] getQualityScores() {
                                 return mQualityScores;
@@ -1483,14 +1346,12 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
 
                             @Override
                             public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<PreliminaryResult> solutions) {
+                                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                                 computePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override
-                            public double computeResidual(
-                                    final PreliminaryResult currentEstimation, final int i) {
+                            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
                                 return computeError(mSequences.get(i), currentEstimation);
                             }
 
@@ -1500,32 +1361,27 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
                             }
 
                             @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
                             public void onEstimateNextIteration(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final int iteration) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                                 if (mListener != null) {
                                     mListener.onCalibrateNextIteration(
-                                            PROSACRobustKnownBiasEasyGyroscopeCalibrator.this,
-                                            iteration);
+                                            PROSACRobustKnownBiasEasyGyroscopeCalibrator.this, iteration);
                                 }
                             }
 
                             @Override
                             public void onEstimateProgressChange(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final float progress) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                                 if (mListener != null) {
                                     mListener.onCalibrateProgressChange(
                                             PROSACRobustKnownBiasEasyGyroscopeCalibrator.this, progress);
@@ -1543,10 +1399,8 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
             setupAccelerationFixer();
 
             mInliersData = null;
-            innerEstimator.setComputeAndKeepInliersEnabled(
-                    mComputeAndKeepInliers || mRefineResult);
-            innerEstimator.setComputeAndKeepResidualsEnabled(
-                    mComputeAndKeepResiduals || mRefineResult);
+            innerEstimator.setComputeAndKeepInliersEnabled(mComputeAndKeepInliers || mRefineResult);
+            innerEstimator.setComputeAndKeepResidualsEnabled(mComputeAndKeepResiduals || mRefineResult);
             innerEstimator.setConfidence(mConfidence);
             innerEstimator.setMaxIterations(mMaxIterations);
             innerEstimator.setProgressDelta(mProgressDelta);
@@ -1601,8 +1455,7 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      *                                  is smaller than 4 samples.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-        if (qualityScores == null ||
-                qualityScores.length < EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS) {
+        if (qualityScores == null || qualityScores.length < EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS) {
             throw new IllegalArgumentException();
         }
 

@@ -8,8 +8,7 @@ import com.irurueta.units.Acceleration;
  * Defines a gyroscope calibrator that depends on previously known accelerometer
  * parameters (bias, scaling and cross coupling errors).
  */
-public interface AccelerometerDependentGyroscopeCalibrator extends
-        GyroscopeCalibrator {
+public interface AccelerometerDependentGyroscopeCalibrator extends GyroscopeCalibrator {
 
     /**
      * Gets known x-coordinate of accelerometer bias to be used to fix
@@ -30,8 +29,7 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      * @param accelerometerBiasX known x-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setAccelerometerBiasX(final double accelerometerBiasX)
-            throws LockedException;
+    void setAccelerometerBiasX(final double accelerometerBiasX) throws LockedException;
 
     /**
      * Gets known y-coordinate of accelerometer bias to be used to fix
@@ -52,8 +50,7 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      * @param accelerometerBiasY known y-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setAccelerometerBiasY(final double accelerometerBiasY)
-            throws LockedException;
+    void setAccelerometerBiasY(final double accelerometerBiasY) throws LockedException;
 
     /**
      * Gets known z-coordinate of accelerometer bias to be used to fix
@@ -74,8 +71,7 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      * @param accelerometerBiasZ known z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setAccelerometerBiasZ(final double accelerometerBiasZ)
-            throws LockedException;
+    void setAccelerometerBiasZ(final double accelerometerBiasZ) throws LockedException;
 
     /**
      * Gets known x-coordinate of accelerometer bias to be used to fix
@@ -103,8 +99,7 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      * @param accelerometerBiasX x-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setAccelerometerBiasX(final Acceleration accelerometerBiasX)
-            throws LockedException;
+    void setAccelerometerBiasX(final Acceleration accelerometerBiasX) throws LockedException;
 
     /**
      * Gets known y-coordinate of accelerometer bias to be used to fix
@@ -132,8 +127,7 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      * @param accelerometerBiasY y-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setAccelerometerBiasY(final Acceleration accelerometerBiasY)
-            throws LockedException;
+    void setAccelerometerBiasY(final Acceleration accelerometerBiasY) throws LockedException;
 
     /**
      * Gets known z-coordinate of accelerometer bias to be used to fix
@@ -161,8 +155,7 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      * @param accelerometerBiasZ z-coordinate of accelerometer bias.
      * @throws LockedException if calibrator is currently running.
      */
-    void setAccelerometerBiasZ(final Acceleration accelerometerBiasZ)
-            throws LockedException;
+    void setAccelerometerBiasZ(final Acceleration accelerometerBiasZ) throws LockedException;
 
     /**
      * Sets known accelerometer bias to be used to fix measured specific
@@ -175,9 +168,8 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      * @throws LockedException if calibrator is currently running.
      */
     void setAccelerometerBias(
-            final double accelerometerBiasX,
-            final double accelerometerBiasY,
-            final double accelerometerBiasZ) throws LockedException;
+            final double accelerometerBiasX, final double accelerometerBiasY, final double accelerometerBiasZ)
+            throws LockedException;
 
     /**
      * Sets known accelerometer bias to be used to fix measured specific
@@ -223,8 +215,7 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      * @throws IllegalArgumentException if provided array does not have
      *                                  length 3.
      */
-    void setAccelerometerBias(final double[] accelerometerBias)
-            throws LockedException;
+    void setAccelerometerBias(final double[] accelerometerBias) throws LockedException;
 
     /**
      * Gets known accelerometer bias to be used to fix measured specific
@@ -254,8 +245,7 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    void setAccelerometerBias(final Matrix accelerometerBias)
-            throws LockedException;
+    void setAccelerometerBias(final Matrix accelerometerBias) throws LockedException;
 
     /**
      * Gets known accelerometer x scaling factor to be used to fix measured
@@ -272,8 +262,7 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      * @param accelerometerSx known accelerometer x scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
-    void setAccelerometerSx(final double accelerometerSx)
-            throws LockedException;
+    void setAccelerometerSx(final double accelerometerSx) throws LockedException;
 
     /**
      * Gets known accelerometer y scaling factor to be used to fix measured
@@ -290,8 +279,7 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      * @param accelerometerSy known accelerometer y scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
-    void setAccelerometerSy(final double accelerometerSy)
-            throws LockedException;
+    void setAccelerometerSy(final double accelerometerSy) throws LockedException;
 
     /**
      * Gets known accelerometer z scaling factor to be used to fix measured
@@ -308,8 +296,7 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      * @param accelerometerSz known accelerometer z scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
-    void setAccelerometerSz(final double accelerometerSz)
-            throws LockedException;
+    void setAccelerometerSz(final double accelerometerSz) throws LockedException;
 
     /**
      * Gets known accelerometer x-y cross coupling error to be used to fix
@@ -328,8 +315,7 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      * @param accelerometerMxy known accelerometer x-y cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
-    void setAccelerometerMxy(final double accelerometerMxy)
-            throws LockedException;
+    void setAccelerometerMxy(final double accelerometerMxy) throws LockedException;
 
     /**
      * Gets known accelerometer x-z cross coupling error to be used to fix
@@ -348,8 +334,7 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      * @param accelerometerMxz known accelerometer x-z cross coupling error.
      * @throws LockedException if calibrator is currently running.
      */
-    void setAccelerometerMxz(final double accelerometerMxz)
-            throws LockedException;
+    void setAccelerometerMxz(final double accelerometerMxz) throws LockedException;
 
     /**
      * Gets known accelerometer y-x cross coupling error to be used to fix
@@ -369,8 +354,7 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      *                         error.
      * @throws LockedException if calibrator is currently running.
      */
-    void setAccelerometerMyx(final double accelerometerMyx)
-            throws LockedException;
+    void setAccelerometerMyx(final double accelerometerMyx) throws LockedException;
 
     /**
      * Gets known accelerometer y-z cross coupling error to be used to fix
@@ -390,8 +374,7 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      *                         error.
      * @throws LockedException if calibrator is currently running.
      */
-    void setAccelerometerMyz(final double accelerometerMyz)
-            throws LockedException;
+    void setAccelerometerMyz(final double accelerometerMyz) throws LockedException;
 
     /**
      * Gets known accelerometer z-x cross coupling error to be used to fix
@@ -411,8 +394,7 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      *                         error.
      * @throws LockedException if calibrator is currently running.
      */
-    void setAccelerometerMzx(final double accelerometerMzx)
-            throws LockedException;
+    void setAccelerometerMzx(final double accelerometerMzx) throws LockedException;
 
     /**
      * Gets known accelerometer z-y cross coupling error to be used to fix
@@ -432,8 +414,7 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      *                         error.
      * @throws LockedException if calibrator is currently running.
      */
-    void setAccelerometerMzy(final double accelerometerMzy)
-            throws LockedException;
+    void setAccelerometerMzy(final double accelerometerMzy) throws LockedException;
 
     /**
      * Sets known accelerometer scaling factors to be used to fix measured
@@ -446,8 +427,8 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      * @throws LockedException if calibrator is currently running.
      */
     void setAccelerometerScalingFactors(
-            final double accelerometerSx, final double accelerometerSy,
-            final double accelerometerSz) throws LockedException;
+            final double accelerometerSx, final double accelerometerSy, final double accelerometerSz)
+            throws LockedException;
 
     /**
      * Sets known accelerometer cross coupling errors to be used to fix
@@ -471,8 +452,7 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
     void setAccelerometerCrossCouplingErrors(
             final double accelerometerMxy, final double accelerometerMxz,
             final double accelerometerMyx, final double accelerometerMyz,
-            final double accelerometerMzx, final double accelerometerMzy)
-            throws LockedException;
+            final double accelerometerMzx, final double accelerometerMzy) throws LockedException;
 
     /**
      * Sets known accelerometer scaling factors and cross coupling errors
@@ -530,6 +510,5 @@ public interface AccelerometerDependentGyroscopeCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided matrix is not 3x3.
      */
-    void setAccelerometerMa(final Matrix accelerometerMa)
-            throws LockedException;
+    void setAccelerometerMa(final Matrix accelerometerMa) throws LockedException;
 }

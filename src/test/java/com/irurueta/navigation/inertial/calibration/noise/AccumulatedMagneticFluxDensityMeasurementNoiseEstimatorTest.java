@@ -76,10 +76,8 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
     private static final long END_TIMESTAMP_MILLIS;
 
     static {
-        START_CALENDAR.set(2020, Calendar.JANUARY, 1,
-                0, 0, 0);
-        END_CALENDAR.set(2025, Calendar.DECEMBER, 31,
-                23, 59, 59);
+        START_CALENDAR.set(2020, Calendar.JANUARY, 1, 0, 0, 0);
+        END_CALENDAR.set(2025, Calendar.DECEMBER, 31, 23, 59, 59);
 
         START_TIMESTAMP_MILLIS = START_CALENDAR.getTimeInMillis();
         END_TIMESTAMP_MILLIS = END_CALENDAR.getTimeInMillis();
@@ -111,8 +109,7 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
         final MagneticFluxDensity avg1 = estimator.getAvgAsMeasurement();
         assertEquals(0.0, avg1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, avg1.getUnit());
-        final MagneticFluxDensity avg2 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity avg2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgAsMeasurement(avg2);
         assertEquals(avg1, avg2);
         assertEquals(0.0, estimator.getVariance(), 0.0);
@@ -120,8 +117,7 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
         final MagneticFluxDensity std1 = estimator.getStandardDeviationAsMeasurement();
         assertEquals(0.0, std1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, std1.getUnit());
-        final MagneticFluxDensity std2 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity std2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationAsMeasurement(std2);
         assertEquals(std1, std2);
         assertEquals(0.0, estimator.getPsd(), 0.0);
@@ -152,8 +148,7 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
         final MagneticFluxDensity avg1 = estimator.getAvgAsMeasurement();
         assertEquals(0.0, avg1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, avg1.getUnit());
-        final MagneticFluxDensity avg2 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity avg2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgAsMeasurement(avg2);
         assertEquals(avg1, avg2);
         assertEquals(0.0, estimator.getVariance(), 0.0);
@@ -161,8 +156,7 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
         final MagneticFluxDensity std1 = estimator.getStandardDeviationAsMeasurement();
         assertEquals(0.0, std1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, std1.getUnit());
-        final MagneticFluxDensity std2 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity std2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationAsMeasurement(std2);
         assertEquals(std1, std2);
         assertEquals(0.0, estimator.getPsd(), 0.0);
@@ -177,8 +171,7 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
                 new AccumulatedMagneticFluxDensityMeasurementNoiseEstimator();
 
         // check default value
-        assertEquals(
-                AccumulatedMagneticFluxDensityMeasurementNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
+        assertEquals(AccumulatedMagneticFluxDensityMeasurementNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 estimator.getTimeInterval(), 0.0);
 
         // set new value
@@ -188,11 +181,7 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
         assertEquals(1.0, estimator.getTimeInterval(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            estimator.setTimeInterval(-1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setTimeInterval(-1.0));
     }
 
     @Test
@@ -202,8 +191,7 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
 
         // check default value
         final Time time1 = estimator.getTimeIntervalAsTime();
-        assertEquals(
-                AccumulatedMagneticFluxDensityMeasurementNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
+        assertEquals(AccumulatedMagneticFluxDensityMeasurementNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
 
@@ -238,15 +226,14 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
     @Test
     public void testAddTriadAndReset1() throws LockedException, IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
         final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
         final Matrix mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, MAGNETOMETER_NOISE_STD);
+        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+                MAGNETOMETER_NOISE_STD);
 
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
@@ -256,29 +243,28 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
                 new AccumulatedMagneticFluxDensityMeasurementNoiseEstimator(this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mMeasurementAdded, 0);
-        assertEquals(mReset, 0);
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mMeasurementAdded);
+        assertEquals(0, mReset);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getLastMeasurement());
         assertFalse(estimator.getLastMeasurement(null));
         assertFalse(estimator.isRunning());
 
         MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad();
         final double timeInterval = estimator.getTimeInterval();
-        final MagneticFluxDensity lastMeasurement = new MagneticFluxDensity(
-                0.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity lastMeasurement = new MagneticFluxDensity(0.0,
+                MagneticFluxDensityUnit.NANOTESLA);
         double value;
         double avg = 0.0;
-        double var = 0.0;
+        double v = 0.0;
         for (int i = 0, j = 1; i < N_SAMPLES; i++, j++) {
             if (estimator.getLastMeasurement(lastMeasurement)) {
                 assertEquals(estimator.getLastMeasurement(), lastMeasurement);
                 assertEquals(lastMeasurement, triad.getMeasurementNorm());
             }
 
-            triad = generateTriad(hardIron.getBuffer(), mm, wmmEstimator,
-                    noiseRandomizer, timestamp, position, cnb);
+            triad = generateTriad(hardIron.getBuffer(), mm, wmmEstimator, noiseRandomizer, timestamp, position, cnb);
 
             value = triad.getNorm();
 
@@ -295,40 +281,38 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
 
             final double diff2 = diff * diff;
 
-            var = var * (double) i / (double) j + diff2 / j;
+            v = v * (double) i / (double) j + diff2 / j;
         }
 
-        assertEquals(estimator.getNumberOfProcessedSamples(), N_SAMPLES);
+        assertEquals(N_SAMPLES, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
-        assertEquals(mStart, 1);
-        assertEquals(mMeasurementAdded, N_SAMPLES);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(N_SAMPLES, mMeasurementAdded);
+        assertEquals(0, mReset);
 
         assertEquals(avg, estimator.getAvg(), ABSOLUTE_ERROR);
 
         final MagneticFluxDensity avg1 = estimator.getAvgAsMeasurement();
         assertEquals(avg, avg1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, avg1.getUnit());
-        final MagneticFluxDensity avg2 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity avg2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgAsMeasurement(avg2);
         assertEquals(avg1, avg2);
 
-        assertEquals(var, estimator.getVariance(), ABSOLUTE_ERROR);
+        assertEquals(v, estimator.getVariance(), ABSOLUTE_ERROR);
 
-        final double std = Math.sqrt(var);
+        final double std = Math.sqrt(v);
 
         assertEquals(std, estimator.getStandardDeviation(), ABSOLUTE_ERROR);
 
         final MagneticFluxDensity std1 = estimator.getStandardDeviationAsMeasurement();
         assertEquals(std, std1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, std1.getUnit());
-        final MagneticFluxDensity std2 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity std2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         estimator.getStandardDeviationAsMeasurement(std2);
         assertEquals(std1, std2);
 
-        final double psd = timeInterval * var;
+        final double psd = timeInterval * v;
 
         assertEquals(psd, estimator.getPsd(), ABSOLUTE_ERROR);
 
@@ -339,7 +323,7 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(mReset, 1);
+        assertEquals(1, mReset);
 
         assertNull(estimator.getLastMeasurement());
         assertFalse(estimator.getLastMeasurement(null));
@@ -355,15 +339,14 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
     @Test
     public void testAddTriadAndReset2() throws LockedException, IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
         final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
         final Matrix mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, MAGNETOMETER_NOISE_STD);
+        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+                MAGNETOMETER_NOISE_STD);
 
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
@@ -373,29 +356,28 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
                 new AccumulatedMagneticFluxDensityMeasurementNoiseEstimator(this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mMeasurementAdded, 0);
-        assertEquals(mReset, 0);
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mMeasurementAdded);
+        assertEquals(0, mReset);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getLastMeasurement());
         assertFalse(estimator.getLastMeasurement(null));
         assertFalse(estimator.isRunning());
 
         MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad();
         final double timeInterval = estimator.getTimeInterval();
-        final MagneticFluxDensity lastMeasurement = new MagneticFluxDensity(
-                0.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity lastMeasurement = new MagneticFluxDensity(0.0,
+                MagneticFluxDensityUnit.NANOTESLA);
         double value;
         double avg = 0.0;
-        double var = 0.0;
+        double v = 0.0;
         for (int i = 0, j = 1; i < N_SAMPLES; i++, j++) {
             if (estimator.getLastMeasurement(lastMeasurement)) {
                 assertEquals(estimator.getLastMeasurement(), lastMeasurement);
                 assertEquals(lastMeasurement, triad.getMeasurementNorm());
             }
 
-            triad = generateTriad(hardIron.getBuffer(), mm, wmmEstimator,
-                    noiseRandomizer, timestamp, position, cnb);
+            triad = generateTriad(hardIron.getBuffer(), mm, wmmEstimator, noiseRandomizer, timestamp, position, cnb);
 
             value = triad.getNorm();
 
@@ -412,40 +394,38 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
 
             final double diff2 = diff * diff;
 
-            var = var * (double) i / (double) j + diff2 / j;
+            v = v * (double) i / (double) j + diff2 / j;
         }
 
-        assertEquals(estimator.getNumberOfProcessedSamples(), N_SAMPLES);
+        assertEquals(N_SAMPLES, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
-        assertEquals(mStart, 1);
-        assertEquals(mMeasurementAdded, N_SAMPLES);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(N_SAMPLES, mMeasurementAdded);
+        assertEquals(0, mReset);
 
         assertEquals(avg, estimator.getAvg(), ABSOLUTE_ERROR);
 
         final MagneticFluxDensity avg1 = estimator.getAvgAsMeasurement();
         assertEquals(avg, avg1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, avg1.getUnit());
-        final MagneticFluxDensity avg2 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity avg2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgAsMeasurement(avg2);
         assertEquals(avg1, avg2);
 
-        assertEquals(var, estimator.getVariance(), ABSOLUTE_ERROR);
+        assertEquals(v, estimator.getVariance(), ABSOLUTE_ERROR);
 
-        final double std = Math.sqrt(var);
+        final double std = Math.sqrt(v);
 
         assertEquals(std, estimator.getStandardDeviation(), ABSOLUTE_ERROR);
 
         final MagneticFluxDensity std1 = estimator.getStandardDeviationAsMeasurement();
         assertEquals(std, std1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, std1.getUnit());
-        final MagneticFluxDensity std2 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity std2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
         estimator.getStandardDeviationAsMeasurement(std2);
         assertEquals(std1, std2);
 
-        final double psd = timeInterval * var;
+        final double psd = timeInterval * v;
 
         assertEquals(psd, estimator.getPsd(), ABSOLUTE_ERROR);
 
@@ -456,7 +436,7 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(mReset, 1);
+        assertEquals(1, mReset);
 
         assertNull(estimator.getLastMeasurement());
         assertFalse(estimator.getLastMeasurement(null));
@@ -476,8 +456,7 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
     }
 
     @Override
-    public void onMeasurementAdded(
-            final AccumulatedMagneticFluxDensityMeasurementNoiseEstimator estimator) {
+    public void onMeasurementAdded(final AccumulatedMagneticFluxDensityMeasurementNoiseEstimator estimator) {
         mMeasurementAdded++;
     }
 
@@ -494,96 +473,50 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
 
     private void checkLocked(final AccumulatedMagneticFluxDensityMeasurementNoiseEstimator estimator) {
         assertTrue(estimator.isRunning());
-        try {
-            estimator.setTimeInterval(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setTimeInterval(new Time(0.0, TimeUnit.SECOND));
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setListener(this);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.addMeasurement(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0,
-                MagneticFluxDensityUnit.TESLA);
-        try {
-            estimator.addMeasurement(b);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.reset();
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
+        assertThrows(LockedException.class, () -> estimator.setTimeInterval(0.0));
+        assertThrows(LockedException.class, () -> estimator.setTimeInterval(new Time(0.0, TimeUnit.SECOND)));
+        assertThrows(LockedException.class, () -> estimator.setListener(this));
+        assertThrows(LockedException.class, () -> estimator.addMeasurement(0.0));
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertThrows(LockedException.class, () -> estimator.addMeasurement(b));
+        assertThrows(LockedException.class, estimator::reset);
     }
 
     private static MagneticFluxDensityTriad generateTriad(
-            final double[] hardIron, final Matrix softIron,
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-            final GaussianRandomizer noiseRandomizer,
-            final Date timestamp,
-            final NEDPosition position,
+            final double[] hardIron, final Matrix softIron, final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
+            final GaussianRandomizer noiseRandomizer, final Date timestamp, final NEDPosition position,
             final CoordinateTransformation cnb) {
 
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity truthMagnetic =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
-        final BodyMagneticFluxDensity measuredMagnetic =
-                generateMeasuredMagneticFluxDensity(truthMagnetic,
-                        hardIron, softIron);
+        final BodyMagneticFluxDensity truthMagnetic = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity measuredMagnetic = generateMeasuredMagneticFluxDensity(truthMagnetic, hardIron,
+                softIron);
 
         if (noiseRandomizer != null) {
-            measuredMagnetic.setBx(measuredMagnetic.getBx()
-                    + noiseRandomizer.nextDouble());
-            measuredMagnetic.setBy(measuredMagnetic.getBy()
-                    + noiseRandomizer.nextDouble());
-            measuredMagnetic.setBz(measuredMagnetic.getBz()
-                    + noiseRandomizer.nextDouble());
+            measuredMagnetic.setBx(measuredMagnetic.getBx() + noiseRandomizer.nextDouble());
+            measuredMagnetic.setBy(measuredMagnetic.getBy() + noiseRandomizer.nextDouble());
+            measuredMagnetic.setBz(measuredMagnetic.getBz() + noiseRandomizer.nextDouble());
         }
 
         return measuredMagnetic.getCoordinatesAsTriad();
     }
 
-    private static CoordinateTransformation generateBodyC(
-            final UniformRandomizer randomizer) {
+    private static CoordinateTransformation generateBodyC(final UniformRandomizer randomizer) {
 
-        final double roll = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        return new CoordinateTransformation(
-                roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        return new CoordinateTransformation(roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
     }
 
     private static BodyMagneticFluxDensity generateMeasuredMagneticFluxDensity(
-            final BodyMagneticFluxDensity input, final double[] hardIron,
-            final Matrix softIron) {
-        return BodyMagneticFluxDensityGenerator.generate(input, hardIron,
-                softIron);
+            final BodyMagneticFluxDensity input, final double[] hardIron, final Matrix softIron) {
+        return BodyMagneticFluxDensityGenerator.generate(input, hardIron, softIron);
     }
 
-    private static double[] generateHardIron(
-            final UniformRandomizer randomizer) {
+    private static double[] generateHardIron(final UniformRandomizer randomizer) {
         final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
         randomizer.fill(result, MIN_HARD_IRON, MAX_HARD_IRON);
         return result;
@@ -591,8 +524,7 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
 
     private static Matrix generateSoftIronGeneral() {
         try {
-            return Matrix.createWithUniformRandomValues(
-                    BodyMagneticFluxDensity.COMPONENTS,
+            return Matrix.createWithUniformRandomValues(BodyMagneticFluxDensity.COMPONENTS,
                     BodyMagneticFluxDensity.COMPONENTS, MIN_SOFT_IRON, MAX_SOFT_IRON);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -600,20 +532,15 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
         }
     }
 
-    private static NEDPosition createPosition(
-            final UniformRandomizer randomizer) {
-        final double latitude = Math.toRadians(randomizer.nextDouble(
-                MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(
-                MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(
-                MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
+    private static NEDPosition createPosition(final UniformRandomizer randomizer) {
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double height = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
 
         return new NEDPosition(latitude, longitude, height);
     }
 
     private static long createTimestamp(final UniformRandomizer randomizer) {
-        return randomizer.nextLong(
-                START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS);
+        return randomizer.nextLong(START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS);
     }
 }

@@ -21,5 +21,6 @@ package com.irurueta.navigation.inertial.calibration.magnetometer;
  * hard-iron is known.
  */
 public interface KnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener extends
-        BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener<KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator> {
+        BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener<
+                KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator> {
 }

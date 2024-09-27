@@ -48,10 +48,10 @@ public class TimedBodyKinematicsTest {
 
         // check default values
         assertNull(timedBodyKinematics.getKinematics());
-        assertEquals(timedBodyKinematics.getTimestampSeconds(), 0.0, 0.0);
+        assertEquals(0.0, timedBodyKinematics.getTimestampSeconds(), 0.0);
         Time time1 = timedBodyKinematics.getTimestamp();
-        assertEquals(time1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(time1.getUnit(), TimeUnit.SECOND);
+        assertEquals(0.0, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
         Time time2 = new Time(0.0, TimeUnit.HOUR);
         timedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
@@ -61,11 +61,11 @@ public class TimedBodyKinematicsTest {
         timedBodyKinematics = new TimedBodyKinematics(kinematics);
 
         // check default values
-        assertSame(timedBodyKinematics.getKinematics(), kinematics);
-        assertEquals(timedBodyKinematics.getTimestampSeconds(), 0.0, 0.0);
+        assertSame(kinematics, timedBodyKinematics.getKinematics());
+        assertEquals(0.0, timedBodyKinematics.getTimestampSeconds(), 0.0);
         time1 = timedBodyKinematics.getTimestamp();
-        assertEquals(time1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(time1.getUnit(), TimeUnit.SECOND);
+        assertEquals(0.0, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
         time2 = new Time(0.0, TimeUnit.HOUR);
         timedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
@@ -78,10 +78,10 @@ public class TimedBodyKinematicsTest {
 
         // check
         assertNull(timedBodyKinematics.getKinematics());
-        assertEquals(timedBodyKinematics.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertEquals(timestampSeconds, timedBodyKinematics.getTimestampSeconds(), 0.0);
         time1 = timedBodyKinematics.getTimestamp();
-        assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
-        assertEquals(time1.getUnit(), TimeUnit.SECOND);
+        assertEquals(timestampSeconds, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
         time2 = new Time(0.0, TimeUnit.HOUR);
         timedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
@@ -92,7 +92,7 @@ public class TimedBodyKinematicsTest {
 
         // check
         assertNull(timedBodyKinematics.getKinematics());
-        assertEquals(timedBodyKinematics.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertEquals(timestampSeconds, timedBodyKinematics.getTimestampSeconds(), 0.0);
         time1 = timedBodyKinematics.getTimestamp();
         assertEquals(time, time1);
         time2 = new Time(0.0, TimeUnit.HOUR);
@@ -103,11 +103,11 @@ public class TimedBodyKinematicsTest {
         timedBodyKinematics = new TimedBodyKinematics(kinematics, timestampSeconds);
 
         // check
-        assertSame(timedBodyKinematics.getKinematics(), kinematics);
-        assertEquals(timedBodyKinematics.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertSame(kinematics, timedBodyKinematics.getKinematics());
+        assertEquals(timestampSeconds, timedBodyKinematics.getTimestampSeconds(), 0.0);
         time1 = timedBodyKinematics.getTimestamp();
-        assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
-        assertEquals(time1.getUnit(), TimeUnit.SECOND);
+        assertEquals(timestampSeconds, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
         time2 = new Time(0.0, TimeUnit.HOUR);
         timedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
@@ -116,8 +116,8 @@ public class TimedBodyKinematicsTest {
         timedBodyKinematics = new TimedBodyKinematics(kinematics, time);
 
         // check
-        assertSame(timedBodyKinematics.getKinematics(), kinematics);
-        assertEquals(timedBodyKinematics.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertSame(kinematics, timedBodyKinematics.getKinematics());
+        assertEquals(timestampSeconds, timedBodyKinematics.getTimestampSeconds(), 0.0);
         time1 = timedBodyKinematics.getTimestamp();
         assertEquals(time, time1);
         time2 = new Time(0.0, TimeUnit.HOUR);
@@ -128,8 +128,8 @@ public class TimedBodyKinematicsTest {
         final TimedBodyKinematics timedBodyKinematics2 = new TimedBodyKinematics(timedBodyKinematics);
 
         // check
-        assertEquals(timedBodyKinematics2.getKinematics(), kinematics);
-        assertEquals(timedBodyKinematics2.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertEquals(kinematics, timedBodyKinematics2.getKinematics());
+        assertEquals(timestampSeconds, timedBodyKinematics2.getTimestampSeconds(), 0.0);
         time1 = timedBodyKinematics2.getTimestamp();
         assertEquals(time, time1);
         time2 = new Time(0.0, TimeUnit.HOUR);
@@ -149,7 +149,7 @@ public class TimedBodyKinematicsTest {
         timedBodyKinematics.setKinematics(kinematics);
 
         // check
-        assertSame(timedBodyKinematics.getKinematics(), kinematics);
+        assertSame(kinematics, timedBodyKinematics.getKinematics());
     }
 
     @Test
@@ -157,7 +157,7 @@ public class TimedBodyKinematicsTest {
         final TimedBodyKinematics timedBodyKinematics = new TimedBodyKinematics();
 
         // check default value
-        assertEquals(timedBodyKinematics.getTimestampSeconds(), 0.0, 0.0);
+        assertEquals(0.0, timedBodyKinematics.getTimestampSeconds(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -166,7 +166,7 @@ public class TimedBodyKinematicsTest {
         timedBodyKinematics.setTimestampSeconds(timestampSeconds);
 
         // check
-        assertEquals(timedBodyKinematics.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertEquals(timestampSeconds, timedBodyKinematics.getTimestampSeconds(), 0.0);
     }
 
     @Test
@@ -176,8 +176,8 @@ public class TimedBodyKinematicsTest {
         // check default value
         final Time time1 = timedBodyKinematics.getTimestamp();
 
-        assertEquals(time1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(time1.getUnit(), TimeUnit.SECOND);
+        assertEquals(0.0, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -226,7 +226,7 @@ public class TimedBodyKinematicsTest {
 
         // check
         assertNull(timedBodyKinematics2.getKinematics());
-        assertEquals(timedBodyKinematics2.getTimestampSeconds(), 0.0, 0.0);
+        assertEquals(0.0, timedBodyKinematics2.getTimestampSeconds(), 0.0);
     }
 
     @Test
@@ -244,8 +244,8 @@ public class TimedBodyKinematicsTest {
         timedBodyKinematics2.copyFrom(timedBodyKinematics1);
 
         // check
-        assertEquals(timedBodyKinematics2.getKinematics(), kinematics1);
-        assertEquals(timedBodyKinematics2.getTimestampSeconds(), timestampSeconds1, 0.0);
+        assertEquals(kinematics1, timedBodyKinematics2.getKinematics());
+        assertEquals(timestampSeconds1, timedBodyKinematics2.getTimestampSeconds(), 0.0);
     }
 
     @Test
@@ -263,8 +263,8 @@ public class TimedBodyKinematicsTest {
         timedBodyKinematics1.copyTo(timedBodyKinematics2);
 
         // check
-        assertEquals(timedBodyKinematics2.getKinematics(), kinematics1);
-        assertEquals(timedBodyKinematics2.getTimestampSeconds(), timestampSeconds1, 0.0);
+        assertEquals(kinematics1, timedBodyKinematics2.getKinematics());
+        assertEquals(timestampSeconds1, timedBodyKinematics2.getTimestampSeconds(), 0.0);
     }
 
     @Test
@@ -297,17 +297,16 @@ public class TimedBodyKinematicsTest {
         final TimedBodyKinematics timedBodyKinematics2 = new TimedBodyKinematics(kinematics1, timestampSeconds1);
         final TimedBodyKinematics timedBodyKinematics3 = new TimedBodyKinematics(kinematics2, timestampSeconds2);
 
-        // noinspection ConstantConditions,SimplifiableJUnitAssertion
-        assertTrue(timedBodyKinematics1.equals((Object) timedBodyKinematics1));
+        //noinspection EqualsWithItself
+        assertEquals(timedBodyKinematics1, timedBodyKinematics1);
         //noinspection EqualsWithItself
         assertTrue(timedBodyKinematics1.equals(timedBodyKinematics1));
         assertTrue(timedBodyKinematics1.equals(timedBodyKinematics2));
         assertFalse(timedBodyKinematics1.equals(timedBodyKinematics3));
         // noinspection ConstantConditions,SimplifiableJUnitAssertion
-        assertFalse(timedBodyKinematics1.equals((Object) null));
+        assertNotEquals(timedBodyKinematics1, null);
         assertFalse(timedBodyKinematics1.equals(null));
-        //noinspection SimplifiableJUnitAssertion
-        assertFalse(timedBodyKinematics1.equals(new Object()));
+        assertNotEquals(timedBodyKinematics1, new Object());
     }
 
     @Test
@@ -369,20 +368,16 @@ public class TimedBodyKinematicsTest {
         assertEquals(0L, field.get(null));
     }
 
-    private BodyKinematics createBodyKinematics() {
+    private static BodyKinematics createBodyKinematics() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
         final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
         final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
-                MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
-                MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
-                MAX_ANGULAR_RATE_VALUE);
+        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
-        return new BodyKinematics(fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        return new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 }

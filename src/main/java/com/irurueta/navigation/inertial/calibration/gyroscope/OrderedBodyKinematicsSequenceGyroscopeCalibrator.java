@@ -25,8 +25,7 @@ import java.util.List;
  * Defines a gyroscope calibrator using ordered lists of
  * {@link BodyKinematicsSequence} sequences.
  */
-public interface OrderedBodyKinematicsSequenceGyroscopeCalibrator extends
-        GyroscopeCalibrator {
+public interface OrderedBodyKinematicsSequenceGyroscopeCalibrator extends GyroscopeCalibrator {
 
     /**
      * Gets collection of sequences of timestamped body kinematics
@@ -47,7 +46,6 @@ public interface OrderedBodyKinematicsSequenceGyroscopeCalibrator extends
      *                  kinematics measurements.
      * @throws LockedException if calibrator is currently running.
      */
-    void setSequences(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences)
+    void setSequences(final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences)
             throws LockedException;
 }

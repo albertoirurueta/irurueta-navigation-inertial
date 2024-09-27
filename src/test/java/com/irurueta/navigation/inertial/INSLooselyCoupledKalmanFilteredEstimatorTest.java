@@ -39,8 +39,7 @@ import java.util.Random;
 
 import static org.junit.Assert.*;
 
-public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
-        INSLooselyCoupledKalmanFilteredEstimatorListener {
+public class INSLooselyCoupledKalmanFilteredEstimatorTest implements INSLooselyCoupledKalmanFilteredEstimatorListener {
 
     private static final double MIN_VALUE = 1e-4;
     private static final double MAX_VALUE = 1e-3;
@@ -83,21 +82,18 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
     private int mReset;
 
     @Test
-    public void testConstructor()
-            throws InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor() throws InvalidSourceAndDestinationFrameTypeException {
 
         // test constructor 1
-        INSLooselyCoupledKalmanFilteredEstimator estimator =
-                new INSLooselyCoupledKalmanFilteredEstimator();
+        INSLooselyCoupledKalmanFilteredEstimator estimator = new INSLooselyCoupledKalmanFilteredEstimator();
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         Time epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getFrame());
@@ -117,24 +113,21 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
 
-
         // test constructor 2
         final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
-        INSLooselyCoupledKalmanConfig kalmanConfig2 =
-                new INSLooselyCoupledKalmanConfig();
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
+        INSLooselyCoupledKalmanConfig kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getFrame());
         assertFalse(estimator.getFrame(null));
         assertFalse(estimator.getInitialConfig(null));
@@ -154,18 +147,16 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
 
         // test constructor 3
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double epochInterval = randomizer.nextDouble(
-                MIN_EPOCH_INTERVAL, MAX_EPOCH_INTERVAL);
+        final double epochInterval = randomizer.nextDouble(MIN_EPOCH_INTERVAL, MAX_EPOCH_INTERVAL);
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getFrame());
@@ -186,25 +177,19 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(-epochInterval);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class,
+                () -> new INSLooselyCoupledKalmanFilteredEstimator(-epochInterval));
 
         // test constructor 4
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getFrame());
@@ -225,21 +210,19 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // test constructor 5
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochInterval);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getFrame());
         assertFalse(estimator.getFrame(null));
         assertFalse(estimator.getInitialConfig(null));
@@ -258,31 +241,23 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    -epochInterval);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
+                -epochInterval));
 
         // test constructor 6
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getFrame());
         assertFalse(estimator.getFrame(null));
         assertFalse(estimator.getInitialConfig(null));
@@ -301,17 +276,15 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // test constructor 7
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval,
-                this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
         assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getFrame());
@@ -332,31 +305,23 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                    -epochInterval, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(
+                -epochInterval, this));
 
         // test constructor 8
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochInterval, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getFrame());
         assertFalse(estimator.getFrame(null));
         assertFalse(estimator.getInitialConfig(null));
@@ -375,14 +340,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    -epochInterval, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
+                -epochInterval, this));
 
         // test constructor 9
         epochIntervalTime = new Time(epochInterval, TimeUnit.SECOND);
@@ -390,12 +349,11 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getFrame());
@@ -416,21 +374,19 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // test constructor 10
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                kalmanConfig, epochIntervalTime);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getFrame());
         assertFalse(estimator.getFrame(null));
         assertFalse(estimator.getInitialConfig(null));
@@ -450,27 +406,19 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
 
         // Force IllegalArgumentException
         final Time wrongEpochIntervalTime = new Time(-epochInterval, TimeUnit.SECOND);
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    wrongEpochIntervalTime);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
+                wrongEpochIntervalTime));
 
         // test constructor 11
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                epochIntervalTime, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochIntervalTime, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getFrame());
@@ -491,31 +439,23 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                    wrongEpochIntervalTime, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(
+                wrongEpochIntervalTime, this));
 
         // test constructor 12
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                kalmanConfig, epochIntervalTime, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getFrame());
         assertFalse(estimator.getFrame(null));
         assertFalse(estimator.getInitialConfig(null));
@@ -534,47 +474,32 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    wrongEpochIntervalTime, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
+                wrongEpochIntervalTime, this));
 
         // test constructor 13
-        final double roll = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c = new CoordinateTransformation(
-                roll, pitch, yaw, FrameType.BODY_FRAME,
+        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                 FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
-        final double userLatitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double userLongitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+                MAX_LONGITUDE_DEGREES));
         final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-        final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                new com.irurueta.navigation.frames.NEDPosition(userLatitude, userLongitude, userHeight);
+        final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-        final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                MAX_USER_VELOCITY_VALUE);
-        final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                MAX_USER_VELOCITY_VALUE);
-        final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                MAX_USER_VELOCITY_VALUE);
+        final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+        final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+        final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
         final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
         final ECEFPosition ecefUserPosition = new ECEFPosition();
         final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
+                ecefUserVelocity);
 
         final ECEFFrame frame = new ECEFFrame(ecefUserPosition, ecefUserVelocity, c);
 
@@ -582,15 +507,14 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         ECEFFrame frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
@@ -614,16 +538,15 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
-        assertEquals(estimator.getConfig(), kalmanConfig);
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(kalmanConfig, estimator.getConfig());
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
@@ -643,20 +566,18 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(estimator.isPropagateReady());
 
         // test constructor 15
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                epochInterval, frame);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval, frame);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
@@ -676,29 +597,22 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                    -epochInterval, frame);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(-epochInterval,
+                frame));
 
         // test constructor 16
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(frame, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
@@ -718,22 +632,20 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // test constructor 17
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochInterval, frame);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval, frame);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
         assertEquals(kalmanConfig, estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
@@ -753,31 +665,23 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    -epochInterval, frame);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
+                -epochInterval, frame));
 
         // test constructor 18
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                frame, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, frame, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
-        assertEquals(estimator.getConfig(), kalmanConfig);
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(kalmanConfig, estimator.getConfig());
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
@@ -797,20 +701,18 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(estimator.isPropagateReady());
 
         // test constructor 19
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval,
-                frame, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval, frame, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
@@ -830,32 +732,24 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(-epochInterval,
-                    frame, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(-epochInterval,
+                frame, this));
 
         // test constructor 20
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochInterval, frame, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval, frame, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
         assertEquals(kalmanConfig, estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
@@ -875,30 +769,22 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    -epochInterval, frame, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
+                -epochInterval, frame, this));
 
         // test constructor 21
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                epochIntervalTime, frame);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochIntervalTime, frame);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
@@ -918,32 +804,24 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                    wrongEpochIntervalTime, frame);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(
+                wrongEpochIntervalTime, frame));
 
         // test constructor 22
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochIntervalTime, frame);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime, frame);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
         assertEquals(kalmanConfig, estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
@@ -963,30 +841,22 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    wrongEpochIntervalTime, frame);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
+                wrongEpochIntervalTime, frame));
 
         // test constructor 23
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochIntervalTime,
-                frame, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochIntervalTime, frame, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
@@ -1006,32 +876,24 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                    wrongEpochIntervalTime, frame, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(
+                wrongEpochIntervalTime, frame, this));
 
         // test constructor 24
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochIntervalTime, frame, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime, frame, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
         assertEquals(kalmanConfig, estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
@@ -1051,37 +913,28 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    wrongEpochIntervalTime, frame, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
+                wrongEpochIntervalTime, frame, this));
 
         // test constructor 25
-        final INSLooselyCoupledKalmanInitializerConfig initialConfig =
-                generateInitConfig();
+        final INSLooselyCoupledKalmanInitializerConfig initialConfig = generateInitConfig();
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(initialConfig);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getFrame());
         assertFalse(estimator.getFrame(null));
-        INSLooselyCoupledKalmanInitializerConfig initialConfig2 =
-                new INSLooselyCoupledKalmanInitializerConfig();
+        INSLooselyCoupledKalmanInitializerConfig initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1096,17 +949,15 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // test constructor 26
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                initialConfig);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initialConfig);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
@@ -1116,7 +967,7 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1131,8 +982,7 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // test constructor 27
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval,
-                initialConfig);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval, initialConfig);
 
         // check default values
         assertNull(estimator.getListener());
@@ -1140,8 +990,7 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
         assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getFrame());
@@ -1149,7 +998,7 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1164,27 +1013,19 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                    -epochInterval, initialConfig);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(-epochInterval,
+                initialConfig));
 
         // test constructor 28
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(initialConfig,
-                this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(initialConfig, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getFrame());
@@ -1192,7 +1033,7 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1207,27 +1048,25 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // test constructor 29
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochInterval, initialConfig);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval, initialConfig);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getFrame());
         assertFalse(estimator.getFrame(null));
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1242,27 +1081,19 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    -epochInterval, initialConfig);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
+                -epochInterval, initialConfig));
 
         // test constructor 30
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                initialConfig, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initialConfig, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
@@ -1272,7 +1103,7 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1287,17 +1118,15 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // test constructor 31
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval,
-                initialConfig, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval, initialConfig, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getFrame());
@@ -1305,7 +1134,7 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1320,37 +1149,30 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                    -epochInterval, initialConfig, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(
+                -epochInterval, initialConfig, this));
 
         // test constructor 32
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochInterval, initialConfig, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval, initialConfig,
+                this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getFrame());
         assertFalse(estimator.getFrame(null));
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1365,27 +1187,19 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    -epochInterval, initialConfig, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
+                -epochInterval, initialConfig, this));
 
         // test constructor 33
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                epochIntervalTime, initialConfig);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochIntervalTime, initialConfig);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getFrame());
@@ -1393,7 +1207,7 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1408,37 +1222,29 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                    wrongEpochIntervalTime, initialConfig);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(
+                wrongEpochIntervalTime, initialConfig));
 
         // test constructor 34
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochIntervalTime, initialConfig);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime, initialConfig);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getFrame());
         assertFalse(estimator.getFrame(null));
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1453,27 +1259,19 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    wrongEpochIntervalTime, initialConfig);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
+                wrongEpochIntervalTime, initialConfig));
 
         // test constructor 35
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                epochIntervalTime, initialConfig, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochIntervalTime, initialConfig, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getFrame());
@@ -1481,7 +1279,7 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1496,37 +1294,30 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                    wrongEpochIntervalTime, initialConfig, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(
+                wrongEpochIntervalTime, initialConfig, this));
 
         // test constructor 36
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochIntervalTime, initialConfig, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime, initialConfig,
+                this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getFrame());
         assertFalse(estimator.getFrame(null));
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1541,37 +1332,29 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    wrongEpochIntervalTime, initialConfig, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
+                wrongEpochIntervalTime, initialConfig, this));
 
         // test constructor 37
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(initialConfig,
-                frame);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(initialConfig, frame);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1586,28 +1369,26 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // test constructor 38
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                initialConfig, frame);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initialConfig, frame);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
-        assertEquals(estimator.getConfig(), kalmanConfig);
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(kalmanConfig, estimator.getConfig());
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1622,26 +1403,24 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(estimator.isPropagateReady());
 
         // test constructor 39
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval,
-                initialConfig, frame);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval, initialConfig, frame);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1656,37 +1435,29 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                    -epochInterval, initialConfig, frame);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(-epochInterval,
+                initialConfig, frame));
 
         // test constructor 40
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(initialConfig,
-                frame, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(initialConfig, frame, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1701,28 +1472,26 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // test constructor 41
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochInterval, initialConfig, frame);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval, initialConfig, frame);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
         assertEquals(kalmanConfig, estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1737,38 +1506,30 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    -epochInterval, initialConfig, frame);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
+                -epochInterval, initialConfig, frame));
 
         // test constructor 42
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                initialConfig, frame, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, initialConfig, frame, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
-        assertEquals(estimator.getConfig(), kalmanConfig);
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(kalmanConfig, estimator.getConfig());
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1783,26 +1544,24 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(estimator.isPropagateReady());
 
         // test constructor 43
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval,
-                initialConfig, frame, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval, initialConfig, frame, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1817,38 +1576,31 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                    -epochInterval, initialConfig, frame, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(
+                -epochInterval, initialConfig, frame, this));
 
         // test constructor 44
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochInterval, initialConfig, frame, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval, initialConfig, frame,
+                this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
         assertEquals(kalmanConfig, estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1863,36 +1615,28 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    -epochInterval, initialConfig, frame, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
+                -epochInterval, initialConfig, frame, this));
 
         // test constructor 45
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                epochIntervalTime, initialConfig, frame);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochIntervalTime, initialConfig, frame);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1907,38 +1651,30 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                    wrongEpochIntervalTime, initialConfig, frame);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(
+                wrongEpochIntervalTime, initialConfig, frame));
 
         // test constructor 46
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochIntervalTime, initialConfig, frame);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime, initialConfig, frame);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
         assertEquals(kalmanConfig, estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1953,36 +1689,28 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    wrongEpochIntervalTime, initialConfig, frame);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
+                wrongEpochIntervalTime, initialConfig, frame));
 
         // test constructor 47
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                epochIntervalTime, initialConfig, frame, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochIntervalTime, initialConfig, frame, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -1997,38 +1725,31 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(
-                    wrongEpochIntervalTime, initialConfig, frame, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(
+                wrongEpochIntervalTime, initialConfig, frame, this));
 
         // test constructor 48
-        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochIntervalTime, initialConfig, frame, this);
+        estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime, initialConfig, frame,
+                this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
         assertEquals(kalmanConfig, estimator.getConfig());
-        assertEquals(estimator.getFrame(), frame);
+        assertEquals(frame, estimator.getFrame());
         frame2 = new ECEFFrame();
         assertTrue(estimator.getFrame(frame2));
         assertEquals(frame, frame2);
         initialConfig2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
         assertNull(estimator.getCorrectedKinematics());
@@ -2043,20 +1764,13 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    wrongEpochIntervalTime, initialConfig, frame, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
+                wrongEpochIntervalTime, initialConfig, frame, this));
     }
 
     @Test
     public void testGetSetListener() throws LockedException {
-        final INSLooselyCoupledKalmanFilteredEstimator estimator =
-                new INSLooselyCoupledKalmanFilteredEstimator();
+        final INSLooselyCoupledKalmanFilteredEstimator estimator = new INSLooselyCoupledKalmanFilteredEstimator();
 
         // check default value
         assertNull(estimator.getListener());
@@ -2065,40 +1779,34 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         estimator.setListener(this);
 
         // check
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
     }
 
     @Test
     public void testGetSetEpochInterval() throws LockedException {
-        final INSLooselyCoupledKalmanFilteredEstimator estimator =
-                new INSLooselyCoupledKalmanFilteredEstimator();
+        final INSLooselyCoupledKalmanFilteredEstimator estimator = new INSLooselyCoupledKalmanFilteredEstimator();
 
         // check default value
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
 
         // set new value
         estimator.setEpochInterval(1.0);
 
         // check
-        assertEquals(estimator.getEpochInterval(), 1.0, 0.0);
+        assertEquals(1.0, estimator.getEpochInterval(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            estimator.setEpochInterval(-1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setEpochInterval(-1.0));
     }
 
     @Test
     public void testGetSetEpochIntervalAsTime() throws LockedException {
-        final INSLooselyCoupledKalmanFilteredEstimator estimator =
-                new INSLooselyCoupledKalmanFilteredEstimator();
+        final INSLooselyCoupledKalmanFilteredEstimator estimator = new INSLooselyCoupledKalmanFilteredEstimator();
 
         final Time epochInterval1 = estimator.getEpochIntervalAsTime();
 
-        assertEquals(epochInterval1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(epochInterval1.getUnit(), TimeUnit.SECOND);
+        assertEquals(0.0, epochInterval1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, epochInterval1.getUnit());
 
         // set new value
         final Time epochInterval2 = new Time(1.0, TimeUnit.SECOND);
@@ -2115,8 +1823,7 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
 
     @Test
     public void testGetSetConfig() throws LockedException {
-        final INSLooselyCoupledKalmanFilteredEstimator estimator =
-                new INSLooselyCoupledKalmanFilteredEstimator();
+        final INSLooselyCoupledKalmanFilteredEstimator estimator = new INSLooselyCoupledKalmanFilteredEstimator();
 
         // check default value
         assertNull(estimator.getConfig());
@@ -2127,8 +1834,7 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         estimator.setConfig(config1);
 
         // check
-        final INSLooselyCoupledKalmanConfig config2 =
-                new INSLooselyCoupledKalmanConfig();
+        final INSLooselyCoupledKalmanConfig config2 = new INSLooselyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(config2));
         final INSLooselyCoupledKalmanConfig config3 = estimator.getConfig();
 
@@ -2137,47 +1843,35 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testGetSetFrame() throws LockedException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testGetSetFrame() throws LockedException, InvalidSourceAndDestinationFrameTypeException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-        final double roll = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c = new CoordinateTransformation(
-                roll, pitch, yaw, FrameType.BODY_FRAME,
+        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                 FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
-        final double userLatitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double userLongitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+                MAX_LONGITUDE_DEGREES));
         final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-        final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                new com.irurueta.navigation.frames.NEDPosition(userLatitude, userLongitude, userHeight);
+        final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-        final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                MAX_USER_VELOCITY_VALUE);
-        final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                MAX_USER_VELOCITY_VALUE);
-        final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                MAX_USER_VELOCITY_VALUE);
-        final NEDVelocity
-                nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
+        final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+        final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+        final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+        final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
         final ECEFPosition ecefUserPosition = new ECEFPosition();
         final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
+                ecefUserVelocity);
 
         final ECEFFrame frame = new ECEFFrame(ecefUserPosition, ecefUserVelocity, c);
 
-        final INSLooselyCoupledKalmanFilteredEstimator estimator =
-                new INSLooselyCoupledKalmanFilteredEstimator();
+        final INSLooselyCoupledKalmanFilteredEstimator estimator = new INSLooselyCoupledKalmanFilteredEstimator();
 
         // check default value
         assertNull(estimator.getFrame());
@@ -2196,33 +1890,28 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
 
     @Test
     public void testGetSetInitialConfig() throws LockedException {
-        final INSLooselyCoupledKalmanFilteredEstimator estimator =
-                new INSLooselyCoupledKalmanFilteredEstimator();
+        final INSLooselyCoupledKalmanFilteredEstimator estimator = new INSLooselyCoupledKalmanFilteredEstimator();
 
         // check default value
         assertNull(estimator.getInitialConfig());
         assertFalse(estimator.getInitialConfig(null));
 
         // set new value
-        final INSLooselyCoupledKalmanInitializerConfig config1 =
-                generateInitConfig();
+        final INSLooselyCoupledKalmanInitializerConfig config1 = generateInitConfig();
         estimator.setInitialConfig(config1);
 
         // check
-        final INSLooselyCoupledKalmanInitializerConfig config2 =
-                new INSLooselyCoupledKalmanInitializerConfig();
+        final INSLooselyCoupledKalmanInitializerConfig config2 = new INSLooselyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(config2));
-        final INSLooselyCoupledKalmanInitializerConfig config3 =
-                estimator.getInitialConfig();
+        final INSLooselyCoupledKalmanInitializerConfig config3 = estimator.getInitialConfig();
 
         assertEquals(config1, config2);
         assertSame(config1, config3);
     }
 
     @Test
-    public void testUpdateWithZeroSpecificForceAndAngularRate()
-            throws InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException, INSException, InvalidRotationMatrixException {
+    public void testUpdateWithZeroSpecificForceAndAngularRate() throws InvalidSourceAndDestinationFrameTypeException,
+            LockedException, NotReadyException, INSException, InvalidRotationMatrixException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -2230,53 +1919,40 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
 
             final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                    new com.irurueta.navigation.frames.NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
+            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
             final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
             final ECEFPosition ecefUserPosition = new ECEFPosition();
             final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
-            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                    nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
+            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
+                    ecefUserVelocity);
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-            final CoordinateTransformation c = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
-            final ECEFFrame frame = new ECEFFrame(ecefUserPosition,
-                    ecefUserVelocity, c);
+            final ECEFFrame frame = new ECEFFrame(ecefUserPosition, ecefUserVelocity, c);
 
             final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSLooselyCoupledKalmanInitializerConfig initConfig =
-                    generateInitConfig();
-            final INSLooselyCoupledKalmanFilteredEstimator estimator =
-                    new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                            initConfig, frame, this);
+            final INSLooselyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
+            final INSLooselyCoupledKalmanFilteredEstimator estimator = new INSLooselyCoupledKalmanFilteredEstimator(
+                    kalmanConfig, initConfig, frame, this);
 
             reset();
-            assertEquals(mUpdateStart, 0);
-            assertEquals(mUpdateEnd, 0);
-            assertEquals(mPropagateStart, 0);
-            assertEquals(mPropagateEnd, 0);
+            assertEquals(0, mUpdateStart);
+            assertEquals(0, mUpdateEnd);
+            assertEquals(0, mPropagateStart);
+            assertEquals(0, mPropagateEnd);
 
             assertNull(estimator.getState());
             assertFalse(estimator.getState(null));
@@ -2292,25 +1968,23 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertTrue(estimator.update(kinematics, timeSeconds));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getLastStateTimestamp(), timeSeconds, 0.0);
-            assertEquals(estimator.getLastStateTimestampAsTime(),
-                    new Time(timeSeconds, TimeUnit.SECOND));
+            assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+            assertEquals(new Time(timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
             final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
-            assertEquals(timestamp, new Time(timeSeconds, TimeUnit.SECOND));
+            assertEquals(new Time(timeSeconds, TimeUnit.SECOND), timestamp);
             assertEquals(kinematics, estimator.getKinematics());
             assertNotNull(estimator.getCorrectedKinematics());
 
             final INSLooselyCoupledKalmanState state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSLooselyCoupledKalmanState state2 =
-                    new INSLooselyCoupledKalmanState();
+            final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
 
-            assertEquals(estimator.getFrame(), state1.getFrame());
+            assertEquals(state1.getFrame(), estimator.getFrame());
 
             final ECEFPosition estimatedPosition1 = state1.getEcefPosition();
             final ECEFVelocity estimatedVelocity1 = state1.getEcefVelocity();
@@ -2321,11 +1995,10 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertTrue(estimatedC1.equals(c, ABSOLUTE_ERROR));
 
             // update again with same timestamp makes no action
-            assertFalse(estimator.update(kinematics,
-                    new Time(timeSeconds, TimeUnit.SECOND)));
+            assertFalse(estimator.update(kinematics, new Time(timeSeconds, TimeUnit.SECOND)));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getLastStateTimestamp(), timeSeconds, 0.0);
+            assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             final INSLooselyCoupledKalmanState state3 = estimator.getState();
 
             assertEquals(state1, state3);
@@ -2334,10 +2007,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertTrue(estimator.update(kinematics, 2.0 * timeSeconds));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getLastStateTimestamp(), 2.0 * timeSeconds,
-                    0.0);
-            assertEquals(estimator.getLastStateTimestampAsTime(),
-                    new Time(2.0 * timeSeconds, TimeUnit.SECOND));
+            assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+            assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
             assertEquals(kinematics, estimator.getKinematics());
             assertNotNull(estimator.getCorrectedKinematics());
 
@@ -2345,34 +2016,28 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             final ECEFPosition estimatedPosition4 = state4.getEcefPosition();
             final ECEFVelocity estimatedVelocity4 = state4.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX()
-                    - estimatedPosition4.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY()
-                    - estimatedPosition4.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ()
-                    - estimatedPosition4.getZ());
+            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition4.getX());
+            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition4.getY());
+            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition4.getZ());
             final double posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition4, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx()
-                    - estimatedVelocity4.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy()
-                    - estimatedVelocity4.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz()
-                    - estimatedVelocity4.getVz());
+            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity4.getVx());
+            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity4.getVy());
+            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity4.getVz());
             final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
             }
             assertTrue(ecefUserVelocity.equals(estimatedVelocity4, VELOCITY_ERROR));
 
-            assertEquals(mUpdateStart, 2);
-            assertEquals(mUpdateEnd, 2);
-            assertEquals(mPropagateStart, 2);
-            assertEquals(mPropagateEnd, 2);
+            assertEquals(2, mUpdateStart);
+            assertEquals(2, mUpdateEnd);
+            assertEquals(2, mPropagateStart);
+            assertEquals(2, mPropagateEnd);
 
             numValid++;
             break;
@@ -2382,9 +2047,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testUpdateWithSpecificForceAndZeroAngularRate()
-            throws InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException, INSException, InvalidRotationMatrixException {
+    public void testUpdateWithSpecificForceAndZeroAngularRate() throws InvalidSourceAndDestinationFrameTypeException,
+            LockedException, NotReadyException, INSException, InvalidRotationMatrixException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -2392,53 +2056,42 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
 
             final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
+                    MAX_LATITUDE_DEGREES));
+            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+                    MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                    new com.irurueta.navigation.frames.NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
+            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
             final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
             final ECEFPosition ecefUserPosition = new ECEFPosition();
             final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
-            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                    nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
+            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
+                    ecefUserVelocity);
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-            final CoordinateTransformation c = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
-            final ECEFFrame frame = new ECEFFrame(ecefUserPosition,
-                    ecefUserVelocity, c);
+            final ECEFFrame frame = new ECEFFrame(ecefUserPosition, ecefUserVelocity, c);
 
             final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSLooselyCoupledKalmanInitializerConfig initConfig =
-                    generateInitConfig();
-            final INSLooselyCoupledKalmanFilteredEstimator estimator =
-                    new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                            initConfig, frame, this);
+            final INSLooselyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
+            final INSLooselyCoupledKalmanFilteredEstimator estimator = new INSLooselyCoupledKalmanFilteredEstimator(
+                    kalmanConfig, initConfig, frame, this);
 
             reset();
-            assertEquals(mUpdateStart, 0);
-            assertEquals(mUpdateEnd, 0);
-            assertEquals(mPropagateStart, 0);
-            assertEquals(mPropagateEnd, 0);
+            assertEquals(0, mUpdateStart);
+            assertEquals(0, mUpdateEnd);
+            assertEquals(0, mPropagateStart);
+            assertEquals(0, mPropagateEnd);
 
             assertNull(estimator.getState());
             assertFalse(estimator.getState(null));
@@ -2451,29 +2104,25 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
 
             // update kinematics for the first time, makes no change
             final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
-                    ecefUserPosition.getX(), ecefUserPosition.getY(),
-                    ecefUserPosition.getZ());
+                    ecefUserPosition.getX(), ecefUserPosition.getY(), ecefUserPosition.getZ());
 
-            final BodyKinematics kinematics = new BodyKinematics(
-                    gravity.getGx(), gravity.getGy(), gravity.getGz(),
+            final BodyKinematics kinematics = new BodyKinematics(gravity.getGx(), gravity.getGy(), gravity.getGz(),
                     0.0, 0.0, 0.0);
             assertTrue(estimator.update(kinematics, timeSeconds));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getLastStateTimestamp(), timeSeconds, 0.0);
-            assertEquals(estimator.getLastStateTimestampAsTime(),
-                    new Time(timeSeconds, TimeUnit.SECOND));
+            assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+            assertEquals(new Time(timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
             final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
-            assertEquals(timestamp, new Time(timeSeconds, TimeUnit.SECOND));
+            assertEquals(new Time(timeSeconds, TimeUnit.SECOND), timestamp);
             assertEquals(kinematics, estimator.getKinematics());
             assertNotNull(estimator.getCorrectedKinematics());
 
             final INSLooselyCoupledKalmanState state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSLooselyCoupledKalmanState state2 =
-                    new INSLooselyCoupledKalmanState();
+            final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
@@ -2489,11 +2138,10 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertTrue(estimatedC1.equals(c, ABSOLUTE_ERROR));
 
             // update again with same timestamp makes no action
-            assertFalse(estimator.update(kinematics,
-                    new Time(timeSeconds, TimeUnit.SECOND)));
+            assertFalse(estimator.update(kinematics, new Time(timeSeconds, TimeUnit.SECOND)));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getLastStateTimestamp(), timeSeconds, 0.0);
+            assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             final INSLooselyCoupledKalmanState state3 = estimator.getState();
 
             assertEquals(state1, state3);
@@ -2502,10 +2150,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertTrue(estimator.update(kinematics, 2.0 * timeSeconds));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getLastStateTimestamp(), 2.0 * timeSeconds,
-                    0.0);
-            assertEquals(estimator.getLastStateTimestampAsTime(),
-                    new Time(2.0 * timeSeconds, TimeUnit.SECOND));
+            assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+            assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
             assertEquals(kinematics, estimator.getKinematics());
             assertNotNull(estimator.getCorrectedKinematics());
 
@@ -2513,34 +2159,28 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             final ECEFPosition estimatedPosition4 = state4.getEcefPosition();
             final ECEFVelocity estimatedVelocity4 = state4.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX()
-                    - estimatedPosition4.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY()
-                    - estimatedPosition4.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ()
-                    - estimatedPosition4.getZ());
+            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition4.getX());
+            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition4.getY());
+            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition4.getZ());
             final double posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition4, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx()
-                    - estimatedVelocity4.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy()
-                    - estimatedVelocity4.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz()
-                    - estimatedVelocity4.getVz());
+            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity4.getVx());
+            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity4.getVy());
+            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity4.getVz());
             final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
             }
             assertTrue(ecefUserVelocity.equals(estimatedVelocity4, VELOCITY_ERROR));
 
-            assertEquals(mUpdateStart, 2);
-            assertEquals(mUpdateEnd, 2);
-            assertEquals(mPropagateStart, 2);
-            assertEquals(mPropagateEnd, 2);
+            assertEquals(2, mUpdateStart);
+            assertEquals(2, mUpdateEnd);
+            assertEquals(2, mPropagateStart);
+            assertEquals(2, mPropagateEnd);
 
             numValid++;
             break;
@@ -2550,10 +2190,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testUpdateWithZeroSpecificForceAndRotationOnly()
-            throws LockedException, NotReadyException, INSException,
-            InvalidSourceAndDestinationFrameTypeException,
-            InvalidRotationMatrixException {
+    public void testUpdateWithZeroSpecificForceAndRotationOnly() throws LockedException, NotReadyException,
+            INSException, InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -2561,53 +2199,42 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
 
             final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
+                    MAX_LATITUDE_DEGREES));
+            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+                    MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                    new com.irurueta.navigation.frames.NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
+            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
             final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
             final ECEFPosition ecefUserPosition = new ECEFPosition();
             final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
-            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                    nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
+            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
+                    ecefUserVelocity);
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-            final CoordinateTransformation c = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
-            final ECEFFrame frame = new ECEFFrame(ecefUserPosition,
-                    ecefUserVelocity, c);
+            final ECEFFrame frame = new ECEFFrame(ecefUserPosition, ecefUserVelocity, c);
 
             final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSLooselyCoupledKalmanInitializerConfig initConfig =
-                    generateInitConfig();
-            final INSLooselyCoupledKalmanFilteredEstimator estimator =
-                    new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                            initConfig, frame, this);
+            final INSLooselyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
+            final INSLooselyCoupledKalmanFilteredEstimator estimator = new INSLooselyCoupledKalmanFilteredEstimator(
+                    kalmanConfig, initConfig, frame, this);
 
             reset();
-            assertEquals(mUpdateStart, 0);
-            assertEquals(mUpdateEnd, 0);
-            assertEquals(mPropagateStart, 0);
-            assertEquals(mPropagateEnd, 0);
+            assertEquals(0, mUpdateStart);
+            assertEquals(0, mUpdateEnd);
+            assertEquals(0, mPropagateStart);
+            assertEquals(0, mPropagateEnd);
 
             assertNull(estimator.getState());
             assertFalse(estimator.getState(null));
@@ -2619,38 +2246,35 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertTrue(estimator.isPropagateReady());
 
             // update kinematics for the first time, makes no change
-            final double angularRateX = Math.toRadians(randomizer.nextDouble(
-                    MIN_DEGREES_PER_SECOND, MAX_DEGREES_PER_SECOND));
-            final double angularRateY = Math.toRadians(randomizer.nextDouble(
-                    MIN_DEGREES_PER_SECOND, MAX_DEGREES_PER_SECOND));
-            final double angularRateZ = Math.toRadians(randomizer.nextDouble(
-                    MIN_DEGREES_PER_SECOND, MAX_DEGREES_PER_SECOND));
+            final double angularRateX = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
+                    MAX_DEGREES_PER_SECOND));
+            final double angularRateY = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
+                    MAX_DEGREES_PER_SECOND));
+            final double angularRateZ = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
+                    MAX_DEGREES_PER_SECOND));
 
-            final BodyKinematics kinematics = new BodyKinematics(
-                    0.0, 0.0, 0.0,
+            final BodyKinematics kinematics = new BodyKinematics(0.0, 0.0, 0.0,
                     angularRateX, angularRateY, angularRateZ);
             assertTrue(estimator.update(kinematics, timeSeconds));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getLastStateTimestamp(), timeSeconds, 0.0);
-            assertEquals(estimator.getLastStateTimestampAsTime(),
-                    new Time(timeSeconds, TimeUnit.SECOND));
+            assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+            assertEquals(new Time(timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
             final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
-            assertEquals(timestamp, new Time(timeSeconds, TimeUnit.SECOND));
+            assertEquals(new Time(timeSeconds, TimeUnit.SECOND), timestamp);
             assertEquals(kinematics, estimator.getKinematics());
             assertNotNull(estimator.getCorrectedKinematics());
 
             final INSLooselyCoupledKalmanState state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSLooselyCoupledKalmanState state2 =
-                    new INSLooselyCoupledKalmanState();
+            final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
 
-            assertEquals(estimator.getFrame(), state1.getFrame());
+            assertEquals(state1.getFrame(), estimator.getFrame());
 
             final ECEFPosition estimatedPosition1 = state1.getEcefPosition();
             final ECEFVelocity estimatedVelocity1 = state1.getEcefVelocity();
@@ -2661,11 +2285,10 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertTrue(estimatedC1.equals(c, ABSOLUTE_ERROR));
 
             // update again with same timestamp makes no action
-            assertFalse(estimator.update(kinematics,
-                    new Time(timeSeconds, TimeUnit.SECOND)));
+            assertFalse(estimator.update(kinematics, new Time(timeSeconds, TimeUnit.SECOND)));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getLastStateTimestamp(), timeSeconds, 0.0);
+            assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             final INSLooselyCoupledKalmanState state3 = estimator.getState();
 
             assertEquals(state1, state3);
@@ -2674,10 +2297,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertTrue(estimator.update(kinematics, 2.0 * timeSeconds));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getLastStateTimestamp(), 2.0 * timeSeconds,
-                    0.0);
-            assertEquals(estimator.getLastStateTimestampAsTime(),
-                    new Time(2.0 * timeSeconds, TimeUnit.SECOND));
+            assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+            assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
             assertEquals(kinematics, estimator.getKinematics());
             assertNotNull(estimator.getCorrectedKinematics());
 
@@ -2685,34 +2306,28 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             final ECEFPosition estimatedPosition4 = state4.getEcefPosition();
             final ECEFVelocity estimatedVelocity4 = state4.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX()
-                    - estimatedPosition4.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY()
-                    - estimatedPosition4.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ()
-                    - estimatedPosition4.getZ());
+            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition4.getX());
+            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition4.getY());
+            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition4.getZ());
             final double posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition4, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx()
-                    - estimatedVelocity4.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy()
-                    - estimatedVelocity4.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz()
-                    - estimatedVelocity4.getVz());
+            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity4.getVx());
+            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity4.getVy());
+            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity4.getVz());
             final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
             }
             assertTrue(ecefUserVelocity.equals(estimatedVelocity4, VELOCITY_ERROR));
 
-            assertEquals(mUpdateStart, 2);
-            assertEquals(mUpdateEnd, 2);
-            assertEquals(mPropagateStart, 2);
-            assertEquals(mPropagateEnd, 2);
+            assertEquals(2, mUpdateStart);
+            assertEquals(2, mUpdateEnd);
+            assertEquals(2, mPropagateStart);
+            assertEquals(2, mPropagateEnd);
 
             numValid++;
             break;
@@ -2722,10 +2337,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testUpdateWithSpecificForceAndRotation()
-            throws LockedException, NotReadyException, INSException,
-            InvalidSourceAndDestinationFrameTypeException,
-            InvalidRotationMatrixException {
+    public void testUpdateWithSpecificForceAndRotation() throws LockedException, NotReadyException, INSException,
+            InvalidSourceAndDestinationFrameTypeException, InvalidRotationMatrixException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -2733,53 +2346,42 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
 
             final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
+                    MAX_LATITUDE_DEGREES));
+            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+                    MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                    new com.irurueta.navigation.frames.NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
+            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
             final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
             final ECEFPosition ecefUserPosition = new ECEFPosition();
             final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
-            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                    nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
+            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
+                    ecefUserVelocity);
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-            final CoordinateTransformation c = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
-            final ECEFFrame frame = new ECEFFrame(ecefUserPosition,
-                    ecefUserVelocity, c);
+            final ECEFFrame frame = new ECEFFrame(ecefUserPosition, ecefUserVelocity, c);
 
             final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSLooselyCoupledKalmanInitializerConfig initConfig =
-                    generateInitConfig();
-            final INSLooselyCoupledKalmanFilteredEstimator estimator =
-                    new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                            initConfig, frame, this);
+            final INSLooselyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
+            final INSLooselyCoupledKalmanFilteredEstimator estimator = new INSLooselyCoupledKalmanFilteredEstimator(
+                    kalmanConfig, initConfig, frame, this);
 
             reset();
-            assertEquals(mUpdateStart, 0);
-            assertEquals(mUpdateEnd, 0);
-            assertEquals(mPropagateStart, 0);
-            assertEquals(mPropagateEnd, 0);
+            assertEquals(0, mUpdateStart);
+            assertEquals(0, mUpdateEnd);
+            assertEquals(0, mPropagateStart);
+            assertEquals(0, mPropagateEnd);
 
             assertNull(estimator.getState());
             assertFalse(estimator.getState(null));
@@ -2791,26 +2393,23 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertTrue(estimator.isPropagateReady());
 
             // update kinematics for the first time, makes no change
-            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
-                    ecefUserPosition.getX(), ecefUserPosition.getY(),
-                    ecefUserPosition.getZ());
+            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(ecefUserPosition.getX(),
+                    ecefUserPosition.getY(), ecefUserPosition.getZ());
 
-            final double angularRateX = Math.toRadians(randomizer.nextDouble(
-                    MIN_DEGREES_PER_SECOND, MAX_DEGREES_PER_SECOND));
-            final double angularRateY = Math.toRadians(randomizer.nextDouble(
-                    MIN_DEGREES_PER_SECOND, MAX_DEGREES_PER_SECOND));
-            final double angularRateZ = Math.toRadians(randomizer.nextDouble(
-                    MIN_DEGREES_PER_SECOND, MAX_DEGREES_PER_SECOND));
+            final double angularRateX = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
+                    MAX_DEGREES_PER_SECOND));
+            final double angularRateY = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
+                    MAX_DEGREES_PER_SECOND));
+            final double angularRateZ = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
+                    MAX_DEGREES_PER_SECOND));
 
-            final BodyKinematics kinematics = new BodyKinematics(
-                    gravity.getGx(), gravity.getGy(), gravity.getGz(),
+            final BodyKinematics kinematics = new BodyKinematics(gravity.getGx(), gravity.getGy(), gravity.getGz(),
                     angularRateX, angularRateY, angularRateZ);
             assertTrue(estimator.update(kinematics, timeSeconds));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getLastStateTimestamp(), timeSeconds, 0.0);
-            assertEquals(estimator.getLastStateTimestampAsTime(),
-                    new Time(timeSeconds, TimeUnit.SECOND));
+            assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+            assertEquals(new Time(timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
             final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
             assertEquals(timestamp, new Time(timeSeconds, TimeUnit.SECOND));
@@ -2820,13 +2419,12 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             final INSLooselyCoupledKalmanState state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSLooselyCoupledKalmanState state2 =
-                    new INSLooselyCoupledKalmanState();
+            final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
 
-            assertEquals(estimator.getFrame(), state1.getFrame());
+            assertEquals(state1.getFrame(), estimator.getFrame());
 
             final ECEFPosition estimatedPosition1 = state1.getEcefPosition();
             final ECEFVelocity estimatedVelocity1 = state1.getEcefVelocity();
@@ -2837,11 +2435,10 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertTrue(estimatedC1.equals(c, ABSOLUTE_ERROR));
 
             // update again with same timestamp makes no action
-            assertFalse(estimator.update(kinematics,
-                    new Time(timeSeconds, TimeUnit.SECOND)));
+            assertFalse(estimator.update(kinematics, new Time(timeSeconds, TimeUnit.SECOND)));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getLastStateTimestamp(), timeSeconds, 0.0);
+            assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             final INSLooselyCoupledKalmanState state3 = estimator.getState();
 
             assertEquals(state1, state3);
@@ -2850,10 +2447,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertTrue(estimator.update(kinematics, 2.0 * timeSeconds));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getLastStateTimestamp(), 2.0 * timeSeconds,
-                    0.0);
-            assertEquals(estimator.getLastStateTimestampAsTime(),
-                    new Time(2.0 * timeSeconds, TimeUnit.SECOND));
+            assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+            assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
             assertEquals(kinematics, estimator.getKinematics());
             assertNotNull(estimator.getCorrectedKinematics());
 
@@ -2861,34 +2456,28 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             final ECEFPosition estimatedPosition4 = state4.getEcefPosition();
             final ECEFVelocity estimatedVelocity4 = state4.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX()
-                    - estimatedPosition4.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY()
-                    - estimatedPosition4.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ()
-                    - estimatedPosition4.getZ());
+            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition4.getX());
+            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition4.getY());
+            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition4.getZ());
             final double posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition4, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx()
-                    - estimatedVelocity4.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy()
-                    - estimatedVelocity4.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz()
-                    - estimatedVelocity4.getVz());
+            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity4.getVx());
+            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity4.getVy());
+            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity4.getVz());
             final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
             }
             assertTrue(ecefUserVelocity.equals(estimatedVelocity4, VELOCITY_ERROR));
 
-            assertEquals(mUpdateStart, 2);
-            assertEquals(mUpdateEnd, 2);
-            assertEquals(mPropagateStart, 2);
-            assertEquals(mPropagateEnd, 2);
+            assertEquals(2, mUpdateStart);
+            assertEquals(2, mUpdateEnd);
+            assertEquals(2, mPropagateStart);
+            assertEquals(2, mPropagateEnd);
 
             numValid++;
             break;
@@ -2897,74 +2486,59 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(numValid > 0);
     }
 
-    @Test(expected = NotReadyException.class)
-    public void testUpdateWhenNotReady() throws LockedException,
-            NotReadyException, INSException {
+    @Test
+    public void testUpdateWhenNotReady() {
 
-        final INSLooselyCoupledKalmanFilteredEstimator estimator =
-                new INSLooselyCoupledKalmanFilteredEstimator();
+        final INSLooselyCoupledKalmanFilteredEstimator estimator = new INSLooselyCoupledKalmanFilteredEstimator();
 
         assertFalse(estimator.isUpdateReady());
 
-        estimator.update(new BodyKinematics(), 0.0);
+        assertThrows(NotReadyException.class, () -> estimator.update(new BodyKinematics(), 0.0));
     }
 
     @Test
-    public void testPropagate()
-            throws InvalidSourceAndDestinationFrameTypeException, LockedException,
+    public void testPropagate() throws InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, INSException, InvalidRotationMatrixException {
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-        final double userLatitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double userLongitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+                MAX_LONGITUDE_DEGREES));
         final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-        final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                new com.irurueta.navigation.frames.NEDPosition(userLatitude, userLongitude, userHeight);
+        final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-        final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                MAX_USER_VELOCITY_VALUE);
-        final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                MAX_USER_VELOCITY_VALUE);
-        final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                MAX_USER_VELOCITY_VALUE);
+        final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+        final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+        final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
         final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
         final ECEFPosition ecefUserPosition = new ECEFPosition();
         final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
+                ecefUserVelocity);
 
-        final double roll = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c = new CoordinateTransformation(
-                roll, pitch, yaw, FrameType.BODY_FRAME,
+        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                 FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
-        final ECEFFrame frame = new ECEFFrame(ecefUserPosition,
-                ecefUserVelocity, c);
+        final ECEFFrame frame = new ECEFFrame(ecefUserPosition, ecefUserVelocity, c);
 
         final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-        final INSLooselyCoupledKalmanInitializerConfig initConfig =
-                generateInitConfig();
-        final INSLooselyCoupledKalmanFilteredEstimator estimator =
-                new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                        initConfig, frame, this);
+        final INSLooselyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
+        final INSLooselyCoupledKalmanFilteredEstimator estimator = new INSLooselyCoupledKalmanFilteredEstimator(
+                kalmanConfig, initConfig, frame, this);
 
         reset();
-        assertEquals(mUpdateStart, 0);
-        assertEquals(mUpdateEnd, 0);
-        assertEquals(mPropagateStart, 0);
-        assertEquals(mPropagateEnd, 0);
+        assertEquals(0, mUpdateStart);
+        assertEquals(0, mUpdateEnd);
+        assertEquals(0, mPropagateStart);
+        assertEquals(0, mPropagateEnd);
 
         assertNull(estimator.getState());
         assertFalse(estimator.getState(null));
@@ -2980,20 +2554,18 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(estimator.update(kinematics, timeSeconds));
 
         assertFalse(estimator.isRunning());
-        assertEquals(estimator.getLastStateTimestamp(), timeSeconds, 0.0);
-        assertEquals(estimator.getLastStateTimestampAsTime(),
-                new Time(timeSeconds, TimeUnit.SECOND));
+        assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+        assertEquals(new Time(timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
         final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
         assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
-        assertEquals(timestamp, new Time(timeSeconds, TimeUnit.SECOND));
+        assertEquals(new Time(timeSeconds, TimeUnit.SECOND), timestamp);
         assertEquals(kinematics, estimator.getKinematics());
         assertNotNull(estimator.getCorrectedKinematics());
 
         final INSLooselyCoupledKalmanState state1 = estimator.getState();
         assertNotNull(state1);
 
-        final INSLooselyCoupledKalmanState state2 =
-                new INSLooselyCoupledKalmanState();
+        final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState();
         assertTrue(estimator.getState(state2));
 
         assertEquals(state1, state2);
@@ -3012,10 +2584,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(estimator.propagate(2.0 * timeSeconds));
 
         assertFalse(estimator.isRunning());
-        assertEquals(estimator.getLastStateTimestamp(), 2.0 * timeSeconds,
-                0.0);
-        assertEquals(estimator.getLastStateTimestampAsTime(),
-                new Time(2.0 * timeSeconds, TimeUnit.SECOND));
+        assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+        assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
         assertEquals(kinematics, estimator.getKinematics());
         assertNotNull(estimator.getCorrectedKinematics());
 
@@ -3038,8 +2608,7 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(norm3 >= norm1);
 
         // propagate again with same timestamp has no effect
-        assertFalse(estimator.propagate(
-                new Time(2.0 * timeSeconds, TimeUnit.SECOND)));
+        assertFalse(estimator.propagate(new Time(2.0 * timeSeconds, TimeUnit.SECOND)));
 
         final INSLooselyCoupledKalmanState state4 = estimator.getState();
         final ECEFPosition estimatedPosition4 = state4.getEcefPosition();
@@ -3051,22 +2620,21 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(estimatedC4.equals(c, ABSOLUTE_ERROR));
         assertEquals(state3, state4);
 
-        assertEquals(mUpdateStart, 1);
-        assertEquals(mUpdateEnd, 1);
-        assertEquals(mPropagateStart, 2);
-        assertEquals(mPropagateEnd, 2);
+        assertEquals(1, mUpdateStart);
+        assertEquals(1, mUpdateEnd);
+        assertEquals(2, mPropagateStart);
+        assertEquals(2, mPropagateEnd);
     }
 
-    @Test(expected = NotReadyException.class)
-    public void testPropagateWhenNotReady() throws LockedException,
-            NotReadyException, INSException {
+    @Test
+    public void testPropagateWhenNotReady() {
 
         final INSLooselyCoupledKalmanFilteredEstimator estimator =
                 new INSLooselyCoupledKalmanFilteredEstimator();
 
         assertFalse(estimator.isPropagateReady());
 
-        estimator.propagate(0.0);
+        assertThrows(NotReadyException.class, () -> estimator.propagate(0.0));
     }
 
     @Test
@@ -3077,53 +2645,40 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
 
         final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-        final double userLatitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double userLongitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-        final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                new NEDPosition(userLatitude, userLongitude, userHeight);
+        final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-        final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                MAX_USER_VELOCITY_VALUE);
-        final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                MAX_USER_VELOCITY_VALUE);
-        final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                MAX_USER_VELOCITY_VALUE);
+        final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+        final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+        final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
         final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
         final ECEFPosition ecefUserPosition = new ECEFPosition();
         final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
+                ecefUserVelocity);
 
-        final double roll = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c = new CoordinateTransformation(
-                roll, pitch, yaw, FrameType.BODY_FRAME,
+        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                 FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
-        final ECEFFrame frame = new ECEFFrame(ecefUserPosition,
-                ecefUserVelocity, c);
+        final ECEFFrame frame = new ECEFFrame(ecefUserPosition, ecefUserVelocity, c);
 
         final INSLooselyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-        final INSLooselyCoupledKalmanInitializerConfig initConfig =
-                generateInitConfig();
-        final INSLooselyCoupledKalmanFilteredEstimator estimator =
-                new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
-                        initConfig, frame, this);
+        final INSLooselyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
+        final INSLooselyCoupledKalmanFilteredEstimator estimator = new INSLooselyCoupledKalmanFilteredEstimator(
+                kalmanConfig, initConfig, frame, this);
 
         reset();
-        assertEquals(mUpdateStart, 0);
-        assertEquals(mUpdateEnd, 0);
-        assertEquals(mPropagateStart, 0);
-        assertEquals(mPropagateEnd, 0);
+        assertEquals(0, mUpdateStart);
+        assertEquals(0, mUpdateEnd);
+        assertEquals(0, mPropagateStart);
+        assertEquals(0, mPropagateEnd);
 
         assertNull(estimator.getState());
         assertFalse(estimator.getState(null));
@@ -3139,12 +2694,11 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(estimator.update(kinematics, timeSeconds));
 
         assertFalse(estimator.isRunning());
-        assertEquals(estimator.getLastStateTimestamp(), timeSeconds, 0.0);
-        assertEquals(estimator.getLastStateTimestampAsTime(),
-                new Time(timeSeconds, TimeUnit.SECOND));
+        assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+        assertEquals(new Time(timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
         final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
         assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
-        assertEquals(timestamp, new Time(timeSeconds, TimeUnit.SECOND));
+        assertEquals(new Time(timeSeconds, TimeUnit.SECOND), timestamp);
         assertEquals(kinematics, estimator.getKinematics());
         assertNotNull(estimator.getCorrectedKinematics());
 
@@ -3162,11 +2716,11 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(estimatedC1.equals(c, ABSOLUTE_ERROR));
 
         // reset
-        assertEquals(mReset, 0);
+        assertEquals(0, mReset);
 
         estimator.reset();
 
-        assertEquals(mReset, 1);
+        assertEquals(1, mReset);
         assertNull(estimator.getState());
         assertNull(estimator.getLastStateTimestamp());
         assertNull(estimator.getFrame());
@@ -3181,51 +2735,45 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertTrue(estimator.isUpdateReady());
 
         // update again with same timestamp now it does make an action
-        assertTrue(estimator.update(kinematics,
-                new Time(timeSeconds, TimeUnit.SECOND)));
+        assertTrue(estimator.update(kinematics, new Time(timeSeconds, TimeUnit.SECOND)));
 
-        assertEquals(estimator.getLastStateTimestamp(), timeSeconds, 0.0);
+        assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
         final INSLooselyCoupledKalmanState state2 = estimator.getState();
 
         assertTrue(state1.equals(state2, ABSOLUTE_ERROR));
 
-        assertEquals(mUpdateStart, 2);
-        assertEquals(mUpdateEnd, 2);
-        assertEquals(mPropagateStart, 2);
-        assertEquals(mPropagateEnd, 2);
+        assertEquals(2, mUpdateStart);
+        assertEquals(2, mUpdateEnd);
+        assertEquals(2, mPropagateStart);
+        assertEquals(2, mPropagateEnd);
     }
 
     @Override
-    public void onUpdateStart(
-            final INSLooselyCoupledKalmanFilteredEstimator estimator) {
+    public void onUpdateStart(final INSLooselyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
         mUpdateStart++;
     }
 
     @Override
-    public void onUpdateEnd(
-            final INSLooselyCoupledKalmanFilteredEstimator estimator) {
+    public void onUpdateEnd(final INSLooselyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
         mUpdateEnd++;
     }
 
     @Override
-    public void onPropagateStart(
-            final INSLooselyCoupledKalmanFilteredEstimator estimator) {
+    public void onPropagateStart(final INSLooselyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
         mPropagateStart++;
     }
 
     @Override
-    public void onPropagateEnd(
-            final INSLooselyCoupledKalmanFilteredEstimator estimator) {
+    public void onPropagateEnd(final INSLooselyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
         mPropagateEnd++;
     }
 
     @Override
-    public void onReset(
-            final INSLooselyCoupledKalmanFilteredEstimator estimator) {
+    public void onReset(final INSLooselyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
         mReset++;
     }
@@ -3238,92 +2786,32 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         mReset = 0;
     }
 
-    private void checkLocked(
-            final INSLooselyCoupledKalmanFilteredEstimator estimator) {
+    private static void checkLocked(final INSLooselyCoupledKalmanFilteredEstimator estimator) {
         assertTrue(estimator.isRunning());
-        try {
-            estimator.setListener(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setEpochInterval(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setEpochInterval(new Time(0.0, TimeUnit.SECOND));
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setConfig(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setFrame(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setInitialConfig(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.update(null, 0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
-        try {
-            estimator.update(null,
-                    new Time(0.0, TimeUnit.SECOND));
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
-        try {
-            estimator.propagate(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
-        try {
-            estimator.propagate(new Time(0.0, TimeUnit.SECOND));
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
-        try {
-            estimator.reset();
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
+        assertThrows(LockedException.class, () -> estimator.setListener(null));
+        assertThrows(LockedException.class, () -> estimator.setEpochInterval(0.0));
+        assertThrows(LockedException.class, () -> estimator.setEpochInterval(new Time(0.0, TimeUnit.SECOND)));
+        assertThrows(LockedException.class, () -> estimator.setConfig(null));
+        assertThrows(LockedException.class, () -> estimator.setFrame(null));
+        assertThrows(LockedException.class, () -> estimator.setInitialConfig(null));
+        assertThrows(LockedException.class, () -> estimator.update(null, 0.0));
+        assertThrows(LockedException.class, () -> estimator.update(null,
+                new Time(0.0, TimeUnit.SECOND)));
+        assertThrows(LockedException.class, () -> estimator.propagate(0.0));
+        assertThrows(LockedException.class, () -> estimator.propagate(new Time(0.0, TimeUnit.SECOND)));
+        assertThrows(LockedException.class, estimator::reset);
     }
 
     private static INSLooselyCoupledKalmanInitializerConfig generateInitConfig() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double initialAttitudeUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double initialVelocityUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double initialPositionUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double initialAccelerationBiasUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double initialGyroscopeBiasUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
+        final double initialAttitudeUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialVelocityUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialPositionUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialAccelerationBiasUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialGyroscopeBiasUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        return new INSLooselyCoupledKalmanInitializerConfig(
-                initialAttitudeUncertainty, initialVelocityUncertainty,
-                initialPositionUncertainty, initialAccelerationBiasUncertainty,
-                initialGyroscopeBiasUncertainty);
+        return new INSLooselyCoupledKalmanInitializerConfig(initialAttitudeUncertainty, initialVelocityUncertainty,
+                initialPositionUncertainty, initialAccelerationBiasUncertainty, initialGyroscopeBiasUncertainty);
     }
 
     private static INSLooselyCoupledKalmanConfig generateKalmanConfig() {
@@ -3335,7 +2823,7 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         final double positionNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double velocityNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        return new INSLooselyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
-                accelerometerBiasPSD, gyroBiasPSD, positionNoiseSD, velocityNoiseSD);
+        return new INSLooselyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD,
+                positionNoiseSD, velocityNoiseSD);
     }
 }

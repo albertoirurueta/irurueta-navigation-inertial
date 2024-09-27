@@ -22,6 +22,7 @@ import com.irurueta.units.Speed;
 import com.irurueta.units.SpeedConverter;
 import com.irurueta.units.SpeedUnit;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -35,6 +36,7 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -93,14 +95,11 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param velocityNoiseSD       velocity measurement noise SD (Standard Deviation)
      *                              per axis expressed in meters per second (m/s).
      */
-    public INSLooselyCoupledKalmanConfig(final double gyroNoisePSD,
-                                         final double accelerometerNoisePSD,
-                                         final double accelerometerBiasPSD,
-                                         final double gyroBiasPSD,
-                                         final double positionNoiseSD,
-                                         final double velocityNoiseSD) {
-        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
-                gyroBiasPSD, positionNoiseSD, velocityNoiseSD);
+    public INSLooselyCoupledKalmanConfig(
+            final double gyroNoisePSD, final double accelerometerNoisePSD, final double accelerometerBiasPSD,
+            final double gyroBiasPSD, final double positionNoiseSD, final double velocityNoiseSD) {
+        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, positionNoiseSD,
+                velocityNoiseSD);
     }
 
     /**
@@ -119,14 +118,11 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param velocityNoiseSD       velocity measurement noise SD (Standard Deviation)
      *                              per axis.
      */
-    public INSLooselyCoupledKalmanConfig(final double gyroNoisePSD,
-                                         final double accelerometerNoisePSD,
-                                         final double accelerometerBiasPSD,
-                                         final double gyroBiasPSD,
-                                         final Distance positionNoiseSD,
-                                         final Speed velocityNoiseSD) {
-        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
-                gyroBiasPSD, positionNoiseSD, velocityNoiseSD);
+    public INSLooselyCoupledKalmanConfig(
+            final double gyroNoisePSD, final double accelerometerNoisePSD, final double accelerometerBiasPSD,
+            final double gyroBiasPSD, final Distance positionNoiseSD, final Speed velocityNoiseSD) {
+        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD, positionNoiseSD,
+                velocityNoiseSD);
     }
 
     /**
@@ -272,12 +268,9 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param velocityNoiseSD       velocity measurement noise SD (Standard Deviation)
      *                              per axis expressed in meters per second (m/s).
      */
-    public void setValues(final double gyroNoisePSD,
-                          final double accelerometerNoisePSD,
-                          final double accelerometerBiasPSD,
-                          final double gyroBiasPSD,
-                          final double positionNoiseSD,
-                          final double velocityNoiseSD) {
+    public void setValues(
+            final double gyroNoisePSD, final double accelerometerNoisePSD, final double accelerometerBiasPSD,
+            final double gyroBiasPSD, final double positionNoiseSD, final double velocityNoiseSD) {
         mGyroNoisePSD = gyroNoisePSD;
         mAccelerometerNoisePSD = accelerometerNoisePSD;
         mAccelerometerBiasPSD = accelerometerBiasPSD;
@@ -311,8 +304,7 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param positionNoiseSD position measurement noise SD.
      */
     public void setPositionNoiseSD(final Distance positionNoiseSD) {
-        mPositionNoiseSD = DistanceConverter.convert(
-                positionNoiseSD.getValue().doubleValue(),
+        mPositionNoiseSD = DistanceConverter.convert(positionNoiseSD.getValue().doubleValue(),
                 positionNoiseSD.getUnit(), DistanceUnit.METER);
     }
 
@@ -341,9 +333,8 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param velocityNoiseSD velocity measurement noise SD per axis.
      */
     public void setVelocityNoiseSD(final Speed velocityNoiseSD) {
-        mVelocityNoiseSD = SpeedConverter.convert(
-                velocityNoiseSD.getValue().doubleValue(),
-                velocityNoiseSD.getUnit(), SpeedUnit.METERS_PER_SECOND);
+        mVelocityNoiseSD = SpeedConverter.convert(velocityNoiseSD.getValue().doubleValue(), velocityNoiseSD.getUnit(),
+                SpeedUnit.METERS_PER_SECOND);
     }
 
     /**
@@ -362,18 +353,14 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param velocityNoiseSD       velocity measurement noise SD (Standard Deviation)
      *                              per axis.
      */
-    public void setValues(final double gyroNoisePSD,
-                          final double accelerometerNoisePSD,
-                          final double accelerometerBiasPSD,
-                          final double gyroBiasPSD,
-                          final Distance positionNoiseSD,
-                          final Speed velocityNoiseSD) {
-        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,
-                gyroBiasPSD,
-                DistanceConverter.convert(positionNoiseSD.getValue().doubleValue(),
-                        positionNoiseSD.getUnit(), DistanceUnit.METER),
-                SpeedConverter.convert(velocityNoiseSD.getValue().doubleValue(),
-                        velocityNoiseSD.getUnit(), SpeedUnit.METERS_PER_SECOND));
+    public void setValues(
+            final double gyroNoisePSD, final double accelerometerNoisePSD, final double accelerometerBiasPSD,
+            final double gyroBiasPSD, final Distance positionNoiseSD, final Speed velocityNoiseSD) {
+        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD,
+                DistanceConverter.convert(positionNoiseSD.getValue().doubleValue(), positionNoiseSD.getUnit(),
+                        DistanceUnit.METER),
+                SpeedConverter.convert(velocityNoiseSD.getValue().doubleValue(), velocityNoiseSD.getUnit(),
+                        SpeedUnit.METERS_PER_SECOND));
     }
 
     /**
@@ -412,9 +399,8 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(mGyroNoisePSD, mAccelerometerNoisePSD,
-                mAccelerometerBiasPSD, mGyroBiasPSD, mPositionNoiseSD,
-                mVelocityNoiseSD);
+        return Objects.hash(mGyroNoisePSD, mAccelerometerNoisePSD, mAccelerometerBiasPSD, mGyroBiasPSD,
+                mPositionNoiseSD, mVelocityNoiseSD);
     }
 
     /**
@@ -455,8 +441,7 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return true if both instances are considered to be equal (up to provided threshold),
      * false otherwise.
      */
-    public boolean equals(final INSLooselyCoupledKalmanConfig other,
-                          final double threshold) {
+    public boolean equals(final INSLooselyCoupledKalmanConfig other, final double threshold) {
         if (other == null) {
             return false;
         }
@@ -477,8 +462,7 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final INSLooselyCoupledKalmanConfig result =
-                (INSLooselyCoupledKalmanConfig) super.clone();
+        final INSLooselyCoupledKalmanConfig result = (INSLooselyCoupledKalmanConfig) super.clone();
         copyTo(result);
         return result;
     }

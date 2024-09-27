@@ -106,21 +106,18 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
     private int mReset;
 
     @Test
-    public void testConstructor()
-            throws InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor() throws InvalidSourceAndDestinationFrameTypeException {
 
         // test constructor 1
-        INSGNSSTightlyCoupledKalmanFilteredEstimator estimator =
-                new INSGNSSTightlyCoupledKalmanFilteredEstimator();
+        INSGNSSTightlyCoupledKalmanFilteredEstimator estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator();
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         Time epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
@@ -149,17 +146,15 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
-        INSTightlyCoupledKalmanConfig kalmanConfig2 =
-                new INSTightlyCoupledKalmanConfig();
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
+        INSTightlyCoupledKalmanConfig kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
         assertFalse(estimator.getCoordinateTransformation(null));
         assertFalse(estimator.getInitialConfig(null));
@@ -182,18 +177,16 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
         // test constructor 3
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double epochInterval = randomizer.nextDouble(
-                MIN_EPOCH_INTERVAL, MAX_EPOCH_INTERVAL);
+        final double epochInterval = randomizer.nextDouble(MIN_EPOCH_INTERVAL, MAX_EPOCH_INTERVAL);
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
         assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
@@ -217,26 +210,19 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    -epochInterval);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                -epochInterval));
 
         // test constructor 4
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
@@ -260,21 +246,19 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // test constructor 5
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochInterval);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
         assertFalse(estimator.getCoordinateTransformation(null));
         assertFalse(estimator.getInitialConfig(null));
@@ -296,31 +280,23 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    -epochInterval);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                kalmanConfig, -epochInterval));
+
         // test constructor 6
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
         assertFalse(estimator.getCoordinateTransformation(null));
         assertFalse(estimator.getInitialConfig(null));
@@ -342,17 +318,15 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
         
         // test constructor 7
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval,
-                this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
@@ -376,31 +350,23 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    -epochInterval, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                -epochInterval, this));
+
         // test constructor 8
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochInterval, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
         assertFalse(estimator.getCoordinateTransformation(null));
         assertFalse(estimator.getInitialConfig(null));
@@ -422,27 +388,20 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    -epochInterval, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                kalmanConfig, -epochInterval, this));
+
         // test constructor 9
         epochIntervalTime = new Time(epochInterval, TimeUnit.SECOND);
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochIntervalTime);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
         assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
@@ -466,21 +425,19 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
         
         // test constructor 10
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                kalmanConfig, epochIntervalTime);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
         assertFalse(estimator.getCoordinateTransformation(null));
         assertFalse(estimator.getInitialConfig(null));
@@ -503,27 +460,19 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
         // Force IllegalArgumentException
         final Time wrongEpochIntervalTime = new Time(-epochInterval, TimeUnit.SECOND);
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    wrongEpochIntervalTime);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                kalmanConfig, wrongEpochIntervalTime));
+
         // test constructor 11
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                epochIntervalTime, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochIntervalTime, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
@@ -547,31 +496,23 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    wrongEpochIntervalTime, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                wrongEpochIntervalTime, this));
+
         // test constructor 12
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                kalmanConfig, epochIntervalTime, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
         assertFalse(estimator.getCoordinateTransformation(null));
         assertFalse(estimator.getInitialConfig(null));
@@ -593,42 +534,30 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    wrongEpochIntervalTime, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
-        // test constructor 13
-        final double roll = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                kalmanConfig, wrongEpochIntervalTime, this));
 
-        final CoordinateTransformation c = new CoordinateTransformation(
-                roll, pitch, yaw, FrameType.BODY_FRAME,
+        // test constructor 13
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+
+        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                 FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(c);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        CoordinateTransformation c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
+        assertEquals(c, estimator.getCoordinateTransformation());
+        CoordinateTransformation c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
                 FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
@@ -651,35 +580,25 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME));
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(new CoordinateTransformation(
+                        FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME)));
+
         // test constructor 14
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                kalmanConfig, c);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, c);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
-        assertEquals(estimator.getConfig(), kalmanConfig);
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(kalmanConfig, estimator.getConfig());
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         assertFalse(estimator.getInitialConfig(null));
@@ -701,34 +620,25 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME));
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                                FrameType.LOCAL_NAVIGATION_FRAME)));
+
         // test constructor 15
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                epochInterval, c);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval, c);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         assertFalse(estimator.getInitialConfig(null));
@@ -750,41 +660,29 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME));
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                                FrameType.LOCAL_NAVIGATION_FRAME)));
 
         // Force IllegalArgumentException
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    -epochInterval, c);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                -epochInterval, c));
 
         // test constructor 16
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(c, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         assertFalse(estimator.getInitialConfig(null));
@@ -806,36 +704,26 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME), this);
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(new CoordinateTransformation(
+                        FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME), this));
 
         // test constructor 17
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochInterval, c);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval, c);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
         assertEquals(kalmanConfig, estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         assertFalse(estimator.getInitialConfig(null));
@@ -857,44 +745,30 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    kalmanConfig, epochInterval,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME));
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                                FrameType.LOCAL_NAVIGATION_FRAME)));
 
         // Force IllegalArgumentException
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    -epochInterval, c);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                kalmanConfig, -epochInterval, c));
+
         // test constructor 18
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                c, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, c, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
-        assertEquals(estimator.getConfig(), kalmanConfig);
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(kalmanConfig, estimator.getConfig());
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         assertFalse(estimator.getInitialConfig(null));
@@ -916,34 +790,24 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME), this);
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, new CoordinateTransformation(
+                        FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME), this));
+
         // test constructor 19
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval,
-                c, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval, c, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         assertFalse(estimator.getInitialConfig(null));
@@ -965,44 +829,30 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME), this);
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval, new CoordinateTransformation(
+                        FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME), this));
 
         // Force IllegalArgumentException
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(-epochInterval,
-                    c, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                -epochInterval, c, this));
+
         // test constructor 20
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochInterval, c, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval, c, this);
 
         // check default values
         assertSame(estimator.getListener(), this);
         assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
         assertEquals(kalmanConfig, estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         assertFalse(estimator.getInitialConfig(null));
@@ -1024,43 +874,29 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    kalmanConfig, epochInterval,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME), this);
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                                FrameType.LOCAL_NAVIGATION_FRAME), this));
 
         // Force IllegalArgumentException
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    -epochInterval, c, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                kalmanConfig, -epochInterval, c, this));
+
         // test constructor 21
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                epochIntervalTime, c);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochIntervalTime, c);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         assertFalse(estimator.getInitialConfig(null));
@@ -1082,45 +918,32 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    epochIntervalTime,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME));
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
+        final var epochIntervalTime2 = new Time(0.0, TimeUnit.MILLISECOND);
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochIntervalTime2,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                                FrameType.LOCAL_NAVIGATION_FRAME)));
 
         // Force IllegalArgumentException
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    wrongEpochIntervalTime, c);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                wrongEpochIntervalTime, c));
+
         // test constructor 22
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochIntervalTime, c);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime, c);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
         assertEquals(kalmanConfig, estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         assertFalse(estimator.getInitialConfig(null));
@@ -1142,43 +965,29 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    kalmanConfig, epochIntervalTime,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME));
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime2,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                                FrameType.LOCAL_NAVIGATION_FRAME)));
 
         // Force IllegalArgumentException
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    kalmanConfig, wrongEpochIntervalTime, c);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                kalmanConfig, wrongEpochIntervalTime, c));
+
         // test constructor 23
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochIntervalTime,
-                c, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochIntervalTime, c, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         assertFalse(estimator.getInitialConfig(null));
@@ -1200,45 +1009,31 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    epochIntervalTime,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME), this);
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochIntervalTime2,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                                FrameType.LOCAL_NAVIGATION_FRAME), this));
 
         // Force IllegalArgumentException
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    wrongEpochIntervalTime, c, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                wrongEpochIntervalTime, c, this));
 
         // test constructor 24
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochIntervalTime, c, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime, c, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
         assertEquals(kalmanConfig, estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         assertFalse(estimator.getInitialConfig(null));
@@ -1260,47 +1055,34 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    kalmanConfig, epochIntervalTime,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME), this);
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime2,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                                FrameType.LOCAL_NAVIGATION_FRAME), this));
 
         // Force IllegalArgumentException
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    kalmanConfig, wrongEpochIntervalTime, c, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                kalmanConfig, wrongEpochIntervalTime, c, this));
+
         // test constructor 25
-        final INSTightlyCoupledKalmanInitializerConfig initialConfig =
-                generateInitConfig();
+        final INSTightlyCoupledKalmanInitializerConfig initialConfig = generateInitConfig();
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(initialConfig);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
         assertFalse(estimator.getCoordinateTransformation(null));
-        INSTightlyCoupledKalmanInitializerConfig initialConfig2 =
-                new INSTightlyCoupledKalmanInitializerConfig();
+        INSTightlyCoupledKalmanInitializerConfig initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -1318,17 +1100,15 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
         
         // test constructor 26
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                initialConfig);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, initialConfig);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
@@ -1338,7 +1118,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -1356,17 +1136,15 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
         
         // test constructor 27
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval,
-                initialConfig);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval, initialConfig);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
@@ -1374,7 +1152,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -1392,27 +1170,19 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    -epochInterval, initialConfig);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                -epochInterval, initialConfig));
+
         // test constructor 28
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(initialConfig,
-                this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(initialConfig, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
@@ -1420,7 +1190,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -1438,27 +1208,25 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
         
         // test constructor 29
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochInterval, initialConfig);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval, initialConfig);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
         assertFalse(estimator.getCoordinateTransformation(null));
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -1476,27 +1244,19 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    -epochInterval, initialConfig);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                kalmanConfig, -epochInterval, initialConfig));
+
         // test constructor 30
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                initialConfig, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, initialConfig, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
@@ -1506,7 +1266,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -1524,17 +1284,15 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
         
         // test constructor 31
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval,
-                initialConfig, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval, initialConfig, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
@@ -1542,7 +1300,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -1560,37 +1318,30 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    -epochInterval, initialConfig, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                -epochInterval, initialConfig, this));
+
         // test constructor 32
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochInterval, initialConfig, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval, initialConfig,
+                this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
         assertFalse(estimator.getCoordinateTransformation(null));
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -1608,27 +1359,19 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    -epochInterval, initialConfig, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                kalmanConfig, -epochInterval, initialConfig, this));
+
         // test constructor 33
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                epochIntervalTime, initialConfig);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochIntervalTime, initialConfig);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
@@ -1636,7 +1379,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -1654,37 +1397,29 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    wrongEpochIntervalTime, initialConfig);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                wrongEpochIntervalTime, initialConfig));
+
         // test constructor 34
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochIntervalTime, initialConfig);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime, initialConfig);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
         assertFalse(estimator.getCoordinateTransformation(null));
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -1702,27 +1437,19 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    wrongEpochIntervalTime, initialConfig);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                kalmanConfig, wrongEpochIntervalTime, initialConfig));
+
         // test constructor 35
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                epochIntervalTime, initialConfig, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochIntervalTime, initialConfig, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
@@ -1730,7 +1457,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -1748,37 +1475,30 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    wrongEpochIntervalTime, initialConfig, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                wrongEpochIntervalTime, initialConfig, this));
+
         // test constructor 36
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochIntervalTime, initialConfig, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime, initialConfig,
+                this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
-        assertEquals(estimator.getConfig(), kalmanConfig);
+        assertEquals(kalmanConfig, estimator.getConfig());
         assertNull(estimator.getCoordinateTransformation());
         assertFalse(estimator.getCoordinateTransformation(null));
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertSame(estimator.getInitialConfig(), initialConfig);
+        assertSame(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -1796,39 +1516,29 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    wrongEpochIntervalTime, initialConfig, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                kalmanConfig, wrongEpochIntervalTime, initialConfig, this));
+
         // test constructor 37
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(initialConfig,
-                c);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(initialConfig, c);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -1846,41 +1556,31 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(initialConfig,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME));
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(initialConfig, new CoordinateTransformation(
+                        FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME)));
+
         // test constructor 38
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                initialConfig, c);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, initialConfig, c);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
-        assertEquals(estimator.getConfig(), kalmanConfig);
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(kalmanConfig, estimator.getConfig());
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -1898,40 +1598,30 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    initialConfig,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME));
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, initialConfig,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                                FrameType.LOCAL_NAVIGATION_FRAME)));
 
         // test constructor 39
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval,
-                initialConfig, c);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval, initialConfig, c);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -1949,49 +1639,35 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval,
-                    initialConfig,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME));
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval, initialConfig,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                                FrameType.LOCAL_NAVIGATION_FRAME)));
 
         // Force IllegalArgumentException
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    -epochInterval, initialConfig, c);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                -epochInterval, initialConfig, c));
+
         // test constructor 40
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(initialConfig,
-                c, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(initialConfig, c, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -2009,41 +1685,31 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(initialConfig,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME), this);
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(initialConfig, new CoordinateTransformation(
+                        FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME), this));
+
         // test constructor 41
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochInterval, initialConfig, c);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval, initialConfig, c);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
         assertEquals(kalmanConfig, estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -2061,50 +1727,36 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    kalmanConfig, epochInterval, initialConfig,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME));
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval, initialConfig,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                                FrameType.LOCAL_NAVIGATION_FRAME)));
 
         // Force IllegalArgumentException
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    -epochInterval, initialConfig, c);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                kalmanConfig, -epochInterval, initialConfig, c));
+
         // test constructor 42
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                initialConfig, c, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, initialConfig, c, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(0.0, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(0.0, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(0.0, TimeUnit.SECOND));
+        assertEquals(new Time(0.0, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(0.0, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
-        assertEquals(estimator.getConfig(), kalmanConfig);
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(kalmanConfig, estimator.getConfig());
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
         assertEquals(initialConfig, initialConfig2);
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -2122,40 +1774,30 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    initialConfig,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME), this);
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, initialConfig,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                                FrameType.LOCAL_NAVIGATION_FRAME), this));
+
         // test constructor 43
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval,
-                initialConfig, c, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval, initialConfig, c, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -2173,50 +1815,37 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval,
-                    initialConfig,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME), this);
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval, initialConfig,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                                FrameType.LOCAL_NAVIGATION_FRAME), this));
 
         // Force IllegalArgumentException
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    -epochInterval, initialConfig, c, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                -epochInterval, initialConfig, c, this));
+
         // test constructor 44
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochInterval, initialConfig, c, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval, initialConfig, c,
+                this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
         assertEquals(kalmanConfig, estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -2234,48 +1863,34 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    kalmanConfig, epochInterval, initialConfig,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME), this);
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochInterval, initialConfig,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                                FrameType.LOCAL_NAVIGATION_FRAME), this));
 
         // Force IllegalArgumentException
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    -epochInterval, initialConfig, c, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                kalmanConfig, -epochInterval, initialConfig, c, this));
+
         // test constructor 45
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                epochIntervalTime, initialConfig, c);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochIntervalTime, initialConfig, c);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -2293,50 +1908,36 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    epochIntervalTime, initialConfig,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME));
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochIntervalTime2, initialConfig,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                                FrameType.LOCAL_NAVIGATION_FRAME)));
 
         // Force IllegalArgumentException
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    wrongEpochIntervalTime, initialConfig, c);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                wrongEpochIntervalTime, initialConfig, c));
+
         // test constructor 46
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochIntervalTime, initialConfig, c);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime, initialConfig, c);
 
         // check default values
         assertNull(estimator.getListener());
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
         assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
         assertEquals(kalmanConfig, estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -2354,48 +1955,34 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    kalmanConfig, epochIntervalTime, initialConfig,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME));
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime2, initialConfig,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                                FrameType.LOCAL_NAVIGATION_FRAME)));
 
         // Force IllegalArgumentException
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    wrongEpochIntervalTime, initialConfig, c);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                kalmanConfig, wrongEpochIntervalTime, initialConfig, c));
+
         // test constructor 47
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                epochIntervalTime, initialConfig, c, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochIntervalTime, initialConfig, c, this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         assertFalse(estimator.getConfig(null));
         assertNull(estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -2413,50 +2000,37 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    epochIntervalTime, initialConfig,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME), this);
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochIntervalTime2, initialConfig,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                                FrameType.LOCAL_NAVIGATION_FRAME), this));
 
         // Force IllegalArgumentException
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    wrongEpochIntervalTime, initialConfig, c, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                wrongEpochIntervalTime, initialConfig, c, this));
+
         // test constructor 48
-        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                epochIntervalTime, initialConfig, c, this);
+        estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime, initialConfig, c,
+                this);
 
         // check default values
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getEpochInterval(), epochInterval, 0.0);
+        assertSame(this, estimator.getListener());
+        assertEquals(epochInterval, estimator.getEpochInterval(), 0.0);
         epochIntervalTime = new Time(epochInterval, TimeUnit.MILLISECOND);
         estimator.getEpochIntervalAsTime(epochIntervalTime);
-        assertEquals(epochIntervalTime, new Time(epochInterval, TimeUnit.SECOND));
-        assertEquals(estimator.getEpochIntervalAsTime(),
-                new Time(epochInterval, TimeUnit.SECOND));
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), epochIntervalTime);
+        assertEquals(new Time(epochInterval, TimeUnit.SECOND), estimator.getEpochIntervalAsTime());
         kalmanConfig2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(kalmanConfig2));
         assertEquals(kalmanConfig, kalmanConfig2);
         assertEquals(kalmanConfig, estimator.getConfig());
-        assertEquals(estimator.getCoordinateTransformation(), c);
-        c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.LOCAL_NAVIGATION_FRAME);
+        assertEquals(c, estimator.getCoordinateTransformation());
+        c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         assertEquals(c, c2);
         initialConfig2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(initialConfig2));
-        assertEquals(estimator.getInitialConfig(), initialConfig);
+        assertEquals(initialConfig, estimator.getInitialConfig());
         assertNull(estimator.getMeasurements());
         assertNull(estimator.getKinematics());
         assertFalse(estimator.getKinematics(null));
@@ -2474,24 +2048,14 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isPropagateReady());
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        estimator = null;
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
-                    kalmanConfig, epochIntervalTime, initialConfig,
-                    new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME), this);
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class,
+                () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, epochIntervalTime2, initialConfig,
+                        new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                                FrameType.LOCAL_NAVIGATION_FRAME), this));
 
         // Force IllegalArgumentException
-        try {
-            estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                    wrongEpochIntervalTime, initialConfig, c, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                kalmanConfig, wrongEpochIntervalTime, initialConfig, c, this));
     }
 
     @Test
@@ -2506,7 +2070,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         estimator.setListener(this);
 
         // check
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
     }
 
     @Test
@@ -2515,20 +2079,16 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                 new INSGNSSTightlyCoupledKalmanFilteredEstimator();
 
         // check default value
-        assertEquals(estimator.getEpochInterval(), 0.0, 0.0);
+        assertEquals(0.0, estimator.getEpochInterval(), 0.0);
 
         // set new value
         estimator.setEpochInterval(1.0);
 
         // check
-        assertEquals(estimator.getEpochInterval(), 1.0, 0.0);
+        assertEquals(1.0, estimator.getEpochInterval(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            estimator.setEpochInterval(-1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setEpochInterval(-1.0));
     }
 
     @Test
@@ -2538,8 +2098,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
         final Time epochInterval1 = estimator.getEpochIntervalAsTime();
 
-        assertEquals(epochInterval1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(epochInterval1.getUnit(), TimeUnit.SECOND);
+        assertEquals(0.0, epochInterval1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, epochInterval1.getUnit());
 
         // set new value
         final Time epochInterval2 = new Time(1.0, TimeUnit.SECOND);
@@ -2568,8 +2128,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         estimator.setConfig(config1);
 
         // check
-        final INSTightlyCoupledKalmanConfig config2 =
-                new INSTightlyCoupledKalmanConfig();
+        final INSTightlyCoupledKalmanConfig config2 = new INSTightlyCoupledKalmanConfig();
         assertTrue(estimator.getConfig(config2));
         final INSTightlyCoupledKalmanConfig config3 = estimator.getConfig();
 
@@ -2578,8 +2137,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testGetSetCoordinateTransformation()
-            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+    public void testGetSetCoordinateTransformation() throws InvalidSourceAndDestinationFrameTypeException,
+            LockedException {
         final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator =
                 new INSGNSSTightlyCoupledKalmanFilteredEstimator();
 
@@ -2589,22 +2148,18 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double roll = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c1 = new CoordinateTransformation(
-                roll, pitch, yaw, FrameType.BODY_FRAME,
+        final CoordinateTransformation c1 = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                 FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
         estimator.setCoordinateTransformation(c1);
 
         // check
-        final CoordinateTransformation c2 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+        final CoordinateTransformation c2 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(estimator.getCoordinateTransformation(c2));
         final CoordinateTransformation c3 = estimator.getCoordinateTransformation();
 
@@ -2612,12 +2167,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertEquals(c1, c3);
 
         // Force InvalidSourceAndDestinationFrameTypeException
-        try {
-            estimator.setCoordinateTransformation(new CoordinateTransformation(
-                    FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME));
-            fail("InvalidSourceAndDestinationFrameTypeException expected but not thrown");
-        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
-        }
+        assertThrows(InvalidSourceAndDestinationFrameTypeException.class, () -> estimator.setCoordinateTransformation(
+                new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.LOCAL_NAVIGATION_FRAME)));
     }
 
     @Test
@@ -2630,16 +2181,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.getInitialConfig(null));
 
         // set new value
-        final INSTightlyCoupledKalmanInitializerConfig config1 =
-                generateInitConfig();
+        final INSTightlyCoupledKalmanInitializerConfig config1 = generateInitConfig();
         estimator.setInitialConfig(config1);
 
         // check
-        final INSTightlyCoupledKalmanInitializerConfig config2 =
-                new INSTightlyCoupledKalmanInitializerConfig();
+        final INSTightlyCoupledKalmanInitializerConfig config2 = new INSTightlyCoupledKalmanInitializerConfig();
         assertTrue(estimator.getInitialConfig(config2));
-        final INSTightlyCoupledKalmanInitializerConfig config3 =
-                estimator.getInitialConfig();
+        final INSTightlyCoupledKalmanInitializerConfig config3 = estimator.getInitialConfig();
 
         assertEquals(config1, config2);
         assertSame(config1, config3);
@@ -2647,23 +2195,20 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
     @Test
     public void testIsUpdateMeasurementsReady() {
-        assertFalse(INSGNSSTightlyCoupledKalmanFilteredEstimator
-                .isUpdateMeasurementsReady(null));
+        assertFalse(INSGNSSTightlyCoupledKalmanFilteredEstimator.isUpdateMeasurementsReady(null));
 
         final List<GNSSMeasurement> measurements = new ArrayList<>();
-        assertFalse(INSGNSSTightlyCoupledKalmanFilteredEstimator
-                .isUpdateMeasurementsReady(measurements));
+        assertFalse(INSGNSSTightlyCoupledKalmanFilteredEstimator.isUpdateMeasurementsReady(measurements));
 
         for (int i = 0; i < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS; i++) {
             measurements.add(new GNSSMeasurement());
         }
-        assertTrue(INSGNSSTightlyCoupledKalmanFilteredEstimator
-                .isUpdateMeasurementsReady(measurements));
+        assertTrue(INSGNSSTightlyCoupledKalmanFilteredEstimator.isUpdateMeasurementsReady(measurements));
     }
 
     @Test
-    public void testUpdateMeasurementsWithoutKinematicsAndWithoutInitialAttitude()
-            throws LockedException, NotReadyException, INSGNSSException {
+    public void testUpdateMeasurementsWithoutKinematicsAndWithoutInitialAttitude() throws LockedException,
+            NotReadyException, INSGNSSException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -2672,28 +2217,25 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
+                    MAX_LATITUDE_DEGREES));
+            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+                    MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
             final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
+            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
             final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
             final ECEFPosition ecefUserPosition = new ECEFPosition();
             final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
-            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                    nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
+            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
+                    ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity =
-                    new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
+            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
+                    ecefUserVelocity);
 
             final GNSSConfig config = generateConfig();
             final int numSatellites = config.getNumberOfSatellites();
@@ -2701,66 +2243,51 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double delta = maskAngle / 3.0;
 
             final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities =
-                    new ArrayList<>();
+            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
             for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(
-                        userLatitude - delta,
-                        userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(
-                        userLongitude - delta,
-                        userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
-                        MAX_SAT_HEIGHT);
-                final NEDPosition nedSatPosition =
-                        new NEDPosition(satLatitude, satLongitude, satHeight);
+                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final NEDPosition nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
+                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
                 final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
                 final ECEFPosition ecefSatPosition = new ECEFPosition();
                 final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
-                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                        nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
+                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
+                        ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity =
-                        new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
+                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
+                        ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition,
-                        ecefUserPosition, config, random);
+                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator
-                    .generate(timeSeconds, satellitePositionsAndVelocities,
-                            ecefUserPositionAndVelocity, biases, config, random);
+            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
+                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
 
-            if (measurements.size() <
-                    GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
+            if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
             final INSTightlyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSTightlyCoupledKalmanInitializerConfig initConfig =
-                    generateInitConfig();
+            final INSTightlyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
             final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                            initConfig, this);
+                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, this);
 
             reset();
-            assertEquals(mUpdateGNSSMeasurementsStart, 0);
-            assertEquals(mUpdateGNSSMeasurementsEnd, 0);
-            assertEquals(mUpdateBodyKinematicsStart, 0);
-            assertEquals(mUpdateBodyKinematicsEnd, 0);
-            assertEquals(mPropagateStart, 0);
-            assertEquals(mPropagateEnd, 0);
+            assertEquals(0, mUpdateGNSSMeasurementsStart);
+            assertEquals(0, mUpdateGNSSMeasurementsEnd);
+            assertEquals(0, mUpdateBodyKinematicsStart);
+            assertEquals(0, mUpdateBodyKinematicsEnd);
+            assertEquals(0, mPropagateStart);
+            assertEquals(0, mPropagateEnd);
 
             assertNull(estimator.getEstimation());
             assertFalse(estimator.getEstimation(null));
@@ -2779,20 +2306,17 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             }
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getMeasurements(), measurements);
-            assertEquals(estimator.getLastStateTimestamp(), timeSeconds, 0.0);
-            assertEquals(estimator.getLastStateTimestampAsTime(),
-                    new Time(timeSeconds, TimeUnit.SECOND));
+            assertEquals(measurements, estimator.getMeasurements());
+            assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+            assertEquals(new Time(timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
             final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
-            assertEquals(timestamp, new Time(timeSeconds, TimeUnit.SECOND));
+            assertEquals(new Time(timeSeconds, TimeUnit.SECOND), timestamp);
             assertNull(estimator.getKinematics());
             assertNull(estimator.getCorrectedKinematics());
-            assertEquals(estimator.getCoordinateTransformation(),
-                    new CoordinateTransformation(FrameType.BODY_FRAME,
-                            FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
-            final CoordinateTransformation c2 = new CoordinateTransformation(
-                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
+            assertEquals(new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME),
+                    estimator.getCoordinateTransformation());
+            final CoordinateTransformation c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             assertTrue(estimator.getCoordinateTransformation(c2));
             assertEquals(c2, new CoordinateTransformation(FrameType.BODY_FRAME,
@@ -2809,8 +2333,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final INSTightlyCoupledKalmanState state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSTightlyCoupledKalmanState state2 =
-                    new INSTightlyCoupledKalmanState();
+            final INSTightlyCoupledKalmanState state2 = new INSTightlyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
@@ -2820,24 +2343,18 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
             final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX()
-                    - estimatedPosition.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY()
-                    - estimatedPosition.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ()
-                    - estimatedPosition.getZ());
+            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
+            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
+            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
             final double posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx()
-                    - estimatedVelocity.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy()
-                    - estimatedVelocity.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz()
-                    - estimatedVelocity.getVz());
+            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
+            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
+            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
             final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
@@ -2845,23 +2362,22 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             assertTrue(ecefUserVelocity.equals(estimatedVelocity, VELOCITY_ERROR));
 
             // update again with same timestamp makes no action
-            assertFalse(estimator.updateMeasurements(measurements,
-                    new Time(timeSeconds, TimeUnit.SECOND)));
+            assertFalse(estimator.updateMeasurements(measurements, new Time(timeSeconds, TimeUnit.SECOND)));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getLastStateTimestamp(), timeSeconds, 0.0);
+            assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             final GNSSEstimation estimation3 = estimator.getEstimation();
             final INSTightlyCoupledKalmanState state3 = estimator.getState();
 
             assertEquals(estimation1, estimation3);
             assertEquals(state1, state3);
 
-            assertEquals(mUpdateGNSSMeasurementsStart, 1);
-            assertEquals(mUpdateGNSSMeasurementsEnd, 1);
-            assertEquals(mUpdateBodyKinematicsStart, 1);
-            assertEquals(mUpdateBodyKinematicsEnd, 1);
-            assertEquals(mPropagateStart, 1);
-            assertEquals(mPropagateEnd, 1);
+            assertEquals(1, mUpdateGNSSMeasurementsStart);
+            assertEquals(1, mUpdateGNSSMeasurementsEnd);
+            assertEquals(1, mUpdateBodyKinematicsStart);
+            assertEquals(1, mUpdateBodyKinematicsEnd);
+            assertEquals(1, mPropagateStart);
+            assertEquals(1, mPropagateEnd);
 
             numValid++;
             break;
@@ -2871,8 +2387,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testUpdateMeasurementsWithBodyKinematicsAndWithoutInitialAttitude()
-            throws LockedException, INSGNSSException, NotReadyException {
+    public void testUpdateMeasurementsWithBodyKinematicsAndWithoutInitialAttitude() throws LockedException,
+            INSGNSSException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -2881,29 +2397,25 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
+                    MAX_LATITUDE_DEGREES));
+            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+                    MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final NEDPosition nedUserPosition =
-                    new NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
+            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
             final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
             final ECEFPosition ecefUserPosition = new ECEFPosition();
             final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
-            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                    nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
+            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
+                    ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity =
-                    new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
+            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
+                    ecefUserVelocity);
 
             final GNSSConfig config = generateConfig();
             final int numSatellites = config.getNumberOfSatellites();
@@ -2911,58 +2423,43 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double delta = maskAngle / 3.0;
 
             final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities =
-                    new ArrayList<>();
+            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
             for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(
-                        userLatitude - delta,
-                        userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(
-                        userLongitude - delta,
-                        userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
-                        MAX_SAT_HEIGHT);
-                final NEDPosition nedSatPosition =
-                        new NEDPosition(satLatitude, satLongitude, satHeight);
+                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final NEDPosition nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
+                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
                 final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
                 final ECEFPosition ecefSatPosition = new ECEFPosition();
                 final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
-                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                        nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
+                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
+                        ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity =
-                        new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
+                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
+                        ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition,
-                        ecefUserPosition, config, random);
+                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator
-                    .generate(timeSeconds, satellitePositionsAndVelocities,
-                            ecefUserPositionAndVelocity, biases, config, random);
+            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
+                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
 
-            if (measurements.size() <
-                    GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
+            if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
             final INSTightlyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSTightlyCoupledKalmanInitializerConfig initConfig =
-                    generateInitConfig();
+            final INSTightlyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
             final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                            initConfig, this);
+                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, this);
 
             final BodyKinematics kinematics = new BodyKinematics();
             assertTrue(estimator.updateBodyKinematics(kinematics, timeSeconds));
@@ -2977,23 +2474,21 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             assertEquals(kinematics, kinematics2);
             assertNotNull(estimator.getCorrectedKinematics());
             assertTrue(estimator.getCorrectedKinematics(new BodyKinematics()));
-            assertEquals(estimator.getCoordinateTransformation(),
-                    new CoordinateTransformation(FrameType.BODY_FRAME,
-                            FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
-            CoordinateTransformation c2 = new CoordinateTransformation(
-                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
+            assertEquals(estimator.getCoordinateTransformation(), new CoordinateTransformation(FrameType.BODY_FRAME,
+                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
+            CoordinateTransformation c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             assertTrue(estimator.getCoordinateTransformation(c2));
             assertEquals(c2, new CoordinateTransformation(FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
 
             reset();
-            assertEquals(mUpdateGNSSMeasurementsStart, 0);
-            assertEquals(mUpdateGNSSMeasurementsEnd, 0);
-            assertEquals(mUpdateBodyKinematicsStart, 0);
-            assertEquals(mUpdateBodyKinematicsEnd, 0);
-            assertEquals(mPropagateStart, 0);
-            assertEquals(mPropagateEnd, 0);
+            assertEquals(0, mUpdateGNSSMeasurementsStart);
+            assertEquals(0, mUpdateGNSSMeasurementsEnd);
+            assertEquals(0, mUpdateBodyKinematicsStart);
+            assertEquals(0, mUpdateBodyKinematicsEnd);
+            assertEquals(0, mPropagateStart);
+            assertEquals(0, mPropagateEnd);
 
             // update measurement
             try {
@@ -3003,21 +2498,17 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             }
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getMeasurements(), measurements);
-            assertEquals(estimator.getLastStateTimestamp(),
-                    2.0 * timeSeconds, 0.0);
-            assertEquals(estimator.getLastStateTimestampAsTime(),
-                    new Time(2.0 * timeSeconds, TimeUnit.SECOND));
+            assertEquals(measurements, estimator.getMeasurements());
+            assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+            assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
             final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
-            assertEquals(timestamp, new Time(2.0 * timeSeconds, TimeUnit.SECOND));
+            assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), timestamp);
             assertEquals(kinematics, estimator.getKinematics());
             assertNotNull(estimator.getCorrectedKinematics());
-            assertEquals(estimator.getCoordinateTransformation(),
-                    new CoordinateTransformation(FrameType.BODY_FRAME,
-                            FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
-            c2 = new CoordinateTransformation(
-                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
+            assertEquals(new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME),
+                    estimator.getCoordinateTransformation());
+            c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             assertTrue(estimator.getCoordinateTransformation(c2));
             assertEquals(c2, new CoordinateTransformation(FrameType.BODY_FRAME,
@@ -3034,8 +2525,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final INSTightlyCoupledKalmanState state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSTightlyCoupledKalmanState state2 =
-                    new INSTightlyCoupledKalmanState();
+            final INSTightlyCoupledKalmanState state2 = new INSTightlyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
@@ -3045,24 +2535,18 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
             final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX()
-                    - estimatedPosition.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY()
-                    - estimatedPosition.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ()
-                    - estimatedPosition.getZ());
+            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
+            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
+            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
             final double posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx()
-                    - estimatedVelocity.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy()
-                    - estimatedVelocity.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz()
-                    - estimatedVelocity.getVz());
+            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
+            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
+            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
             final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
@@ -3078,8 +2562,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
     @Test
     public void testUpdateMeasurementsWithoutBodyKinematicsAndWithInitialAttitude()
-            throws InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException {
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -3088,29 +2571,25 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
+                    MAX_LATITUDE_DEGREES));
+            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+                    MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final NEDPosition nedUserPosition =
-                    new NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
+            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
             final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
             final ECEFPosition ecefUserPosition = new ECEFPosition();
             final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
-            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                    nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
+            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
+                    ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity =
-                    new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
+            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
+                    ecefUserVelocity);
 
             final GNSSConfig config = generateConfig();
             final int numSatellites = config.getNumberOfSatellites();
@@ -3118,77 +2597,58 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double delta = maskAngle / 3.0;
 
             final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities =
-                    new ArrayList<>();
+            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
             for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(
-                        userLatitude - delta,
-                        userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(
-                        userLongitude - delta,
-                        userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
-                        MAX_SAT_HEIGHT);
-                final NEDPosition nedSatPosition =
-                        new NEDPosition(satLatitude, satLongitude, satHeight);
+                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final NEDPosition nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
+                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
                 final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
                 final ECEFPosition ecefSatPosition = new ECEFPosition();
                 final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
-                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                        nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
+                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
+                        ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity =
-                        new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
+                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
+                        ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition,
-                        ecefUserPosition, config, random);
+                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator
-                    .generate(timeSeconds, satellitePositionsAndVelocities,
-                            ecefUserPositionAndVelocity, biases, config, random);
+            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
+                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
 
-            if (measurements.size() <
-                    GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
+            if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-            final CoordinateTransformation c = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
             final INSTightlyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSTightlyCoupledKalmanInitializerConfig initConfig =
-                    generateInitConfig();
+            final INSTightlyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
             final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                            initConfig, c, this);
+                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, c, this);
 
             reset();
-            assertEquals(mUpdateGNSSMeasurementsStart, 0);
-            assertEquals(mUpdateGNSSMeasurementsEnd, 0);
-            assertEquals(mUpdateBodyKinematicsStart, 0);
-            assertEquals(mUpdateBodyKinematicsEnd, 0);
-            assertEquals(mPropagateStart, 0);
-            assertEquals(mPropagateEnd, 0);
+            assertEquals(0, mUpdateGNSSMeasurementsStart);
+            assertEquals(0, mUpdateGNSSMeasurementsEnd);
+            assertEquals(0, mUpdateBodyKinematicsStart);
+            assertEquals(0, mUpdateBodyKinematicsEnd);
+            assertEquals(0, mPropagateStart);
+            assertEquals(0, mPropagateEnd);
 
             assertNull(estimator.getEstimation());
             assertFalse(estimator.getEstimation(null));
@@ -3198,9 +2658,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             assertFalse(estimator.getKinematics(null));
             assertNull(estimator.getCorrectedKinematics());
             assertFalse(estimator.getCorrectedKinematics(null));
-            assertEquals(estimator.getCoordinateTransformation(), c);
-            CoordinateTransformation c2 = new CoordinateTransformation(
-                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
+            assertEquals(c, estimator.getCoordinateTransformation());
+            CoordinateTransformation c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             assertTrue(estimator.getCoordinateTransformation(c2));
             assertEquals(c2, c);
@@ -3213,18 +2672,16 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             }
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getMeasurements(), measurements);
-            assertEquals(estimator.getLastStateTimestamp(), timeSeconds, 0.0);
-            assertEquals(estimator.getLastStateTimestampAsTime(),
-                    new Time(timeSeconds, TimeUnit.SECOND));
+            assertEquals(measurements, estimator.getMeasurements());
+            assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+            assertEquals(new Time(timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
             final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
-            assertEquals(timestamp, new Time(timeSeconds, TimeUnit.SECOND));
+            assertEquals(new Time(timeSeconds, TimeUnit.SECOND), timestamp);
             assertNull(estimator.getKinematics());
             assertNull(estimator.getCorrectedKinematics());
-            assertEquals(estimator.getCoordinateTransformation(), c);
-            c2 = new CoordinateTransformation(
-                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
+            assertEquals(c, estimator.getCoordinateTransformation());
+            c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             assertTrue(estimator.getCoordinateTransformation(c2));
             assertEquals(c, c2);
@@ -3240,8 +2697,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final INSTightlyCoupledKalmanState state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSTightlyCoupledKalmanState state2 =
-                    new INSTightlyCoupledKalmanState();
+            final INSTightlyCoupledKalmanState state2 = new INSTightlyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
@@ -3251,24 +2707,18 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
             final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX()
-                    - estimatedPosition.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY()
-                    - estimatedPosition.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ()
-                    - estimatedPosition.getZ());
+            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
+            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
+            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
             final double posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx()
-                    - estimatedVelocity.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy()
-                    - estimatedVelocity.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz()
-                    - estimatedVelocity.getVz());
+            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
+            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
+            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
             final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
@@ -3283,8 +2733,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testUpdateMeasurementsWithKinematicsAndInitialAttitude()
-            throws LockedException, INSGNSSException,
+    public void testUpdateMeasurementsWithKinematicsAndInitialAttitude() throws LockedException, INSGNSSException,
             InvalidSourceAndDestinationFrameTypeException, NotReadyException {
 
         int numValid = 0;
@@ -3294,29 +2743,25 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
+                    MAX_LATITUDE_DEGREES));
+            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+                    MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final NEDPosition nedUserPosition =
-                    new NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
+            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
             final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
             final ECEFPosition ecefUserPosition = new ECEFPosition();
             final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
-            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                    nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
+            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
+                    ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity =
-                    new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
+            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
+                    ecefUserVelocity);
 
             final GNSSConfig config = generateConfig();
             final int numSatellites = config.getNumberOfSatellites();
@@ -3324,69 +2769,50 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double delta = maskAngle / 3.0;
 
             final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities =
-                    new ArrayList<>();
+            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
             for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(
-                        userLatitude - delta,
-                        userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(
-                        userLongitude - delta,
-                        userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
-                        MAX_SAT_HEIGHT);
-                final NEDPosition nedSatPosition =
-                        new NEDPosition(satLatitude, satLongitude, satHeight);
+                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final NEDPosition nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
+                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
                 final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
                 final ECEFPosition ecefSatPosition = new ECEFPosition();
                 final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
-                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                        nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
+                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
+                        ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity =
-                        new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
+                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
+                        ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition,
-                        ecefUserPosition, config, random);
+                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator
-                    .generate(timeSeconds, satellitePositionsAndVelocities,
-                            ecefUserPositionAndVelocity, biases, config, random);
+            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
+                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
 
-            if (measurements.size() <
-                    GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
+            if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-            final CoordinateTransformation c = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
             final INSTightlyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSTightlyCoupledKalmanInitializerConfig initConfig =
-                    generateInitConfig();
+            final INSTightlyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
             final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                            initConfig, c, this);
+                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, c, this);
 
             final BodyKinematics kinematics = new BodyKinematics();
             assertTrue(estimator.updateBodyKinematics(kinematics, timeSeconds));
@@ -3401,20 +2827,19 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             assertEquals(kinematics, kinematics2);
             assertNotNull(estimator.getCorrectedKinematics());
             assertTrue(estimator.getCorrectedKinematics(new BodyKinematics()));
-            assertEquals(estimator.getCoordinateTransformation(), c);
-            CoordinateTransformation c2 = new CoordinateTransformation(
-                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
+            assertEquals(c, estimator.getCoordinateTransformation());
+            CoordinateTransformation c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             assertTrue(estimator.getCoordinateTransformation(c2));
             assertEquals(c2, c);
 
             reset();
-            assertEquals(mUpdateGNSSMeasurementsStart, 0);
-            assertEquals(mUpdateGNSSMeasurementsEnd, 0);
-            assertEquals(mUpdateBodyKinematicsStart, 0);
-            assertEquals(mUpdateBodyKinematicsEnd, 0);
-            assertEquals(mPropagateStart, 0);
-            assertEquals(mPropagateEnd, 0);
+            assertEquals(0, mUpdateGNSSMeasurementsStart);
+            assertEquals(0, mUpdateGNSSMeasurementsEnd);
+            assertEquals(0, mUpdateBodyKinematicsStart);
+            assertEquals(0, mUpdateBodyKinematicsEnd);
+            assertEquals(0, mPropagateStart);
+            assertEquals(0, mPropagateEnd);
 
             // update measurement
             try {
@@ -3424,19 +2849,16 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             }
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getMeasurements(), measurements);
-            assertEquals(estimator.getLastStateTimestamp(),
-                    2.0 * timeSeconds, 0.0);
-            assertEquals(estimator.getLastStateTimestampAsTime(),
-                    new Time(2.0 * timeSeconds, TimeUnit.SECOND));
+            assertEquals(measurements, estimator.getMeasurements());
+            assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(),0.0);
+            assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
             final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
-            assertEquals(timestamp, new Time(2.0 * timeSeconds, TimeUnit.SECOND));
+            assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), timestamp);
             assertEquals(kinematics, estimator.getKinematics());
             assertNotNull(estimator.getCorrectedKinematics());
-            assertEquals(estimator.getCoordinateTransformation(), c);
-            c2 = new CoordinateTransformation(
-                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
+            assertEquals(c, estimator.getCoordinateTransformation());
+            c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             assertTrue(estimator.getCoordinateTransformation(c2));
             assertEquals(c, c2);
@@ -3452,8 +2874,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final INSTightlyCoupledKalmanState state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSTightlyCoupledKalmanState state2 =
-                    new INSTightlyCoupledKalmanState();
+            final INSTightlyCoupledKalmanState state2 = new INSTightlyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
@@ -3463,24 +2884,18 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
             final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX()
-                    - estimatedPosition.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY()
-                    - estimatedPosition.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ()
-                    - estimatedPosition.getZ());
+            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
+            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
+            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
             final double posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx()
-                    - estimatedVelocity.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy()
-                    - estimatedVelocity.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz()
-                    - estimatedVelocity.getVz());
+            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
+            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
+            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
             final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
@@ -3495,23 +2910,20 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test(expected = NotReadyException.class)
-    public void testUpdateMeasurementsWhenNotReadyThrowsNotReadyException()
-            throws LockedException, NotReadyException, INSGNSSException {
+    public void testUpdateMeasurementsWhenNotReadyThrowsNotReadyException() throws LockedException, NotReadyException,
+            INSGNSSException {
 
         final INSTightlyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-        final INSTightlyCoupledKalmanInitializerConfig initConfig =
-                generateInitConfig();
-        final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator =
-                new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                        initConfig);
+        final INSTightlyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
+        final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                kalmanConfig, initConfig);
 
-        estimator.updateMeasurements(Collections.<GNSSMeasurement>emptyList(),
-                0.0);
+        estimator.updateMeasurements(Collections.emptyList(), 0.0);
     }
 
     @Test
-    public void testUpdateKinematicsWithZeroSpecificForceAndAngularRate()
-            throws LockedException, NotReadyException, INSGNSSException {
+    public void testUpdateKinematicsWithZeroSpecificForceAndAngularRate() throws LockedException, NotReadyException,
+            INSGNSSException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -3520,29 +2932,25 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
+                    MAX_LATITUDE_DEGREES));
+            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+                    MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final NEDPosition nedUserPosition =
-                    new NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
+            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
             final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
             final ECEFPosition ecefUserPosition = new ECEFPosition();
             final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
-            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                    nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
+            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
+                    ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity =
-                    new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
+            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
+                    ecefUserVelocity);
 
             final GNSSConfig config = generateConfig();
             final int numSatellites = config.getNumberOfSatellites();
@@ -3550,66 +2958,51 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double delta = maskAngle / 3.0;
 
             final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities =
-                    new ArrayList<>();
+            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
             for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(
-                        userLatitude - delta,
-                        userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(
-                        userLongitude - delta,
-                        userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
-                        MAX_SAT_HEIGHT);
-                final NEDPosition nedSatPosition =
-                        new NEDPosition(satLatitude, satLongitude, satHeight);
+                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final NEDPosition nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
+                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
                 final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
                 final ECEFPosition ecefSatPosition = new ECEFPosition();
                 final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
-                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                        nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
+                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
+                        ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity =
-                        new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
+                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
+                        ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition,
-                        ecefUserPosition, config, random);
+                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator
-                    .generate(timeSeconds, satellitePositionsAndVelocities,
-                            ecefUserPositionAndVelocity, biases, config, random);
+            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
+                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
 
-            if (measurements.size() <
-                    GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
+            if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
             final INSTightlyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSTightlyCoupledKalmanInitializerConfig initConfig =
-                    generateInitConfig();
+            final INSTightlyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
             final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                            initConfig, this);
+                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, this);
 
             reset();
-            assertEquals(mUpdateGNSSMeasurementsStart, 0);
-            assertEquals(mUpdateGNSSMeasurementsEnd, 0);
-            assertEquals(mUpdateBodyKinematicsStart, 0);
-            assertEquals(mUpdateBodyKinematicsEnd, 0);
-            assertEquals(mPropagateStart, 0);
-            assertEquals(mPropagateEnd, 0);
+            assertEquals(0, mUpdateGNSSMeasurementsStart);
+            assertEquals(0, mUpdateGNSSMeasurementsEnd);
+            assertEquals(0, mUpdateBodyKinematicsStart);
+            assertEquals(0, mUpdateBodyKinematicsEnd);
+            assertEquals(0, mPropagateStart);
+            assertEquals(0, mPropagateEnd);
 
             assertNull(estimator.getEstimation());
             assertFalse(estimator.getEstimation(null));
@@ -3633,20 +3026,17 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             assertTrue(estimator.updateBodyKinematics(kinematics, 2.0 * timeSeconds));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getMeasurements(), measurements);
-            assertEquals(estimator.getLastStateTimestamp(), 2.0 * timeSeconds, 0.0);
-            assertEquals(estimator.getLastStateTimestampAsTime(),
-                    new Time(2.0 * timeSeconds, TimeUnit.SECOND));
+            assertEquals(measurements, estimator.getMeasurements());
+            assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+            assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
             final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
-            assertEquals(timestamp, new Time(2.0 * timeSeconds, TimeUnit.SECOND));
+            assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), timestamp);
             assertEquals(kinematics, estimator.getKinematics());
             assertNotNull(estimator.getCorrectedKinematics());
-            assertEquals(estimator.getCoordinateTransformation(),
-                    new CoordinateTransformation(FrameType.BODY_FRAME,
-                            FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
-            final CoordinateTransformation c2 = new CoordinateTransformation(
-                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
+            assertEquals(estimator.getCoordinateTransformation(), new CoordinateTransformation(FrameType.BODY_FRAME,
+                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
+            final CoordinateTransformation c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             assertTrue(estimator.getCoordinateTransformation(c2));
             assertEquals(c2, new CoordinateTransformation(FrameType.BODY_FRAME,
@@ -3663,8 +3053,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final INSTightlyCoupledKalmanState state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSTightlyCoupledKalmanState state2 =
-                    new INSTightlyCoupledKalmanState();
+            final INSTightlyCoupledKalmanState state2 = new INSTightlyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
@@ -3674,24 +3063,18 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
             final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX()
-                    - estimatedPosition.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY()
-                    - estimatedPosition.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ()
-                    - estimatedPosition.getZ());
+            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
+            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
+            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
             final double posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx()
-                    - estimatedVelocity.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy()
-                    - estimatedVelocity.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz()
-                    - estimatedVelocity.getVz());
+            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
+            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
+            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
             final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
@@ -3702,19 +3085,19 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             assertFalse(estimator.updateBodyKinematics(kinematics, 2.0 * timeSeconds));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getLastStateTimestamp(), 2.0 * timeSeconds, 0.0);
+            assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             final GNSSEstimation estimation3 = estimator.getEstimation();
             final INSTightlyCoupledKalmanState state3 = estimator.getState();
 
             assertEquals(estimation1, estimation3);
             assertEquals(state1, state3);
 
-            assertEquals(mUpdateGNSSMeasurementsStart, 1);
-            assertEquals(mUpdateGNSSMeasurementsEnd, 1);
-            assertEquals(mUpdateBodyKinematicsStart, 2);
-            assertEquals(mUpdateBodyKinematicsEnd, 2);
-            assertEquals(mPropagateStart, 2);
-            assertEquals(mPropagateEnd, 2);
+            assertEquals(1, mUpdateGNSSMeasurementsStart);
+            assertEquals(1, mUpdateGNSSMeasurementsEnd);
+            assertEquals(2, mUpdateBodyKinematicsStart);
+            assertEquals(2, mUpdateBodyKinematicsEnd);
+            assertEquals(2, mPropagateStart);
+            assertEquals(2, mPropagateEnd);
 
             numValid++;
             break;
@@ -3724,8 +3107,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testUpdateKinematicsWithFreeFallSpecificForceAndZeroAngularRate()
-            throws LockedException, NotReadyException, INSGNSSException {
+    public void testUpdateKinematicsWithFreeFallSpecificForceAndZeroAngularRate() throws LockedException,
+            NotReadyException, INSGNSSException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -3734,29 +3117,25 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
+                    MAX_LATITUDE_DEGREES));
+            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+                    MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final NEDPosition nedUserPosition =
-                    new NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
+            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
             final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
             final ECEFPosition ecefUserPosition = new ECEFPosition();
             final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
-            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                    nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
+            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
+                    ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity =
-                    new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
+            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
+                    ecefUserVelocity);
 
             final GNSSConfig config = generateConfig();
             final int numSatellites = config.getNumberOfSatellites();
@@ -3764,66 +3143,51 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double delta = maskAngle / 3.0;
 
             final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities =
-                    new ArrayList<>();
+            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
             for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(
-                        userLatitude - delta,
-                        userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(
-                        userLongitude - delta,
-                        userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
-                        MAX_SAT_HEIGHT);
-                final NEDPosition nedSatPosition =
-                        new NEDPosition(satLatitude, satLongitude, satHeight);
+                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final NEDPosition nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
+                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
                 final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
                 final ECEFPosition ecefSatPosition = new ECEFPosition();
                 final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
-                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                        nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
+                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
+                        ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity =
-                        new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
+                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
+                        ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition,
-                        ecefUserPosition, config, random);
+                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator
-                    .generate(timeSeconds, satellitePositionsAndVelocities,
-                            ecefUserPositionAndVelocity, biases, config, random);
+            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
+                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
 
-            if (measurements.size() <
-                    GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
+            if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
             final INSTightlyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSTightlyCoupledKalmanInitializerConfig initConfig =
-                    generateInitConfig();
+            final INSTightlyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
             final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                            initConfig, this);
+                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, this);
 
             reset();
-            assertEquals(mUpdateGNSSMeasurementsStart, 0);
-            assertEquals(mUpdateGNSSMeasurementsEnd, 0);
-            assertEquals(mUpdateBodyKinematicsStart, 0);
-            assertEquals(mUpdateBodyKinematicsEnd, 0);
-            assertEquals(mPropagateStart, 0);
-            assertEquals(mPropagateEnd, 0);
+            assertEquals(0, mUpdateGNSSMeasurementsStart);
+            assertEquals(0, mUpdateGNSSMeasurementsEnd);
+            assertEquals(0, mUpdateBodyKinematicsStart);
+            assertEquals(0, mUpdateBodyKinematicsEnd);
+            assertEquals(0, mPropagateStart);
+            assertEquals(0, mPropagateEnd);
 
             assertNull(estimator.getEstimation());
             assertFalse(estimator.getEstimation(null));
@@ -3843,26 +3207,23 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                 continue;
             }
 
-            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
-                    ecefUserPosition.getX(), ecefUserPosition.getY(),
-                    ecefUserPosition.getZ());
+            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(ecefUserPosition.getX(),
+                    ecefUserPosition.getY(), ecefUserPosition.getZ());
 
 
             // because there is no attitude, the specific force is directly the
             // gravity.
-            final BodyKinematics kinematics = new BodyKinematics(
-                    gravity.getGx(), gravity.getGy(), gravity.getGz(),
+            final BodyKinematics kinematics = new BodyKinematics(gravity.getGx(), gravity.getGy(), gravity.getGz(),
                     0.0, 0.0, 0.0);
             assertTrue(estimator.updateBodyKinematics(kinematics, 2.0 * timeSeconds));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getMeasurements(), measurements);
-            assertEquals(estimator.getLastStateTimestamp(), 2.0 * timeSeconds, 0.0);
-            assertEquals(estimator.getLastStateTimestampAsTime(),
-                    new Time(2.0 * timeSeconds, TimeUnit.SECOND));
+            assertEquals(measurements, estimator.getMeasurements());
+            assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+            assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
             final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
-            assertEquals(timestamp, new Time(2.0 * timeSeconds, TimeUnit.SECOND));
+            assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), timestamp);
             assertEquals(kinematics, estimator.getKinematics());
             assertNotNull(estimator.getCorrectedKinematics());
 
@@ -3877,8 +3238,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final INSTightlyCoupledKalmanState state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSTightlyCoupledKalmanState state2 =
-                    new INSTightlyCoupledKalmanState();
+            final INSTightlyCoupledKalmanState state2 = new INSTightlyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
@@ -3888,24 +3248,18 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
             final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX()
-                    - estimatedPosition.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY()
-                    - estimatedPosition.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ()
-                    - estimatedPosition.getZ());
+            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
+            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
+            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
             final double posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx()
-                    - estimatedVelocity.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy()
-                    - estimatedVelocity.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz()
-                    - estimatedVelocity.getVz());
+            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
+            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
+            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
             final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
@@ -3916,19 +3270,19 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             assertFalse(estimator.updateBodyKinematics(kinematics, 2.0 * timeSeconds));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getLastStateTimestamp(), 2.0 * timeSeconds, 0.0);
+            assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             final GNSSEstimation estimation3 = estimator.getEstimation();
             final INSTightlyCoupledKalmanState state3 = estimator.getState();
 
             assertEquals(estimation1, estimation3);
             assertEquals(state1, state3);
 
-            assertEquals(mUpdateGNSSMeasurementsStart, 1);
-            assertEquals(mUpdateGNSSMeasurementsEnd, 1);
-            assertEquals(mUpdateBodyKinematicsStart, 2);
-            assertEquals(mUpdateBodyKinematicsEnd, 2);
-            assertEquals(mPropagateStart, 2);
-            assertEquals(mPropagateEnd, 2);
+            assertEquals(1, mUpdateGNSSMeasurementsStart);
+            assertEquals(1, mUpdateGNSSMeasurementsEnd);
+            assertEquals(2, mUpdateBodyKinematicsStart);
+            assertEquals(2, mUpdateBodyKinematicsEnd);
+            assertEquals(2, mPropagateStart);
+            assertEquals(2, mPropagateEnd);
 
             numValid++;
             break;
@@ -3938,8 +3292,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testUpdateKinematicsWithZeroSpecificForceAndRotationOnly()
-            throws LockedException, INSGNSSException, NotReadyException {
+    public void testUpdateKinematicsWithZeroSpecificForceAndRotationOnly() throws LockedException, INSGNSSException,
+            NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -3948,30 +3302,25 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
+                    MAX_LATITUDE_DEGREES));
+            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+                    MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final NEDPosition nedUserPosition =
-                    new NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final NEDVelocity
-                    nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
+            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
             final ECEFPosition ecefUserPosition = new ECEFPosition();
             final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
-            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                    nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
+            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
+                    ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity =
-                    new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
+            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
+                    ecefUserVelocity);
 
             final GNSSConfig config = generateConfig();
             final int numSatellites = config.getNumberOfSatellites();
@@ -3979,66 +3328,51 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double delta = maskAngle / 3.0;
 
             final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities =
-                    new ArrayList<>();
+            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
             for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(
-                        userLatitude - delta,
-                        userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(
-                        userLongitude - delta,
-                        userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
-                        MAX_SAT_HEIGHT);
-                final NEDPosition nedSatPosition =
-                        new NEDPosition(satLatitude, satLongitude, satHeight);
+                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final NEDPosition nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
+                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
                 final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
                 final ECEFPosition ecefSatPosition = new ECEFPosition();
                 final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
-                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                        nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
+                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
+                        ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity =
-                        new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
+                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
+                        ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition,
-                        ecefUserPosition, config, random);
+                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator
-                    .generate(timeSeconds, satellitePositionsAndVelocities,
-                            ecefUserPositionAndVelocity, biases, config, random);
+            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
+                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
 
-            if (measurements.size() <
-                    GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
+            if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
             final INSTightlyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSTightlyCoupledKalmanInitializerConfig initConfig =
-                    generateInitConfig();
+            final INSTightlyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
             final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                            initConfig, this);
+                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, this);
 
             reset();
-            assertEquals(mUpdateGNSSMeasurementsStart, 0);
-            assertEquals(mUpdateGNSSMeasurementsEnd, 0);
-            assertEquals(mUpdateBodyKinematicsStart, 0);
-            assertEquals(mUpdateBodyKinematicsEnd, 0);
-            assertEquals(mPropagateStart, 0);
-            assertEquals(mPropagateEnd, 0);
+            assertEquals(0, mUpdateGNSSMeasurementsStart);
+            assertEquals(0, mUpdateGNSSMeasurementsEnd);
+            assertEquals(0, mUpdateBodyKinematicsStart);
+            assertEquals(0, mUpdateBodyKinematicsEnd);
+            assertEquals(0, mPropagateStart);
+            assertEquals(0, mPropagateEnd);
 
             assertNull(estimator.getEstimation());
             assertFalse(estimator.getEstimation(null));
@@ -4058,26 +3392,24 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                 continue;
             }
 
-            final double angularRateX = Math.toRadians(randomizer.nextDouble(
-                    MIN_DEGREES_PER_SECOND, MAX_DEGREES_PER_SECOND));
-            final double angularRateY = Math.toRadians(randomizer.nextDouble(
-                    MIN_DEGREES_PER_SECOND, MAX_DEGREES_PER_SECOND));
-            final double angularRateZ = Math.toRadians(randomizer.nextDouble(
-                    MIN_DEGREES_PER_SECOND, MAX_DEGREES_PER_SECOND));
+            final double angularRateX = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
+                    MAX_DEGREES_PER_SECOND));
+            final double angularRateY = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
+                    MAX_DEGREES_PER_SECOND));
+            final double angularRateZ = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
+                    MAX_DEGREES_PER_SECOND));
 
-            final BodyKinematics kinematics = new BodyKinematics(
-                    0.0, 0.0, 0.0,
+            final BodyKinematics kinematics = new BodyKinematics(0.0, 0.0, 0.0,
                     angularRateX, angularRateY, angularRateZ);
             assertTrue(estimator.updateBodyKinematics(kinematics, 2.0 * timeSeconds));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getMeasurements(), measurements);
-            assertEquals(estimator.getLastStateTimestamp(), 2.0 * timeSeconds, 0.0);
-            assertEquals(estimator.getLastStateTimestampAsTime(),
-                    new Time(2.0 * timeSeconds, TimeUnit.SECOND));
+            assertEquals(measurements, estimator.getMeasurements());
+            assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+            assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
             final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
-            assertEquals(timestamp, new Time(2.0 * timeSeconds, TimeUnit.SECOND));
+            assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), timestamp);
             assertEquals(kinematics, estimator.getKinematics());
             assertNotNull(estimator.getCorrectedKinematics());
 
@@ -4092,8 +3424,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final INSTightlyCoupledKalmanState state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSTightlyCoupledKalmanState state2 =
-                    new INSTightlyCoupledKalmanState();
+            final INSTightlyCoupledKalmanState state2 = new INSTightlyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
@@ -4103,24 +3434,18 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
             final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX()
-                    - estimatedPosition.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY()
-                    - estimatedPosition.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ()
-                    - estimatedPosition.getZ());
+            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
+            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
+            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
             final double posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx()
-                    - estimatedVelocity.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy()
-                    - estimatedVelocity.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz()
-                    - estimatedVelocity.getVz());
+            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
+            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
+            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
             final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
@@ -4138,12 +3463,12 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             assertEquals(estimation1, estimation3);
             assertEquals(state1, state3);
 
-            assertEquals(mUpdateGNSSMeasurementsStart, 1);
-            assertEquals(mUpdateGNSSMeasurementsEnd, 1);
-            assertEquals(mUpdateBodyKinematicsStart, 2);
-            assertEquals(mUpdateBodyKinematicsEnd, 2);
-            assertEquals(mPropagateStart, 2);
-            assertEquals(mPropagateEnd, 2);
+            assertEquals(1, mUpdateGNSSMeasurementsStart);
+            assertEquals(1, mUpdateGNSSMeasurementsEnd);
+            assertEquals(2, mUpdateBodyKinematicsStart);
+            assertEquals(2, mUpdateBodyKinematicsEnd);
+            assertEquals(2, mPropagateStart);
+            assertEquals(2, mPropagateEnd);
 
             numValid++;
             break;
@@ -4153,8 +3478,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testUpdateKinematicsWithFreeFallSpecificForceAndRotation()
-            throws LockedException, NotReadyException, INSGNSSException {
+    public void testUpdateKinematicsWithFreeFallSpecificForceAndRotation() throws LockedException, NotReadyException,
+            INSGNSSException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -4163,29 +3488,25 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
+                    MAX_LATITUDE_DEGREES));
+            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+                    MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final NEDPosition nedUserPosition =
-                    new NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
+            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
             final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
             final ECEFPosition ecefUserPosition = new ECEFPosition();
             final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
-            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                    nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
+            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
+                    ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity =
-                    new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
+            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
+                    ecefUserVelocity);
 
             final GNSSConfig config = generateConfig();
             final int numSatellites = config.getNumberOfSatellites();
@@ -4193,66 +3514,51 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double delta = maskAngle / 3.0;
 
             final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities =
-                    new ArrayList<>();
+            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
             for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(
-                        userLatitude - delta,
-                        userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(
-                        userLongitude - delta,
-                        userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
-                        MAX_SAT_HEIGHT);
-                final NEDPosition nedSatPosition =
-                        new NEDPosition(satLatitude, satLongitude, satHeight);
+                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final NEDPosition nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
+                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
                 final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
                 final ECEFPosition ecefSatPosition = new ECEFPosition();
                 final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
-                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                        nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
+                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
+                        ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity =
-                        new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
+                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
+                        ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition,
-                        ecefUserPosition, config, random);
+                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator
-                    .generate(timeSeconds, satellitePositionsAndVelocities,
-                            ecefUserPositionAndVelocity, biases, config, random);
+            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
+                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
 
-            if (measurements.size() <
-                    GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
+            if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
             final INSTightlyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSTightlyCoupledKalmanInitializerConfig initConfig =
-                    generateInitConfig();
+            final INSTightlyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
             final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                            initConfig, this);
+                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, this);
 
             reset();
-            assertEquals(mUpdateGNSSMeasurementsStart, 0);
-            assertEquals(mUpdateGNSSMeasurementsEnd, 0);
-            assertEquals(mUpdateBodyKinematicsStart, 0);
-            assertEquals(mUpdateBodyKinematicsEnd, 0);
-            assertEquals(mPropagateStart, 0);
-            assertEquals(mPropagateEnd, 0);
+            assertEquals(0, mUpdateGNSSMeasurementsStart);
+            assertEquals(0, mUpdateGNSSMeasurementsEnd);
+            assertEquals(0, mUpdateBodyKinematicsStart);
+            assertEquals(0, mUpdateBodyKinematicsEnd);
+            assertEquals(0, mPropagateStart);
+            assertEquals(0, mPropagateEnd);
 
             assertNull(estimator.getEstimation());
             assertFalse(estimator.getEstimation(null));
@@ -4272,32 +3578,29 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                 continue;
             }
 
-            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
-                    ecefUserPosition.getX(), ecefUserPosition.getY(),
-                    ecefUserPosition.getZ());
+            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(ecefUserPosition.getX(),
+                    ecefUserPosition.getY(), ecefUserPosition.getZ());
 
-            final double angularRateX = Math.toRadians(randomizer.nextDouble(
-                    MIN_DEGREES_PER_SECOND, MAX_DEGREES_PER_SECOND));
-            final double angularRateY = Math.toRadians(randomizer.nextDouble(
-                    MIN_DEGREES_PER_SECOND, MAX_DEGREES_PER_SECOND));
-            final double angularRateZ = Math.toRadians(randomizer.nextDouble(
-                    MIN_DEGREES_PER_SECOND, MAX_DEGREES_PER_SECOND));
+            final double angularRateX = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
+                    MAX_DEGREES_PER_SECOND));
+            final double angularRateY = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
+                    MAX_DEGREES_PER_SECOND));
+            final double angularRateZ = Math.toRadians(randomizer.nextDouble(MIN_DEGREES_PER_SECOND,
+                    MAX_DEGREES_PER_SECOND));
 
             // because there is no attitude, the specific force is directly the
             // gravity.
-            final BodyKinematics kinematics = new BodyKinematics(
-                    gravity.getGx(), gravity.getGy(), gravity.getGz(),
+            final BodyKinematics kinematics = new BodyKinematics(gravity.getGx(), gravity.getGy(), gravity.getGz(),
                     angularRateX, angularRateY, angularRateZ);
             assertTrue(estimator.updateBodyKinematics(kinematics, 2.0 * timeSeconds));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getMeasurements(), measurements);
-            assertEquals(estimator.getLastStateTimestamp(), 2.0 * timeSeconds, 0.0);
-            assertEquals(estimator.getLastStateTimestampAsTime(),
-                    new Time(2.0 * timeSeconds, TimeUnit.SECOND));
+            assertEquals(measurements, estimator.getMeasurements());
+            assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+            assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
             final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
-            assertEquals(timestamp, new Time(2.0 * timeSeconds, TimeUnit.SECOND));
+            assertEquals(new Time(2.0 * timeSeconds, TimeUnit.SECOND), timestamp);
             assertEquals(kinematics, estimator.getKinematics());
 
             final GNSSEstimation estimation1 = estimator.getEstimation();
@@ -4311,8 +3614,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final INSTightlyCoupledKalmanState state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSTightlyCoupledKalmanState state2 =
-                    new INSTightlyCoupledKalmanState();
+            final INSTightlyCoupledKalmanState state2 = new INSTightlyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
@@ -4322,24 +3624,18 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
             final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX()
-                    - estimatedPosition.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY()
-                    - estimatedPosition.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ()
-                    - estimatedPosition.getZ());
+            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
+            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
+            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
             final double posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx()
-                    - estimatedVelocity.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy()
-                    - estimatedVelocity.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz()
-                    - estimatedVelocity.getVz());
+            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
+            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
+            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
             final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
@@ -4347,23 +3643,22 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             assertTrue(ecefUserVelocity.equals(estimatedVelocity, VELOCITY_ERROR));
 
             // update again with same timestamp makes no action
-            assertFalse(estimator.updateBodyKinematics(kinematics,
-                    new Time(2.0 * timeSeconds, TimeUnit.SECOND)));
+            assertFalse(estimator.updateBodyKinematics(kinematics, new Time(2.0 * timeSeconds, TimeUnit.SECOND)));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getLastStateTimestamp(), 2.0 * timeSeconds, 0.0);
+            assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             final GNSSEstimation estimation3 = estimator.getEstimation();
             final INSTightlyCoupledKalmanState state3 = estimator.getState();
 
             assertEquals(estimation1, estimation3);
             assertEquals(state1, state3);
 
-            assertEquals(mUpdateGNSSMeasurementsStart, 1);
-            assertEquals(mUpdateGNSSMeasurementsEnd, 1);
-            assertEquals(mUpdateBodyKinematicsStart, 2);
-            assertEquals(mUpdateBodyKinematicsEnd, 2);
-            assertEquals(mPropagateStart, 2);
-            assertEquals(mPropagateEnd, 2);
+            assertEquals(1, mUpdateGNSSMeasurementsStart);
+            assertEquals(1, mUpdateGNSSMeasurementsEnd);
+            assertEquals(2, mUpdateBodyKinematicsStart);
+            assertEquals(2, mUpdateBodyKinematicsEnd);
+            assertEquals(2, mPropagateStart);
+            assertEquals(2, mPropagateEnd);
 
             numValid++;
             break;
@@ -4373,8 +3668,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testPropagate() throws LockedException, NotReadyException,
-            INSGNSSException {
+    public void testPropagate() throws LockedException, NotReadyException, INSGNSSException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -4383,29 +3677,25 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
+                    MAX_LATITUDE_DEGREES));
+            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+                    MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final NEDPosition nedUserPosition =
-                    new NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
+            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
             final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
             final ECEFPosition ecefUserPosition = new ECEFPosition();
             final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
-            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                    nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
+            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
+                    ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity =
-                    new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
+            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
+                    ecefUserVelocity);
 
             final GNSSConfig config = generateConfig();
             final int numSatellites = config.getNumberOfSatellites();
@@ -4413,66 +3703,51 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double delta = maskAngle / 3.0;
 
             final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities =
-                    new ArrayList<>();
+            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
             for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(
-                        userLatitude - delta,
-                        userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(
-                        userLongitude - delta,
-                        userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
-                        MAX_SAT_HEIGHT);
-                final NEDPosition nedSatPosition =
-                        new NEDPosition(satLatitude, satLongitude, satHeight);
+                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final NEDPosition nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
+                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
                 final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
                 final ECEFPosition ecefSatPosition = new ECEFPosition();
                 final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
-                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                        nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
+                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
+                        ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity =
-                        new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
+                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
+                        ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition,
-                        ecefUserPosition, config, random);
+                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator
-                    .generate(timeSeconds, satellitePositionsAndVelocities,
-                            ecefUserPositionAndVelocity, biases, config, random);
+            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
+                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
 
-            if (measurements.size() <
-                    GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
+            if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
             final INSTightlyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSTightlyCoupledKalmanInitializerConfig initConfig =
-                    generateInitConfig();
+            final INSTightlyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
             final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                            initConfig, this);
+                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, this);
 
             reset();
-            assertEquals(mUpdateGNSSMeasurementsStart, 0);
-            assertEquals(mUpdateGNSSMeasurementsEnd, 0);
-            assertEquals(mUpdateBodyKinematicsStart, 0);
-            assertEquals(mUpdateBodyKinematicsEnd, 0);
-            assertEquals(mPropagateStart, 0);
-            assertEquals(mPropagateEnd, 0);
+            assertEquals(0, mUpdateGNSSMeasurementsStart);
+            assertEquals(0, mUpdateGNSSMeasurementsEnd);
+            assertEquals(0, mUpdateBodyKinematicsStart);
+            assertEquals(0, mUpdateBodyKinematicsEnd);
+            assertEquals(0, mPropagateStart);
+            assertEquals(0, mPropagateEnd);
 
             assertNull(estimator.getEstimation());
             assertFalse(estimator.getEstimation(null));
@@ -4492,8 +3767,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                 continue;
             }
 
-            assertEquals(estimator.getMeasurements(), measurements);
-            assertEquals(estimator.getLastStateTimestamp(), timeSeconds, 0.0);
+            assertEquals(measurements, estimator.getMeasurements());
+            assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             final GNSSEstimation estimation1 = estimator.getEstimation();
             assertNotNull(estimation1);
 
@@ -4505,8 +3780,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final INSTightlyCoupledKalmanState state1 = estimator.getState();
             assertNotNull(state1);
 
-            final INSTightlyCoupledKalmanState state2 =
-                    new INSTightlyCoupledKalmanState();
+            final INSTightlyCoupledKalmanState state2 = new INSTightlyCoupledKalmanState();
             assertTrue(estimator.getState(state2));
 
             assertEquals(state1, state2);
@@ -4516,24 +3790,18 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final ECEFPosition estimatedPosition1 = estimation1.getEcefPosition();
             final ECEFVelocity estimatedVelocity1 = estimation1.getEcefVelocity();
 
-            final double diffX1 = Math.abs(ecefUserPosition.getX()
-                    - estimatedPosition1.getX());
-            final double diffY1 = Math.abs(ecefUserPosition.getY()
-                    - estimatedPosition1.getY());
-            final double diffZ1 = Math.abs(ecefUserPosition.getZ()
-                    - estimatedPosition1.getZ());
+            final double diffX1 = Math.abs(ecefUserPosition.getX() - estimatedPosition1.getX());
+            final double diffY1 = Math.abs(ecefUserPosition.getY() - estimatedPosition1.getY());
+            final double diffZ1 = Math.abs(ecefUserPosition.getZ() - estimatedPosition1.getZ());
             final double posError1 = Math.max(diffX1, Math.max(diffY1, diffZ1));
             if (posError1 > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition1, POSITION_ERROR));
 
-            final double diffVx1 = Math.abs(ecefUserVelocity.getVx()
-                    - estimatedVelocity1.getVx());
-            final double diffVy1 = Math.abs(ecefUserVelocity.getVy()
-                    - estimatedVelocity1.getVy());
-            final double diffVz1 = Math.abs(ecefUserVelocity.getVz()
-                    - estimatedVelocity1.getVz());
+            final double diffVx1 = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity1.getVx());
+            final double diffVy1 = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity1.getVy());
+            final double diffVz1 = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity1.getVz());
             final double velError = Math.max(diffVx1, Math.max(diffVy1, diffVz1));
             if (velError > VELOCITY_ERROR) {
                 continue;
@@ -4544,8 +3812,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             assertTrue(estimator.propagate(2.0 * timeSeconds));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getLastStateTimestamp(), 2.0 * timeSeconds,
-                    0.0);
+            assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             final GNSSEstimation estimation3 = estimator.getEstimation();
             final INSTightlyCoupledKalmanState state3 = estimator.getState();
 
@@ -4554,24 +3821,18 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final ECEFPosition estimatedPosition3 = estimation3.getEcefPosition();
             final ECEFVelocity estimatedVelocity3 = estimation3.getEcefVelocity();
 
-            final double diffX3 = Math.abs(ecefUserPosition.getX()
-                    - estimatedPosition3.getX());
-            final double diffY3 = Math.abs(ecefUserPosition.getY()
-                    - estimatedPosition3.getY());
-            final double diffZ3 = Math.abs(ecefUserPosition.getZ()
-                    - estimatedPosition3.getZ());
+            final double diffX3 = Math.abs(ecefUserPosition.getX() - estimatedPosition3.getX());
+            final double diffY3 = Math.abs(ecefUserPosition.getY() - estimatedPosition3.getY());
+            final double diffZ3 = Math.abs(ecefUserPosition.getZ() - estimatedPosition3.getZ());
             final double posError3 = Math.max(diffX3, Math.max(diffY3, diffZ3));
             if (posError3 > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition3, PROPAGATION_ERROR));
 
-            final double diffVx3 = Math.abs(ecefUserVelocity.getVx()
-                    - estimatedVelocity3.getVx());
-            final double diffVy3 = Math.abs(ecefUserVelocity.getVy()
-                    - estimatedVelocity3.getVy());
-            final double diffVz3 = Math.abs(ecefUserVelocity.getVz()
-                    - estimatedVelocity3.getVz());
+            final double diffVx3 = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity3.getVx());
+            final double diffVy3 = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity3.getVy());
+            final double diffVz3 = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity3.getVz());
             final double velError3 = Math.max(diffVx3, Math.max(diffVy3, diffVz3));
             if (velError3 > VELOCITY_ERROR) {
                 continue;
@@ -4585,24 +3846,22 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double norm3 = Utils.normF(covariance3);
             assertTrue(norm3 >= norm1);
 
-            assertFalse(estimator.propagate(
-                    new Time(2.0 * timeSeconds, TimeUnit.SECOND)));
+            assertFalse(estimator.propagate(new Time(2.0 * timeSeconds, TimeUnit.SECOND)));
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getLastStateTimestamp(), 2.0 * timeSeconds,
-                    0.0);
+            assertEquals(2.0 * timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             final GNSSEstimation estimation4 = estimator.getEstimation();
             final INSTightlyCoupledKalmanState state4 = estimator.getState();
 
             assertEquals(estimation3, estimation4);
             assertEquals(state3, state4);
 
-            assertEquals(mUpdateGNSSMeasurementsStart, 1);
-            assertEquals(mUpdateGNSSMeasurementsEnd, 1);
-            assertEquals(mUpdateBodyKinematicsStart, 1);
-            assertEquals(mUpdateBodyKinematicsEnd, 1);
-            assertEquals(mPropagateStart, 2);
-            assertEquals(mPropagateEnd, 2);
+            assertEquals(1, mUpdateGNSSMeasurementsStart);
+            assertEquals(1, mUpdateGNSSMeasurementsEnd);
+            assertEquals(1, mUpdateBodyKinematicsStart);
+            assertEquals(1, mUpdateBodyKinematicsEnd);
+            assertEquals(2, mPropagateStart);
+            assertEquals(2, mPropagateEnd);
 
             numValid++;
             break;
@@ -4614,12 +3873,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
     @Test
     public void testPropagateWhenNotReadyReturnsFalse() throws LockedException, INSGNSSException {
         final INSTightlyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-        final INSTightlyCoupledKalmanInitializerConfig initConfig =
-                generateInitConfig();
+        final INSTightlyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
 
-        final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator =
-                new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                        initConfig);
+        final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
+                kalmanConfig, initConfig);
 
         assertFalse(estimator.propagate(0.0));
     }
@@ -4634,29 +3891,25 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             final double timeSeconds = randomizer.nextDouble(MIN_TIME, MAX_TIME);
 
-            final double userLatitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double userLongitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final double userLatitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES,
+                    MAX_LATITUDE_DEGREES));
+            final double userLongitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES,
+                    MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final NEDPosition nedUserPosition =
-                    new NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
-            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
-            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
-                    MAX_USER_VELOCITY_VALUE);
+            final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVe = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
+            final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE, MAX_USER_VELOCITY_VALUE);
             final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
             final ECEFPosition ecefUserPosition = new ECEFPosition();
             final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
-            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                    nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
+            NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedUserPosition, nedUserVelocity, ecefUserPosition,
+                    ecefUserVelocity);
 
-            final ECEFPositionAndVelocity ecefUserPositionAndVelocity =
-                    new ECEFPositionAndVelocity(ecefUserPosition, ecefUserVelocity);
+            final ECEFPositionAndVelocity ecefUserPositionAndVelocity = new ECEFPositionAndVelocity(ecefUserPosition,
+                    ecefUserVelocity);
 
             final GNSSConfig config = generateConfig();
             final int numSatellites = config.getNumberOfSatellites();
@@ -4664,66 +3917,51 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double delta = maskAngle / 3.0;
 
             final List<Double> biases = new ArrayList<>();
-            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities =
-                    new ArrayList<>();
+            final List<ECEFPositionAndVelocity> satellitePositionsAndVelocities = new ArrayList<>();
             for (int n = 0; n < numSatellites; n++) {
-                final double satLatitude = randomizer.nextDouble(
-                        userLatitude - delta,
-                        userLatitude + delta);
-                final double satLongitude = randomizer.nextDouble(
-                        userLongitude - delta,
-                        userLongitude + delta);
-                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
-                        MAX_SAT_HEIGHT);
-                final NEDPosition nedSatPosition =
-                        new NEDPosition(satLatitude, satLongitude, satHeight);
+                final double satLatitude = randomizer.nextDouble(userLatitude - delta, userLatitude + delta);
+                final double satLongitude = randomizer.nextDouble(userLongitude - delta, userLongitude + delta);
+                final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT, MAX_SAT_HEIGHT);
+                final NEDPosition nedSatPosition = new NEDPosition(satLatitude, satLongitude, satHeight);
 
-                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
-                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
-                        MAX_SAT_VELOCITY_VALUE);
+                final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVe = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
+                final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE, MAX_SAT_VELOCITY_VALUE);
                 final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
                 final ECEFPosition ecefSatPosition = new ECEFPosition();
                 final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
-                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                        nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
+                NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedSatPosition, nedSatVelocity, ecefSatPosition,
+                        ecefSatVelocity);
 
-                final ECEFPositionAndVelocity ecefSatPositionAndVelocity =
-                        new ECEFPositionAndVelocity(ecefSatPosition, ecefSatVelocity);
+                final ECEFPositionAndVelocity ecefSatPositionAndVelocity = new ECEFPositionAndVelocity(ecefSatPosition,
+                        ecefSatVelocity);
 
-                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition,
-                        ecefUserPosition, config, random);
+                final double bias = GNSSBiasesGenerator.generateBias(ecefSatPosition, ecefUserPosition, config, random);
 
                 biases.add(bias);
                 satellitePositionsAndVelocities.add(ecefSatPositionAndVelocity);
             }
 
-            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator
-                    .generate(timeSeconds, satellitePositionsAndVelocities,
-                            ecefUserPositionAndVelocity, biases, config, random);
+            final Collection<GNSSMeasurement> measurements = GNSSMeasurementsGenerator.generate(timeSeconds,
+                    satellitePositionsAndVelocities, ecefUserPositionAndVelocity, biases, config, random);
 
-            if (measurements.size() <
-                    GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
+            if (measurements.size() < GNSSLeastSquaresPositionAndVelocityEstimator.MIN_MEASUREMENTS) {
                 continue;
             }
 
             final INSTightlyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
-            final INSTightlyCoupledKalmanInitializerConfig initConfig =
-                    generateInitConfig();
+            final INSTightlyCoupledKalmanInitializerConfig initConfig = generateInitConfig();
             final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator =
-                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
-                            initConfig, this);
+                    new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig, initConfig, this);
 
             reset();
-            assertEquals(mUpdateGNSSMeasurementsStart, 0);
-            assertEquals(mUpdateGNSSMeasurementsEnd, 0);
-            assertEquals(mUpdateBodyKinematicsStart, 0);
-            assertEquals(mUpdateBodyKinematicsEnd, 0);
-            assertEquals(mPropagateStart, 0);
-            assertEquals(mPropagateEnd, 0);
+            assertEquals(0, mUpdateGNSSMeasurementsStart);
+            assertEquals(0, mUpdateGNSSMeasurementsEnd);
+            assertEquals(0, mUpdateBodyKinematicsStart);
+            assertEquals(0, mUpdateBodyKinematicsEnd);
+            assertEquals(0, mPropagateStart);
+            assertEquals(0, mPropagateEnd);
 
             assertNull(estimator.getEstimation());
             assertFalse(estimator.getEstimation(null));
@@ -4744,20 +3982,17 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             }
 
             assertFalse(estimator.isRunning());
-            assertEquals(estimator.getMeasurements(), measurements);
-            assertEquals(estimator.getLastStateTimestamp(), timeSeconds, 0.0);
-            assertEquals(estimator.getLastStateTimestampAsTime(),
-                    new Time(timeSeconds, TimeUnit.SECOND));
+            assertEquals(measurements, estimator.getMeasurements());
+            assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
+            assertEquals(new Time(timeSeconds, TimeUnit.SECOND), estimator.getLastStateTimestampAsTime());
             final Time timestamp = new Time(0.0, TimeUnit.MILLISECOND);
             assertTrue(estimator.getLastStateTimestampAsTime(timestamp));
             assertEquals(timestamp, new Time(timeSeconds, TimeUnit.SECOND));
             assertNull(estimator.getKinematics());
             assertNull(estimator.getCorrectedKinematics());
-            assertEquals(estimator.getCoordinateTransformation(),
-                    new CoordinateTransformation(FrameType.BODY_FRAME,
-                            FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
-            final CoordinateTransformation c2 = new CoordinateTransformation(
-                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
+            assertEquals(estimator.getCoordinateTransformation(), new CoordinateTransformation(FrameType.BODY_FRAME,
+                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
+            final CoordinateTransformation c2 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             assertTrue(estimator.getCoordinateTransformation(c2));
             assertEquals(c2, new CoordinateTransformation(FrameType.BODY_FRAME,
@@ -4774,24 +4009,18 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
             final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
 
-            final double diffX = Math.abs(ecefUserPosition.getX()
-                    - estimatedPosition.getX());
-            final double diffY = Math.abs(ecefUserPosition.getY()
-                    - estimatedPosition.getY());
-            final double diffZ = Math.abs(ecefUserPosition.getZ()
-                    - estimatedPosition.getZ());
+            final double diffX = Math.abs(ecefUserPosition.getX() - estimatedPosition.getX());
+            final double diffY = Math.abs(ecefUserPosition.getY() - estimatedPosition.getY());
+            final double diffZ = Math.abs(ecefUserPosition.getZ() - estimatedPosition.getZ());
             final double posError = Math.max(diffX, Math.max(diffY, diffZ));
             if (posError > POSITION_ERROR) {
                 continue;
             }
             assertTrue(ecefUserPosition.equals(estimatedPosition, POSITION_ERROR));
 
-            final double diffVx = Math.abs(ecefUserVelocity.getVx()
-                    - estimatedVelocity.getVx());
-            final double diffVy = Math.abs(ecefUserVelocity.getVy()
-                    - estimatedVelocity.getVy());
-            final double diffVz = Math.abs(ecefUserVelocity.getVz()
-                    - estimatedVelocity.getVz());
+            final double diffVx = Math.abs(ecefUserVelocity.getVx() - estimatedVelocity.getVx());
+            final double diffVy = Math.abs(ecefUserVelocity.getVy() - estimatedVelocity.getVy());
+            final double diffVz = Math.abs(ecefUserVelocity.getVz() - estimatedVelocity.getVz());
             final double velError = Math.max(diffVx, Math.max(diffVy, diffVz));
             if (velError > VELOCITY_ERROR) {
                 continue;
@@ -4799,11 +4028,11 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             assertTrue(ecefUserVelocity.equals(estimatedVelocity, VELOCITY_ERROR));
 
             // reset
-            assertEquals(mReset, 0);
+            assertEquals(0, mReset);
 
             estimator.reset();
 
-            assertEquals(mReset, 1);
+            assertEquals(1, mReset);
             assertNull(estimator.getMeasurements());
             assertNull(estimator.getEstimation());
             assertNull(estimator.getState());
@@ -4813,23 +4042,22 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             assertFalse(estimator.isRunning());
 
             // update again with same timestamp now it does make an action
-            assertTrue(estimator.updateMeasurements(measurements,
-                    new Time(timeSeconds, TimeUnit.SECOND)));
+            assertTrue(estimator.updateMeasurements(measurements, new Time(timeSeconds, TimeUnit.SECOND)));
 
-            assertEquals(estimator.getMeasurements(), measurements);
-            assertEquals(estimator.getLastStateTimestamp(), timeSeconds, 0.0);
+            assertEquals(measurements, estimator.getMeasurements());
+            assertEquals(timeSeconds, estimator.getLastStateTimestamp(), 0.0);
             final GNSSEstimation estimation2 = estimator.getEstimation();
             final INSTightlyCoupledKalmanState state2 = estimator.getState();
 
             assertEquals(estimation1, estimation2);
             assertEquals(state1, state2);
 
-            assertEquals(mUpdateGNSSMeasurementsStart, 2);
-            assertEquals(mUpdateGNSSMeasurementsEnd, 2);
-            assertEquals(mUpdateBodyKinematicsStart, 2);
-            assertEquals(mUpdateBodyKinematicsEnd, 2);
-            assertEquals(mPropagateStart, 2);
-            assertEquals(mPropagateEnd, 2);
+            assertEquals(2, mUpdateGNSSMeasurementsStart);
+            assertEquals(2, mUpdateGNSSMeasurementsEnd);
+            assertEquals(2, mUpdateBodyKinematicsStart);
+            assertEquals(2, mUpdateBodyKinematicsEnd);
+            assertEquals(2, mPropagateStart);
+            assertEquals(2, mPropagateEnd);
 
             numValid++;
             break;
@@ -4840,43 +4068,37 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Override
-    public void onUpdateGNSSMeasurementsStart(
-            final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator) {
+    public void onUpdateGNSSMeasurementsStart(final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
         mUpdateGNSSMeasurementsStart++;
     }
 
     @Override
-    public void onUpdateGNSSMeasurementsEnd(
-            final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator) {
+    public void onUpdateGNSSMeasurementsEnd(final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
         mUpdateGNSSMeasurementsEnd++;
     }
 
     @Override
-    public void onUpdateBodyKinematicsStart(
-            final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator) {
+    public void onUpdateBodyKinematicsStart(final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
         mUpdateBodyKinematicsStart++;
     }
 
     @Override
-    public void onUpdateBodyKinematicsEnd(
-            final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator) {
+    public void onUpdateBodyKinematicsEnd(final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
         mUpdateBodyKinematicsEnd++;
     }
 
     @Override
-    public void onPropagateStart(
-            final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator) {
+    public void onPropagateStart(final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
         mPropagateStart++;
     }
 
     @Override
-    public void onPropagateEnd(
-            final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator) {
+    public void onPropagateEnd(final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator) {
         checkLocked(estimator);
         mPropagateEnd++;
     }
@@ -4897,112 +4119,37 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         mReset = 0;
     }
 
-    private void checkLocked(
-            final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator) {
+    private static void checkLocked(final INSGNSSTightlyCoupledKalmanFilteredEstimator estimator) {
         assertTrue(estimator.isRunning());
-        try {
-            estimator.setListener(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setEpochInterval(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setEpochInterval(new Time(0.0, TimeUnit.SECOND));
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setConfig(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setCoordinateTransformation(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
-        try {
-            estimator.setInitialConfig(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.updateMeasurements(null, 0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
-        try {
-            estimator.updateMeasurements(null,
-                    new Time(0.0, TimeUnit.SECOND));
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
-        try {
-            estimator.updateBodyKinematics(null, 0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
-        try {
-            estimator.updateBodyKinematics(null,
-                    new Time(0.0, TimeUnit.SECOND));
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
-        try {
-            estimator.propagate(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
-        try {
-            estimator.propagate(new Time(0.0, TimeUnit.SECOND));
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
-        try {
-            estimator.reset();
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
+        assertThrows(LockedException.class, () -> estimator.setListener(null));
+        assertThrows(LockedException.class, () -> estimator.setEpochInterval(0.0));
+        assertThrows(LockedException.class, () -> estimator.setEpochInterval(new Time(0.0, TimeUnit.SECOND)));
+        assertThrows(LockedException.class, () -> estimator.setConfig(null));
+        assertThrows(LockedException.class, () -> estimator.setCoordinateTransformation(null));
+        assertThrows(LockedException.class, () -> estimator.setInitialConfig(null));
+        assertThrows(LockedException.class, () -> estimator.updateMeasurements(null, 0.0));
+        assertThrows(LockedException.class, () -> estimator.updateMeasurements(null,
+                new Time(0.0, TimeUnit.SECOND)));
+        assertThrows(LockedException.class, () -> estimator.updateBodyKinematics(null, 0.0));
+        assertThrows(LockedException.class, () -> estimator.updateBodyKinematics(null,
+                new Time(0.0, TimeUnit.SECOND)));
+        assertThrows(LockedException.class, () -> estimator.propagate(0.0));
+        assertThrows(LockedException.class, () -> estimator.propagate(new Time(0.0, TimeUnit.SECOND)));
+        assertThrows(LockedException.class, estimator::reset);
     }
 
     private static INSTightlyCoupledKalmanInitializerConfig generateInitConfig() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double initialAttitudeUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double initialVelocityUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double initialPositionUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double initialAccelerationBiasUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double initialGyroscopeBiasUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double initialClockOffsetUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double initialClockDriftUncertainty = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
+        final double initialAttitudeUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialVelocityUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialPositionUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialAccelerationBiasUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialGyroscopeBiasUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialClockOffsetUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialClockDriftUncertainty = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        return new INSTightlyCoupledKalmanInitializerConfig(initialAttitudeUncertainty,
-                initialVelocityUncertainty, initialPositionUncertainty,
-                initialAccelerationBiasUncertainty, initialGyroscopeBiasUncertainty,
+        return new INSTightlyCoupledKalmanInitializerConfig(initialAttitudeUncertainty, initialVelocityUncertainty,
+                initialPositionUncertainty, initialAccelerationBiasUncertainty, initialGyroscopeBiasUncertainty,
                 initialClockOffsetUncertainty, initialClockDriftUncertainty);
     }
 
@@ -5017,53 +4164,34 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        return new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
-                accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD, clockPhasePSD,
-                pseudoRangeSD, rangeRateSD);
+        return new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD, gyroBiasPSD,
+                clockFrequencyPSD, clockPhasePSD, pseudoRangeSD, rangeRateSD);
     }
 
     private static GNSSConfig generateConfig() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double epochInterval = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double initialEstimatedEcefPositionX = randomizer.nextDouble(MIN_VALUE,
-                MAX_VALUE);
-        final double initialEstimatedEcefPositionY = randomizer.nextDouble(MIN_VALUE,
-                MAX_VALUE);
-        final double initialEstimatedEcefPositionZ = randomizer.nextDouble(MIN_VALUE,
-                MAX_VALUE);
-        final int numberOfSatellites = randomizer.nextInt(MIN_NUM_SAT,
-                MAX_NUM_SAT);
-        final double orbitalRadiusOfSatellites = randomizer.nextDouble(MIN_VALUE,
-                MAX_VALUE);
-        final double satellitesInclinationDegrees = randomizer.nextDouble(MIN_VALUE,
-                MAX_VALUE);
-        final double constellationLongitudeOffsetDegrees = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double constellationTimingOffset = randomizer.nextDouble(MIN_VALUE,
-                MAX_VALUE);
-        final double maskAngleDegrees = randomizer.nextDouble(
-                MIN_MASK_ANGLE_DEGREES, MAX_MASK_ANGLE_DEGREES);
+        final double initialEstimatedEcefPositionX = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialEstimatedEcefPositionY = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialEstimatedEcefPositionZ = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final int numberOfSatellites = randomizer.nextInt(MIN_NUM_SAT, MAX_NUM_SAT);
+        final double orbitalRadiusOfSatellites = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double satellitesInclinationDegrees = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double constellationLongitudeOffsetDegrees = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double constellationTimingOffset = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double maskAngleDegrees = randomizer.nextDouble(MIN_MASK_ANGLE_DEGREES, MAX_MASK_ANGLE_DEGREES);
         final double sisErrorSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final double zenithIonosphereErrorSD = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double zenithTroposphereErrorSD = randomizer.nextDouble(MIN_VALUE,
-                MAX_VALUE);
-        final double codeTrackingErrorSD = randomizer.nextDouble(MIN_VALUE,
-                MAX_VALUE);
-        final double rangeRateTrackingErrorSD = randomizer.nextDouble(MIN_VALUE,
-                MAX_VALUE);
-        final double initialReceiverClockOffset = randomizer.nextDouble(MIN_VALUE,
-                MAX_VALUE);
-        final double initialReceiverClockDrift = randomizer.nextDouble(MIN_VALUE,
-                MAX_VALUE);
+        final double zenithIonosphereErrorSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double zenithTroposphereErrorSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double codeTrackingErrorSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double rangeRateTrackingErrorSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialReceiverClockOffset = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double initialReceiverClockDrift = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        return new GNSSConfig(epochInterval, initialEstimatedEcefPositionX,
-                initialEstimatedEcefPositionY, initialEstimatedEcefPositionZ,
-                numberOfSatellites, orbitalRadiusOfSatellites,
-                satellitesInclinationDegrees, constellationLongitudeOffsetDegrees,
-                constellationTimingOffset, maskAngleDegrees, sisErrorSD,
-                zenithIonosphereErrorSD, zenithTroposphereErrorSD, codeTrackingErrorSD,
-                rangeRateTrackingErrorSD, initialReceiverClockOffset,
-                initialReceiverClockDrift);
+        return new GNSSConfig(epochInterval, initialEstimatedEcefPositionX, initialEstimatedEcefPositionY,
+                initialEstimatedEcefPositionZ, numberOfSatellites, orbitalRadiusOfSatellites,
+                satellitesInclinationDegrees, constellationLongitudeOffsetDegrees, constellationTimingOffset,
+                maskAngleDegrees, sisErrorSD, zenithIonosphereErrorSD, zenithTroposphereErrorSD, codeTrackingErrorSD,
+                rangeRateTrackingErrorSD, initialReceiverClockOffset, initialReceiverClockDrift);
     }
 }

@@ -29,8 +29,8 @@ import java.util.Collection;
  * @param <L> a listener type.
  */
 public interface KnownFrameMagnetometerCalibrator<T extends FrameBodyMagneticFluxDensity,
-        L extends KnownFrameMagnetometerCalibratorListener<?>>
-        extends UnknownHardIronMagnetometerCalibrator, MagnetometerCalibrator {
+        L extends KnownFrameMagnetometerCalibratorListener<?>> extends UnknownHardIronMagnetometerCalibrator,
+        MagnetometerCalibrator {
 
     /**
      * Gets a collection of body magnetic flux density measurements taken at different
@@ -48,7 +48,7 @@ public interface KnownFrameMagnetometerCalibrator<T extends FrameBodyMagneticFlu
      * @return a collection of body magnetic flux density measurements taken at different
      * frames (positions, orientations and velocities).
      */
-    Collection<? extends T> getMeasurements();
+    Collection<T> getMeasurements();
 
     /**
      * Sets a collection of body magnetic flux density measurements taken at different

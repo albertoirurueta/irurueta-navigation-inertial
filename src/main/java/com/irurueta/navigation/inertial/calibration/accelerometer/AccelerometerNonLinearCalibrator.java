@@ -21,8 +21,7 @@ import com.irurueta.navigation.LockedException;
 /**
  * Interface for non-linear accelerometer calibrators.
  */
-public interface AccelerometerNonLinearCalibrator
-        extends AccelerometerCalibrator {
+public interface AccelerometerNonLinearCalibrator extends AccelerometerCalibrator {
 
     /**
      * Gets initial x scaling factor.
@@ -167,8 +166,7 @@ public interface AccelerometerNonLinearCalibrator
      * @param initialSz initial z scaling factor.
      * @throws LockedException if calibrator is currently running.
      */
-    void setInitialScalingFactors(
-            final double initialSx, final double initialSy, final double initialSz)
+    void setInitialScalingFactors(final double initialSx, final double initialSy, final double initialSz)
             throws LockedException;
 
     /**
@@ -184,8 +182,7 @@ public interface AccelerometerNonLinearCalibrator
      */
     void setInitialCrossCouplingErrors(
             final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy)
-            throws LockedException;
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException;
 
     /**
      * Sets initial scaling factors and cross coupling errors.
@@ -204,8 +201,7 @@ public interface AccelerometerNonLinearCalibrator
     void setInitialScalingFactorsAndCrossCouplingErrors(
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy)
-            throws LockedException;
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException;
 
     /**
      * Gets initial scale factors and cross coupling errors matrix.

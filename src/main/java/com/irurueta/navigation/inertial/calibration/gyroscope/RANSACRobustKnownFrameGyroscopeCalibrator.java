@@ -56,8 +56,7 @@ import java.util.List;
  * - ftrue is ground-truth specific force. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
-public class RANSACRobustKnownFrameGyroscopeCalibrator extends
-        RobustKnownFrameGyroscopeCalibrator {
+public class RANSACRobustKnownFrameGyroscopeCalibrator extends RobustKnownFrameGyroscopeCalibrator {
 
     /**
      * Constant defining default threshold to determine whether samples are inliers or not.
@@ -109,8 +108,7 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    public RANSACRobustKnownFrameGyroscopeCalibrator(
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
+    public RANSACRobustKnownFrameGyroscopeCalibrator(final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(listener);
     }
 
@@ -121,8 +119,7 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
      *                     deviations taken at different frames (positions, orientations
      *                     and velocities).
      */
-    public RANSACRobustKnownFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements) {
+    public RANSACRobustKnownFrameGyroscopeCalibrator(final List<StandardDeviationFrameBodyKinematics> measurements) {
         super(measurements);
     }
 
@@ -159,8 +156,7 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public RANSACRobustKnownFrameGyroscopeCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(commonAxisUsed, listener);
     }
 
@@ -174,8 +170,7 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public RANSACRobustKnownFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -190,8 +185,7 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public RANSACRobustKnownFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
     }
@@ -243,9 +237,7 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
      *                              false if inliers only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepInliersEnabled(
-            final boolean computeAndKeepInliers)
-            throws LockedException {
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -269,9 +261,7 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
      *                                false if residuals only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepResidualsEnabled(
-            final boolean computeAndKeepResiduals)
-            throws LockedException {
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -288,8 +278,7 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
      */
     @SuppressWarnings("DuplicatedCode")
     @Override
-    public void calibrate() throws LockedException, NotReadyException,
-            CalibrationException {
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -299,7 +288,7 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
 
         final RANSACRobustEstimator<PreliminaryResult> innerEstimator =
                 new RANSACRobustEstimator<>(
-                        new RANSACRobustEstimatorListener<PreliminaryResult>() {
+                        new RANSACRobustEstimatorListener<>() {
                             @Override
                             public double getThreshold() {
                                 return mThreshold;
@@ -317,14 +306,12 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
 
                             @Override
                             public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<PreliminaryResult> solutions) {
+                                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                                 computePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override
-                            public double computeResidual(
-                                    final PreliminaryResult currentEstimation, final int i) {
+                            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
                                 return computeError(mMeasurements.get(i), currentEstimation);
                             }
 
@@ -334,36 +321,30 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
                             }
 
                             @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
                             public void onEstimateNextIteration(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final int iteration) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                                 if (mListener != null) {
                                     mListener.onCalibrateNextIteration(
-                                            RANSACRobustKnownFrameGyroscopeCalibrator.this,
-                                            iteration);
+                                            RANSACRobustKnownFrameGyroscopeCalibrator.this, iteration);
                                 }
                             }
 
                             @Override
                             public void onEstimateProgressChange(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final float progress) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                                 if (mListener != null) {
                                     mListener.onCalibrateProgressChange(
-                                            RANSACRobustKnownFrameGyroscopeCalibrator.this,
-                                            progress);
+                                            RANSACRobustKnownFrameGyroscopeCalibrator.this, progress);
                                 }
                             }
                         });
@@ -376,10 +357,8 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
             }
 
             mInliersData = null;
-            innerEstimator.setComputeAndKeepInliersEnabled(
-                    mComputeAndKeepInliers || mRefineResult);
-            innerEstimator.setComputeAndKeepResidualsEnabled(
-                    mComputeAndKeepResiduals || mRefineResult);
+            innerEstimator.setComputeAndKeepInliersEnabled(mComputeAndKeepInliers || mRefineResult);
+            innerEstimator.setComputeAndKeepResidualsEnabled(mComputeAndKeepResiduals || mRefineResult);
             innerEstimator.setConfidence(mConfidence);
             innerEstimator.setMaxIterations(mMaxIterations);
             innerEstimator.setProgressDelta(mProgressDelta);

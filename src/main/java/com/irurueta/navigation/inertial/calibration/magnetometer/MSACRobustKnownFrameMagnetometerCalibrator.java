@@ -52,8 +52,7 @@ import java.util.List;
  * - mBtrue is ground-truth magnetic flux density. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
-public class MSACRobustKnownFrameMagnetometerCalibrator extends
-        RobustKnownFrameMagnetometerCalibrator {
+public class MSACRobustKnownFrameMagnetometerCalibrator extends RobustKnownFrameMagnetometerCalibrator {
 
     /**
      * Constant defining default threshold to determine whether samples are
@@ -86,8 +85,7 @@ public class MSACRobustKnownFrameMagnetometerCalibrator extends
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    public MSACRobustKnownFrameMagnetometerCalibrator(
-            final RobustKnownFrameMagnetometerCalibratorListener listener) {
+    public MSACRobustKnownFrameMagnetometerCalibrator(final RobustKnownFrameMagnetometerCalibratorListener listener) {
         super(listener);
     }
 
@@ -135,8 +133,7 @@ public class MSACRobustKnownFrameMagnetometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public MSACRobustKnownFrameMagnetometerCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownFrameMagnetometerCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownFrameMagnetometerCalibratorListener listener) {
         super(commonAxisUsed, listener);
     }
 
@@ -150,8 +147,7 @@ public class MSACRobustKnownFrameMagnetometerCalibrator extends
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     public MSACRobustKnownFrameMagnetometerCalibrator(
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -166,8 +162,7 @@ public class MSACRobustKnownFrameMagnetometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public MSACRobustKnownFrameMagnetometerCalibrator(
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownFrameMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
     }
@@ -219,7 +214,7 @@ public class MSACRobustKnownFrameMagnetometerCalibrator extends
 
         final MSACRobustEstimator<PreliminaryResult> innerEstimator =
                 new MSACRobustEstimator<>(
-                        new MSACRobustEstimatorListener<PreliminaryResult>() {
+                        new MSACRobustEstimatorListener<>() {
                             @Override
                             public double getThreshold() {
                                 return mThreshold;
@@ -237,17 +232,14 @@ public class MSACRobustKnownFrameMagnetometerCalibrator extends
 
                             @Override
                             public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<PreliminaryResult> solutions) {
+                                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                                 computePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override
                             public double computeResidual(
-                                    final PreliminaryResult currentEstimation,
-                                    final int i) {
-                                return computeError(mMeasurements.get(i),
-                                        currentEstimation);
+                                    final PreliminaryResult currentEstimation, final int i) {
+                                return computeError(mMeasurements.get(i), currentEstimation);
                             }
 
                             @Override
@@ -256,36 +248,30 @@ public class MSACRobustKnownFrameMagnetometerCalibrator extends
                             }
 
                             @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
                             public void onEstimateNextIteration(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final int iteration) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                                 if (mListener != null) {
                                     mListener.onCalibrateNextIteration(
-                                            MSACRobustKnownFrameMagnetometerCalibrator.this,
-                                            iteration);
+                                            MSACRobustKnownFrameMagnetometerCalibrator.this, iteration);
                                 }
                             }
 
                             @Override
                             public void onEstimateProgressChange(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final float progress) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                                 if (mListener != null) {
                                     mListener.onCalibrateProgressChange(
-                                            MSACRobustKnownFrameMagnetometerCalibrator.this,
-                                            progress);
+                                            MSACRobustKnownFrameMagnetometerCalibrator.this, progress);
                                 }
                             }
                         });

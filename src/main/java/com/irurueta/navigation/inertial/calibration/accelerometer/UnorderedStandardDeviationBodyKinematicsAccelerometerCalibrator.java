@@ -24,8 +24,7 @@ import java.util.Collection;
  * Defines an accelerometer calibrator using unordered collections of
  * {@link StandardDeviationBodyKinematics} measurements.
  */
-public interface UnorderedStandardDeviationBodyKinematicsAccelerometerCalibrator extends
-        AccelerometerCalibrator {
+public interface UnorderedStandardDeviationBodyKinematicsAccelerometerCalibrator extends AccelerometerCalibrator {
 
     /**
      * Gets a collection of body kinematics measurements taken at
@@ -46,7 +45,5 @@ public interface UnorderedStandardDeviationBodyKinematicsAccelerometerCalibrator
      *                     known position with unknown orientations.
      * @throws LockedException if calibrator is currently running.
      */
-    void setMeasurements(
-            final Collection<StandardDeviationBodyKinematics> measurements)
-            throws LockedException;
+    void setMeasurements(final Collection<StandardDeviationBodyKinematics> measurements) throws LockedException;
 }

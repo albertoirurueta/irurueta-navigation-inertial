@@ -64,8 +64,7 @@ import java.util.Random;
 
 import static org.junit.Assert.*;
 
-public class GyroscopeMeasurementsGeneratorTest implements
-        GyroscopeMeasurementsGeneratorListener {
+public class GyroscopeMeasurementsGeneratorTest implements GyroscopeMeasurementsGeneratorListener {
 
     private static final double TIME_INTERVAL_SECONDS = 0.02;
 
@@ -127,23 +126,19 @@ public class GyroscopeMeasurementsGeneratorTest implements
 
     private int mReset;
 
-    private final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> mSequences =
-            new ArrayList<>();
+    private final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> mSequences = new ArrayList<>();
 
-    private final List<StandardDeviationBodyKinematics> mMeasurements =
-            new ArrayList<>();
+    private final List<StandardDeviationBodyKinematics> mMeasurements = new ArrayList<>();
 
     private final AccelerometerMeasurementsGeneratorListener mAccelerometerGeneratorListener =
             new AccelerometerMeasurementsGeneratorListener() {
                 @Override
-                public void onInitializationStarted(
-                        final AccelerometerMeasurementsGenerator generator) {
+                public void onInitializationStarted(final AccelerometerMeasurementsGenerator generator) {
                 }
 
                 @Override
                 public void onInitializationCompleted(
-                        final AccelerometerMeasurementsGenerator generator,
-                        final double baseNoiseLevel) {
+                        final AccelerometerMeasurementsGenerator generator, final double baseNoiseLevel) {
                 }
 
                 @Override
@@ -153,23 +148,19 @@ public class GyroscopeMeasurementsGeneratorTest implements
                 }
 
                 @Override
-                public void onStaticIntervalDetected(
-                        final AccelerometerMeasurementsGenerator generator) {
+                public void onStaticIntervalDetected(final AccelerometerMeasurementsGenerator generator) {
                 }
 
                 @Override
-                public void onDynamicIntervalDetected(
-                        final AccelerometerMeasurementsGenerator generator) {
+                public void onDynamicIntervalDetected(final AccelerometerMeasurementsGenerator generator) {
                 }
 
                 @Override
-                public void onStaticIntervalSkipped(
-                        final AccelerometerMeasurementsGenerator generator) {
+                public void onStaticIntervalSkipped(final AccelerometerMeasurementsGenerator generator) {
                 }
 
                 @Override
-                public void onDynamicIntervalSkipped(
-                        final AccelerometerMeasurementsGenerator generator) {
+                public void onDynamicIntervalSkipped(final AccelerometerMeasurementsGenerator generator) {
                 }
 
                 @Override
@@ -180,77 +171,60 @@ public class GyroscopeMeasurementsGeneratorTest implements
                 }
 
                 @Override
-                public void onReset(
-                        final AccelerometerMeasurementsGenerator generator) {
+                public void onReset(final AccelerometerMeasurementsGenerator generator) {
                 }
             };
 
     @Test
     public void testConstructor1() {
-        final GyroscopeMeasurementsGenerator generator =
-                new GyroscopeMeasurementsGenerator();
+        final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator();
 
         // check default values
-        assertEquals(generator.getTimeInterval(), TIME_INTERVAL_SECONDS,
-                0.0);
+        assertEquals(TIME_INTERVAL_SECONDS, generator.getTimeInterval(), 0.0);
         final Time timeInterval1 = generator.getTimeIntervalAsTime();
-        assertEquals(timeInterval1.getValue().doubleValue(),
-                TIME_INTERVAL_SECONDS, 0.0);
-        assertEquals(timeInterval1.getUnit(), TimeUnit.SECOND);
+        assertEquals(TIME_INTERVAL_SECONDS, timeInterval1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, timeInterval1.getUnit());
         final Time timeInterval2 = new Time(1.0, TimeUnit.DAY);
         generator.getTimeIntervalAsTime(timeInterval2);
         assertEquals(timeInterval1, timeInterval2);
-        assertEquals(generator.getMinStaticSamples(),
-                MeasurementsGenerator.DEFAULT_MIN_STATIC_SAMPLES);
-        assertEquals(generator.getMaxDynamicSamples(),
-                MeasurementsGenerator.DEFAULT_MAX_DYNAMIC_SAMPLES);
+        assertEquals(MeasurementsGenerator.DEFAULT_MIN_STATIC_SAMPLES, generator.getMinStaticSamples());
+        assertEquals(MeasurementsGenerator.DEFAULT_MAX_DYNAMIC_SAMPLES, generator.getMaxDynamicSamples());
         assertNull(generator.getListener());
-        assertEquals(generator.getProcessedStaticSamples(), 0);
-        assertEquals(generator.getProcessedDynamicSamples(), 0);
+        assertEquals(0, generator.getProcessedStaticSamples());
+        assertEquals(0, generator.getProcessedDynamicSamples());
         assertFalse(generator.isStaticIntervalSkipped());
         assertFalse(generator.isDynamicIntervalSkipped());
         assertFalse(generator.isRunning());
 
-        assertEquals(generator.getWindowSize(),
-                TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE);
-        assertEquals(generator.getInitialStaticSamples(),
-                TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES);
-        assertEquals(generator.getThresholdFactor(),
-                TriadStaticIntervalDetector.DEFAULT_THRESHOLD_FACTOR, 0.0);
-        assertEquals(generator.getInstantaneousNoiseLevelFactor(),
-                TriadStaticIntervalDetector.DEFAULT_INSTANTANEOUS_NOISE_LEVEL_FACTOR,
-                0.0);
-        assertEquals(generator.getBaseNoiseLevelAbsoluteThreshold(),
-                TriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
-                0.0);
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE, generator.getWindowSize());
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES, generator.getInitialStaticSamples());
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_THRESHOLD_FACTOR, generator.getThresholdFactor(), 0.0);
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_INSTANTANEOUS_NOISE_LEVEL_FACTOR,
+                generator.getInstantaneousNoiseLevelFactor(), 0.0);
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
+                generator.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
         final Acceleration errorThreshold1 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
         assertEquals(errorThreshold1.getValue().doubleValue(),
                 generator.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
-        assertEquals(errorThreshold1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration errorThreshold2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, errorThreshold1.getUnit());
+        final Acceleration errorThreshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement(errorThreshold2);
         assertEquals(errorThreshold1, errorThreshold2);
-        assertEquals(generator.getStatus(),
-                TriadStaticIntervalDetector.Status.IDLE);
-        assertEquals(generator.getAccelerometerBaseNoiseLevel(), 0.0, 0.0);
+        assertEquals(TriadStaticIntervalDetector.Status.IDLE, generator.getStatus());
+        assertEquals(0.0, generator.getAccelerometerBaseNoiseLevel(), 0.0);
         final Acceleration baseNoiseLevel1 = generator.getAccelerometerBaseNoiseLevelAsMeasurement();
-        assertEquals(baseNoiseLevel1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(baseNoiseLevel1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration baseNoiseLevel2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(0.0, baseNoiseLevel1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, baseNoiseLevel1.getUnit());
+        final Acceleration baseNoiseLevel2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getAccelerometerBaseNoiseLevelAsMeasurement(baseNoiseLevel2);
         assertEquals(baseNoiseLevel1, baseNoiseLevel2);
-        assertEquals(generator.getAccelerometerBaseNoiseLevelPsd(),
-                0.0, 0.0);
-        assertEquals(generator.getAccelerometerBaseNoiseLevelRootPsd(),
-                0.0, 0.0);
-        assertEquals(generator.getThreshold(), 0.0, 0.0);
+        assertEquals(0.0, generator.getAccelerometerBaseNoiseLevelPsd(), 0.0);
+        assertEquals(0.0, generator.getAccelerometerBaseNoiseLevelRootPsd(), 0.0);
+        assertEquals(0.0, generator.getThreshold(), 0.0);
         final Acceleration threshold1 = generator.getThresholdAsMeasurement();
-        assertEquals(threshold1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(threshold1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration threshold2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(0.0, threshold1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, threshold1.getUnit());
+        final Acceleration threshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getThresholdAsMeasurement(threshold2);
         assertEquals(threshold1, threshold2);
 
@@ -270,82 +244,65 @@ public class GyroscopeMeasurementsGeneratorTest implements
 
         assertEquals(0.0, generator.getGyroscopeBaseNoiseLevel(), 0.0);
         final AngularSpeed gyroNoiseLevel1 = generator.getGyroscopeBaseNoiseLevelAsMeasurement();
-        assertEquals(gyroNoiseLevel1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(gyroNoiseLevel1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed gyroNoiseLevel2 = new AngularSpeed(1.0,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(0.0, gyroNoiseLevel1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, gyroNoiseLevel1.getUnit());
+        final AngularSpeed gyroNoiseLevel2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         generator.getGyroscopeBaseNoiseLevelAsMeasurement(gyroNoiseLevel2);
         assertEquals(gyroNoiseLevel1, gyroNoiseLevel2);
-        assertEquals(generator.getGyroscopeBaseNoiseLevelPsd(), 0.0, 0.0);
-        assertEquals(generator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0, 0.0);
+        assertEquals(0.0, generator.getGyroscopeBaseNoiseLevelPsd(), 0.0);
+        assertEquals(0.0, generator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
     }
 
     @Test
     public void testConstructor2() {
-        final GyroscopeMeasurementsGenerator generator =
-                new GyroscopeMeasurementsGenerator(this);
+        final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator(this);
 
         // check default values
-        assertEquals(generator.getTimeInterval(), TIME_INTERVAL_SECONDS,
-                0.0);
+        assertEquals(TIME_INTERVAL_SECONDS, generator.getTimeInterval(), 0.0);
         final Time timeInterval1 = generator.getTimeIntervalAsTime();
-        assertEquals(timeInterval1.getValue().doubleValue(),
-                TIME_INTERVAL_SECONDS, 0.0);
-        assertEquals(timeInterval1.getUnit(), TimeUnit.SECOND);
+        assertEquals(TIME_INTERVAL_SECONDS, timeInterval1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, timeInterval1.getUnit());
         final Time timeInterval2 = new Time(1.0, TimeUnit.DAY);
         generator.getTimeIntervalAsTime(timeInterval2);
         assertEquals(timeInterval1, timeInterval2);
-        assertEquals(generator.getMinStaticSamples(),
-                MeasurementsGenerator.DEFAULT_MIN_STATIC_SAMPLES);
-        assertEquals(generator.getMaxDynamicSamples(),
-                MeasurementsGenerator.DEFAULT_MAX_DYNAMIC_SAMPLES);
-        assertSame(generator.getListener(), this);
-        assertEquals(generator.getProcessedStaticSamples(), 0);
-        assertEquals(generator.getProcessedDynamicSamples(), 0);
+        assertEquals(MeasurementsGenerator.DEFAULT_MIN_STATIC_SAMPLES, generator.getMinStaticSamples());
+        assertEquals(MeasurementsGenerator.DEFAULT_MAX_DYNAMIC_SAMPLES, generator.getMaxDynamicSamples());
+        assertSame(this, generator.getListener());
+        assertEquals(0, generator.getProcessedStaticSamples());
+        assertEquals(0, generator.getProcessedDynamicSamples());
         assertFalse(generator.isStaticIntervalSkipped());
         assertFalse(generator.isDynamicIntervalSkipped());
         assertFalse(generator.isRunning());
 
-        assertEquals(generator.getWindowSize(),
-                TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE);
-        assertEquals(generator.getInitialStaticSamples(),
-                TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES);
-        assertEquals(generator.getThresholdFactor(),
-                TriadStaticIntervalDetector.DEFAULT_THRESHOLD_FACTOR, 0.0);
-        assertEquals(generator.getInstantaneousNoiseLevelFactor(),
-                TriadStaticIntervalDetector.DEFAULT_INSTANTANEOUS_NOISE_LEVEL_FACTOR,
-                0.0);
-        assertEquals(generator.getBaseNoiseLevelAbsoluteThreshold(),
-                TriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
-                0.0);
-        final Acceleration errorThreshold1 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
-        assertEquals(errorThreshold1.getValue().doubleValue(),
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE, generator.getWindowSize());
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES, generator.getInitialStaticSamples());
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_THRESHOLD_FACTOR, generator.getThresholdFactor(), 0.0);
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_INSTANTANEOUS_NOISE_LEVEL_FACTOR,
+                generator.getInstantaneousNoiseLevelFactor(), 0.0);
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
                 generator.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
-        assertEquals(errorThreshold1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration errorThreshold2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration errorThreshold1 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
+        assertEquals(errorThreshold1.getValue().doubleValue(), generator.getBaseNoiseLevelAbsoluteThreshold(),
+                0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, errorThreshold1.getUnit());
+        final Acceleration errorThreshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement(errorThreshold2);
         assertEquals(errorThreshold1, errorThreshold2);
-        assertEquals(generator.getStatus(),
-                TriadStaticIntervalDetector.Status.IDLE);
-        assertEquals(generator.getAccelerometerBaseNoiseLevel(), 0.0, 0.0);
+        assertEquals(TriadStaticIntervalDetector.Status.IDLE, generator.getStatus());
+        assertEquals(0.0, generator.getAccelerometerBaseNoiseLevel(), 0.0);
         final Acceleration baseNoiseLevel1 = generator.getAccelerometerBaseNoiseLevelAsMeasurement();
-        assertEquals(baseNoiseLevel1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(baseNoiseLevel1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration baseNoiseLevel2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(0.0, baseNoiseLevel1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, baseNoiseLevel1.getUnit());
+        final Acceleration baseNoiseLevel2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getAccelerometerBaseNoiseLevelAsMeasurement(baseNoiseLevel2);
         assertEquals(baseNoiseLevel1, baseNoiseLevel2);
-        assertEquals(generator.getAccelerometerBaseNoiseLevelPsd(),
-                0.0, 0.0);
-        assertEquals(generator.getAccelerometerBaseNoiseLevelRootPsd(),
-                0.0, 0.0);
-        assertEquals(generator.getThreshold(), 0.0, 0.0);
+        assertEquals(0.0, generator.getAccelerometerBaseNoiseLevelPsd(), 0.0);
+        assertEquals(0.0, generator.getAccelerometerBaseNoiseLevelRootPsd(), 0.0);
+        assertEquals(0.0, generator.getThreshold(), 0.0);
         final Acceleration threshold1 = generator.getThresholdAsMeasurement();
-        assertEquals(threshold1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(threshold1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration threshold2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(0.0, threshold1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, threshold1.getUnit());
+        final Acceleration threshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getThresholdAsMeasurement(threshold2);
         assertEquals(threshold1, threshold2);
 
@@ -365,24 +322,21 @@ public class GyroscopeMeasurementsGeneratorTest implements
 
         assertEquals(0.0, generator.getGyroscopeBaseNoiseLevel(), 0.0);
         final AngularSpeed gyroNoiseLevel1 = generator.getGyroscopeBaseNoiseLevelAsMeasurement();
-        assertEquals(gyroNoiseLevel1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(gyroNoiseLevel1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed gyroNoiseLevel2 = new AngularSpeed(1.0,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(0.0, gyroNoiseLevel1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, gyroNoiseLevel1.getUnit());
+        final AngularSpeed gyroNoiseLevel2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         generator.getGyroscopeBaseNoiseLevelAsMeasurement(gyroNoiseLevel2);
         assertEquals(gyroNoiseLevel1, gyroNoiseLevel2);
-        assertEquals(generator.getGyroscopeBaseNoiseLevelPsd(), 0.0, 0.0);
-        assertEquals(generator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0, 0.0);
+        assertEquals(0.0, generator.getGyroscopeBaseNoiseLevelPsd(), 0.0);
+        assertEquals(0.0, generator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
     }
 
     @Test
     public void testGetSetTimeInterval1() throws LockedException {
-        final GyroscopeMeasurementsGenerator generator =
-                new GyroscopeMeasurementsGenerator();
+        final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator();
 
         // check default value
-        assertEquals(generator.getTimeInterval(),
-                TIME_INTERVAL_SECONDS, 0.0);
+        assertEquals(TIME_INTERVAL_SECONDS, generator.getTimeInterval(), 0.0);
 
         // set new value
         final double timeInterval = 2 * TIME_INTERVAL_SECONDS;
@@ -392,27 +346,20 @@ public class GyroscopeMeasurementsGeneratorTest implements
         assertEquals(timeInterval, generator.getTimeInterval(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            generator.setTimeInterval(-1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> generator.setTimeInterval(-1.0));
     }
 
     @Test
     public void testGetSetTimeInterval2() throws LockedException {
-        final GyroscopeMeasurementsGenerator generator =
-                new GyroscopeMeasurementsGenerator();
+        final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator();
 
         // check default value
         final Time timeInterval1 = generator.getTimeIntervalAsTime();
-        assertEquals(timeInterval1.getValue().doubleValue(),
-                TIME_INTERVAL_SECONDS, 0.0);
-        assertEquals(timeInterval1.getUnit(), TimeUnit.SECOND);
+        assertEquals(TIME_INTERVAL_SECONDS, timeInterval1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, timeInterval1.getUnit());
 
         // set new value
-        final Time timeInterval2 = new Time(2 * TIME_INTERVAL_SECONDS,
-                TimeUnit.SECOND);
+        final Time timeInterval2 = new Time(2 * TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
         generator.setTimeInterval(timeInterval2);
 
         // check
@@ -425,21 +372,15 @@ public class GyroscopeMeasurementsGeneratorTest implements
 
         // Force IllegalArgumentException
         final Time timeInterval5 = new Time(-1.0, TimeUnit.SECOND);
-        try {
-            generator.setTimeInterval(timeInterval5);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> generator.setTimeInterval(timeInterval5));
     }
 
     @Test
     public void testGetSetMinStaticSamples() throws LockedException {
-        final GyroscopeMeasurementsGenerator generator =
-                new GyroscopeMeasurementsGenerator();
+        final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator();
 
         // check default value
-        assertEquals(generator.getMinStaticSamples(),
-                MeasurementsGenerator.DEFAULT_MIN_STATIC_SAMPLES);
+        assertEquals(MeasurementsGenerator.DEFAULT_MIN_STATIC_SAMPLES, generator.getMinStaticSamples());
 
         // set new value
         generator.setMinStaticSamples(10);
@@ -448,21 +389,15 @@ public class GyroscopeMeasurementsGeneratorTest implements
         assertEquals(10, generator.getMinStaticSamples());
 
         // Force IllegalArgumentException
-        try {
-            generator.setMinStaticSamples(1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> generator.setMinStaticSamples(1));
     }
 
     @Test
     public void testGetSetMaxDynamicSamples() throws LockedException {
-        final GyroscopeMeasurementsGenerator generator =
-                new GyroscopeMeasurementsGenerator();
+        final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator();
 
         // check default value
-        assertEquals(generator.getMaxDynamicSamples(),
-                MeasurementsGenerator.DEFAULT_MAX_DYNAMIC_SAMPLES);
+        assertEquals(MeasurementsGenerator.DEFAULT_MAX_DYNAMIC_SAMPLES, generator.getMaxDynamicSamples());
 
         // set new value
         generator.setMaxDynamicSamples(10);
@@ -471,17 +406,12 @@ public class GyroscopeMeasurementsGeneratorTest implements
         assertEquals(10, generator.getMaxDynamicSamples());
 
         // Force IllegalArgumentException
-        try {
-            generator.setMaxDynamicSamples(1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> generator.setMaxDynamicSamples(1));
     }
 
     @Test
     public void testGetSetListener() throws LockedException {
-        final GyroscopeMeasurementsGenerator generator =
-                new GyroscopeMeasurementsGenerator();
+        final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator();
 
         // check default value
         assertNull(generator.getListener());
@@ -490,160 +420,117 @@ public class GyroscopeMeasurementsGeneratorTest implements
         generator.setListener(this);
 
         // check
-        assertSame(generator.getListener(), this);
+        assertSame(this, generator.getListener());
     }
 
     @Test
     public void testGetSetWindowSize() throws LockedException {
-        final GyroscopeMeasurementsGenerator generator =
-                new GyroscopeMeasurementsGenerator();
+        final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator();
 
         // check default value
-        assertEquals(generator.getWindowSize(),
-                TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE);
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE, generator.getWindowSize());
 
         // set new value
         generator.setWindowSize(3);
 
         // check
-        assertEquals(generator.getWindowSize(), 3);
+        assertEquals(3, generator.getWindowSize());
 
         // Force IllegalArgumentException
-        try {
-            generator.setWindowSize(1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            generator.setWindowSize(2);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> generator.setWindowSize(1));
+        assertThrows(IllegalArgumentException.class, () -> generator.setWindowSize(2));
     }
 
     @Test
     public void testGetSetInitialStaticSamples() throws LockedException {
-        final GyroscopeMeasurementsGenerator generator =
-                new GyroscopeMeasurementsGenerator();
+        final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator();
 
         // check default value
-        assertEquals(generator.getInitialStaticSamples(),
-                TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES);
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES, generator.getInitialStaticSamples());
 
         // set new value
         generator.setInitialStaticSamples(2);
 
         // check
-        assertEquals(generator.getInitialStaticSamples(), 2);
+        assertEquals(2, generator.getInitialStaticSamples());
 
         // Force IllegalArgumentException
-        try {
-            generator.setInitialStaticSamples(1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> generator.setInitialStaticSamples(1));
     }
 
     @Test
     public void testGetSetThresholdFactor() throws LockedException {
-        final GyroscopeMeasurementsGenerator generator =
-                new GyroscopeMeasurementsGenerator();
+        final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator();
 
         // check default value
-        assertEquals(generator.getThresholdFactor(),
-                TriadStaticIntervalDetector.DEFAULT_THRESHOLD_FACTOR, 0.0);
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_THRESHOLD_FACTOR, generator.getThresholdFactor(), 0.0);
 
         // set new value
         generator.setThresholdFactor(1.0);
 
         // check
-        assertEquals(generator.getThresholdFactor(), 1.0, 0.0);
+        assertEquals(1.0, generator.getThresholdFactor(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            generator.setThresholdFactor(0.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> generator.setThresholdFactor(0.0));
     }
 
     @Test
     public void testGetSetInstantaneousNoiseLevelFactor() throws LockedException {
-        final GyroscopeMeasurementsGenerator generator =
-                new GyroscopeMeasurementsGenerator();
+        final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator();
 
         // check default value
-        assertEquals(generator.getInstantaneousNoiseLevelFactor(),
-                TriadStaticIntervalDetector.DEFAULT_INSTANTANEOUS_NOISE_LEVEL_FACTOR,
-                0.0);
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_INSTANTANEOUS_NOISE_LEVEL_FACTOR,
+                generator.getInstantaneousNoiseLevelFactor(), 0.0);
 
         // set new value
         generator.setInstantaneousNoiseLevelFactor(1.0);
 
         // check
-        assertEquals(generator.getInstantaneousNoiseLevelFactor(),
-                1.0, 0.0);
+        assertEquals(1.0, generator.getInstantaneousNoiseLevelFactor(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            generator.setInstantaneousNoiseLevelFactor(0.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> generator.setInstantaneousNoiseLevelFactor(0.0));
     }
 
     @Test
-    public void testGetSetBaseNoiseLevelAbsoluteThreshold()
-            throws LockedException {
-        final GyroscopeMeasurementsGenerator generator =
-                new GyroscopeMeasurementsGenerator();
+    public void testGetSetBaseNoiseLevelAbsoluteThreshold() throws LockedException {
+        final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator();
 
         // check default value
-        assertEquals(generator.getBaseNoiseLevelAbsoluteThreshold(),
-                TriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
-                0.0);
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
+                generator.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
 
         // set new value
         generator.setBaseNoiseLevelAbsoluteThreshold(1.0);
 
         // check
-        assertEquals(generator.getBaseNoiseLevelAbsoluteThreshold(),
-                1.0, 0.0);
+        assertEquals(1.0, generator.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            generator.setBaseNoiseLevelAbsoluteThreshold(0.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> generator.setBaseNoiseLevelAbsoluteThreshold(0.0));
     }
 
     @Test
-    public void testGetSetBaseNoiseLevelAbsoluteThresholdAsMeasurement()
-            throws LockedException {
-        final GyroscopeMeasurementsGenerator generator =
-                new GyroscopeMeasurementsGenerator();
+    public void testGetSetBaseNoiseLevelAbsoluteThresholdAsMeasurement() throws LockedException {
+        final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator();
 
         // check default value
-        assertEquals(generator.getBaseNoiseLevelAbsoluteThreshold(),
-                TriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
-                0.0);
+        assertEquals(TriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
+                generator.getBaseNoiseLevelAbsoluteThreshold(), 0.0);
 
         final Acceleration a1 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
-        assertEquals(a1.getValue().doubleValue(),
-                AccelerationTriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
-                0.0);
-        assertEquals(a1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(AccelerationTriadStaticIntervalDetector.DEFAULT_BASE_NOISE_LEVEL_ABSOLUTE_THRESHOLD,
+                a1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, a1.getUnit());
 
         // set new value
-        final Acceleration a2 = new Acceleration(1.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration a2 = new Acceleration(1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         generator.setBaseNoiseLevelAbsoluteThreshold(a2);
 
         // check
         final Acceleration a3 = generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement();
-        final Acceleration a4 = new Acceleration(
-                0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration a4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getBaseNoiseLevelAbsoluteThresholdAsMeasurement(a4);
         assertEquals(a2, a3);
         assertEquals(a2, a4);
@@ -651,8 +538,8 @@ public class GyroscopeMeasurementsGeneratorTest implements
 
     @Test
     public void testProcessCalibrateAndResetWithNoiseMaCommonAxisAndNoGDependentCrossBiases() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException, InvalidRotationMatrixException, RotationException {
+            InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException,
+            InvalidRotationMatrixException, RotationException {
 
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
@@ -665,65 +552,55 @@ public class GyroscopeMeasurementsGeneratorTest implements
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
             final double longitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
             final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation nedC = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
             final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                    .convertNEDtoECEFAndReturnNew(nedFrame);
+            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
-                            ecefFrame, ecefFrame);
+            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
             reset();
             assertTrue(mSequences.isEmpty());
-            assertEquals(mInitializationStarted, 0);
-            assertEquals(mInitializationCompleted, 0);
-            assertEquals(mError, 0);
-            assertEquals(mStaticIntervalDetected, 0);
-            assertEquals(mDynamicIntervalDetected, 0);
-            assertEquals(mGeneratedMeasurement, 0);
-            assertEquals(mReset, 0);
+            assertEquals(0, mInitializationStarted);
+            assertEquals(0, mInitializationCompleted);
+            assertEquals(0, mError);
+            assertEquals(0, mStaticIntervalDetected);
+            assertEquals(0, mDynamicIntervalDetected);
+            assertEquals(0, mGeneratedMeasurement);
+            assertEquals(0, mReset);
 
-            final GyroscopeMeasurementsGenerator generator =
-                    new GyroscopeMeasurementsGenerator(this);
+            final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator(this);
 
-            final AccelerometerMeasurementsGenerator accelerometerGenerator =
-                    new AccelerometerMeasurementsGenerator(mAccelerometerGeneratorListener);
+            final AccelerometerMeasurementsGenerator accelerometerGenerator = new AccelerometerMeasurementsGenerator(
+                    mAccelerometerGeneratorListener);
 
             // generate initial static samples
-            final int initialStaticSamples = TriadStaticIntervalDetector
-                    .DEFAULT_INITIAL_STATIC_SAMPLES;
-            generateStaticSamples(generator, accelerometerGenerator,
-                    initialStaticSamples, trueKinematics, errors, random,
-                    0);
+            final int initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
+            generateStaticSamples(generator, accelerometerGenerator, initialStaticSamples, trueKinematics, errors,
+                    random, 0);
 
-            assertEquals(mInitializationStarted, 1);
-            assertEquals(mInitializationCompleted, 1);
+            assertEquals(1, mInitializationStarted);
+            assertEquals(1, mInitializationCompleted);
 
             final int numSequences = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
             final int numMeasurements = KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
@@ -738,19 +615,16 @@ public class GyroscopeMeasurementsGeneratorTest implements
             int start = initialStaticSamples;
             for (int i = 0; i < n; i++) {
                 // generate static samples
-                generateStaticSamples(generator, accelerometerGenerator,
-                        staticPeriodLength, trueKinematics, errors, random,
-                        start);
+                generateStaticSamples(generator, accelerometerGenerator, staticPeriodLength, trueKinematics, errors,
+                        random, start);
                 start += staticPeriodLength;
 
                 assertEquals(mStaticIntervalDetected, i + 1);
 
                 // generate dynamic samples
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                        generateDynamicSamples(generator, accelerometerGenerator,
-                                dynamicPeriodLength, trueKinematics, randomizer,
-                                ecefFrame, nedFrame, errors, random, start,
-                                false);
+                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence = generateDynamicSamples(
+                        generator, accelerometerGenerator, dynamicPeriodLength, trueKinematics, randomizer, ecefFrame,
+                        nedFrame, errors, random, start, false);
                 sequences.add(sequence);
                 start += dynamicPeriodLength;
 
@@ -780,19 +654,15 @@ public class GyroscopeMeasurementsGeneratorTest implements
 
             generator.reset();
 
-            assertEquals(mReset, 1);
-            assertEquals(mError, 0);
+            assertEquals(1, mReset);
+            assertEquals(0, mError);
 
             final Matrix initialMg = new Matrix(3, 3);
             final Matrix initialGg = new Matrix(3, 3);
-            final EasyGyroscopeCalibrator trueCalibrator =
-                    new EasyGyroscopeCalibrator(sequences,
-                            true, false,
-                            initialBg, initialMg, initialGg, ba, ma);
-            final EasyGyroscopeCalibrator calibrator =
-                    new EasyGyroscopeCalibrator(mSequences,
-                            true, false,
-                            initialBg, initialMg, initialGg, ba, ma);
+            final EasyGyroscopeCalibrator trueCalibrator = new EasyGyroscopeCalibrator(sequences, true,
+                    false, initialBg, initialMg, initialGg, ba, ma);
+            final EasyGyroscopeCalibrator calibrator = new EasyGyroscopeCalibrator(mSequences, true,
+                    false, initialBg, initialMg, initialGg, ba, ma);
 
             try {
                 trueCalibrator.calibrate();
@@ -809,13 +679,10 @@ public class GyroscopeMeasurementsGeneratorTest implements
             final Matrix estimatedMg = calibrator.getEstimatedMg();
             final Matrix estimatedGg = calibrator.getEstimatedGg();
 
-            final ECEFGravity gravity = ECEFGravityEstimator
-                    .estimateGravityAndReturnNew(ecefFrame);
+            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(ecefFrame);
 
-            KnownGravityNormAccelerometerCalibrator accelerometerCalibrator =
-                    new KnownGravityNormAccelerometerCalibrator(
-                            gravity.getNorm(), mMeasurements,
-                            true);
+            final KnownGravityNormAccelerometerCalibrator accelerometerCalibrator =
+                    new KnownGravityNormAccelerometerCalibrator(gravity.getNorm(), mMeasurements, true);
 
             try {
                 accelerometerCalibrator.calibrate();
@@ -870,8 +737,8 @@ public class GyroscopeMeasurementsGeneratorTest implements
 
     @Test
     public void testProcessCalibrateAndResetSmallNoiseMaGeneralAndNoGDependentCrossBiases() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException, InvalidRotationMatrixException, RotationException {
+            InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException,
+            InvalidRotationMatrixException, RotationException {
 
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
@@ -883,65 +750,55 @@ public class GyroscopeMeasurementsGeneratorTest implements
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, SMALL_ROOT_PSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, SMALL_ROOT_PSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
             final double longitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
             final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation nedC = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
             final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                    .convertNEDtoECEFAndReturnNew(nedFrame);
+            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
-                            ecefFrame, ecefFrame);
+            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
             reset();
             assertTrue(mSequences.isEmpty());
-            assertEquals(mInitializationStarted, 0);
-            assertEquals(mInitializationCompleted, 0);
-            assertEquals(mError, 0);
-            assertEquals(mStaticIntervalDetected, 0);
-            assertEquals(mDynamicIntervalDetected, 0);
-            assertEquals(mGeneratedMeasurement, 0);
-            assertEquals(mReset, 0);
+            assertEquals(0, mInitializationStarted);
+            assertEquals(0, mInitializationCompleted);
+            assertEquals(0, mError);
+            assertEquals(0, mStaticIntervalDetected);
+            assertEquals(0, mDynamicIntervalDetected);
+            assertEquals(0, mGeneratedMeasurement);
+            assertEquals(0, mReset);
 
-            final GyroscopeMeasurementsGenerator generator =
-                    new GyroscopeMeasurementsGenerator(this);
+            final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator(this);
 
-            final AccelerometerMeasurementsGenerator accelerometerGenerator =
-                    new AccelerometerMeasurementsGenerator(mAccelerometerGeneratorListener);
+            final AccelerometerMeasurementsGenerator accelerometerGenerator = new AccelerometerMeasurementsGenerator(
+                    mAccelerometerGeneratorListener);
 
             // generate initial static samples
-            final int initialStaticSamples = TriadStaticIntervalDetector
-                    .DEFAULT_INITIAL_STATIC_SAMPLES;
-            generateStaticSamples(generator, accelerometerGenerator,
-                    initialStaticSamples, trueKinematics, errors, random,
-                    0);
+            final int initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
+            generateStaticSamples(generator, accelerometerGenerator, initialStaticSamples, trueKinematics, errors,
+                    random, 0);
 
-            assertEquals(mInitializationStarted, 1);
-            assertEquals(mInitializationCompleted, 1);
+            assertEquals(1, mInitializationStarted);
+            assertEquals(1, mInitializationCompleted);
 
             final int numSequences = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
             final int numMeasurements = KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
@@ -955,19 +812,16 @@ public class GyroscopeMeasurementsGeneratorTest implements
             int start = initialStaticSamples;
             for (int i = 0; i < n; i++) {
                 // generate static samples
-                generateStaticSamples(generator, accelerometerGenerator,
-                        staticPeriodLength, trueKinematics, errors, random,
-                        start);
+                generateStaticSamples(generator, accelerometerGenerator, staticPeriodLength, trueKinematics, errors,
+                        random, start);
                 start += staticPeriodLength;
 
                 assertEquals(mStaticIntervalDetected, i + 1);
 
                 // generate dynamic samples
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                        generateDynamicSamples(generator, accelerometerGenerator,
-                                dynamicPeriodLength, trueKinematics, randomizer,
-                                ecefFrame, nedFrame, errors, random, start,
-                                false);
+                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence = generateDynamicSamples(
+                        generator, accelerometerGenerator, dynamicPeriodLength, trueKinematics, randomizer, ecefFrame,
+                        nedFrame, errors, random, start, false);
                 sequences.add(sequence);
                 start += dynamicPeriodLength;
 
@@ -989,19 +843,15 @@ public class GyroscopeMeasurementsGeneratorTest implements
 
             generator.reset();
 
-            assertEquals(mReset, 1);
-            assertEquals(mError, 0);
+            assertEquals(1, mReset);
+            assertEquals(0, mError);
 
             final Matrix initialMg = new Matrix(3, 3);
             final Matrix initialGg = new Matrix(3, 3);
-            final EasyGyroscopeCalibrator trueCalibrator =
-                    new EasyGyroscopeCalibrator(sequences,
-                            true, false,
-                            initialBg, initialMg, initialGg, ba, ma);
-            final EasyGyroscopeCalibrator calibrator =
-                    new EasyGyroscopeCalibrator(mSequences,
-                            true, false,
-                            initialBg, initialMg, initialGg, ba, ma);
+            final EasyGyroscopeCalibrator trueCalibrator = new EasyGyroscopeCalibrator(sequences, true,
+                    false, initialBg, initialMg, initialGg, ba, ma);
+            final EasyGyroscopeCalibrator calibrator = new EasyGyroscopeCalibrator(mSequences, true,
+                    false, initialBg, initialMg, initialGg, ba, ma);
 
             try {
                 trueCalibrator.calibrate();
@@ -1018,13 +868,10 @@ public class GyroscopeMeasurementsGeneratorTest implements
             final Matrix estimatedMg = calibrator.getEstimatedMg();
             final Matrix estimatedGg = calibrator.getEstimatedGg();
 
-            final ECEFGravity gravity = ECEFGravityEstimator
-                    .estimateGravityAndReturnNew(ecefFrame);
+            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(ecefFrame);
 
             KnownGravityNormAccelerometerCalibrator accelerometerCalibrator =
-                    new KnownGravityNormAccelerometerCalibrator(
-                            gravity.getNorm(), mMeasurements,
-                            false);
+                    new KnownGravityNormAccelerometerCalibrator(gravity.getNorm(), mMeasurements, false);
 
             try {
                 accelerometerCalibrator.calibrate();
@@ -1092,65 +939,54 @@ public class GyroscopeMeasurementsGeneratorTest implements
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, SMALL_ROOT_PSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, SMALL_ROOT_PSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
             final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation nedC = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
             final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                    .convertNEDtoECEFAndReturnNew(nedFrame);
+            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
-                            ecefFrame, ecefFrame);
+            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
             reset();
             assertTrue(mSequences.isEmpty());
-            assertEquals(mInitializationStarted, 0);
-            assertEquals(mInitializationCompleted, 0);
-            assertEquals(mError, 0);
-            assertEquals(mStaticIntervalDetected, 0);
-            assertEquals(mDynamicIntervalDetected, 0);
-            assertEquals(mGeneratedMeasurement, 0);
-            assertEquals(mReset, 0);
+            assertEquals(0, mInitializationStarted);
+            assertEquals(0, mInitializationCompleted);
+            assertEquals(0, mError);
+            assertEquals(0, mStaticIntervalDetected);
+            assertEquals(0, mDynamicIntervalDetected);
+            assertEquals(0, mGeneratedMeasurement);
+            assertEquals(0, mReset);
 
-            final GyroscopeMeasurementsGenerator generator =
-                    new GyroscopeMeasurementsGenerator(this);
+            final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator(this);
 
-            final AccelerometerMeasurementsGenerator accelerometerGenerator =
-                    new AccelerometerMeasurementsGenerator(mAccelerometerGeneratorListener);
+            final AccelerometerMeasurementsGenerator accelerometerGenerator = new AccelerometerMeasurementsGenerator(
+                    mAccelerometerGeneratorListener);
 
             // generate initial static samples
-            final int initialStaticSamples = TriadStaticIntervalDetector
-                    .DEFAULT_INITIAL_STATIC_SAMPLES;
-            generateStaticSamples(generator, accelerometerGenerator,
-                    initialStaticSamples, trueKinematics, errors, random,
-                    0);
+            final int initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
+            generateStaticSamples(generator, accelerometerGenerator, initialStaticSamples, trueKinematics, errors,
+                    random, 0);
 
-            assertEquals(mInitializationStarted, 1);
-            assertEquals(mInitializationCompleted, 1);
+            assertEquals(1, mInitializationStarted);
+            assertEquals(1, mInitializationCompleted);
 
             final int numSequences = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
             final int numMeasurements = KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS;
@@ -1164,19 +1000,16 @@ public class GyroscopeMeasurementsGeneratorTest implements
             int start = initialStaticSamples;
             for (int i = 0; i < n; i++) {
                 // generate static samples
-                generateStaticSamples(generator, accelerometerGenerator,
-                        staticPeriodLength, trueKinematics, errors, random,
-                        start);
+                generateStaticSamples(generator, accelerometerGenerator, staticPeriodLength, trueKinematics, errors,
+                        random, start);
                 start += staticPeriodLength;
 
                 assertEquals(mStaticIntervalDetected, i + 1);
 
                 // generate dynamic samples
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                        generateDynamicSamples(generator, accelerometerGenerator,
-                                dynamicPeriodLength, trueKinematics, randomizer,
-                                ecefFrame, nedFrame, errors, random, start,
-                                false);
+                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence = generateDynamicSamples(
+                        generator, accelerometerGenerator, dynamicPeriodLength, trueKinematics, randomizer, ecefFrame,
+                        nedFrame, errors, random, start, false);
                 sequences.add(sequence);
                 start += dynamicPeriodLength;
 
@@ -1198,19 +1031,15 @@ public class GyroscopeMeasurementsGeneratorTest implements
 
             generator.reset();
 
-            assertEquals(mReset, 1);
-            assertEquals(mError, 0);
+            assertEquals(1, mReset);
+            assertEquals(0, mError);
 
             final Matrix initialMg = new Matrix(3, 3);
             final Matrix initialGg = new Matrix(3, 3);
-            final EasyGyroscopeCalibrator trueCalibrator =
-                    new EasyGyroscopeCalibrator(sequences,
-                            true, false,
-                            initialBg, initialMg, initialGg, ba, ma);
-            final EasyGyroscopeCalibrator calibrator =
-                    new EasyGyroscopeCalibrator(mSequences,
-                            true, false,
-                            initialBg, initialMg, initialGg, ba, ma);
+            final EasyGyroscopeCalibrator trueCalibrator = new EasyGyroscopeCalibrator(sequences, true,
+                    false, initialBg, initialMg, initialGg, ba, ma);
+            final EasyGyroscopeCalibrator calibrator = new EasyGyroscopeCalibrator(mSequences, true,
+                    false, initialBg, initialMg, initialGg, ba, ma);
 
             try {
                 trueCalibrator.calibrate();
@@ -1227,13 +1056,10 @@ public class GyroscopeMeasurementsGeneratorTest implements
             final Matrix estimatedMg = calibrator.getEstimatedMg();
             final Matrix estimatedGg = calibrator.getEstimatedGg();
 
-            final ECEFGravity gravity = ECEFGravityEstimator
-                    .estimateGravityAndReturnNew(ecefFrame);
+            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(ecefFrame);
 
             KnownGravityNormAccelerometerCalibrator accelerometerCalibrator =
-                    new KnownGravityNormAccelerometerCalibrator(
-                            gravity.getNorm(), mMeasurements,
-                            true);
+                    new KnownGravityNormAccelerometerCalibrator(gravity.getNorm(), mMeasurements, true);
 
             try {
                 accelerometerCalibrator.calibrate();
@@ -1301,65 +1127,55 @@ public class GyroscopeMeasurementsGeneratorTest implements
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, SMALL_ROOT_PSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, SMALL_ROOT_PSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
             final double longitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
             final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation nedC = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
             final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                    .convertNEDtoECEFAndReturnNew(nedFrame);
+            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
-                            ecefFrame, ecefFrame);
+            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
             reset();
             assertTrue(mSequences.isEmpty());
-            assertEquals(mInitializationStarted, 0);
-            assertEquals(mInitializationCompleted, 0);
-            assertEquals(mError, 0);
-            assertEquals(mStaticIntervalDetected, 0);
-            assertEquals(mDynamicIntervalDetected, 0);
-            assertEquals(mGeneratedMeasurement, 0);
-            assertEquals(mReset, 0);
+            assertEquals(0, mInitializationStarted);
+            assertEquals(0, mInitializationCompleted);
+            assertEquals(0, mError);
+            assertEquals(0, mStaticIntervalDetected);
+            assertEquals(0, mDynamicIntervalDetected);
+            assertEquals(0, mGeneratedMeasurement);
+            assertEquals(0, mReset);
 
-            final GyroscopeMeasurementsGenerator generator =
-                    new GyroscopeMeasurementsGenerator(this);
+            final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator(this);
 
-            final AccelerometerMeasurementsGenerator accelerometerGenerator =
-                    new AccelerometerMeasurementsGenerator(mAccelerometerGeneratorListener);
+            final AccelerometerMeasurementsGenerator accelerometerGenerator = new AccelerometerMeasurementsGenerator(
+                    mAccelerometerGeneratorListener);
 
             // generate initial static samples
-            final int initialStaticSamples = TriadStaticIntervalDetector
-                    .DEFAULT_INITIAL_STATIC_SAMPLES;
-            generateStaticSamples(generator, accelerometerGenerator,
-                    initialStaticSamples, trueKinematics, errors, random,
-                    0);
+            final int initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
+            generateStaticSamples(generator, accelerometerGenerator, initialStaticSamples, trueKinematics, errors,
+                    random, 0);
 
-            assertEquals(mInitializationStarted, 1);
-            assertEquals(mInitializationCompleted, 1);
+            assertEquals(1, mInitializationStarted);
+            assertEquals(1, mInitializationCompleted);
 
             final int numSequences = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS_AND_CROSS_BIASES;
             final int numMeasurements = KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
@@ -1373,24 +1189,21 @@ public class GyroscopeMeasurementsGeneratorTest implements
             int start = initialStaticSamples;
             for (int i = 0; i < n; i++) {
                 // generate static samples
-                generateStaticSamples(generator, accelerometerGenerator,
-                        staticPeriodLength, trueKinematics, errors, random,
-                        start);
+                generateStaticSamples(generator, accelerometerGenerator, staticPeriodLength, trueKinematics, errors,
+                        random, start);
                 start += staticPeriodLength;
 
                 assertEquals(mStaticIntervalDetected, i + 1);
 
                 // generate dynamic samples
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                        generateDynamicSamples(generator, accelerometerGenerator,
-                                dynamicPeriodLength, trueKinematics, randomizer,
-                                ecefFrame, nedFrame, errors, random, start,
-                                false);
+                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence = generateDynamicSamples(
+                        generator, accelerometerGenerator, dynamicPeriodLength, trueKinematics, randomizer, ecefFrame,
+                        nedFrame, errors, random, start, false);
                 sequences.add(sequence);
                 start += dynamicPeriodLength;
 
-                assertEquals(mDynamicIntervalDetected, i + 1);
-                assertEquals(mSequences.size(), i);
+                assertEquals(i + 1, mDynamicIntervalDetected);
+                assertEquals(i, mSequences.size());
             }
 
             // as an initial value for gyroscope bias we can use the average
@@ -1407,19 +1220,15 @@ public class GyroscopeMeasurementsGeneratorTest implements
 
             generator.reset();
 
-            assertEquals(mReset, 1);
-            assertEquals(mError, 0);
+            assertEquals(1, mReset);
+            assertEquals(0, mError);
 
             final Matrix initialMg = new Matrix(3, 3);
             final Matrix initialGg = new Matrix(3, 3);
-            final EasyGyroscopeCalibrator trueCalibrator =
-                    new EasyGyroscopeCalibrator(sequences,
-                            true, true,
-                            initialBg, initialMg, initialGg, ba, ma);
-            final EasyGyroscopeCalibrator calibrator =
-                    new EasyGyroscopeCalibrator(mSequences,
-                            true, true,
-                            initialBg, initialMg, initialGg, ba, ma);
+            final EasyGyroscopeCalibrator trueCalibrator = new EasyGyroscopeCalibrator(sequences,
+                    true, true, initialBg, initialMg, initialGg, ba, ma);
+            final EasyGyroscopeCalibrator calibrator = new EasyGyroscopeCalibrator(mSequences,
+                    true, true, initialBg, initialMg, initialGg, ba, ma);
 
             try {
                 trueCalibrator.calibrate();
@@ -1436,12 +1245,10 @@ public class GyroscopeMeasurementsGeneratorTest implements
             final Matrix estimatedMg = calibrator.getEstimatedMg();
             final Matrix estimatedGg = calibrator.getEstimatedGg();
 
-            final ECEFGravity gravity = ECEFGravityEstimator
-                    .estimateGravityAndReturnNew(ecefFrame);
+            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(ecefFrame);
 
             KnownGravityNormAccelerometerCalibrator accelerometerCalibrator =
-                    new KnownGravityNormAccelerometerCalibrator(
-                            gravity.getNorm(), mMeasurements,
+                    new KnownGravityNormAccelerometerCalibrator(gravity.getNorm(), mMeasurements,
                             false);
 
             try {
@@ -1510,65 +1317,55 @@ public class GyroscopeMeasurementsGeneratorTest implements
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, SMALL_ROOT_PSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, SMALL_ROOT_PSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
             final double longitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
             final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation nedC = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
             final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                    .convertNEDtoECEFAndReturnNew(nedFrame);
+            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
-                            ecefFrame, ecefFrame);
+            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
             reset();
             assertTrue(mSequences.isEmpty());
-            assertEquals(mInitializationStarted, 0);
-            assertEquals(mInitializationCompleted, 0);
-            assertEquals(mError, 0);
-            assertEquals(mStaticIntervalDetected, 0);
-            assertEquals(mDynamicIntervalDetected, 0);
-            assertEquals(mGeneratedMeasurement, 0);
-            assertEquals(mReset, 0);
+            assertEquals(0, mInitializationStarted);
+            assertEquals(0, mInitializationCompleted);
+            assertEquals(0, mError);
+            assertEquals(0, mStaticIntervalDetected);
+            assertEquals(0, mDynamicIntervalDetected);
+            assertEquals(0, mGeneratedMeasurement);
+            assertEquals(0, mReset);
 
-            final GyroscopeMeasurementsGenerator generator =
-                    new GyroscopeMeasurementsGenerator(this);
+            final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator(this);
 
-            final AccelerometerMeasurementsGenerator accelerometerGenerator =
-                    new AccelerometerMeasurementsGenerator(mAccelerometerGeneratorListener);
+            final AccelerometerMeasurementsGenerator accelerometerGenerator = new AccelerometerMeasurementsGenerator(
+                    mAccelerometerGeneratorListener);
 
             // generate initial static samples
-            final int initialStaticSamples = TriadStaticIntervalDetector
-                    .DEFAULT_INITIAL_STATIC_SAMPLES;
-            generateStaticSamples(generator, accelerometerGenerator,
-                    initialStaticSamples, trueKinematics, errors, random,
-                    0);
+            final int initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
+            generateStaticSamples(generator, accelerometerGenerator, initialStaticSamples, trueKinematics, errors,
+                    random, 0);
 
-            assertEquals(mInitializationStarted, 1);
-            assertEquals(mInitializationCompleted, 1);
+            assertEquals(1, mInitializationStarted);
+            assertEquals(1, mInitializationCompleted);
 
             final int numSequences = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS_AND_CROSS_BIASES;
             final int numMeasurements = KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
@@ -1582,24 +1379,21 @@ public class GyroscopeMeasurementsGeneratorTest implements
             int start = initialStaticSamples;
             for (int i = 0; i < n; i++) {
                 // generate static samples
-                generateStaticSamples(generator, accelerometerGenerator,
-                        staticPeriodLength, trueKinematics, errors, random,
-                        start);
+                generateStaticSamples(generator, accelerometerGenerator, staticPeriodLength, trueKinematics, errors,
+                        random, start);
                 start += staticPeriodLength;
 
                 assertEquals(mStaticIntervalDetected, i + 1);
 
                 // generate dynamic samples
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                        generateDynamicSamples(generator, accelerometerGenerator,
-                                dynamicPeriodLength, trueKinematics, randomizer,
-                                ecefFrame, nedFrame, errors, random, start,
-                                false);
+                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence = generateDynamicSamples(
+                        generator, accelerometerGenerator, dynamicPeriodLength, trueKinematics, randomizer, ecefFrame,
+                        nedFrame, errors, random, start, false);
                 sequences.add(sequence);
                 start += dynamicPeriodLength;
 
-                assertEquals(mDynamicIntervalDetected, i + 1);
-                assertEquals(mSequences.size(), i);
+                assertEquals(i + 1, mDynamicIntervalDetected);
+                assertEquals(i, mSequences.size());
             }
 
             // as an initial value for gyroscope bias we can use the average
@@ -1616,19 +1410,15 @@ public class GyroscopeMeasurementsGeneratorTest implements
 
             generator.reset();
 
-            assertEquals(mReset, 1);
-            assertEquals(mError, 0);
+            assertEquals(1, mReset);
+            assertEquals(0, mError);
 
             final Matrix initialMg = new Matrix(3, 3);
             final Matrix initialGg = new Matrix(3, 3);
-            final EasyGyroscopeCalibrator trueCalibrator =
-                    new EasyGyroscopeCalibrator(sequences,
-                            true, true,
-                            initialBg, initialMg, initialGg, ba, ma);
-            final EasyGyroscopeCalibrator calibrator =
-                    new EasyGyroscopeCalibrator(mSequences,
-                            true, true,
-                            initialBg, initialMg, initialGg, ba, ma);
+            final EasyGyroscopeCalibrator trueCalibrator = new EasyGyroscopeCalibrator(sequences, true,
+                    true, initialBg, initialMg, initialGg, ba, ma);
+            final EasyGyroscopeCalibrator calibrator = new EasyGyroscopeCalibrator(mSequences, true,
+                    true, initialBg, initialMg, initialGg, ba, ma);
 
             try {
                 trueCalibrator.calibrate();
@@ -1645,13 +1435,10 @@ public class GyroscopeMeasurementsGeneratorTest implements
             final Matrix estimatedMg = calibrator.getEstimatedMg();
             final Matrix estimatedGg = calibrator.getEstimatedGg();
 
-            final ECEFGravity gravity = ECEFGravityEstimator
-                    .estimateGravityAndReturnNew(ecefFrame);
+            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(ecefFrame);
 
-            KnownGravityNormAccelerometerCalibrator accelerometerCalibrator =
-                    new KnownGravityNormAccelerometerCalibrator(
-                            gravity.getNorm(), mMeasurements,
-                            true);
+            final KnownGravityNormAccelerometerCalibrator accelerometerCalibrator =
+                    new KnownGravityNormAccelerometerCalibrator(gravity.getNorm(), mMeasurements, true);
 
             try {
                 accelerometerCalibrator.calibrate();
@@ -1706,8 +1493,8 @@ public class GyroscopeMeasurementsGeneratorTest implements
 
     @Test
     public void testProcessSkipStaticInterval() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException,
-            InvalidRotationMatrixException, RotationException {
+            InvalidSourceAndDestinationFrameTypeException, LockedException, InvalidRotationMatrixException,
+            RotationException {
 
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
@@ -1720,90 +1507,76 @@ public class GyroscopeMeasurementsGeneratorTest implements
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
         final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
-        final double roll = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final CoordinateTransformation nedC = new CoordinateTransformation(
-                roll, pitch, yaw, FrameType.BODY_FRAME,
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                 FrameType.LOCAL_NAVIGATION_FRAME);
 
         final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         // compute ground-truth kinematics that should be generated at provided
         // position, velocity and orientation
-        final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
-                        ecefFrame, ecefFrame);
+        final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
         reset();
         assertTrue(mSequences.isEmpty());
-        assertEquals(mInitializationStarted, 0);
-        assertEquals(mInitializationCompleted, 0);
-        assertEquals(mError, 0);
-        assertEquals(mStaticIntervalDetected, 0);
-        assertEquals(mDynamicIntervalDetected, 0);
-        assertEquals(mGeneratedMeasurement, 0);
-        assertEquals(mReset, 0);
+        assertEquals(0, mInitializationStarted);
+        assertEquals(0, mInitializationCompleted);
+        assertEquals(0, mError);
+        assertEquals(0, mStaticIntervalDetected);
+        assertEquals(0, mDynamicIntervalDetected);
+        assertEquals(0, mGeneratedMeasurement);
+        assertEquals(0, mReset);
 
-        final GyroscopeMeasurementsGenerator generator =
-                new GyroscopeMeasurementsGenerator(this);
+        final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator(this);
 
-        final AccelerometerMeasurementsGenerator accelerometerGenerator =
-                new AccelerometerMeasurementsGenerator(mAccelerometerGeneratorListener);
+        final AccelerometerMeasurementsGenerator accelerometerGenerator = new AccelerometerMeasurementsGenerator(
+                mAccelerometerGeneratorListener);
 
         // generate initial static samples
-        final int initialStaticSamples = TriadStaticIntervalDetector
-                .DEFAULT_INITIAL_STATIC_SAMPLES;
-        generateStaticSamples(generator, accelerometerGenerator,
-                initialStaticSamples, trueKinematics, errors, random,
+        final int initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
+        generateStaticSamples(generator, accelerometerGenerator, initialStaticSamples, trueKinematics, errors, random,
                 0);
 
-        assertEquals(mInitializationStarted, 1);
-        assertEquals(mInitializationCompleted, 1);
+        assertEquals(1, mInitializationStarted);
+        assertEquals(1, mInitializationCompleted);
 
         final int staticPeriodLength = generator.getMinStaticSamples() / 2;
         final int dynamicPeriodLength = 2 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
 
         int start = initialStaticSamples;
         // generate static samples
-        generateStaticSamples(generator, accelerometerGenerator,
-                staticPeriodLength, trueKinematics, errors, random,
+        generateStaticSamples(generator, accelerometerGenerator, staticPeriodLength, trueKinematics, errors, random,
                 start);
         start += staticPeriodLength;
 
-        assertEquals(mStaticIntervalDetected, 1);
+        assertEquals(1, mStaticIntervalDetected);
 
         // generate dynamic samples
-        assertNotNull(generateDynamicSamples(generator, accelerometerGenerator,
-                dynamicPeriodLength, trueKinematics, randomizer,
-                ecefFrame, nedFrame, errors, random, start,
-                false));
+        assertNotNull(generateDynamicSamples(generator, accelerometerGenerator, dynamicPeriodLength, trueKinematics,
+                randomizer, ecefFrame, nedFrame, errors, random, start, false));
 
-        assertEquals(mDynamicIntervalDetected, 1);
-        assertEquals(mStaticIntervalSkipped, 1);
+        assertEquals(1, mDynamicIntervalDetected);
+        assertEquals(1, mStaticIntervalSkipped);
     }
 
     @Test
     public void testProcessSkipDynamicInterval() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException,
-            InvalidRotationMatrixException, RotationException {
+            InvalidSourceAndDestinationFrameTypeException, LockedException, InvalidRotationMatrixException,
+            RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -1818,87 +1591,74 @@ public class GyroscopeMeasurementsGeneratorTest implements
             final double accelQuantLevel = 0.0;
             final double gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                    gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                    accelQuantLevel, gyroQuantLevel);
 
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
             final double longitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
             final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation nedC = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
             final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                    .convertNEDtoECEFAndReturnNew(nedFrame);
+            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
-                            ecefFrame, ecefFrame);
+            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
             reset();
             assertTrue(mSequences.isEmpty());
-            assertEquals(mInitializationStarted, 0);
-            assertEquals(mInitializationCompleted, 0);
-            assertEquals(mError, 0);
-            assertEquals(mStaticIntervalDetected, 0);
-            assertEquals(mDynamicIntervalDetected, 0);
-            assertEquals(mGeneratedMeasurement, 0);
-            assertEquals(mReset, 0);
+            assertEquals(0, mInitializationStarted);
+            assertEquals(0, mInitializationCompleted);
+            assertEquals(0, mError);
+            assertEquals(0, mStaticIntervalDetected);
+            assertEquals(0, mDynamicIntervalDetected);
+            assertEquals(0, mGeneratedMeasurement);
+            assertEquals(0, mReset);
 
-            final GyroscopeMeasurementsGenerator generator =
-                    new GyroscopeMeasurementsGenerator(this);
+            final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator(this);
 
-            final AccelerometerMeasurementsGenerator accelerometerGenerator =
-                    new AccelerometerMeasurementsGenerator(mAccelerometerGeneratorListener);
+            final AccelerometerMeasurementsGenerator accelerometerGenerator = new AccelerometerMeasurementsGenerator(
+                    mAccelerometerGeneratorListener);
 
             // generate initial static samples
-            final int initialStaticSamples = TriadStaticIntervalDetector
-                    .DEFAULT_INITIAL_STATIC_SAMPLES;
-            generateStaticSamples(generator, accelerometerGenerator,
-                    initialStaticSamples, trueKinematics, errors, random,
-                    0);
+            final int initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
+            generateStaticSamples(generator, accelerometerGenerator, initialStaticSamples, trueKinematics, errors,
+                    random, 0);
 
-            assertEquals(mInitializationStarted, 1);
-            assertEquals(mInitializationCompleted, 1);
+            assertEquals(1, mInitializationStarted);
+            assertEquals(1, mInitializationCompleted);
 
             final int staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
             final int dynamicPeriodLength = 2 * generator.getMaxDynamicSamples();
 
             int start = initialStaticSamples;
             // generate static samples
-            generateStaticSamples(generator, accelerometerGenerator,
-                    staticPeriodLength, trueKinematics, errors, random,
-                    start);
+            generateStaticSamples(generator, accelerometerGenerator, staticPeriodLength, trueKinematics, errors,
+                    random, start);
             start += staticPeriodLength;
 
-            assertEquals(mStaticIntervalDetected, 1);
+            assertEquals(1, mStaticIntervalDetected);
 
             // generate dynamic samples
-            assertNotNull(generateDynamicSamples(generator, accelerometerGenerator,
-                    dynamicPeriodLength, trueKinematics, randomizer,
-                    ecefFrame, nedFrame, errors, random, start,
-                    false));
+            assertNotNull(generateDynamicSamples(generator, accelerometerGenerator, dynamicPeriodLength, trueKinematics,
+                    randomizer, ecefFrame, nedFrame, errors, random, start, false));
 
             if (mDynamicIntervalDetected != 1) {
                 continue;
             }
-            assertEquals(mDynamicIntervalDetected, 1);
-            assertEquals(mDynamicIntervalSkipped, 1);
+            assertEquals(1, mDynamicIntervalDetected);
+            assertEquals(1, mDynamicIntervalSkipped);
 
             numValid++;
             break;
@@ -1922,65 +1682,54 @@ public class GyroscopeMeasurementsGeneratorTest implements
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
         final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
-        final double roll = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final CoordinateTransformation nedC = new CoordinateTransformation(
-                roll, pitch, yaw, FrameType.BODY_FRAME,
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                 FrameType.LOCAL_NAVIGATION_FRAME);
 
         final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         // compute ground-truth kinematics that should be generated at provided
         // position, velocity and orientation
-        final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
-                        ecefFrame, ecefFrame);
+        final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
         reset();
         assertTrue(mSequences.isEmpty());
-        assertEquals(mInitializationStarted, 0);
-        assertEquals(mInitializationCompleted, 0);
-        assertEquals(mError, 0);
-        assertEquals(mStaticIntervalDetected, 0);
-        assertEquals(mDynamicIntervalDetected, 0);
-        assertEquals(mGeneratedMeasurement, 0);
-        assertEquals(mReset, 0);
+        assertEquals(0, mInitializationStarted);
+        assertEquals(0, mInitializationCompleted);
+        assertEquals(0, mError);
+        assertEquals(0, mStaticIntervalDetected);
+        assertEquals(0, mDynamicIntervalDetected);
+        assertEquals(0, mGeneratedMeasurement);
+        assertEquals(0, mReset);
 
-        final GyroscopeMeasurementsGenerator generator =
-                new GyroscopeMeasurementsGenerator(this);
+        final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator(this);
         generator.setBaseNoiseLevelAbsoluteThreshold(Double.MIN_VALUE);
 
         final AccelerometerMeasurementsGenerator accelerometerGenerator =
                 new AccelerometerMeasurementsGenerator(mAccelerometerGeneratorListener);
 
         // generate initial static samples
-        final int initialStaticSamples = TriadStaticIntervalDetector
-                .DEFAULT_INITIAL_STATIC_SAMPLES;
-        generateStaticSamples(generator, accelerometerGenerator,
-                initialStaticSamples, trueKinematics, errors, random,
+        final int initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
+        generateStaticSamples(generator, accelerometerGenerator, initialStaticSamples, trueKinematics, errors, random,
                 0);
 
-        assertEquals(mInitializationStarted, 1);
-        assertEquals(mInitializationCompleted, 0);
-        assertEquals(mError, 1);
+        assertEquals(1, mInitializationStarted);
+        assertEquals(0, mInitializationCompleted);
+        assertEquals(1, mError);
 
         final TimedBodyKinematics timeKinematics = new TimedBodyKinematics();
         timeKinematics.setKinematics(trueKinematics);
@@ -1988,7 +1737,7 @@ public class GyroscopeMeasurementsGeneratorTest implements
 
         generator.reset();
 
-        assertEquals(mReset, 1);
+        assertEquals(1, mReset);
 
         assertTrue(generator.process(timeKinematics));
     }
@@ -2008,66 +1757,57 @@ public class GyroscopeMeasurementsGeneratorTest implements
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, SMALL_ROOT_PSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, SMALL_ROOT_PSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final double longitude = Math.toRadians(randomizer.nextDouble(
+                    MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
             final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation nedC = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
             final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                    .convertNEDtoECEFAndReturnNew(nedFrame);
+            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS,
-                            ecefFrame, ecefFrame);
+            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
             reset();
             assertTrue(mSequences.isEmpty());
-            assertEquals(mInitializationStarted, 0);
-            assertEquals(mInitializationCompleted, 0);
-            assertEquals(mError, 0);
-            assertEquals(mStaticIntervalDetected, 0);
-            assertEquals(mDynamicIntervalDetected, 0);
-            assertEquals(mGeneratedMeasurement, 0);
-            assertEquals(mReset, 0);
+            assertEquals(0, mInitializationStarted);
+            assertEquals(0, mInitializationCompleted);
+            assertEquals(0, mError);
+            assertEquals(0, mStaticIntervalDetected);
+            assertEquals(0, mDynamicIntervalDetected);
+            assertEquals(0, mGeneratedMeasurement);
+            assertEquals(0, mReset);
 
-            final GyroscopeMeasurementsGenerator generator =
-                    new GyroscopeMeasurementsGenerator(this);
+            final GyroscopeMeasurementsGenerator generator = new GyroscopeMeasurementsGenerator(this);
 
-            final AccelerometerMeasurementsGenerator accelerometerGenerator =
-                    new AccelerometerMeasurementsGenerator(mAccelerometerGeneratorListener);
+            final AccelerometerMeasurementsGenerator accelerometerGenerator = new AccelerometerMeasurementsGenerator(
+                    mAccelerometerGeneratorListener);
 
             // generate initial static samples
-            final int initialStaticSamples = TriadStaticIntervalDetector
-                    .DEFAULT_INITIAL_STATIC_SAMPLES;
-            if (!generateStaticSamples(generator, accelerometerGenerator,
-                    initialStaticSamples, trueKinematics, errors, random, 0)) {
+            final int initialStaticSamples = TriadStaticIntervalDetector.DEFAULT_INITIAL_STATIC_SAMPLES;
+            if (!generateStaticSamples(generator, accelerometerGenerator, initialStaticSamples, trueKinematics, errors,
+                    random, 0)) {
                 continue;
             }
 
-            assertEquals(mInitializationStarted, 1);
-            assertEquals(mInitializationCompleted, 1);
+            assertEquals(1, mInitializationStarted);
+            assertEquals(1, mInitializationCompleted);
 
             final int numSequences = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
             final int numMeasurements = KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS;
@@ -2081,24 +1821,21 @@ public class GyroscopeMeasurementsGeneratorTest implements
             int start = initialStaticSamples;
             for (int i = 0; i < n; i++) {
                 // generate static samples
-                generateStaticSamples(generator, accelerometerGenerator,
-                        staticPeriodLength, trueKinematics, errors, random,
-                        start);
+                generateStaticSamples(generator, accelerometerGenerator, staticPeriodLength, trueKinematics, errors,
+                        random, start);
                 start += staticPeriodLength;
 
                 assertEquals(mStaticIntervalDetected, i + 1);
 
                 // generate dynamic samples
-                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                        generateDynamicSamples(generator, accelerometerGenerator,
-                                dynamicPeriodLength, trueKinematics, randomizer,
-                                ecefFrame, nedFrame, errors, random, start,
-                                true);
+                final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence = generateDynamicSamples(
+                        generator, accelerometerGenerator, dynamicPeriodLength, trueKinematics, randomizer, ecefFrame,
+                        nedFrame, errors, random, start, true);
                 sequences.add(sequence);
                 start += dynamicPeriodLength;
 
-                assertEquals(mDynamicIntervalDetected, i + 1);
-                assertEquals(mSequences.size(), i);
+                assertEquals(i + 1, mDynamicIntervalDetected);
+                assertEquals(i, mSequences.size());
             }
 
             // as an initial value for gyroscope bias we can use the average
@@ -2115,19 +1852,15 @@ public class GyroscopeMeasurementsGeneratorTest implements
 
             generator.reset();
 
-            assertEquals(mReset, 1);
-            assertEquals(mError, 0);
+            assertEquals(1, mReset);
+            assertEquals(0, mError);
 
             final Matrix initialMg = new Matrix(3, 3);
             final Matrix initialGg = new Matrix(3, 3);
-            final EasyGyroscopeCalibrator trueCalibrator =
-                    new EasyGyroscopeCalibrator(sequences,
-                            true, false,
-                            initialBg, initialMg, initialGg, ba, ma);
-            final EasyGyroscopeCalibrator calibrator =
-                    new EasyGyroscopeCalibrator(mSequences,
-                            true, false,
-                            initialBg, initialMg, initialGg, ba, ma);
+            final EasyGyroscopeCalibrator trueCalibrator = new EasyGyroscopeCalibrator(sequences,
+                    true, false, initialBg, initialMg, initialGg, ba, ma);
+            final EasyGyroscopeCalibrator calibrator = new EasyGyroscopeCalibrator(mSequences, true,
+                    false, initialBg, initialMg, initialGg, ba, ma);
 
             try {
                 trueCalibrator.calibrate();
@@ -2144,13 +1877,10 @@ public class GyroscopeMeasurementsGeneratorTest implements
             final Matrix estimatedMg = calibrator.getEstimatedMg();
             final Matrix estimatedGg = calibrator.getEstimatedGg();
 
-            final ECEFGravity gravity = ECEFGravityEstimator
-                    .estimateGravityAndReturnNew(ecefFrame);
+            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(ecefFrame);
 
-            KnownGravityNormAccelerometerCalibrator accelerometerCalibrator =
-                    new KnownGravityNormAccelerometerCalibrator(
-                            gravity.getNorm(), mMeasurements,
-                            true);
+            final KnownGravityNormAccelerometerCalibrator accelerometerCalibrator =
+                    new KnownGravityNormAccelerometerCalibrator(gravity.getNorm(), mMeasurements, true);
 
             try {
                 accelerometerCalibrator.calibrate();
@@ -2204,19 +1934,15 @@ public class GyroscopeMeasurementsGeneratorTest implements
     }
 
     @Override
-    public void onInitializationStarted(
-            final GyroscopeMeasurementsGenerator generator) {
+    public void onInitializationStarted(final GyroscopeMeasurementsGenerator generator) {
         mInitializationStarted++;
         checkLocked(generator);
 
-        assertEquals(generator.getStatus(),
-                TriadStaticIntervalDetector.Status.INITIALIZING);
+        assertEquals(TriadStaticIntervalDetector.Status.INITIALIZING, generator.getStatus());
     }
 
     @Override
-    public void onInitializationCompleted(
-            final GyroscopeMeasurementsGenerator generator,
-            final double baseNoiseLevel) {
+    public void onInitializationCompleted(final GyroscopeMeasurementsGenerator generator, final double baseNoiseLevel) {
         mInitializationCompleted++;
         checkLocked(generator);
 
@@ -2224,26 +1950,21 @@ public class GyroscopeMeasurementsGeneratorTest implements
         assertEquals(baseNoiseLevel, generator.getAccelerometerBaseNoiseLevel(), 0.0);
         final Acceleration baseNoiseLevel1 = generator.getAccelerometerBaseNoiseLevelAsMeasurement();
         assertEquals(baseNoiseLevel1.getValue().doubleValue(), baseNoiseLevel, 0.0);
-        assertEquals(baseNoiseLevel1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration baseNoiseLevel2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, baseNoiseLevel1.getUnit());
+        final Acceleration baseNoiseLevel2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getAccelerometerBaseNoiseLevelAsMeasurement(baseNoiseLevel2);
         assertEquals(baseNoiseLevel1, baseNoiseLevel2);
         final double sqrtTimeInterval = Math.sqrt(generator.getTimeInterval());
-        assertEquals(baseNoiseLevel * sqrtTimeInterval,
-                generator.getAccelerometerBaseNoiseLevelRootPsd(),
+        assertEquals(baseNoiseLevel * sqrtTimeInterval, generator.getAccelerometerBaseNoiseLevelRootPsd(),
                 SMALL_ABSOLUTE_ERROR);
         assertEquals(generator.getAccelerometerBaseNoiseLevelPsd(),
-                Math.pow(generator.getAccelerometerBaseNoiseLevelRootPsd(), 2.0),
-                SMALL_ABSOLUTE_ERROR);
+                Math.pow(generator.getAccelerometerBaseNoiseLevelRootPsd(), 2.0), SMALL_ABSOLUTE_ERROR);
 
         assertTrue(generator.getThreshold() > 0.0);
         final Acceleration threshold1 = generator.getThresholdAsMeasurement();
-        assertEquals(threshold1.getValue().doubleValue(), generator.getThreshold(),
-                0.0);
-        assertEquals(threshold1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration threshold2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(threshold1.getValue().doubleValue(), generator.getThreshold(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, threshold1.getUnit());
+        final Acceleration threshold2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         generator.getThresholdAsMeasurement(threshold2);
         assertEquals(threshold1, threshold2);
 
@@ -2261,71 +1982,58 @@ public class GyroscopeMeasurementsGeneratorTest implements
         assertTrue(gyroNoiseLevel > 0.0);
         final AngularSpeed gyroNoiseLevel1 = generator.getGyroscopeBaseNoiseLevelAsMeasurement();
         assertEquals(gyroNoiseLevel1.getValue().doubleValue(), gyroNoiseLevel, 0.0);
-        assertEquals(gyroNoiseLevel1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed gyroNoiseLevel2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, gyroNoiseLevel1.getUnit());
+        final AngularSpeed gyroNoiseLevel2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         generator.getGyroscopeBaseNoiseLevelAsMeasurement(gyroNoiseLevel2);
         assertEquals(gyroNoiseLevel1, gyroNoiseLevel2);
 
         assertEquals(stdAngularSpeed1.getNorm(), gyroNoiseLevel, 0.0);
 
-        assertEquals(gyroNoiseLevel * sqrtTimeInterval,
-                generator.getGyroscopeBaseNoiseLevelRootPsd(),
+        assertEquals(gyroNoiseLevel * sqrtTimeInterval, generator.getGyroscopeBaseNoiseLevelRootPsd(),
                 SMALL_ABSOLUTE_ERROR);
         assertEquals(generator.getGyroscopeBaseNoiseLevelPsd(),
-                Math.pow(generator.getGyroscopeBaseNoiseLevelRootPsd(), 2.0),
-                SMALL_ABSOLUTE_ERROR);
+                Math.pow(generator.getGyroscopeBaseNoiseLevelRootPsd(), 2.0), SMALL_ABSOLUTE_ERROR);
     }
 
     @Override
     public void onError(
-            final GyroscopeMeasurementsGenerator generator,
-            final TriadStaticIntervalDetector.ErrorReason reason) {
+            final GyroscopeMeasurementsGenerator generator, final TriadStaticIntervalDetector.ErrorReason reason) {
         mError++;
         checkLocked(generator);
 
-        assertEquals(generator.getStatus(),
-                TriadStaticIntervalDetector.Status.FAILED);
+        assertEquals(TriadStaticIntervalDetector.Status.FAILED, generator.getStatus());
     }
 
     @Override
-    public void onStaticIntervalDetected(
-            final GyroscopeMeasurementsGenerator generator) {
+    public void onStaticIntervalDetected(final GyroscopeMeasurementsGenerator generator) {
         mStaticIntervalDetected++;
         checkLocked(generator);
 
-        assertEquals(generator.getStatus(),
-                TriadStaticIntervalDetector.Status.STATIC_INTERVAL);
+        assertEquals(TriadStaticIntervalDetector.Status.STATIC_INTERVAL, generator.getStatus());
     }
 
     @Override
-    public void onDynamicIntervalDetected(
-            final GyroscopeMeasurementsGenerator generator) {
+    public void onDynamicIntervalDetected(final GyroscopeMeasurementsGenerator generator) {
         mDynamicIntervalDetected++;
         checkLocked(generator);
 
-        assertEquals(generator.getStatus(),
-                TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL);
+        assertEquals(TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL, generator.getStatus());
     }
 
     @Override
-    public void onStaticIntervalSkipped(
-            final GyroscopeMeasurementsGenerator generator) {
+    public void onStaticIntervalSkipped(final GyroscopeMeasurementsGenerator generator) {
         mStaticIntervalSkipped++;
         checkLocked(generator);
 
-        assertEquals(generator.getStatus(),
-                TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL);
+        assertEquals(TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL, generator.getStatus());
     }
 
     @Override
-    public void onDynamicIntervalSkipped(
-            final GyroscopeMeasurementsGenerator generator) {
+    public void onDynamicIntervalSkipped(final GyroscopeMeasurementsGenerator generator) {
         mDynamicIntervalSkipped++;
         checkLocked(generator);
 
-        assertEquals(generator.getStatus(),
-                TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL);
+        assertEquals(TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL, generator.getStatus());
     }
 
     @Override
@@ -2341,8 +2049,7 @@ public class GyroscopeMeasurementsGeneratorTest implements
     public void onReset(final GyroscopeMeasurementsGenerator generator) {
         mReset++;
 
-        assertEquals(generator.getStatus(),
-                TriadStaticIntervalDetector.Status.IDLE);
+        assertEquals(TriadStaticIntervalDetector.Status.IDLE, generator.getStatus());
     }
 
     private void reset() {
@@ -2362,89 +2069,37 @@ public class GyroscopeMeasurementsGeneratorTest implements
 
     private void checkLocked(final GyroscopeMeasurementsGenerator generator) {
         assertTrue(generator.isRunning());
-        try {
-            generator.setTimeInterval(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
+        assertThrows(LockedException.class, () -> generator.setTimeInterval(0.0));
         final Time timeInterval = new Time(1.0, TimeUnit.SECOND);
-        try {
-            generator.setTimeInterval(timeInterval);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            generator.setMinStaticSamples(0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            generator.setMaxDynamicSamples(0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            generator.setListener(this);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            generator.setWindowSize(0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            generator.setInitialStaticSamples(0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            generator.setThresholdFactor(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            generator.setInstantaneousNoiseLevelFactor(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            generator.setBaseNoiseLevelAbsoluteThreshold(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            generator.setBaseNoiseLevelAbsoluteThreshold(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            generator.process(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            generator.reset();
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
+        assertThrows(LockedException.class, () -> generator.setTimeInterval(timeInterval));
+        assertThrows(LockedException.class, () -> generator.setMinStaticSamples(0));
+        assertThrows(LockedException.class, () -> generator.setMaxDynamicSamples(0));
+        assertThrows(LockedException.class, () -> generator.setListener(this));
+        assertThrows(LockedException.class, () -> generator.setWindowSize(0));
+        assertThrows(LockedException.class, () -> generator.setInitialStaticSamples(0));
+        assertThrows(LockedException.class, () -> generator.setThresholdFactor(0.0));
+        assertThrows(LockedException.class, () -> generator.setInstantaneousNoiseLevelFactor(0.0));
+        assertThrows(LockedException.class, () -> generator.setBaseNoiseLevelAbsoluteThreshold(0.0));
+        assertThrows(LockedException.class, () -> generator.setBaseNoiseLevelAbsoluteThreshold(null));
+        assertThrows(LockedException.class, () -> generator.process(null));
+        assertThrows(LockedException.class, generator::reset);
     }
 
-    private Matrix generateBa() {
+    private static Matrix generateBa() {
         return Matrix.newFromArray(new double[]{
                 900 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 -1300 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 800 * MICRO_G_TO_METERS_PER_SECOND_SQUARED});
     }
 
-    private Matrix generateBg() {
+    private static Matrix generateBg() {
         return Matrix.newFromArray(new double[]{
                 -9 * DEG_TO_RAD / 3600.0,
                 13 * DEG_TO_RAD / 3600.0,
                 -8 * DEG_TO_RAD / 3600.0});
     }
 
-    private Matrix generateMaCommonAxis() throws WrongSizeException {
+    private static Matrix generateMaCommonAxis() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
@@ -2455,7 +2110,7 @@ public class GyroscopeMeasurementsGeneratorTest implements
         return result;
     }
 
-    private Matrix generateMaGeneral() throws WrongSizeException {
+    private static Matrix generateMaGeneral() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
@@ -2466,7 +2121,7 @@ public class GyroscopeMeasurementsGeneratorTest implements
         return result;
     }
 
-    private Matrix generateMg() throws WrongSizeException {
+    private static Matrix generateMg() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
@@ -2477,7 +2132,7 @@ public class GyroscopeMeasurementsGeneratorTest implements
         return result;
     }
 
-    private Matrix generateGg() throws WrongSizeException {
+    private static Matrix generateGg() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         final double tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
@@ -2489,34 +2144,28 @@ public class GyroscopeMeasurementsGeneratorTest implements
         return result;
     }
 
-    private double getAccelNoiseRootPSD() {
+    private static double getAccelNoiseRootPSD() {
         return 100.0 * MICRO_G_TO_METERS_PER_SECOND_SQUARED;
     }
 
-    private double getGyroNoiseRootPSD() {
+    private static double getGyroNoiseRootPSD() {
         return 0.01 * DEG_TO_RAD / 60.0;
     }
 
-    private boolean generateStaticSamples(
+    private static boolean generateStaticSamples(
             final GyroscopeMeasurementsGenerator generator,
-            final AccelerometerMeasurementsGenerator accelerometerGenerator,
-            final int numSamples,
-            final BodyKinematics trueKinematics,
-            final IMUErrors errors,
-            final Random random,
-            final int startSample)
-            throws LockedException {
+            final AccelerometerMeasurementsGenerator accelerometerGenerator, final int numSamples,
+            final BodyKinematics trueKinematics, final IMUErrors errors, final Random random,
+            final int startSample) throws LockedException {
 
         final TimedBodyKinematics timedMeasuredKinematics = new TimedBodyKinematics();
         final BodyKinematics measuredKinematics = new BodyKinematics();
         for (int i = 0, j = startSample; i < numSamples; i++, j++) {
 
-            BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                    trueKinematics, errors, random, measuredKinematics);
+            BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random, measuredKinematics);
 
             timedMeasuredKinematics.setKinematics(measuredKinematics);
-            timedMeasuredKinematics.setTimestampSeconds(
-                    j * TIME_INTERVAL_SECONDS);
+            timedMeasuredKinematics.setTimestampSeconds(j * TIME_INTERVAL_SECONDS);
 
             final boolean result1 = generator.process(timedMeasuredKinematics);
             final boolean result2 = accelerometerGenerator.process(measuredKinematics);
@@ -2530,31 +2179,21 @@ public class GyroscopeMeasurementsGeneratorTest implements
     }
 
     @SuppressWarnings("SameParameterValue")
-    private BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> generateDynamicSamples(
+    private static BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> generateDynamicSamples(
             final GyroscopeMeasurementsGenerator generator,
-            final AccelerometerMeasurementsGenerator accelerometerGenerator,
-            final int numSamples,
-            final BodyKinematics trueKinematics,
-            final UniformRandomizer randomizer,
-            final ECEFFrame ecefFrame,
-            final NEDFrame nedFrame,
-            final IMUErrors errors,
-            final Random random,
-            final int startSample,
-            final boolean changePosition)
-            throws InvalidSourceAndDestinationFrameTypeException, LockedException,
+            final AccelerometerMeasurementsGenerator accelerometerGenerator, final int numSamples,
+            final BodyKinematics trueKinematics, final UniformRandomizer randomizer, final ECEFFrame ecefFrame,
+            final NEDFrame nedFrame, final IMUErrors errors, final Random random, final int startSample,
+            final boolean changePosition) throws InvalidSourceAndDestinationFrameTypeException, LockedException,
             InvalidRotationMatrixException, RotationException {
 
         final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
         final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
         final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
-        final double deltaX = changePosition ?
-                randomizer.nextDouble(MIN_DELTA_POS_METERS, MAX_DELTA_POS_METERS) : 0.0;
-        final double deltaY = changePosition ?
-                randomizer.nextDouble(MIN_DELTA_POS_METERS, MAX_DELTA_POS_METERS) : 0.0;
-        final double deltaZ = changePosition ?
-                randomizer.nextDouble(MIN_DELTA_POS_METERS, MAX_DELTA_POS_METERS) : 0.0;
+        final double deltaX = changePosition ? randomizer.nextDouble(MIN_DELTA_POS_METERS, MAX_DELTA_POS_METERS) : 0.0;
+        final double deltaY = changePosition ? randomizer.nextDouble(MIN_DELTA_POS_METERS, MAX_DELTA_POS_METERS) : 0.0;
+        final double deltaZ = changePosition ? randomizer.nextDouble(MIN_DELTA_POS_METERS, MAX_DELTA_POS_METERS) : 0.0;
 
         final double deltaRoll = Math.toRadians(randomizer.nextDouble(
                 MIN_DELTA_ANGLE_DEGREES, MAX_DELTA_ANGLE_DEGREES));
@@ -2576,10 +2215,10 @@ public class GyroscopeMeasurementsGeneratorTest implements
         final Quaternion beforeQ = new Quaternion();
         nedC.asRotation(beforeQ);
 
-        NEDFrame oldNedFrame = new NEDFrame(nedFrame);
-        NEDFrame newNedFrame = new NEDFrame();
-        ECEFFrame oldEcefFrame = new ECEFFrame(ecefFrame);
-        ECEFFrame newEcefFrame = new ECEFFrame();
+        final NEDFrame oldNedFrame = new NEDFrame(nedFrame);
+        final NEDFrame newNedFrame = new NEDFrame();
+        final ECEFFrame oldEcefFrame = new ECEFFrame(ecefFrame);
+        final ECEFFrame newEcefFrame = new ECEFFrame();
 
         double oldEcefX = ecefX - deltaX;
         double oldEcefY = ecefY - deltaY;
@@ -2588,25 +2227,20 @@ public class GyroscopeMeasurementsGeneratorTest implements
         double oldPitch = pitch - deltaPitch;
         double oldYaw = yaw - deltaYaw;
 
-        final BodyKinematics measuredBeforeGravityKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS,
-                        trueKinematics, errors, random);
+        final BodyKinematics measuredBeforeGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, random);
         final double beforeMeanFx = measuredBeforeGravityKinematics.getFx();
         final double beforeMeanFy = measuredBeforeGravityKinematics.getFy();
         final double beforeMeanFz = measuredBeforeGravityKinematics.getFz();
 
-        final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
-                new BodyKinematicsSequence<>();
-        sequence.setBeforeMeanSpecificForceCoordinates(
-                beforeMeanFx, beforeMeanFy, beforeMeanFz);
+        final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence = new BodyKinematicsSequence<>();
+        sequence.setBeforeMeanSpecificForceCoordinates(beforeMeanFx, beforeMeanFy, beforeMeanFz);
 
         final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> trueSequence =
                 new BodyKinematicsSequence<>();
-        final List<StandardDeviationTimedBodyKinematics> trueTimedKinematicsList =
-                new ArrayList<>();
+        final List<StandardDeviationTimedBodyKinematics> trueTimedKinematicsList = new ArrayList<>();
 
-        final List<StandardDeviationTimedBodyKinematics> measuredTimedKinematicsList =
-                new ArrayList<>();
+        final List<StandardDeviationTimedBodyKinematics> measuredTimedKinematicsList = new ArrayList<>();
 
         final TimedBodyKinematics timedMeasuredKinematics = new TimedBodyKinematics();
         final BodyKinematics measuredKinematics = new BodyKinematics();
@@ -2617,11 +2251,8 @@ public class GyroscopeMeasurementsGeneratorTest implements
             final double newRoll = oldRoll + interpolate(deltaRoll, progress);
             final double newPitch = oldPitch + interpolate(deltaPitch, progress);
             final double newYaw = oldYaw + interpolate(deltaYaw, progress);
-            final CoordinateTransformation newNedC =
-                    new CoordinateTransformation(
-                            newRoll, newPitch, newYaw,
-                            FrameType.BODY_FRAME,
-                            FrameType.LOCAL_NAVIGATION_FRAME);
+            final CoordinateTransformation newNedC = new CoordinateTransformation(newRoll, newPitch, newYaw,
+                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
             final NEDPosition newNedPosition = oldNedFrame.getPosition();
 
             newNedFrame.setPosition(newNedPosition);
@@ -2640,12 +2271,11 @@ public class GyroscopeMeasurementsGeneratorTest implements
             final double timestampSeconds = j * TIME_INTERVAL_SECONDS;
 
             // update true kinematics using new position and rotation
-            ECEFKinematicsEstimator.estimateKinematics(TIME_INTERVAL_SECONDS,
-                    newEcefFrame, oldEcefFrame, trueKinematics);
+            ECEFKinematicsEstimator.estimateKinematics(TIME_INTERVAL_SECONDS, newEcefFrame, oldEcefFrame,
+                    trueKinematics);
 
             // add error to true kinematics
-            BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                    trueKinematics, errors, random, measuredKinematics);
+            BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random, measuredKinematics);
 
             timedMeasuredKinematics.setKinematics(measuredKinematics);
             timedMeasuredKinematics.setTimestampSeconds(timestampSeconds);
@@ -2653,18 +2283,14 @@ public class GyroscopeMeasurementsGeneratorTest implements
             assertTrue(generator.process(timedMeasuredKinematics));
             assertTrue(accelerometerGenerator.process(measuredKinematics));
 
-            final StandardDeviationTimedBodyKinematics trueTimedKinematics =
-                    new StandardDeviationTimedBodyKinematics(
-                            new BodyKinematics(trueKinematics), timestampSeconds,
-                            specificForceStandardDeviation,
-                            angularRateStandardDeviation);
+            final StandardDeviationTimedBodyKinematics trueTimedKinematics = new StandardDeviationTimedBodyKinematics(
+                    new BodyKinematics(trueKinematics), timestampSeconds, specificForceStandardDeviation,
+                    angularRateStandardDeviation);
             trueTimedKinematicsList.add(trueTimedKinematics);
 
             final StandardDeviationTimedBodyKinematics measuredTimedKinematics =
-                    new StandardDeviationTimedBodyKinematics(
-                            new BodyKinematics(measuredKinematics), timestampSeconds,
-                            specificForceStandardDeviation,
-                            angularRateStandardDeviation);
+                    new StandardDeviationTimedBodyKinematics(new BodyKinematics(measuredKinematics), timestampSeconds,
+                            specificForceStandardDeviation, angularRateStandardDeviation);
             measuredTimedKinematicsList.add(measuredTimedKinematics);
 
             oldNedFrame.copyFrom(newNedFrame);
@@ -2680,14 +2306,11 @@ public class GyroscopeMeasurementsGeneratorTest implements
         trueSequence.setItems(trueTimedKinematicsList);
 
         final Quaternion afterQ = new Quaternion();
-        QuaternionIntegrator.integrateGyroSequence(
-                trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
+        QuaternionIntegrator.integrateGyroSequence(trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA,
+                afterQ);
 
-        final CoordinateTransformation newNedC =
-                new CoordinateTransformation(
-                        afterQ.asInhomogeneousMatrix(),
-                        FrameType.BODY_FRAME,
-                        FrameType.LOCAL_NAVIGATION_FRAME);
+        final CoordinateTransformation newNedC = new CoordinateTransformation(afterQ.asInhomogeneousMatrix(),
+                FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         newNedFrame.setCoordinateTransformation(newNedC);
 
         NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
@@ -2698,19 +2321,16 @@ public class GyroscopeMeasurementsGeneratorTest implements
 
         // after dynamic sequence finishes, update true kinematics for a
         // static sequence at current frame
-        ECEFKinematicsEstimator.estimateKinematics(TIME_INTERVAL_SECONDS,
-                newEcefFrame, newEcefFrame, trueKinematics);
+        ECEFKinematicsEstimator.estimateKinematics(TIME_INTERVAL_SECONDS, newEcefFrame, newEcefFrame, trueKinematics);
 
-        final BodyKinematics measuredAfterGravityKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS,
-                        trueKinematics, errors, random);
+        final BodyKinematics measuredAfterGravityKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, random);
         final double afterMeanFx = measuredAfterGravityKinematics.getFx();
         final double afterMeanFy = measuredAfterGravityKinematics.getFy();
         final double afterMeanFz = measuredAfterGravityKinematics.getFz();
 
         sequence.setItems(measuredTimedKinematicsList);
-        sequence.setAfterMeanSpecificForceCoordinates(
-                afterMeanFx, afterMeanFy, afterMeanFz);
+        sequence.setAfterMeanSpecificForceCoordinates(afterMeanFx, afterMeanFy, afterMeanFz);
 
         return sequence;
     }
@@ -2718,7 +2338,7 @@ public class GyroscopeMeasurementsGeneratorTest implements
     // This is required to simulate a smooth transition of values during
     // dynamic period, to avoid a sudden rotation or translation and simulate
     // a more natural behaviour.
-    private double interpolate(final double value, final double progress) {
+    private static double interpolate(final double value, final double progress) {
         return -2.0 * (Math.abs(progress - 0.5) - 0.5) * value;
     }
 }

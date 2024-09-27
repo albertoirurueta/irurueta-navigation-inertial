@@ -23,6 +23,6 @@ import com.irurueta.units.MagneticFluxDensityUnit;
  * Interface defining events generated for {@link MagneticFluxDensityTriadStaticIntervalDetector}.
  */
 public interface MagneticFluxDensityTriadStaticIntervalDetectorListener extends
-        TriadStaticIntervalDetectorListener<MagneticFluxDensityUnit, MagneticFluxDensity,
-                MagneticFluxDensityTriad, MagneticFluxDensityTriadStaticIntervalDetector> {
+        TriadStaticIntervalDetectorListener<MagneticFluxDensityUnit, MagneticFluxDensity, MagneticFluxDensityTriad,
+                MagneticFluxDensityTriadStaticIntervalDetector> {
 }

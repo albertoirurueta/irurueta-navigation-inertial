@@ -19,6 +19,7 @@ import com.irurueta.units.Distance;
 import com.irurueta.units.DistanceConverter;
 import com.irurueta.units.DistanceUnit;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -31,6 +32,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -222,8 +224,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * @param rnDistance meridian radius of curvature to be set.
      */
     public void setRnDistance(final Distance rnDistance) {
-        mRn = DistanceConverter.convert(rnDistance.getValue().doubleValue(),
-                rnDistance.getUnit(), DistanceUnit.METER);
+        mRn = DistanceConverter.convert(rnDistance.getValue().doubleValue(), rnDistance.getUnit(), DistanceUnit.METER);
     }
 
     /**
@@ -281,8 +282,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
      * @param reDistance transverse radius of curvature to be set.
      */
     public void setReDistance(final Distance reDistance) {
-        mRe = DistanceConverter.convert(reDistance.getValue().doubleValue(),
-                reDistance.getUnit(), DistanceUnit.METER);
+        mRe = DistanceConverter.convert(reDistance.getValue().doubleValue(), reDistance.getUnit(), DistanceUnit.METER);
     }
 
     /**
@@ -346,6 +346,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
             return false;
         }
 
+        //noinspection PatternVariableCanBeUsed
         final RadiiOfCurvature other = (RadiiOfCurvature) obj;
         return equals(other);
     }
@@ -374,8 +375,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
             return false;
         }
 
-        return Math.abs(mRn - other.mRn) <= threshold
-                && Math.abs(mRe - other.mRe) <= threshold;
+        return Math.abs(mRn - other.mRn) <= threshold && Math.abs(mRe - other.mRe) <= threshold;
     }
 
     /**

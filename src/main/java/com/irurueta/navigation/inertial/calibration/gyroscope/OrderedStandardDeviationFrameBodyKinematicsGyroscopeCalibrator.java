@@ -24,8 +24,7 @@ import java.util.List;
  * Defines a gyroscope calibrator using ordered lists of
  * {@link StandardDeviationFrameBodyKinematics} measurements.
  */
-public interface OrderedStandardDeviationFrameBodyKinematicsGyroscopeCalibrator extends
-        GyroscopeCalibrator {
+public interface OrderedStandardDeviationFrameBodyKinematicsGyroscopeCalibrator extends GyroscopeCalibrator {
 
     /**
      * Gets a list of body kinematics measurements taken at different
@@ -64,7 +63,5 @@ public interface OrderedStandardDeviationFrameBodyKinematicsGyroscopeCalibrator 
      *                     frames (positions, orientations and velocities).
      * @throws LockedException if calibrator is currently running.
      */
-    void setMeasurements(
-            final List<StandardDeviationFrameBodyKinematics> measurements)
-            throws LockedException;
+    void setMeasurements(final List<StandardDeviationFrameBodyKinematics> measurements) throws LockedException;
 }

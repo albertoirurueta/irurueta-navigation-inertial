@@ -62,10 +62,8 @@ public class FrameBodyMagneticFluxDensityTest {
     private static final long END_TIMESTAMP_MILLIS;
 
     static {
-        START_CALENDAR.set(2020, Calendar.JANUARY, 1,
-                0, 0, 0);
-        END_CALENDAR.set(2025, Calendar.DECEMBER, 31,
-                23, 59, 59);
+        START_CALENDAR.set(2020, Calendar.JANUARY, 1, 0, 0, 0);
+        END_CALENDAR.set(2025, Calendar.DECEMBER, 31, 23, 59, 59);
 
         START_TIMESTAMP_MILLIS = START_CALENDAR.getTimeInMillis();
         END_TIMESTAMP_MILLIS = END_CALENDAR.getTimeInMillis();
@@ -74,390 +72,317 @@ public class FrameBodyMagneticFluxDensityTest {
     @Test
     public void testConstructor() throws IOException {
         // test empty constructor
-        FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity =
-                new FrameBodyMagneticFluxDensity();
+        FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity();
 
         // check default values
         assertNull(frameBodyMagneticFluxDensity.getMagneticFluxDensity());
         assertNull(frameBodyMagneticFluxDensity.getFrame());
         assertNull(frameBodyMagneticFluxDensity.getNedFrame());
         assertFalse(frameBodyMagneticFluxDensity.getNedFrame(null));
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), 0.0,
-                0.0);
+        assertEquals(0.0, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with magnetic flux density
-        final BodyMagneticFluxDensity magneticFluxDensity =
-                createMagneticFluxDensity();
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                magneticFluxDensity);
+        final BodyMagneticFluxDensity magneticFluxDensity = createMagneticFluxDensity();
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(magneticFluxDensity);
 
         // check default value
-        assertSame(frameBodyMagneticFluxDensity.getMagneticFluxDensity(),
-                magneticFluxDensity);
+        assertSame(magneticFluxDensity, frameBodyMagneticFluxDensity.getMagneticFluxDensity());
         assertNull(frameBodyMagneticFluxDensity.getFrame());
         assertNull(frameBodyMagneticFluxDensity.getNedFrame());
         assertFalse(frameBodyMagneticFluxDensity.getNedFrame(null));
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), 0.0,
-                0.0);
+        assertEquals(0.0, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with ECEF frame
         final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                ecefFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(ecefFrame);
 
         // check default values
         assertNull(frameBodyMagneticFluxDensity.getMagneticFluxDensity());
-        assertSame(frameBodyMagneticFluxDensity.getFrame(), ecefFrame);
-        assertEquals(frameBodyMagneticFluxDensity.getNedFrame(), nedFrame);
+        assertSame(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
+        assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
         NEDFrame nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), 0.0,
-                0.0);
+        assertEquals(0.0, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with NED frame
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                nedFrame);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(nedFrame);
 
         // check default values
         assertNull(frameBodyMagneticFluxDensity.getMagneticFluxDensity());
-        assertEquals(frameBodyMagneticFluxDensity.getFrame(), ecefFrame);
-        assertEquals(frameBodyMagneticFluxDensity.getNedFrame(), nedFrame);
+        assertEquals(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
+        assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), 0.0,
-                0.0);
+        assertEquals(0.0, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with magnetic flux density and ECEF frame
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                magneticFluxDensity, ecefFrame);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(magneticFluxDensity, ecefFrame);
 
         // check default values
-        assertSame(frameBodyMagneticFluxDensity.getMagneticFluxDensity(),
-                magneticFluxDensity);
-        assertSame(frameBodyMagneticFluxDensity.getFrame(), ecefFrame);
-        assertEquals(frameBodyMagneticFluxDensity.getNedFrame(), nedFrame);
+        assertSame(magneticFluxDensity, frameBodyMagneticFluxDensity.getMagneticFluxDensity());
+        assertSame(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
+        assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), 0.0,
-                0.0);
+        assertEquals(0.0, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with magnetic flux density and NED frame
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                magneticFluxDensity, nedFrame);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(magneticFluxDensity, nedFrame);
 
         // check default values
-        assertSame(frameBodyMagneticFluxDensity.getMagneticFluxDensity(),
-                magneticFluxDensity);
-        assertEquals(frameBodyMagneticFluxDensity.getFrame(), ecefFrame);
-        assertEquals(frameBodyMagneticFluxDensity.getNedFrame(), nedFrame);
+        assertSame(magneticFluxDensity, frameBodyMagneticFluxDensity.getMagneticFluxDensity());
+        assertEquals(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
+        assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), 0.0,
-                0.0);
+        assertEquals(0.0, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         final Date timestamp = createTimestamp();
         final GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(timestamp);
-        final double year = FrameBodyMagneticFluxDensity
-                .convertTime(timestamp);
+        final double year = FrameBodyMagneticFluxDensity.convertTime(timestamp);
 
         // test constructor with year
-        frameBodyMagneticFluxDensity =
-                new FrameBodyMagneticFluxDensity(year);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(year);
 
         // check default values
         assertNull(frameBodyMagneticFluxDensity.getMagneticFluxDensity());
         assertNull(frameBodyMagneticFluxDensity.getFrame());
         assertNull(frameBodyMagneticFluxDensity.getNedFrame());
         assertFalse(frameBodyMagneticFluxDensity.getNedFrame(null));
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with magnetic flux density and year
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                magneticFluxDensity, year);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(magneticFluxDensity, year);
 
         // check default value
-        assertSame(frameBodyMagneticFluxDensity.getMagneticFluxDensity(),
-                magneticFluxDensity);
+        assertSame(magneticFluxDensity, frameBodyMagneticFluxDensity.getMagneticFluxDensity());
         assertNull(frameBodyMagneticFluxDensity.getFrame());
         assertNull(frameBodyMagneticFluxDensity.getNedFrame());
         assertFalse(frameBodyMagneticFluxDensity.getNedFrame(null));
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with ECEF frame and year
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                ecefFrame, year);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(ecefFrame, year);
 
         // check default values
         assertNull(frameBodyMagneticFluxDensity.getMagneticFluxDensity());
-        assertSame(frameBodyMagneticFluxDensity.getFrame(), ecefFrame);
-        assertEquals(frameBodyMagneticFluxDensity.getNedFrame(), nedFrame);
+        assertSame(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
+        assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with NED frame and year
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                nedFrame, year);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(nedFrame, year);
 
         // check default values
         assertNull(frameBodyMagneticFluxDensity.getMagneticFluxDensity());
-        assertEquals(frameBodyMagneticFluxDensity.getFrame(), ecefFrame);
-        assertEquals(frameBodyMagneticFluxDensity.getNedFrame(), nedFrame);
+        assertEquals(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
+        assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with magnetic flux density, ECEF frame and year
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                magneticFluxDensity, ecefFrame, year);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(magneticFluxDensity, ecefFrame, year);
 
         // check default values
-        assertSame(frameBodyMagneticFluxDensity.getMagneticFluxDensity(),
-                magneticFluxDensity);
-        assertSame(frameBodyMagneticFluxDensity.getFrame(), ecefFrame);
-        assertEquals(frameBodyMagneticFluxDensity.getNedFrame(), nedFrame);
+        assertSame(magneticFluxDensity, frameBodyMagneticFluxDensity.getMagneticFluxDensity());
+        assertSame(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
+        assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with magnetic flux density,  NED frame and year
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                magneticFluxDensity, nedFrame, year);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(magneticFluxDensity, nedFrame, year);
 
         // check default values
-        assertSame(frameBodyMagneticFluxDensity.getMagneticFluxDensity(),
-                magneticFluxDensity);
-        assertEquals(frameBodyMagneticFluxDensity.getFrame(), ecefFrame);
-        assertEquals(frameBodyMagneticFluxDensity.getNedFrame(), nedFrame);
+        assertSame(magneticFluxDensity, frameBodyMagneticFluxDensity.getMagneticFluxDensity());
+        assertEquals(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
+        assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with date
-        frameBodyMagneticFluxDensity =
-                new FrameBodyMagneticFluxDensity(timestamp);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(timestamp);
 
         // check default values
         assertNull(frameBodyMagneticFluxDensity.getMagneticFluxDensity());
         assertNull(frameBodyMagneticFluxDensity.getFrame());
         assertNull(frameBodyMagneticFluxDensity.getNedFrame());
         assertFalse(frameBodyMagneticFluxDensity.getNedFrame(null));
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with magnetic flux density and date
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                magneticFluxDensity, timestamp);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(magneticFluxDensity, timestamp);
 
         // check default value
-        assertSame(frameBodyMagneticFluxDensity.getMagneticFluxDensity(),
-                magneticFluxDensity);
+        assertSame(magneticFluxDensity, frameBodyMagneticFluxDensity.getMagneticFluxDensity());
         assertNull(frameBodyMagneticFluxDensity.getFrame());
         assertNull(frameBodyMagneticFluxDensity.getNedFrame());
         assertFalse(frameBodyMagneticFluxDensity.getNedFrame(null));
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with ECEF frame and date
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                ecefFrame, timestamp);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(ecefFrame, timestamp);
 
         // check default values
         assertNull(frameBodyMagneticFluxDensity.getMagneticFluxDensity());
-        assertSame(frameBodyMagneticFluxDensity.getFrame(), ecefFrame);
-        assertEquals(frameBodyMagneticFluxDensity.getNedFrame(), nedFrame);
+        assertSame(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
+        assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with NED frame and date
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                nedFrame, timestamp);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(nedFrame, timestamp);
 
         // check default values
         assertNull(frameBodyMagneticFluxDensity.getMagneticFluxDensity());
-        assertEquals(frameBodyMagneticFluxDensity.getFrame(), ecefFrame);
-        assertEquals(frameBodyMagneticFluxDensity.getNedFrame(), nedFrame);
+        assertEquals(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
+        assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with magnetic flux density, ECEF frame and date
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                magneticFluxDensity, ecefFrame, timestamp);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(magneticFluxDensity, ecefFrame, timestamp);
 
         // check default values
-        assertSame(frameBodyMagneticFluxDensity.getMagneticFluxDensity(),
-                magneticFluxDensity);
-        assertSame(frameBodyMagneticFluxDensity.getFrame(), ecefFrame);
-        assertEquals(frameBodyMagneticFluxDensity.getNedFrame(), nedFrame);
+        assertSame(magneticFluxDensity, frameBodyMagneticFluxDensity.getMagneticFluxDensity());
+        assertSame(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
+        assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with magnetic flux density, NED frame and date
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                magneticFluxDensity, nedFrame, timestamp);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(magneticFluxDensity, nedFrame, timestamp);
 
         // check default values
-        assertSame(frameBodyMagneticFluxDensity.getMagneticFluxDensity(),
-                magneticFluxDensity);
-        assertEquals(frameBodyMagneticFluxDensity.getFrame(), ecefFrame);
-        assertEquals(frameBodyMagneticFluxDensity.getNedFrame(), nedFrame);
+        assertSame(magneticFluxDensity, frameBodyMagneticFluxDensity.getMagneticFluxDensity());
+        assertEquals(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
+        assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with calendar
-        frameBodyMagneticFluxDensity =
-                new FrameBodyMagneticFluxDensity(calendar);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(calendar);
 
         // check default values
         assertNull(frameBodyMagneticFluxDensity.getMagneticFluxDensity());
         assertNull(frameBodyMagneticFluxDensity.getFrame());
         assertNull(frameBodyMagneticFluxDensity.getNedFrame());
         assertFalse(frameBodyMagneticFluxDensity.getNedFrame(null));
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with magnetic flux density and calendar
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                magneticFluxDensity, calendar);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(magneticFluxDensity, calendar);
 
         // check default value
-        assertSame(frameBodyMagneticFluxDensity.getMagneticFluxDensity(),
-                magneticFluxDensity);
+        assertSame(magneticFluxDensity, frameBodyMagneticFluxDensity.getMagneticFluxDensity());
         assertNull(frameBodyMagneticFluxDensity.getFrame());
         assertNull(frameBodyMagneticFluxDensity.getNedFrame());
         assertFalse(frameBodyMagneticFluxDensity.getNedFrame(null));
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with ECEF frame and calendar
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                ecefFrame, calendar);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(ecefFrame, calendar);
 
         // check default values
         assertNull(frameBodyMagneticFluxDensity.getMagneticFluxDensity());
-        assertSame(frameBodyMagneticFluxDensity.getFrame(), ecefFrame);
-        assertEquals(frameBodyMagneticFluxDensity.getNedFrame(), nedFrame);
+        assertSame(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
+        assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test constructor with NED frame and calendar
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                nedFrame, calendar);
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(nedFrame, calendar);
 
         // check default values
         assertNull(frameBodyMagneticFluxDensity.getMagneticFluxDensity());
-        assertEquals(frameBodyMagneticFluxDensity.getFrame(), ecefFrame);
-        assertEquals(frameBodyMagneticFluxDensity.getNedFrame(), nedFrame);
+        assertEquals(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
+        assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
-        // test constructor with magnetic flux density, ECEF frame and
-        // calendar
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                magneticFluxDensity, ecefFrame, calendar);
+        // test constructor with magnetic flux density, ECEF frame and calendar
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(magneticFluxDensity, ecefFrame, calendar);
 
         // check default values
-        assertSame(frameBodyMagneticFluxDensity.getMagneticFluxDensity(),
-                magneticFluxDensity);
-        assertSame(frameBodyMagneticFluxDensity.getFrame(), ecefFrame);
-        assertEquals(frameBodyMagneticFluxDensity.getNedFrame(), nedFrame);
+        assertSame(magneticFluxDensity, frameBodyMagneticFluxDensity.getMagneticFluxDensity());
+        assertSame(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
+        assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
-        // test constructor with magnetic flux density, NED frame and
-        // calendar
-        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
-                magneticFluxDensity, nedFrame, calendar);
+        // test constructor with magnetic flux density, NED frame and calendar
+        frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(magneticFluxDensity, nedFrame, calendar);
 
         // check default values
-        assertSame(frameBodyMagneticFluxDensity.getMagneticFluxDensity(),
-                magneticFluxDensity);
-        assertEquals(frameBodyMagneticFluxDensity.getFrame(), ecefFrame);
-        assertEquals(frameBodyMagneticFluxDensity.getNedFrame(), nedFrame);
+        assertSame(magneticFluxDensity, frameBodyMagneticFluxDensity.getMagneticFluxDensity());
+        assertEquals(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
+        assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // test copy constructor
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new FrameBodyMagneticFluxDensity(
-                        frameBodyMagneticFluxDensity);
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 = new FrameBodyMagneticFluxDensity(
+                frameBodyMagneticFluxDensity);
 
         // check default values
-        assertEquals(frameBodyMagneticFluxDensity2.getMagneticFluxDensity(),
-                magneticFluxDensity);
-        assertEquals(frameBodyMagneticFluxDensity2.getFrame(), ecefFrame);
-        assertEquals(frameBodyMagneticFluxDensity2.getNedFrame(), nedFrame);
+        assertEquals(magneticFluxDensity, frameBodyMagneticFluxDensity2.getMagneticFluxDensity());
+        assertEquals(ecefFrame, frameBodyMagneticFluxDensity2.getFrame());
+        assertEquals(nedFrame, frameBodyMagneticFluxDensity2.getNedFrame());
         nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity2.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
     }
 
     @Test
     public void testGetSetMagneticFluxDensity() throws IOException {
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity =
-                new FrameBodyMagneticFluxDensity();
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity();
 
         // check default value
         assertNull(frameBodyMagneticFluxDensity.getMagneticFluxDensity());
 
         // set new value
-        final BodyMagneticFluxDensity magneticFluxDensity =
-                createMagneticFluxDensity();
-        frameBodyMagneticFluxDensity.setMagneticFluxDensity(
-                magneticFluxDensity);
+        final BodyMagneticFluxDensity magneticFluxDensity = createMagneticFluxDensity();
+        frameBodyMagneticFluxDensity.setMagneticFluxDensity(magneticFluxDensity);
 
         // check
-        assertSame(frameBodyMagneticFluxDensity.getMagneticFluxDensity(),
-                magneticFluxDensity);
+        assertSame(magneticFluxDensity, frameBodyMagneticFluxDensity.getMagneticFluxDensity());
     }
 
     @Test
     public void testGetSetFrame() {
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity =
-                new FrameBodyMagneticFluxDensity();
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity();
 
         // check default value
         assertNull(frameBodyMagneticFluxDensity.getFrame());
@@ -467,13 +392,12 @@ public class FrameBodyMagneticFluxDensityTest {
         frameBodyMagneticFluxDensity.setFrame(frame);
 
         // check
-        assertSame(frameBodyMagneticFluxDensity.getFrame(), frame);
+        assertSame(frame, frameBodyMagneticFluxDensity.getFrame());
     }
 
     @Test
     public void testGetSetNedFrame() {
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity =
-                new FrameBodyMagneticFluxDensity();
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity();
 
         // check default value
         assertNull(frameBodyMagneticFluxDensity.getNedFrame());
@@ -481,13 +405,12 @@ public class FrameBodyMagneticFluxDensityTest {
 
         // set new value
         final NEDFrame nedFrame = new NEDFrame();
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
         frameBodyMagneticFluxDensity.setNedFrame(nedFrame);
 
         // check
-        assertEquals(frameBodyMagneticFluxDensity.getNedFrame(), nedFrame);
-        assertEquals(frameBodyMagneticFluxDensity.getFrame(), ecefFrame);
+        assertEquals(nedFrame, frameBodyMagneticFluxDensity.getNedFrame());
+        assertEquals(ecefFrame, frameBodyMagneticFluxDensity.getFrame());
         final NEDFrame nedFrame2 = new NEDFrame();
         assertTrue(frameBodyMagneticFluxDensity.getNedFrame(nedFrame2));
         assertEquals(nedFrame, nedFrame2);
@@ -495,67 +418,55 @@ public class FrameBodyMagneticFluxDensityTest {
 
     @Test
     public void testGetSetYear() {
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity =
-                new FrameBodyMagneticFluxDensity();
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity();
 
         // check default value
-        assertEquals(frameBodyMagneticFluxDensity.getYear(),
-                0.0, 0.0);
+        assertEquals(0.0, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // set new value
         final Date timestamp = createTimestamp();
-        final double year = FrameBodyMagneticFluxDensity
-                .convertTime(timestamp);
+        final double year = FrameBodyMagneticFluxDensity.convertTime(timestamp);
 
         frameBodyMagneticFluxDensity.setYear(year);
 
         // check
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
     }
 
     @Test
     public void testSetTime1() {
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity =
-                new FrameBodyMagneticFluxDensity();
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity();
 
         // check default value
-        assertEquals(frameBodyMagneticFluxDensity.getYear(),
-                0.0, 0.0);
+        assertEquals(0.0, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // set new value
         final Date timestamp = createTimestamp();
-        final double year = FrameBodyMagneticFluxDensity
-                .convertTime(timestamp);
+        final double year = FrameBodyMagneticFluxDensity.convertTime(timestamp);
 
         frameBodyMagneticFluxDensity.setTime(timestamp);
 
         // check
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
     }
 
     @Test
     public void testSetTime2() {
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity =
-                new FrameBodyMagneticFluxDensity();
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity();
 
         // check default value
-        assertEquals(frameBodyMagneticFluxDensity.getYear(),
-                0.0, 0.0);
+        assertEquals(0.0, frameBodyMagneticFluxDensity.getYear(), 0.0);
 
         // set new value
         final Date timestamp = createTimestamp();
         final GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(timestamp);
-        final double year = FrameBodyMagneticFluxDensity
-                .convertTime(timestamp);
+        final double year = FrameBodyMagneticFluxDensity.convertTime(timestamp);
 
         frameBodyMagneticFluxDensity.setTime(calendar);
 
         // check
-        assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
-                0.0);
+        assertEquals(year, frameBodyMagneticFluxDensity.getYear(), 0.0);
     }
 
     @Test
@@ -564,12 +475,10 @@ public class FrameBodyMagneticFluxDensityTest {
         final GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(timestamp);
         assertEquals(FrameBodyMagneticFluxDensity.convertTime(timestamp),
-                WMMEarthMagneticFluxDensityEstimator.convertTime(calendar),
-                0.0);
+                WMMEarthMagneticFluxDensityEstimator.convertTime(calendar), 0.0);
 
         assertEquals(FrameBodyMagneticFluxDensity.convertTime(calendar),
-                WMMEarthMagneticFluxDensityEstimator.convertTime(calendar),
-                0.0);
+                WMMEarthMagneticFluxDensityEstimator.convertTime(calendar), 0.0);
     }
 
     @Test
@@ -581,17 +490,14 @@ public class FrameBodyMagneticFluxDensityTest {
         final CoordinateTransformation cnb = createAttitude();
         final CoordinateTransformation cbn = cnb.inverseAndReturnNew();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity =
-                createMagneticFluxDensity(position, timestamp, cnb);
+        final BodyMagneticFluxDensity bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
 
         final NEDFrame nedFrame = new NEDFrame(position, cbn);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity, ecefFrame);
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new FrameBodyMagneticFluxDensity();
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 = new FrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, ecefFrame);
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 = new FrameBodyMagneticFluxDensity();
 
         frameBodyMagneticFluxDensity2.copyFrom(frameBodyMagneticFluxDensity1);
 
@@ -601,20 +507,17 @@ public class FrameBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyFromWhenOnlyBodyMagneticFluxAreaAvailableAtSourceAndDestinationIsEmpty()
-            throws IOException {
+    public void testCopyFromWhenOnlyBodyMagneticFluxAreaAvailableAtSourceAndDestinationIsEmpty() throws IOException {
 
         final NEDPosition position = createPosition();
         final Date timestamp = createTimestamp();
         final CoordinateTransformation cnb = createAttitude();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity =
-                createMagneticFluxDensity(position, timestamp, cnb);
+        final BodyMagneticFluxDensity bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
 
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity);
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new FrameBodyMagneticFluxDensity();
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 = new FrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity);
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 = new FrameBodyMagneticFluxDensity();
 
         frameBodyMagneticFluxDensity2.copyFrom(frameBodyMagneticFluxDensity1);
 
@@ -632,13 +535,10 @@ public class FrameBodyMagneticFluxDensityTest {
         final CoordinateTransformation cbn = cnb.inverseAndReturnNew();
 
         final NEDFrame nedFrame = new NEDFrame(position, cbn);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new FrameBodyMagneticFluxDensity(ecefFrame);
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new FrameBodyMagneticFluxDensity();
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 = new FrameBodyMagneticFluxDensity(ecefFrame);
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 = new FrameBodyMagneticFluxDensity();
 
         frameBodyMagneticFluxDensity2.copyFrom(frameBodyMagneticFluxDensity1);
 
@@ -648,26 +548,22 @@ public class FrameBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyFromWhenEmptySourceAndDestinationHasData()
-            throws IOException, InvalidSourceAndDestinationFrameTypeException {
+    public void testCopyFromWhenEmptySourceAndDestinationHasData() throws IOException,
+            InvalidSourceAndDestinationFrameTypeException {
 
         final NEDPosition position = createPosition();
         final Date timestamp = createTimestamp();
         final CoordinateTransformation cnb = createAttitude();
         final CoordinateTransformation cbn = cnb.inverseAndReturnNew();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity =
-                createMagneticFluxDensity(position, timestamp, cnb);
+        final BodyMagneticFluxDensity bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
 
         final NEDFrame nedFrame = new NEDFrame(position, cbn);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new FrameBodyMagneticFluxDensity();
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity,
-                        ecefFrame);
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 = new FrameBodyMagneticFluxDensity();
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 = new FrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, ecefFrame);
 
         frameBodyMagneticFluxDensity2.copyFrom(frameBodyMagneticFluxDensity1);
 
@@ -677,48 +573,7 @@ public class FrameBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyFromWhenBothSourceAndDestinationHaveData()
-            throws IOException, InvalidSourceAndDestinationFrameTypeException {
-
-        final NEDPosition position1 = createPosition();
-        final NEDPosition position2 = createPosition();
-        final Date timestamp1 = createTimestamp();
-        final Date timestamp2 = createTimestamp();
-        final CoordinateTransformation cnb1 = createAttitude();
-        final CoordinateTransformation cnb2 = createAttitude();
-        final CoordinateTransformation cbn1 = cnb1.inverseAndReturnNew();
-        final CoordinateTransformation cbn2 = cnb1.inverseAndReturnNew();
-
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity1 =
-                createMagneticFluxDensity(position1, timestamp1, cnb1);
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity2 =
-                createMagneticFluxDensity(position2, timestamp2, cnb2);
-
-        final NEDFrame nedFrame1 = new NEDFrame(position1, cbn1);
-        final NEDFrame nedFrame2 = new NEDFrame(position2, cbn2);
-        final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame1);
-        final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame2);
-
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity1,
-                        ecefFrame1, timestamp1);
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity2,
-                        ecefFrame2, timestamp2);
-
-        frameBodyMagneticFluxDensity2.copyFrom(frameBodyMagneticFluxDensity1);
-
-        assertEquals(bodyMagneticFluxDensity1,
-                frameBodyMagneticFluxDensity2.getMagneticFluxDensity());
-        assertEquals(ecefFrame1, frameBodyMagneticFluxDensity2.getFrame());
-        assertEquals(frameBodyMagneticFluxDensity1.getYear(),
-                frameBodyMagneticFluxDensity2.getYear(), 0.0);
-    }
-
-    @Test
-    public void testCopyTo() throws IOException,
+    public void testCopyFromWhenBothSourceAndDestinationHaveData() throws IOException,
             InvalidSourceAndDestinationFrameTypeException {
 
         final NEDPosition position1 = createPosition();
@@ -730,90 +585,100 @@ public class FrameBodyMagneticFluxDensityTest {
         final CoordinateTransformation cbn1 = cnb1.inverseAndReturnNew();
         final CoordinateTransformation cbn2 = cnb1.inverseAndReturnNew();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity1 =
-                createMagneticFluxDensity(position1, timestamp1, cnb1);
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity2 =
-                createMagneticFluxDensity(position2, timestamp2, cnb2);
+        final BodyMagneticFluxDensity bodyMagneticFluxDensity1 = createMagneticFluxDensity(position1, timestamp1, cnb1);
+        final BodyMagneticFluxDensity bodyMagneticFluxDensity2 = createMagneticFluxDensity(position2, timestamp2, cnb2);
 
         final NEDFrame nedFrame1 = new NEDFrame(position1, cbn1);
         final NEDFrame nedFrame2 = new NEDFrame(position2, cbn2);
-        final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame1);
-        final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame2);
+        final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+        final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
 
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity1,
-                        ecefFrame1, timestamp1);
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity2,
-                        ecefFrame2, timestamp2);
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 = new FrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity1, ecefFrame1, timestamp1);
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 = new FrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity2, ecefFrame2, timestamp2);
+
+        frameBodyMagneticFluxDensity2.copyFrom(frameBodyMagneticFluxDensity1);
+
+        assertEquals(bodyMagneticFluxDensity1, frameBodyMagneticFluxDensity2.getMagneticFluxDensity());
+        assertEquals(ecefFrame1, frameBodyMagneticFluxDensity2.getFrame());
+        assertEquals(frameBodyMagneticFluxDensity1.getYear(), frameBodyMagneticFluxDensity2.getYear(), 0.0);
+    }
+
+    @Test
+    public void testCopyTo() throws IOException, InvalidSourceAndDestinationFrameTypeException {
+
+        final NEDPosition position1 = createPosition();
+        final NEDPosition position2 = createPosition();
+        final Date timestamp1 = createTimestamp();
+        final Date timestamp2 = createTimestamp();
+        final CoordinateTransformation cnb1 = createAttitude();
+        final CoordinateTransformation cnb2 = createAttitude();
+        final CoordinateTransformation cbn1 = cnb1.inverseAndReturnNew();
+        final CoordinateTransformation cbn2 = cnb1.inverseAndReturnNew();
+
+        final BodyMagneticFluxDensity bodyMagneticFluxDensity1 = createMagneticFluxDensity(position1, timestamp1, cnb1);
+        final BodyMagneticFluxDensity bodyMagneticFluxDensity2 = createMagneticFluxDensity(position2, timestamp2, cnb2);
+
+        final NEDFrame nedFrame1 = new NEDFrame(position1, cbn1);
+        final NEDFrame nedFrame2 = new NEDFrame(position2, cbn2);
+        final ECEFFrame ecefFrame1 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame1);
+        final ECEFFrame ecefFrame2 = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame2);
+
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 = new FrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity1, ecefFrame1, timestamp1);
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 = new FrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity2, ecefFrame2, timestamp2);
 
         frameBodyMagneticFluxDensity1.copyTo(frameBodyMagneticFluxDensity2);
 
         // check
-        assertEquals(bodyMagneticFluxDensity1,
-                frameBodyMagneticFluxDensity2.getMagneticFluxDensity());
+        assertEquals(bodyMagneticFluxDensity1, frameBodyMagneticFluxDensity2.getMagneticFluxDensity());
         assertEquals(ecefFrame1, frameBodyMagneticFluxDensity2.getFrame());
-        assertEquals(frameBodyMagneticFluxDensity1.getYear(),
-                frameBodyMagneticFluxDensity2.getYear(), 0.0);
+        assertEquals(frameBodyMagneticFluxDensity1.getYear(), frameBodyMagneticFluxDensity2.getYear(), 0.0);
     }
 
     @Test
-    public void testHashCode() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testHashCode() throws IOException, InvalidSourceAndDestinationFrameTypeException {
 
         final NEDPosition position = createPosition();
         final Date timestamp = createTimestamp();
         final CoordinateTransformation cnb = createAttitude();
         final CoordinateTransformation cbn = cnb.inverseAndReturnNew();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity =
-                createMagneticFluxDensity(position, timestamp, cnb);
+        final BodyMagneticFluxDensity bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
 
         final NEDFrame nedFrame = new NEDFrame(position, cbn);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity,
-                        ecefFrame, timestamp);
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity,
-                        ecefFrame, timestamp);
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity3 =
-                new FrameBodyMagneticFluxDensity();
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 = new FrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, ecefFrame, timestamp);
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 = new FrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, ecefFrame, timestamp);
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity3 = new FrameBodyMagneticFluxDensity();
 
-        assertEquals(frameBodyMagneticFluxDensity1.hashCode(),
-                frameBodyMagneticFluxDensity2.hashCode());
-        assertNotEquals(frameBodyMagneticFluxDensity1.hashCode(),
-                frameBodyMagneticFluxDensity3.hashCode());
+        assertEquals(frameBodyMagneticFluxDensity1.hashCode(), frameBodyMagneticFluxDensity2.hashCode());
+        assertNotEquals(frameBodyMagneticFluxDensity1.hashCode(), frameBodyMagneticFluxDensity3.hashCode());
     }
 
     @Test
-    public void testEquals() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testEquals() throws IOException, InvalidSourceAndDestinationFrameTypeException {
 
         final NEDPosition position = createPosition();
         final Date timestamp = createTimestamp();
         final CoordinateTransformation cnb = createAttitude();
         final CoordinateTransformation cbn = cnb.inverseAndReturnNew();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity =
-                createMagneticFluxDensity(position, timestamp, cnb);
+        final BodyMagneticFluxDensity bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
 
         final NEDFrame nedFrame = new NEDFrame(position, cbn);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity,
-                        ecefFrame, timestamp);
+                new FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity, ecefFrame, timestamp);
         final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity,
-                        ecefFrame, timestamp);
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity3 =
-                new FrameBodyMagneticFluxDensity();
+                new FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity, ecefFrame, timestamp);
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity3 = new FrameBodyMagneticFluxDensity();
 
         //noinspection ConstantConditions,SimplifiableJUnitAssertion
         assertTrue(frameBodyMagneticFluxDensity1.equals((Object) frameBodyMagneticFluxDensity1));
@@ -822,36 +687,30 @@ public class FrameBodyMagneticFluxDensityTest {
         assertTrue(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity2));
         assertFalse(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity3));
         //noinspection SimplifiableJUnitAssertion,ConstantConditions
-        assertFalse(frameBodyMagneticFluxDensity1.equals((Object) null));
+        assertNotEquals(frameBodyMagneticFluxDensity1, null);
         assertFalse(frameBodyMagneticFluxDensity1.equals(null));
         //noinspection SimplifiableJUnitAssertion
-        assertFalse(frameBodyMagneticFluxDensity1.equals(new Object()));
+        assertNotEquals(frameBodyMagneticFluxDensity1, new Object());
     }
 
     @Test
-    public void testEqualsWithThreshold() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testEqualsWithThreshold() throws IOException, InvalidSourceAndDestinationFrameTypeException {
 
         final NEDPosition position = createPosition();
         final Date timestamp = createTimestamp();
         final CoordinateTransformation cnb = createAttitude();
         final CoordinateTransformation cbn = cnb.inverseAndReturnNew();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity =
-                createMagneticFluxDensity(position, timestamp, cnb);
+        final BodyMagneticFluxDensity bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
 
         final NEDFrame nedFrame = new NEDFrame(position, cbn);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity,
-                        ecefFrame, timestamp);
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-                new FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity,
-                        ecefFrame, timestamp);
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity3 =
-                new FrameBodyMagneticFluxDensity();
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 = new FrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, ecefFrame, timestamp);
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 = new FrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, ecefFrame, timestamp);
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity3 = new FrameBodyMagneticFluxDensity();
 
         assertTrue(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity1, THRESHOLD));
         assertTrue(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity2, THRESHOLD));
@@ -860,8 +719,7 @@ public class FrameBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testClone() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException,
+    public void testClone() throws IOException, InvalidSourceAndDestinationFrameTypeException,
             CloneNotSupportedException {
 
         final NEDPosition position = createPosition();
@@ -869,43 +727,35 @@ public class FrameBodyMagneticFluxDensityTest {
         final CoordinateTransformation cnb = createAttitude();
         final CoordinateTransformation cbn = cnb.inverseAndReturnNew();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity =
-                createMagneticFluxDensity(position, timestamp, cnb);
+        final BodyMagneticFluxDensity bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
 
         final NEDFrame nedFrame = new NEDFrame(position, cbn);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity,
-                        ecefFrame, timestamp);
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 = new FrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, ecefFrame, timestamp);
 
-        final Object frameBodyMagneticFluxDensity2 =
-                frameBodyMagneticFluxDensity1.clone();
+        final Object frameBodyMagneticFluxDensity2 = frameBodyMagneticFluxDensity1.clone();
 
         // check
-        assertEquals(frameBodyMagneticFluxDensity1,
-                frameBodyMagneticFluxDensity2);
+        assertEquals(frameBodyMagneticFluxDensity1, frameBodyMagneticFluxDensity2);
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException,
-            ClassNotFoundException, InvalidSourceAndDestinationFrameTypeException {
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException,
+            InvalidSourceAndDestinationFrameTypeException {
         final NEDPosition position = createPosition();
         final Date timestamp = createTimestamp();
         final CoordinateTransformation cnb = createAttitude();
         final CoordinateTransformation cbn = cnb.inverseAndReturnNew();
 
-        final BodyMagneticFluxDensity bodyMagneticFluxDensity =
-                createMagneticFluxDensity(position, timestamp, cnb);
+        final BodyMagneticFluxDensity bodyMagneticFluxDensity = createMagneticFluxDensity(position, timestamp, cnb);
 
         final NEDFrame nedFrame = new NEDFrame(position, cbn);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
-        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-                new FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity,
-                        ecefFrame, timestamp);
+        final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 = new FrameBodyMagneticFluxDensity(
+                bodyMagneticFluxDensity, ecefFrame, timestamp);
 
         final byte[] bytes = SerializationHelper.serialize(frameBodyMagneticFluxDensity1);
         final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 = SerializationHelper.deserialize(bytes);
@@ -922,8 +772,7 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(0L, field.get(null));
     }
 
-    private static BodyMagneticFluxDensity createMagneticFluxDensity()
-            throws IOException {
+    private static BodyMagneticFluxDensity createMagneticFluxDensity() throws IOException {
         final NEDPosition position = createPosition();
         final Date timestamp = createTimestamp();
         final CoordinateTransformation cnb = createAttitude();
@@ -931,48 +780,33 @@ public class FrameBodyMagneticFluxDensityTest {
     }
 
     private static BodyMagneticFluxDensity createMagneticFluxDensity(
-            final NEDPosition position, final Date timestamp,
-            final CoordinateTransformation cnb)
-            throws IOException {
-        final WMMEarthMagneticFluxDensityEstimator wMMEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wMMEstimator.estimate(
-                position, timestamp);
+            final NEDPosition position, final Date timestamp, final CoordinateTransformation cnb) throws IOException {
+        final WMMEarthMagneticFluxDensityEstimator wMMEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wMMEstimator.estimate(position, timestamp);
         return BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
     }
 
     private static CoordinateTransformation createAttitude() {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-        final double roll = Math.toRadians(randomizer.nextDouble(
-                MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(randomizer.nextDouble(
-                MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(randomizer.nextDouble(
-                MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        return new CoordinateTransformation(roll, pitch, yaw,
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+        return new CoordinateTransformation(roll, pitch, yaw, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
     }
 
     private static NEDPosition createPosition() {
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(
-                MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(
-                MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(
-                MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double height = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
 
         return new NEDPosition(latitude, longitude, height);
     }
 
     private static Date createTimestamp() {
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        return new Date(randomizer.nextLong(
-                START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        return new Date(randomizer.nextLong(START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS));
     }
 }

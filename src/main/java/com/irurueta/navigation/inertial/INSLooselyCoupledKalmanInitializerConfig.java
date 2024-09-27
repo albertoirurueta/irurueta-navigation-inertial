@@ -17,6 +17,7 @@ package com.irurueta.navigation.inertial;
 
 import com.irurueta.units.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -30,6 +31,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -77,16 +79,12 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialGyroscopeBiasUncertainty    initial gyroscope bias uncertainty
      *                                           expressed in radians per second (rad/s).
      */
-    public INSLooselyCoupledKalmanInitializerConfig(final double initialAttitudeUncertainty,
-                                                    final double initialVelocityUncertainty,
-                                                    final double initialPositionUncertainty,
-                                                    final double initialAccelerationBiasUncertainty,
-                                                    final double initialGyroscopeBiasUncertainty) {
-        setValues(initialAttitudeUncertainty,
-                initialVelocityUncertainty,
-                initialPositionUncertainty,
-                initialAccelerationBiasUncertainty,
-                initialGyroscopeBiasUncertainty);
+    public INSLooselyCoupledKalmanInitializerConfig(
+            final double initialAttitudeUncertainty, final double initialVelocityUncertainty,
+            final double initialPositionUncertainty, final double initialAccelerationBiasUncertainty,
+            final double initialGyroscopeBiasUncertainty) {
+        setValues(initialAttitudeUncertainty, initialVelocityUncertainty, initialPositionUncertainty,
+                initialAccelerationBiasUncertainty, initialGyroscopeBiasUncertainty);
     }
 
     /**
@@ -98,16 +96,12 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialAccelerationBiasUncertainty initial acceleration bias uncertainty.
      * @param initialGyroscopeBiasUncertainty    initial gyroscope bias uncertainty.
      */
-    public INSLooselyCoupledKalmanInitializerConfig(final Angle initialAttitudeUncertainty,
-                                                    final Speed initialVelocityUncertainty,
-                                                    final Distance initialPositionUncertainty,
-                                                    final Acceleration initialAccelerationBiasUncertainty,
-                                                    final AngularSpeed initialGyroscopeBiasUncertainty) {
-        setValues(initialAttitudeUncertainty,
-                initialVelocityUncertainty,
-                initialPositionUncertainty,
-                initialAccelerationBiasUncertainty,
-                initialGyroscopeBiasUncertainty);
+    public INSLooselyCoupledKalmanInitializerConfig(
+            final Angle initialAttitudeUncertainty, final Speed initialVelocityUncertainty,
+            final Distance initialPositionUncertainty, final Acceleration initialAccelerationBiasUncertainty,
+            final AngularSpeed initialGyroscopeBiasUncertainty) {
+        setValues(initialAttitudeUncertainty, initialVelocityUncertainty, initialPositionUncertainty,
+                initialAccelerationBiasUncertainty, initialGyroscopeBiasUncertainty);
     }
 
     /**
@@ -163,8 +157,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialAttitudeUncertainty initial attitude uncertainty per axis.
      */
     public void setInitialAttitudeUncertainty(final Angle initialAttitudeUncertainty) {
-        mInitialAttitudeUncertainty = AngleConverter.convert(
-                initialAttitudeUncertainty.getValue().doubleValue(),
+        mInitialAttitudeUncertainty = AngleConverter.convert(initialAttitudeUncertainty.getValue().doubleValue(),
                 initialAttitudeUncertainty.getUnit(), AngleUnit.RADIANS);
     }
 
@@ -212,8 +205,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialVelocityUncertainty initial velocity uncertainty per axis.
      */
     public void setInitialVelocityUncertainty(final Speed initialVelocityUncertainty) {
-        mInitialVelocityUncertainty = SpeedConverter.convert(
-                initialVelocityUncertainty.getValue().doubleValue(),
+        mInitialVelocityUncertainty = SpeedConverter.convert(initialVelocityUncertainty.getValue().doubleValue(),
                 initialVelocityUncertainty.getUnit(), SpeedUnit.METERS_PER_SECOND);
     }
 
@@ -261,8 +253,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialPositionUncertainty initial position uncertainty per axis.
      */
     public void setInitialPositionUncertainty(final Distance initialPositionUncertainty) {
-        mInitialPositionUncertainty = DistanceConverter.convert(
-                initialPositionUncertainty.getValue().doubleValue(),
+        mInitialPositionUncertainty = DistanceConverter.convert(initialPositionUncertainty.getValue().doubleValue(),
                 initialPositionUncertainty.getUnit(), DistanceUnit.METER);
     }
 
@@ -281,8 +272,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialAccelerationBiasUncertainty initial acceleration bias uncertainty expressed in
      *                                           meters per squared second (m/s^2).
      */
-    public void setInitialAccelerationBiasUncertainty(
-            final double initialAccelerationBiasUncertainty) {
+    public void setInitialAccelerationBiasUncertainty(final double initialAccelerationBiasUncertainty) {
         mInitialAccelerationBiasUncertainty = initialAccelerationBiasUncertainty;
     }
 
@@ -302,8 +292,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @return initial acceleration bias uncertainty.
      */
     public Acceleration getInitialAccelerationBiasUncertaintyAcceleration() {
-        return new Acceleration(mInitialAccelerationBiasUncertainty,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mInitialAccelerationBiasUncertainty, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -311,11 +300,9 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      *
      * @param initialAccelerationUncertainty initial acceleration bias uncertainty.
      */
-    public void setInitialAccelerationBiasUncertainty(
-            final Acceleration initialAccelerationUncertainty) {
+    public void setInitialAccelerationBiasUncertainty(final Acceleration initialAccelerationUncertainty) {
         mInitialAccelerationBiasUncertainty = AccelerationConverter.convert(
-                initialAccelerationUncertainty.getValue().doubleValue(),
-                initialAccelerationUncertainty.getUnit(),
+                initialAccelerationUncertainty.getValue().doubleValue(), initialAccelerationUncertainty.getUnit(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -334,8 +321,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialGyroscopeBiasUncertainty initial gyroscope bias uncertainty expressed
      *                                        in radians per second (rad/s).
      */
-    public void setInitialGyroscopeBiasUncertainty(
-            final double initialGyroscopeBiasUncertainty) {
+    public void setInitialGyroscopeBiasUncertainty(final double initialGyroscopeBiasUncertainty) {
         mInitialGyroscopeBiasUncertainty = initialGyroscopeBiasUncertainty;
     }
 
@@ -344,8 +330,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      *
      * @param result instance where initial gyroscope bias uncertainty will be stored.
      */
-    public void getInitialGyroscopeBiasUncertaintyAngularSpeed(
-            final AngularSpeed result) {
+    public void getInitialGyroscopeBiasUncertaintyAngularSpeed(final AngularSpeed result) {
         result.setValue(mInitialGyroscopeBiasUncertainty);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
@@ -356,8 +341,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @return initial gyroscope bias uncertainty.
      */
     public AngularSpeed getInitialGyroscopeBiasUncertaintyAngularSpeed() {
-        return new AngularSpeed(mInitialGyroscopeBiasUncertainty,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mInitialGyroscopeBiasUncertainty, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -365,11 +349,9 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      *
      * @param initialGyroscopeBiasUncertainty initial gyroscope bias uncertainty.
      */
-    public void setInitialGyroscopeBiasUncertainty(
-            final AngularSpeed initialGyroscopeBiasUncertainty) {
+    public void setInitialGyroscopeBiasUncertainty(final AngularSpeed initialGyroscopeBiasUncertainty) {
         mInitialGyroscopeBiasUncertainty = AngularSpeedConverter.convert(
-                initialGyroscopeBiasUncertainty.getValue().doubleValue(),
-                initialGyroscopeBiasUncertainty.getUnit(),
+                initialGyroscopeBiasUncertainty.getValue().doubleValue(), initialGyroscopeBiasUncertainty.getUnit(),
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -387,11 +369,10 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialGyroscopeBiasUncertainty    initial gyroscope bias uncertainty
      *                                           expressed in radians per second (rad/s).
      */
-    public void setValues(final double initialAttitudeUncertainty,
-                          final double initialVelocityUncertainty,
-                          final double initialPositionUncertainty,
-                          final double initialAccelerationBiasUncertainty,
-                          final double initialGyroscopeBiasUncertainty) {
+    public void setValues(
+            final double initialAttitudeUncertainty, final double initialVelocityUncertainty,
+            final double initialPositionUncertainty, final double initialAccelerationBiasUncertainty,
+            final double initialGyroscopeBiasUncertainty) {
         mInitialAttitudeUncertainty = initialAttitudeUncertainty;
         mInitialVelocityUncertainty = initialVelocityUncertainty;
         mInitialPositionUncertainty = initialPositionUncertainty;
@@ -408,11 +389,10 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialAccelerationBiasUncertainty initial acceleration bias uncertainty.
      * @param initialGyroscopeBiasUncertainty    initial gyroscope bias uncertainty.
      */
-    public void setValues(final Angle initialAttitudeUncertainty,
-                          final Speed initialVelocityUncertainty,
-                          final Distance initialPositionUncertainty,
-                          final Acceleration initialAccelerationBiasUncertainty,
-                          final AngularSpeed initialGyroscopeBiasUncertainty) {
+    public void setValues(
+            final Angle initialAttitudeUncertainty, final Speed initialVelocityUncertainty,
+            final Distance initialPositionUncertainty, final Acceleration initialAccelerationBiasUncertainty,
+            final AngularSpeed initialGyroscopeBiasUncertainty) {
         setInitialAttitudeUncertainty(initialAttitudeUncertainty);
         setInitialVelocityUncertainty(initialVelocityUncertainty);
         setInitialPositionUncertainty(initialPositionUncertainty);
@@ -474,8 +454,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
             return false;
         }
 
-        final INSLooselyCoupledKalmanInitializerConfig other =
-                (INSLooselyCoupledKalmanInitializerConfig) obj;
+        final INSLooselyCoupledKalmanInitializerConfig other = (INSLooselyCoupledKalmanInitializerConfig) obj;
         return equals(other);
     }
 
@@ -506,7 +485,8 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
         return Math.abs(mInitialAttitudeUncertainty - other.mInitialAttitudeUncertainty) <= threshold
                 && Math.abs(mInitialVelocityUncertainty - other.mInitialVelocityUncertainty) <= threshold
                 && Math.abs(mInitialPositionUncertainty - other.mInitialPositionUncertainty) <= threshold
-                && Math.abs(mInitialAccelerationBiasUncertainty - other.mInitialAccelerationBiasUncertainty) <= threshold
+                && Math.abs(mInitialAccelerationBiasUncertainty
+                - other.mInitialAccelerationBiasUncertainty) <= threshold
                 && Math.abs(mInitialGyroscopeBiasUncertainty - other.mInitialGyroscopeBiasUncertainty) <= threshold;
     }
 
@@ -518,7 +498,8 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        final INSLooselyCoupledKalmanInitializerConfig result = (INSLooselyCoupledKalmanInitializerConfig) super.clone();
+        final INSLooselyCoupledKalmanInitializerConfig result =
+                (INSLooselyCoupledKalmanInitializerConfig) super.clone();
         copyTo(result);
         return result;
     }

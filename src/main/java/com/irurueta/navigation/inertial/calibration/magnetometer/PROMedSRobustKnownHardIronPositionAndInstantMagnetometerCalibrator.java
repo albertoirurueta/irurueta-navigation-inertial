@@ -147,8 +147,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final boolean commonAxisUsed) {
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final boolean commonAxisUsed) {
         super(commonAxisUsed);
     }
 
@@ -158,8 +157,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      * @param magneticModel Earth's magnetic model. If null, a default model
      *                      will be used instead.
      */
-    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final WorldMagneticModel magneticModel) {
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final WorldMagneticModel magneticModel) {
         super(magneticModel);
     }
 
@@ -170,8 +168,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] hardIron) {
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final double[] hardIron) {
         super(hardIron);
     }
 
@@ -182,8 +179,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final Matrix hardIron) {
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final Matrix hardIron) {
         super(hardIron);
     }
 
@@ -208,8 +204,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      * @param position position where body magnetic flux density measurements
      *                 have been taken.
      */
-    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position) {
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final NEDPosition position) {
         super(position);
     }
 
@@ -225,8 +220,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                     orientations.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         super(position, measurements);
     }
 
@@ -243,8 +237,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      * @param listener     listener to handle events raised by this calibrator.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, listener);
     }
@@ -263,8 +256,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
         super(position, measurements, commonAxisUsed);
     }
@@ -284,8 +276,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      * @param listener       listener to handle events raised by this calibrator.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, listener);
@@ -306,8 +297,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  not have length 3.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron) {
         super(position, measurements, hardIron);
     }
@@ -328,8 +318,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  not have length 3.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, hardIron, listener);
@@ -352,8 +341,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  not have length 3.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron) {
         super(position, measurements, commonAxisUsed, hardIron);
     }
@@ -376,8 +364,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  not have length 3.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, hardIron, listener);
@@ -398,8 +385,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  3x1.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron) {
         super(position, measurements, hardIron);
     }
@@ -420,10 +406,8 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  3x1.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final Matrix hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, hardIron, listener);
     }
 
@@ -444,8 +428,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  3x1.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron) {
         super(position, measurements, commonAxisUsed, hardIron);
     }
@@ -468,8 +451,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  3x1.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, hardIron, listener);
@@ -493,8 +475,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  3x3.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm) {
         super(position, measurements, hardIron, initialMm);
     }
@@ -518,8 +499,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  3x3.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, hardIron, initialMm, listener);
@@ -545,12 +525,9 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  3x3.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm) {
-        super(position, measurements, commonAxisUsed, hardIron,
-                initialMm);
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm) {
+        super(position, measurements, commonAxisUsed, hardIron, initialMm);
     }
 
     /**
@@ -574,13 +551,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  3x3.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        super(position, measurements, commonAxisUsed, hardIron,
-                initialMm, listener);
+        super(position, measurements, commonAxisUsed, hardIron, initialMm, listener);
     }
 
     /**
@@ -589,8 +563,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      * @param position position where body magnetic flux density measurements
      *                 have been taken.
      */
-    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position) {
+    public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final ECEFPosition position) {
         super(position);
     }
 
@@ -606,8 +579,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                     orientations.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         super(position, measurements);
     }
 
@@ -624,8 +596,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      * @param listener     listener to handle events raised by this calibrator.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, listener);
     }
@@ -644,8 +615,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
         super(position, measurements, commonAxisUsed);
     }
@@ -665,8 +635,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      * @param listener       listener to handle events raised by this calibrator.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, listener);
@@ -687,8 +656,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  not have length 3.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron) {
         super(position, measurements, hardIron);
     }
@@ -709,8 +677,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  not have length 3.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, hardIron, listener);
@@ -733,8 +700,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  not have length 3.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron) {
         super(position, measurements, commonAxisUsed, hardIron);
     }
@@ -757,8 +723,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  not have length 3.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, hardIron, listener);
@@ -779,8 +744,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  3x1.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix initialHardIron) {
         super(position, measurements, initialHardIron);
     }
@@ -801,8 +765,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  3x1.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, hardIron, listener);
@@ -825,8 +788,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  3x1.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron) {
         super(position, measurements, commonAxisUsed, hardIron);
     }
@@ -849,8 +811,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  3x1.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, hardIron, listener);
@@ -874,8 +835,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  3x3.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm) {
         super(position, measurements, hardIron, initialMm);
     }
@@ -899,8 +859,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  3x3.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, hardIron, initialMm, listener);
@@ -926,10 +885,8 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  3x3.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm) {
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm) {
         super(position, measurements, commonAxisUsed, hardIron,
                 initialMm);
     }
@@ -955,13 +912,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  3x3.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        super(position, measurements, commonAxisUsed, hardIron,
-                initialMm, listener);
+        super(position, measurements, commonAxisUsed, hardIron, initialMm, listener);
     }
 
     /**
@@ -979,8 +933,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         super(measurements);
         internalSetQualityScores(qualityScores);
     }
@@ -997,8 +950,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final boolean commonAxisUsed) {
+            final double[] qualityScores, final boolean commonAxisUsed) {
         super(commonAxisUsed);
         internalSetQualityScores(qualityScores);
     }
@@ -1015,8 +967,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final WorldMagneticModel magneticModel) {
+            final double[] qualityScores, final WorldMagneticModel magneticModel) {
         super(magneticModel);
         internalSetQualityScores(qualityScores);
     }
@@ -1034,8 +985,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final double[] hardIron) {
+            final double[] qualityScores, final double[] hardIron) {
         super(hardIron);
         internalSetQualityScores(qualityScores);
     }
@@ -1052,8 +1002,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  length is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final Matrix hardIron) {
+            final double[] qualityScores, final Matrix hardIron) {
         super(hardIron);
         internalSetQualityScores(qualityScores);
     }
@@ -1073,8 +1022,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  length is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final Matrix hardIron, final Matrix initialMm) {
+            final double[] qualityScores, final Matrix hardIron, final Matrix initialMm) {
         super(hardIron, initialMm);
         internalSetQualityScores(qualityScores);
     }
@@ -1091,8 +1039,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position) {
+            final double[] qualityScores, final NEDPosition position) {
         super(position);
         internalSetQualityScores(qualityScores);
     }
@@ -1114,8 +1061,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
+            final double[] qualityScores, final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         super(position, measurements);
         internalSetQualityScores(qualityScores);
@@ -1139,8 +1085,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
+            final double[] qualityScores, final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, listener);
@@ -1166,8 +1111,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
+            final double[] qualityScores, final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
         super(position, measurements, commonAxisUsed);
@@ -1194,10 +1138,8 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
@@ -1223,10 +1165,8 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron) {
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron) {
         super(position, measurements, hardIron);
         internalSetQualityScores(qualityScores);
     }
@@ -1252,10 +1192,8 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, hardIron, listener);
         internalSetQualityScores(qualityScores);
@@ -1283,10 +1221,9 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron) {
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron) {
         super(position, measurements, commonAxisUsed, hardIron);
         internalSetQualityScores(qualityScores);
     }
@@ -1314,10 +1251,9 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, hardIron, listener);
         internalSetQualityScores(qualityScores);
@@ -1342,10 +1278,8 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  length is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron) {
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron) {
         super(position, measurements, hardIron);
         internalSetQualityScores(qualityScores);
     }
@@ -1370,10 +1304,8 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  length is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, hardIron, listener);
         internalSetQualityScores(qualityScores);
@@ -1400,10 +1332,9 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  length is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron) {
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron) {
         super(position, measurements, commonAxisUsed, hardIron);
         internalSetQualityScores(qualityScores);
     }
@@ -1430,11 +1361,9 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  length is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, hardIron, listener);
         internalSetQualityScores(qualityScores);
     }
@@ -1461,10 +1390,9 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  length is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm) {
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm) {
         super(position, measurements, hardIron, initialMm);
         internalSetQualityScores(qualityScores);
     }
@@ -1492,10 +1420,9 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  length is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, hardIron, initialMm, listener);
         internalSetQualityScores(qualityScores);
@@ -1525,13 +1452,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  length is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm) {
-        super(position, measurements, commonAxisUsed, hardIron,
-                initialMm);
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm) {
+        super(position, measurements, commonAxisUsed, hardIron, initialMm);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1560,14 +1484,11 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  length is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final double[] qualityScores, final NEDPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        super(position, measurements, commonAxisUsed, hardIron,
-                initialMm, listener);
+        super(position, measurements, commonAxisUsed, hardIron, initialMm, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -1583,8 +1504,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position) {
+            final double[] qualityScores, final ECEFPosition position) {
         super(position);
         internalSetQualityScores(qualityScores);
     }
@@ -1606,8 +1526,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
+            final double[] qualityScores, final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         super(position, measurements);
         internalSetQualityScores(qualityScores);
@@ -1631,8 +1550,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
+            final double[] qualityScores, final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, listener);
@@ -1658,10 +1576,8 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         super(position, measurements, commonAxisUsed);
         internalSetQualityScores(qualityScores);
     }
@@ -1686,10 +1602,8 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
@@ -1715,10 +1629,8 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron) {
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron) {
         super(position, measurements, hardIron);
         internalSetQualityScores(qualityScores);
     }
@@ -1744,10 +1656,8 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, hardIron, listener);
         internalSetQualityScores(qualityScores);
@@ -1775,10 +1685,9 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron) {
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron) {
         super(position, measurements, commonAxisUsed, hardIron);
         internalSetQualityScores(qualityScores);
     }
@@ -1806,10 +1715,9 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, hardIron, listener);
         internalSetQualityScores(qualityScores);
@@ -1834,10 +1742,8 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  length is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron) {
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron) {
         super(position, measurements, hardIron);
         internalSetQualityScores(qualityScores);
     }
@@ -1862,10 +1768,8 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  length is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, hardIron, listener);
         internalSetQualityScores(qualityScores);
@@ -1892,10 +1796,9 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  length is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron) {
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron) {
         super(position, measurements, commonAxisUsed, hardIron);
         internalSetQualityScores(qualityScores);
     }
@@ -1922,11 +1825,9 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  length is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, hardIron, listener);
         internalSetQualityScores(qualityScores);
     }
@@ -1953,10 +1854,9 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  length is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm) {
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm) {
         super(position, measurements, hardIron, initialMm);
         internalSetQualityScores(qualityScores);
     }
@@ -1984,10 +1884,9 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  length is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, hardIron, initialMm, listener);
         internalSetQualityScores(qualityScores);
@@ -2017,13 +1916,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  length is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm) {
-        super(position, measurements, commonAxisUsed, hardIron,
-                initialMm);
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm) {
+        super(position, measurements, commonAxisUsed, hardIron, initialMm);
         internalSetQualityScores(qualityScores);
     }
 
@@ -2052,14 +1948,11 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  length is smaller than 7 samples.
      */
     public PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] qualityScores,
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final double[] qualityScores, final ECEFPosition position,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        super(position, measurements, commonAxisUsed, hardIron,
-                initialMm, listener);
+        super(position, measurements, commonAxisUsed, hardIron, initialMm, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -2139,8 +2032,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setQualityScores(final double[] qualityScores)
-            throws LockedException {
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2154,8 +2046,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      */
     @Override
     public boolean isReady() {
-        return super.isReady() && mQualityScores != null &&
-                mQualityScores.length == mMeasurements.size();
+        return super.isReady() && mQualityScores != null && mQualityScores.length == mMeasurements.size();
     }
 
     /**
@@ -2177,7 +2068,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
         }
 
         final PROMedSRobustEstimator<Matrix> innerEstimator =
-                new PROMedSRobustEstimator<>(new PROMedSRobustEstimatorListener<Matrix>() {
+                new PROMedSRobustEstimator<>(new PROMedSRobustEstimatorListener<>() {
                     @Override
                     public double[] getQualityScores() {
                         return mQualityScores;
@@ -2199,16 +2090,12 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
                     }
 
                     @Override
-                    public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List<Matrix> solutions) {
+                    public void estimatePreliminarSolutions(final int[] samplesIndices, final List<Matrix> solutions) {
                         computePreliminarySolutions(samplesIndices, solutions);
                     }
 
                     @Override
-                    public double computeResidual(
-                            final Matrix currentEstimation,
-                            final int i) {
+                    public double computeResidual(final Matrix currentEstimation, final int i) {
                         return computeError(mMeasurements.get(i), currentEstimation);
                     }
 
@@ -2218,20 +2105,17 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
                     }
 
                     @Override
-                    public void onEstimateStart(
-                            final RobustEstimator<Matrix> estimator) {
+                    public void onEstimateStart(final RobustEstimator<Matrix> estimator) {
                         // no action needed
                     }
 
                     @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator<Matrix> estimator) {
+                    public void onEstimateEnd(final RobustEstimator<Matrix> estimator) {
                         // no action needed
                     }
 
                     @Override
-                    public void onEstimateNextIteration(
-                            final RobustEstimator<Matrix> estimator, int iteration) {
+                    public void onEstimateNextIteration(final RobustEstimator<Matrix> estimator, int iteration) {
                         if (mListener != null) {
                             mListener.onCalibrateNextIteration(
                                     PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this,
@@ -2241,8 +2125,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
 
                     @Override
                     public void onEstimateProgressChange(
-                            final RobustEstimator<Matrix> estimator,
-                            final float progress) {
+                            final RobustEstimator<Matrix> estimator, final float progress) {
                         if (mListener != null) {
                             mListener.onCalibrateProgressChange(
                                     PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this,
@@ -2293,7 +2176,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.PROMedS;
+        return RobustEstimatorMethod.PROMEDS;
     }
 
     /**
@@ -2317,8 +2200,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
      *                                  is smaller than 4 samples.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-        if (qualityScores == null ||
-                qualityScores.length < MINIMUM_MEASUREMENTS_COMMON_Z_AXIS) {
+        if (qualityScores == null || qualityScores.length < MINIMUM_MEASUREMENTS_COMMON_Z_AXIS) {
             throw new IllegalArgumentException();
         }
 

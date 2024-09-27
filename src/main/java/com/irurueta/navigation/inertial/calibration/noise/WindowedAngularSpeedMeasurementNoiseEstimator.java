@@ -43,10 +43,8 @@ import com.irurueta.units.AngularSpeedUnit;
  * - (rad * s^-0.5) for gyroscope root PSD (Power Spectral Density).
  */
 public class WindowedAngularSpeedMeasurementNoiseEstimator extends
-        WindowedMeasurementNoiseEstimator<AngularSpeedUnit, AngularSpeed,
-                WindowedAngularSpeedMeasurementNoiseEstimator,
-                WindowedAngularSpeedMeasurementNoiseEstimatorListener>
-        implements GyroscopeNoiseRootPsdSource {
+        WindowedMeasurementNoiseEstimator<AngularSpeedUnit, AngularSpeed, WindowedAngularSpeedMeasurementNoiseEstimator,
+                WindowedAngularSpeedMeasurementNoiseEstimatorListener> implements GyroscopeNoiseRootPsdSource {
 
     /**
      * Constructor.
@@ -95,8 +93,7 @@ public class WindowedAngularSpeedMeasurementNoiseEstimator extends
      */
     @Override
     protected double convertToDefaultUnit(final AngularSpeed value) {
-        return AngularSpeedConverter.convert(value.getValue().doubleValue(),
-                value.getUnit(), getDefaultUnit());
+        return AngularSpeedConverter.convert(value.getValue().doubleValue(), value.getUnit(), getDefaultUnit());
     }
 
     /**

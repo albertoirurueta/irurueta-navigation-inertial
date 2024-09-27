@@ -19,6 +19,8 @@ import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
 
+import java.io.Serial;
+
 /**
  * Contains a triad of angular speed measurements.
  */
@@ -33,6 +35,7 @@ public class AngularSpeedTriad extends Triad<AngularSpeedUnit, AngularSpeed> imp
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -58,8 +61,7 @@ public class AngularSpeedTriad extends Triad<AngularSpeedUnit, AngularSpeed> imp
      * @param valueY y-coordinate of measurement value expressed in default unit.
      * @param valueZ z-coordinate of measurement value expressed in default unit.
      */
-    public AngularSpeedTriad(
-            final double valueX, final double valueY, final double valueZ) {
+    public AngularSpeedTriad(final double valueX, final double valueY, final double valueZ) {
         this(DEFAULT_UNIT, valueX, valueY, valueZ);
     }
 
@@ -75,8 +77,7 @@ public class AngularSpeedTriad extends Triad<AngularSpeedUnit, AngularSpeed> imp
      *               provided unit.
      */
     public AngularSpeedTriad(
-            final AngularSpeedUnit unit,
-            final double valueX, final double valueY, final double valueZ) {
+            final AngularSpeedUnit unit, final double valueX, final double valueY, final double valueZ) {
         super(unit, valueX, valueY, valueZ);
     }
 
@@ -88,9 +89,7 @@ public class AngularSpeedTriad extends Triad<AngularSpeedUnit, AngularSpeed> imp
      * @param measurementZ z-coordinate of measurement.
      */
     public AngularSpeedTriad(
-            final AngularSpeed measurementX,
-            final AngularSpeed measurementY,
-            final AngularSpeed measurementZ) {
+            final AngularSpeed measurementX, final AngularSpeed measurementY, final AngularSpeed measurementZ) {
         super(DEFAULT_UNIT);
         setMeasurementCoordinates(measurementX, measurementY, measurementZ);
     }
@@ -133,8 +132,8 @@ public class AngularSpeedTriad extends Triad<AngularSpeedUnit, AngularSpeed> imp
      */
     @Override
     public void setMeasurementX(final AngularSpeed measurementX) {
-        setValueX(AngularSpeedConverter.convert(measurementX.getValue(),
-                measurementX.getUnit(), getUnit()).doubleValue());
+        setValueX(AngularSpeedConverter.convert(measurementX.getValue(), measurementX.getUnit(),
+                getUnit()).doubleValue());
     }
 
     /**
@@ -199,8 +198,8 @@ public class AngularSpeedTriad extends Triad<AngularSpeedUnit, AngularSpeed> imp
      */
     @Override
     public void setMeasurementZ(final AngularSpeed measurementZ) {
-        setValueZ(AngularSpeedConverter.convert(measurementZ.getValue(),
-                measurementZ.getUnit(), getUnit()).doubleValue());
+        setValueZ(AngularSpeedConverter.convert(measurementZ.getValue(), measurementZ.getUnit(),
+                getUnit()).doubleValue());
     }
 
     /**
@@ -212,9 +211,7 @@ public class AngularSpeedTriad extends Triad<AngularSpeedUnit, AngularSpeed> imp
      */
     @Override
     public void setMeasurementCoordinates(
-            final AngularSpeed measurementX,
-            final AngularSpeed measurementY,
-            final AngularSpeed measurementZ) {
+            final AngularSpeed measurementX, final AngularSpeed measurementY, final AngularSpeed measurementZ) {
         setMeasurementX(measurementX);
         setMeasurementY(measurementY);
         setMeasurementZ(measurementZ);

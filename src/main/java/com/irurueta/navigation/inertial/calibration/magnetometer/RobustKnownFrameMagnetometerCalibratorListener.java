@@ -27,16 +27,14 @@ public interface RobustKnownFrameMagnetometerCalibratorListener {
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateStart(
-            final RobustKnownFrameMagnetometerCalibrator calibrator);
+    void onCalibrateStart(final RobustKnownFrameMagnetometerCalibrator calibrator);
 
     /**
      * Called when calibration ends.
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateEnd(
-            final RobustKnownFrameMagnetometerCalibrator calibrator);
+    void onCalibrateEnd(final RobustKnownFrameMagnetometerCalibrator calibrator);
 
     /**
      * Called when calibrator iterates to refine a possible solution.
@@ -44,9 +42,7 @@ public interface RobustKnownFrameMagnetometerCalibratorListener {
      * @param calibrator calibrator raising the event.
      * @param iteration  current iteration.
      */
-    void onCalibrateNextIteration(
-            final RobustKnownFrameMagnetometerCalibrator calibrator,
-            final int iteration);
+    void onCalibrateNextIteration(final RobustKnownFrameMagnetometerCalibrator calibrator, final int iteration);
 
     /**
      * Called when calibration progress changes significantly.
@@ -54,7 +50,5 @@ public interface RobustKnownFrameMagnetometerCalibratorListener {
      * @param calibrator calibrator raising the event.
      * @param progress   progress of calibration expressed as a value between 0.0 and 1.0.
      */
-    void onCalibrateProgressChange(
-            final RobustKnownFrameMagnetometerCalibrator calibrator,
-            final float progress);
+    void onCalibrateProgressChange(final RobustKnownFrameMagnetometerCalibrator calibrator, final float progress);
 }

@@ -46,18 +46,12 @@ public class NEDGravityEstimatorTest {
 
     @Test
     public void testConstants() {
-        assertEquals(NEDGravityEstimator.EARTH_EQUATORIAL_RADIUS_WGS84,
-                Constants.EARTH_EQUATORIAL_RADIUS_WGS84, 0.0);
-        assertEquals(NEDGravityEstimator.EARTH_POLAR_RADIUS_WGS84,
-                Constants.EARTH_POLAR_RADIUS_WGS84, 0.0);
-        assertEquals(NEDGravityEstimator.EARTH_ECCENTRICITY,
-                Constants.EARTH_ECCENTRICITY, 0.0);
-        assertEquals(NEDGravityEstimator.EARTH_FLATTENING_WGS84,
-                Constants.EARTH_FLATTENING_WGS84, 0.0);
-        assertEquals(NEDGravityEstimator.EARTH_GRAVITATIONAL_CONSTANT,
-                Constants.EARTH_GRAVITATIONAL_CONSTANT, 0.0);
-        assertEquals(NEDGravityEstimator.EARTH_ROTATION_RATE,
-                Constants.EARTH_ROTATION_RATE, 0.0);
+        assertEquals(NEDGravityEstimator.EARTH_EQUATORIAL_RADIUS_WGS84, Constants.EARTH_EQUATORIAL_RADIUS_WGS84, 0.0);
+        assertEquals(NEDGravityEstimator.EARTH_POLAR_RADIUS_WGS84, Constants.EARTH_POLAR_RADIUS_WGS84, 0.0);
+        assertEquals(NEDGravityEstimator.EARTH_ECCENTRICITY, Constants.EARTH_ECCENTRICITY, 0.0);
+        assertEquals(NEDGravityEstimator.EARTH_FLATTENING_WGS84, Constants.EARTH_FLATTENING_WGS84, 0.0);
+        assertEquals(NEDGravityEstimator.EARTH_GRAVITATIONAL_CONSTANT, Constants.EARTH_GRAVITATIONAL_CONSTANT, 0.0);
+        assertEquals(NEDGravityEstimator.EARTH_ROTATION_RATE, Constants.EARTH_ROTATION_RATE, 0.0);
     }
 
     @Test
@@ -75,7 +69,7 @@ public class NEDGravityEstimatorTest {
                 + Math.pow(gravity.getGe(), 2.0)
                 + Math.pow(gravity.getGd(), 2.0));
 
-        assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+        assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
     }
 
     @Test
@@ -92,7 +86,7 @@ public class NEDGravityEstimatorTest {
                 + Math.pow(gravity.getGe(), 2.0)
                 + Math.pow(gravity.getGd(), 2.0));
 
-        assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+        assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
     }
 
     @Test
@@ -112,7 +106,7 @@ public class NEDGravityEstimatorTest {
                 + Math.pow(gravity.getGe(), 2.0)
                 + Math.pow(gravity.getGd(), 2.0));
 
-        assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+        assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
     }
 
     @Test
@@ -131,7 +125,7 @@ public class NEDGravityEstimatorTest {
                 + Math.pow(gravity.getGe(), 2.0)
                 + Math.pow(gravity.getGd(), 2.0));
 
-        assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+        assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
     }
 
     @Test
@@ -150,7 +144,7 @@ public class NEDGravityEstimatorTest {
                 + Math.pow(gravity.getGe(), 2.0)
                 + Math.pow(gravity.getGd(), 2.0));
 
-        assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+        assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
     }
 
     @Test
@@ -162,14 +156,13 @@ public class NEDGravityEstimatorTest {
         final Distance heightDistance = new Distance(height, DistanceUnit.METER);
 
         final NEDGravityEstimator estimator = new NEDGravityEstimator();
-        final NEDGravity gravity = estimator.estimateAndReturnNew(
-                latitudeAngle, heightDistance);
+        final NEDGravity gravity = estimator.estimateAndReturnNew(latitudeAngle, heightDistance);
 
         final double g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
                 + Math.pow(gravity.getGe(), 2.0)
                 + Math.pow(gravity.getGd(), 2.0));
 
-        assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+        assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
     }
 
     @Test
@@ -189,7 +182,7 @@ public class NEDGravityEstimatorTest {
                 + Math.pow(gravity.getGe(), 2.0)
                 + Math.pow(gravity.getGd(), 2.0));
 
-        assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+        assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
     }
 
     @Test
@@ -208,7 +201,7 @@ public class NEDGravityEstimatorTest {
                 + Math.pow(gravity.getGe(), 2.0)
                 + Math.pow(gravity.getGd(), 2.0));
 
-        assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+        assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
     }
 
     @Test
@@ -216,18 +209,16 @@ public class NEDGravityEstimatorTest {
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-            final double latitude = Math.toRadians(randomizer.nextDouble(
-                    MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
             final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-            final NEDGravity gravity = NEDGravityEstimator.estimateGravityAndReturnNew(
-                    latitude, height);
+            final NEDGravity gravity = NEDGravityEstimator.estimateGravityAndReturnNew(latitude, height);
 
             final double g = Math.sqrt(Math.pow(gravity.getGn(), 2.0)
                     + Math.pow(gravity.getGe(), 2.0)
                     + Math.pow(gravity.getGd(), 2.0));
 
-            assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+            assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
         }
     }
 }

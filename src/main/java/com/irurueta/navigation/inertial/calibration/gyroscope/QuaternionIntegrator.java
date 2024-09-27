@@ -51,8 +51,8 @@ public class QuaternionIntegrator {
      */
     public static void integrateGyroSequence(
             final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence,
-            final Quaternion initialAttitude, final QuaternionStepIntegratorType type,
-            final Quaternion result) throws RotationException {
+            final Quaternion initialAttitude, final QuaternionStepIntegratorType type, final Quaternion result)
+            throws RotationException {
 
         if (initialAttitude != null) {
             // if provided initial attitude
@@ -66,8 +66,7 @@ public class QuaternionIntegrator {
         }
 
 
-        final List<StandardDeviationTimedBodyKinematics> sortedMeasurements =
-                sequence.getSortedItems();
+        final List<StandardDeviationTimedBodyKinematics> sortedMeasurements = sequence.getSortedItems();
         final QuaternionStepIntegrator stepIntegrator = QuaternionStepIntegrator.create(type);
 
         boolean first = true;

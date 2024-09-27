@@ -32,7 +32,9 @@ import com.irurueta.units.TimeUnit;
  * smooth results and taking into account an initial position.
  * This implementation is based on the equations defined in "Principles of GNSS, Inertial, and Multisensor
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
- * https://github.com/ymjdz/MATLAB-Codes/blob/master/Loosely_coupled_INS_GNSS.m
+ * <a href="https://github.com/ymjdz/MATLAB-Codes/blob/master/Loosely_coupled_INS_GNSS.m">
+ *     https://github.com/ymjdz/MATLAB-Codes/blob/master/Loosely_coupled_INS_GNSS.m
+ * </a>
  */
 @SuppressWarnings("DuplicatedCode")
 public class INSLooselyCoupledKalmanFilteredEstimator {
@@ -110,8 +112,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @param config INS Kalman filter configuration parameters (usually obtained
      *               through calibration).
      */
-    public INSLooselyCoupledKalmanFilteredEstimator(
-            final INSLooselyCoupledKalmanConfig config) {
+    public INSLooselyCoupledKalmanFilteredEstimator(final INSLooselyCoupledKalmanConfig config) {
         mConfig = new INSLooselyCoupledKalmanConfig(config);
     }
 
@@ -122,8 +123,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      *                      consecutive propagations or measurements.
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
-    public INSLooselyCoupledKalmanFilteredEstimator(
-            final double epochInterval) {
+    public INSLooselyCoupledKalmanFilteredEstimator(final double epochInterval) {
         try {
             setEpochInterval(epochInterval);
         } catch (final LockedException ignore) {
@@ -136,8 +136,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      *
      * @param listener listener to notify events raised by this instance.
      */
-    public INSLooselyCoupledKalmanFilteredEstimator(
-            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+    public INSLooselyCoupledKalmanFilteredEstimator(final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
         mListener = listener;
     }
 
@@ -179,8 +178,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final double epochInterval,
-            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+            final double epochInterval, final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
         this(epochInterval);
         mListener = listener;
     }
@@ -210,8 +208,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(final Time epochInterval) {
-        this(TimeConverter.convert(epochInterval.getValue().doubleValue(),
-                epochInterval.getUnit(), TimeUnit.SECOND));
+        this(TimeConverter.convert(epochInterval.getValue().doubleValue(), epochInterval.getUnit(), TimeUnit.SECOND));
     }
 
     /**
@@ -225,8 +222,8 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
             final INSLooselyCoupledKalmanConfig config, final Time epochInterval) {
-        this(config, TimeConverter.convert(epochInterval.getValue().doubleValue(),
-                epochInterval.getUnit(), TimeUnit.SECOND));
+        this(config, TimeConverter.convert(epochInterval.getValue().doubleValue(), epochInterval.getUnit(),
+                TimeUnit.SECOND));
     }
 
     /**
@@ -238,8 +235,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final Time epochInterval,
-            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+            final Time epochInterval, final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
         this(epochInterval);
         mListener = listener;
     }
@@ -284,9 +280,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @param frame  frame containing initial user position, velocity and attitude
      *               resolved along ECEF axes.
      */
-    public INSLooselyCoupledKalmanFilteredEstimator(
-            final INSLooselyCoupledKalmanConfig config,
-            final ECEFFrame frame) {
+    public INSLooselyCoupledKalmanFilteredEstimator(final INSLooselyCoupledKalmanConfig config, final ECEFFrame frame) {
         this(frame);
         mConfig = new INSLooselyCoupledKalmanConfig(config);
     }
@@ -300,8 +294,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      *                      resolved along ECEF axes.
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
-    public INSLooselyCoupledKalmanFilteredEstimator(
-            final double epochInterval, final ECEFFrame frame) {
+    public INSLooselyCoupledKalmanFilteredEstimator(final double epochInterval, final ECEFFrame frame) {
         this(epochInterval);
         try {
             setFrame(frame);
@@ -318,8 +311,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @param listener listener to notify events raised by this instance.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final ECEFFrame frame,
-            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+            final ECEFFrame frame, final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
         this(frame);
         mListener = listener;
     }
@@ -336,8 +328,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final INSLooselyCoupledKalmanConfig config, final double epochInterval,
-            final ECEFFrame frame) {
+            final INSLooselyCoupledKalmanConfig config, final double epochInterval, final ECEFFrame frame) {
         this(config, epochInterval);
         try {
             setFrame(frame);
@@ -356,8 +347,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @param listener listener to notify events raised by this instance.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final INSLooselyCoupledKalmanConfig config,
-            final ECEFFrame frame,
+            final INSLooselyCoupledKalmanConfig config, final ECEFFrame frame,
             final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
         this(config, listener);
         try {
@@ -378,8 +368,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final double epochInterval,
-            final ECEFFrame frame,
+            final double epochInterval, final ECEFFrame frame,
             final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
         this(epochInterval, listener);
         try {
@@ -402,8 +391,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final INSLooselyCoupledKalmanConfig config, final double epochInterval,
-            final ECEFFrame frame,
+            final INSLooselyCoupledKalmanConfig config, final double epochInterval, final ECEFFrame frame,
             final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
         this(config, epochInterval, listener);
         try {
@@ -422,8 +410,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      *                      resolved along eCEF axes.
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
-    public INSLooselyCoupledKalmanFilteredEstimator(
-            final Time epochInterval, final ECEFFrame frame) {
+    public INSLooselyCoupledKalmanFilteredEstimator(final Time epochInterval, final ECEFFrame frame) {
         this(epochInterval);
         try {
             setFrame(frame);
@@ -444,8 +431,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final INSLooselyCoupledKalmanConfig config, final Time epochInterval,
-            final ECEFFrame frame) {
+            final INSLooselyCoupledKalmanConfig config, final Time epochInterval, final ECEFFrame frame) {
         this(config, epochInterval);
         try {
             setFrame(frame);
@@ -464,9 +450,8 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @param listener      listener to notify events raised by this instance.
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
-    public INSLooselyCoupledKalmanFilteredEstimator(
-            final Time epochInterval, final ECEFFrame frame,
-            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+    public INSLooselyCoupledKalmanFilteredEstimator(final Time epochInterval, final ECEFFrame frame,
+                                                    final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
         this(epochInterval, listener);
         try {
             setFrame(frame);
@@ -488,8 +473,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final INSLooselyCoupledKalmanConfig config, final Time epochInterval,
-            final ECEFFrame frame,
+            final INSLooselyCoupledKalmanConfig config, final Time epochInterval, final ECEFFrame frame,
             final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
         this(config, epochInterval, listener);
         try {
@@ -505,8 +489,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @param initialConfig initial INS loosely coupled Kalman configuration to
      *                      set proper initial covariance during filter initialization.
      */
-    public INSLooselyCoupledKalmanFilteredEstimator(
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig) {
+    public INSLooselyCoupledKalmanFilteredEstimator(final INSLooselyCoupledKalmanInitializerConfig initialConfig) {
         this();
         try {
             setInitialConfig(initialConfig);
@@ -524,8 +507,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      *                      set proper initial covariance during filter initialization.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig) {
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanInitializerConfig initialConfig) {
         this(config);
         try {
             setInitialConfig(initialConfig);
@@ -544,8 +526,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final double epochInterval,
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig) {
+            final double epochInterval, final INSLooselyCoupledKalmanInitializerConfig initialConfig) {
         this(epochInterval);
         try {
             setInitialConfig(initialConfig);
@@ -600,8 +581,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @param listener      listener to notify events raised by this instance.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanInitializerConfig initialConfig,
             final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
         this(config, listener);
         try {
@@ -622,8 +602,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final double epochInterval,
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final double epochInterval, final INSLooselyCoupledKalmanInitializerConfig initialConfig,
             final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
         this(epochInterval, listener);
         try {
@@ -667,8 +646,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final Time epochInterval,
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig) {
+            final Time epochInterval, final INSLooselyCoupledKalmanInitializerConfig initialConfig) {
         this(epochInterval);
         try {
             setInitialConfig(initialConfig);
@@ -710,8 +688,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final Time epochInterval,
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final Time epochInterval, final INSLooselyCoupledKalmanInitializerConfig initialConfig,
             final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
         this(epochInterval, listener);
         try {
@@ -754,8 +731,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      *                      resolved along ECEF axes.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig,
-            final ECEFFrame frame) {
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig, final ECEFFrame frame) {
         this(frame);
         try {
             setInitialConfig(initialConfig);
@@ -775,8 +751,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      *                      resolved along ECEF axes.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanInitializerConfig initialConfig,
             final ECEFFrame frame) {
         this(config, frame);
         try {
@@ -798,8 +773,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final double epochInterval,
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final double epochInterval, final INSLooselyCoupledKalmanInitializerConfig initialConfig,
             final ECEFFrame frame) {
         this(epochInterval, frame);
         try {
@@ -819,8 +793,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @param listener      listener to notify events raised by this instance.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig,
-            final ECEFFrame frame,
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig, final ECEFFrame frame,
             final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
         this(frame, listener);
         try {
@@ -845,8 +818,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
             final INSLooselyCoupledKalmanConfig config, final double epochInterval,
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig,
-            final ECEFFrame frame) {
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig, final ECEFFrame frame) {
         this(config, epochInterval, frame);
         try {
             setInitialConfig(initialConfig);
@@ -868,8 +840,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
             final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig,
-            final ECEFFrame frame,
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig, final ECEFFrame frame,
             final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
         this(config, frame, listener);
         try {
@@ -892,10 +863,8 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final double epochInterval,
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig,
-            final ECEFFrame frame,
-            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+            final double epochInterval, final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final ECEFFrame frame, final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
         this(epochInterval, frame, listener);
         try {
             setInitialConfig(initialConfig);
@@ -920,8 +889,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
             final INSLooselyCoupledKalmanConfig config, final double epochInterval,
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig,
-            final ECEFFrame frame,
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig, final ECEFFrame frame,
             final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
         this(config, epochInterval, frame, listener);
         try {
@@ -943,8 +911,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final Time epochInterval,
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final Time epochInterval, final INSLooselyCoupledKalmanInitializerConfig initialConfig,
             final ECEFFrame frame) {
         this(epochInterval, frame);
         try {
@@ -969,8 +936,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
             final INSLooselyCoupledKalmanConfig config, final Time epochInterval,
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig,
-            final ECEFFrame frame) {
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig, final ECEFFrame frame) {
         this(config, epochInterval, frame);
         try {
             setInitialConfig(initialConfig);
@@ -992,10 +958,8 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
-            final Time epochInterval,
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig,
-            final ECEFFrame frame,
-            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
+            final Time epochInterval, final INSLooselyCoupledKalmanInitializerConfig initialConfig,
+            final ECEFFrame frame, final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
         this(epochInterval, frame, listener);
         try {
             setInitialConfig(initialConfig);
@@ -1020,8 +984,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
             final INSLooselyCoupledKalmanConfig config, final Time epochInterval,
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig,
-            final ECEFFrame frame,
+            final INSLooselyCoupledKalmanInitializerConfig initialConfig, final ECEFFrame frame,
             final INSLooselyCoupledKalmanFilteredEstimatorListener listener) {
         this(config, epochInterval, frame, listener);
         try {
@@ -1047,8 +1010,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws LockedException if this estimator is already running.
      */
     public void setListener(
-            final INSLooselyCoupledKalmanFilteredEstimatorListener listener)
-            throws LockedException {
+            final INSLooselyCoupledKalmanFilteredEstimatorListener listener) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1125,8 +1087,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public void setEpochInterval(final Time epochInterval) throws LockedException {
-        final double epochIntervalSeconds = TimeConverter.convert(
-                epochInterval.getValue().doubleValue(),
+        final double epochIntervalSeconds = TimeConverter.convert(epochInterval.getValue().doubleValue(),
                 epochInterval.getUnit(), TimeUnit.SECOND);
         setEpochInterval(epochIntervalSeconds);
     }
@@ -1166,8 +1127,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      *               to be set.
      * @throws LockedException if this estimator is already running.
      */
-    public void setConfig(final INSLooselyCoupledKalmanConfig config)
-            throws LockedException {
+    public void setConfig(final INSLooselyCoupledKalmanConfig config) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1227,8 +1187,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @param result instance where configuration data will be stored.
      * @return true if result instance was updated, false otherwise.
      */
-    public boolean getInitialConfig(
-            final INSLooselyCoupledKalmanInitializerConfig result) {
+    public boolean getInitialConfig(final INSLooselyCoupledKalmanInitializerConfig result) {
         if (mInitialConfig != null) {
             result.copyFrom(mInitialConfig);
             return true;
@@ -1258,9 +1217,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @param initialConfig initial configuration to be set.
      * @throws LockedException if this estimator is already running.
      */
-    public void setInitialConfig(
-            final INSLooselyCoupledKalmanInitializerConfig initialConfig)
-            throws LockedException {
+    public void setInitialConfig(final INSLooselyCoupledKalmanInitializerConfig initialConfig) throws LockedException {
 
         if (mRunning) {
             throw new LockedException();
@@ -1303,8 +1260,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @see #getKinematics()
      */
     public BodyKinematics getCorrectedKinematics() {
-        return mCorrectedKinematics != null ?
-                new BodyKinematics(mCorrectedKinematics) : null;
+        return mCorrectedKinematics != null ? new BodyKinematics(mCorrectedKinematics) : null;
     }
 
     /**
@@ -1386,8 +1342,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * propagated.
      */
     public Time getLastStateTimestampAsTime() {
-        return mLastStateTimestamp != null ?
-                new Time(mLastStateTimestamp, TimeUnit.SECOND) : null;
+        return mLastStateTimestamp != null ? new Time(mLastStateTimestamp, TimeUnit.SECOND) : null;
     }
 
     /**
@@ -1423,10 +1378,9 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws NotReadyException if this estimator is not ready to be updated.
      * @throws INSException      if estimation fails due to numerical instabilities.
      */
-    public boolean update(final BodyKinematics kinematics, final Time timestamp)
-            throws LockedException, NotReadyException, INSException {
-        return update(kinematics, TimeConverter.convert(
-                timestamp.getValue().doubleValue(), timestamp.getUnit(),
+    public boolean update(final BodyKinematics kinematics, final Time timestamp) throws LockedException,
+            NotReadyException, INSException {
+        return update(kinematics, TimeConverter.convert(timestamp.getValue().doubleValue(), timestamp.getUnit(),
                 TimeUnit.SECOND));
     }
 
@@ -1444,8 +1398,8 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws NotReadyException if this estimator is not ready to be updated.
      * @throws INSException      if estimation fails due to numerical instabilities.
      */
-    public boolean update(final BodyKinematics kinematics, final double timestamp)
-            throws LockedException, NotReadyException, INSException {
+    public boolean update(final BodyKinematics kinematics, final double timestamp) throws LockedException,
+            NotReadyException, INSException {
 
         if (mRunning) {
             throw new LockedException();
@@ -1455,8 +1409,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
             throw new NotReadyException();
         }
 
-        final double propagationInterval = mLastStateTimestamp != null ?
-                timestamp - mLastStateTimestamp : 0.0;
+        final double propagationInterval = mLastStateTimestamp != null ? timestamp - mLastStateTimestamp : 0.0;
         if (mLastStateTimestamp != null && propagationInterval <= mEpochInterval) {
             return false;
         }
@@ -1470,8 +1423,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
 
             if (kinematics != null) {
                 correctKinematics(kinematics);
-                ECEFInertialNavigator.navigateECEF(propagationInterval, mFrame,
-                        mCorrectedKinematics, mFrame);
+                ECEFInertialNavigator.navigateECEF(propagationInterval, mFrame, mCorrectedKinematics, mFrame);
             }
 
             mKinematics = kinematics;
@@ -1512,10 +1464,9 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws NotReadyException if estimator is not ready for measurements updates.
      * @throws INSException      if estimation fails due to numerical instabilities.
      */
-    public boolean propagate(final Time timestamp)
-            throws LockedException, NotReadyException, INSException {
-        return propagate(TimeConverter.convert(timestamp.getValue().doubleValue(),
-                timestamp.getUnit(), TimeUnit.SECOND));
+    public boolean propagate(final Time timestamp) throws LockedException, NotReadyException, INSException {
+        return propagate(TimeConverter.convert(timestamp.getValue().doubleValue(), timestamp.getUnit(),
+                TimeUnit.SECOND));
     }
 
     /**
@@ -1530,8 +1481,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @throws NotReadyException if estimator is not ready for measurements updates.
      * @throws INSException      if estimation fails due to numerical instabilities.
      */
-    public boolean propagate(final double timestamp)
-            throws LockedException, NotReadyException, INSException {
+    public boolean propagate(final double timestamp) throws LockedException, NotReadyException, INSException {
 
         if (mRunning) {
             throw new LockedException();
@@ -1541,8 +1491,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
             throw new NotReadyException();
         }
 
-        final double propagationInterval = mLastStateTimestamp != null ?
-                timestamp - mLastStateTimestamp : 0.0;
+        final double propagationInterval = mLastStateTimestamp != null ? timestamp - mLastStateTimestamp : 0.0;
         if (mLastStateTimestamp != null && propagationInterval <= mEpochInterval) {
             return false;
         }
@@ -1557,8 +1506,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
             if (mState == null) {
                 // initialize state
                 initInitialConfig();
-                final Matrix covariance = INSLooselyCoupledKalmanInitializer
-                        .initialize(mInitialConfig);
+                final Matrix covariance = INSLooselyCoupledKalmanInitializer.initialize(mInitialConfig);
 
                 mState = new INSLooselyCoupledKalmanState();
                 mState.setFrame(mFrame);
@@ -1588,8 +1536,8 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
             final double vx = mFrame.getVx();
             final double vy = mFrame.getVy();
             final double vz = mFrame.getVz();
-            INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz,
-                    propagationInterval, mState, fx, fy, fz, mConfig, mState);
+            INSLooselyCoupledKalmanEpochEstimator.estimate(x, y, z, vx, vy, vz, propagationInterval, mState, fx, fy, fz,
+                    mConfig, mState);
             mLastStateTimestamp = timestamp;
 
             mState.getFrame(mFrame);
@@ -1684,8 +1632,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
         final double angularRateY = kinematics.getAngularRateY();
         final double angularRateZ = kinematics.getAngularRateZ();
 
-        mCorrectedKinematics.setSpecificForceCoordinates(
-                fx - accelBiasX, fy - accelBiasY, fz - accelBiasZ);
+        mCorrectedKinematics.setSpecificForceCoordinates(fx - accelBiasX, fy - accelBiasY, fz - accelBiasZ);
         mCorrectedKinematics.setAngularRateCoordinates(
                 angularRateX - gyroBiasX,
                 angularRateY - gyroBiasY,

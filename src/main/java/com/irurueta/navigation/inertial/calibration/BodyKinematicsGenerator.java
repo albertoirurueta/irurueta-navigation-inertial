@@ -32,7 +32,9 @@ import java.util.Random;
  * account provided IMU errors for a calibrated IMU.
  * This implementation is based on the equations defined in "Principles of GNSS, Inertial, and Multisensor
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
- * https://github.com/ymjdz/MATLAB-Codes/blob/master/IMU_model.m
+ * <a href="https://github.com/ymjdz/MATLAB-Codes/blob/master/IMU_model.m">
+ *     https://github.com/ymjdz/MATLAB-Codes/blob/master/IMU_model.m
+ * </a>
  */
 @SuppressWarnings("DuplicatedCode")
 public class BodyKinematicsGenerator {
@@ -56,8 +58,8 @@ public class BodyKinematicsGenerator {
      * for each provided ground-truth one.
      */
     public static Collection<BodyKinematics> generate(
-            final Time timeInterval, final Collection<BodyKinematics> trueKinematics,
-            final IMUErrors errors, final Random random) {
+            final Time timeInterval, final Collection<BodyKinematics> trueKinematics, final IMUErrors errors,
+            final Random random) {
         return generate(convertTime(timeInterval), trueKinematics, errors, random);
     }
 
@@ -73,10 +75,9 @@ public class BodyKinematicsGenerator {
      * @param result         collection where generated uncalibrated kinematics
      *                       for each provided ground-truth one will be stored.
      */
-    public static void generate(final Time timeInterval,
-                                final Collection<BodyKinematics> trueKinematics,
-                                final IMUErrors errors, final Random random,
-                                final Collection<BodyKinematics> result) {
+    public static void generate(
+            final Time timeInterval, final Collection<BodyKinematics> trueKinematics, final IMUErrors errors,
+            final Random random, final Collection<BodyKinematics> result) {
         generate(convertTime(timeInterval), trueKinematics, errors, random, result);
     }
 
@@ -93,8 +94,8 @@ public class BodyKinematicsGenerator {
      * for each provided ground-truth one.
      */
     public static Collection<BodyKinematics> generate(
-            final double timeInterval, final Collection<BodyKinematics> trueKinematics,
-            final IMUErrors errors, final Random random) {
+            final double timeInterval, final Collection<BodyKinematics> trueKinematics, final IMUErrors errors,
+            final Random random) {
         final List<BodyKinematics> result = new ArrayList<>();
         generate(timeInterval, trueKinematics, errors, random, result);
         return result;
@@ -112,10 +113,9 @@ public class BodyKinematicsGenerator {
      * @param result         collection where generated uncalibrated kinematics
      *                       for each provided ground-truth one will be stored.
      */
-    public static void generate(final double timeInterval,
-                                final Collection<BodyKinematics> trueKinematics,
-                                final IMUErrors errors, final Random random,
-                                final Collection<BodyKinematics> result) {
+    public static void generate(
+            final double timeInterval, final Collection<BodyKinematics> trueKinematics,
+            final IMUErrors errors, final Random random, final Collection<BodyKinematics> result) {
         try {
             final Matrix trueFibb = new Matrix(BodyKinematics.COMPONENTS, 1);
             final Matrix ma = errors.getAccelerometerScaleFactorAndCrossCouplingErrors();
@@ -124,20 +124,16 @@ public class BodyKinematicsGenerator {
             final Matrix mg = errors.getGyroScaleFactorAndCrossCouplingErrors();
             final Matrix bg = errors.getGyroBiasesAsMatrix();
             final Matrix gg = errors.getGyroGDependentBiases();
-            final Matrix identity = Matrix.identity(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
-            final Matrix tmp33 = new Matrix(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            final Matrix identity = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            final Matrix tmp33 = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             final Matrix tmp31a = new Matrix(BodyKinematics.COMPONENTS, 1);
             final Matrix tmp31b = new Matrix(BodyKinematics.COMPONENTS, 1);
 
             for (final BodyKinematics k : trueKinematics) {
                 final BodyKinematics r = new BodyKinematics();
 
-                internalGenerate(timeInterval, k, errors, random,
-                        null, r, null,
-                        trueFibb, ma, ba, trueOmegaIbb, mg, bg, gg, identity,
-                        tmp33, tmp31a, tmp31b);
+                internalGenerate(timeInterval, k, errors, random, null, r, null,
+                        trueFibb, ma, ba, trueOmegaIbb, mg, bg, gg, identity, tmp33, tmp31a, tmp31b);
 
                 result.add(r);
             }
@@ -158,9 +154,8 @@ public class BodyKinematicsGenerator {
      * @param random         a random number generator to generate noise.
      * @return uncalibrated body kinematics.
      */
-    public static BodyKinematics generate(final Time timeInterval,
-                                          final BodyKinematics trueKinematics,
-                                          final IMUErrors errors, final Random random) {
+    public static BodyKinematics generate(
+            final Time timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors, final Random random) {
         return generate(convertTime(timeInterval), trueKinematics, errors, random);
     }
 
@@ -174,12 +169,10 @@ public class BodyKinematicsGenerator {
      * @param random         a random number generator to generate noise.
      * @param result         instance where uncalibrated body kinematics will be stored.
      */
-    public static void generate(final Time timeInterval,
-                                final BodyKinematics trueKinematics,
-                                final IMUErrors errors, final Random random,
-                                final BodyKinematics result) {
-        generate(convertTime(timeInterval), trueKinematics,
-                errors, random, result);
+    public static void generate(
+            final Time timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors, final Random random,
+            final BodyKinematics result) {
+        generate(convertTime(timeInterval), trueKinematics, errors, random, result);
     }
 
     /**
@@ -192,10 +185,9 @@ public class BodyKinematicsGenerator {
      * @param random         a random number generator to generate noise.
      * @return uncalibrated body kinematics.
      */
-    public static BodyKinematics generate(final double timeInterval,
-                                          final BodyKinematics trueKinematics,
-                                          final IMUErrors errors,
-                                          final Random random) {
+    public static BodyKinematics generate(
+            final double timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors,
+            final Random random) {
         final BodyKinematics result = new BodyKinematics();
         generate(timeInterval, trueKinematics, errors, random, result);
         return result;
@@ -211,12 +203,11 @@ public class BodyKinematicsGenerator {
      * @param random         a random number generator to generate noise.
      * @param result         instance where uncalibrated body kinematics will be stored.
      */
-    public static void generate(final double timeInterval,
-                                final BodyKinematics trueKinematics,
-                                final IMUErrors errors, final Random random,
-                                final BodyKinematics result) {
-        generate(timeInterval, trueKinematics, errors, random,
-                null, result, null);
+    public static void generate(
+            final double timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors, final Random random,
+            final BodyKinematics result) {
+        generate(timeInterval, trueKinematics, errors, random, null, result,
+                null);
     }
 
     /**
@@ -237,13 +228,11 @@ public class BodyKinematicsGenerator {
      * @throws IllegalArgumentException if either oldQuantizationResiduals or
      *                                  quantizationResiduals are not length 6.
      */
-    public static BodyKinematics generate(final Time timeInterval,
-                                          final BodyKinematics trueKinematics,
-                                          final IMUErrors errors, final Random random,
-                                          final double[] oldQuantizationResiduals,
-                                          final double[] quantizationResiduals) {
-        return generate(convertTime(timeInterval), trueKinematics, errors, random,
-                oldQuantizationResiduals, quantizationResiduals);
+    public static BodyKinematics generate(
+            final Time timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors, final Random random,
+            final double[] oldQuantizationResiduals, final double[] quantizationResiduals) {
+        return generate(convertTime(timeInterval), trueKinematics, errors, random, oldQuantizationResiduals,
+                quantizationResiduals);
     }
 
     /**
@@ -264,14 +253,12 @@ public class BodyKinematicsGenerator {
      * @throws IllegalArgumentException if either oldQuantizationResiduals or
      *                                  quantizationResiduals are not length 6.
      */
-    public static void generate(final Time timeInterval,
-                                final BodyKinematics trueKinematics,
-                                final IMUErrors errors, final Random random,
-                                final double[] oldQuantizationResiduals,
-                                final BodyKinematics result,
-                                final double[] quantizationResiduals) {
-        generate(convertTime(timeInterval), trueKinematics, errors, random,
-                oldQuantizationResiduals, result, quantizationResiduals);
+    public static void generate(
+            final Time timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors, final Random random,
+            final double[] oldQuantizationResiduals, final BodyKinematics result,
+            final double[] quantizationResiduals) {
+        generate(convertTime(timeInterval), trueKinematics, errors, random, oldQuantizationResiduals, result,
+                quantizationResiduals);
     }
 
     /**
@@ -292,14 +279,11 @@ public class BodyKinematicsGenerator {
      * @throws IllegalArgumentException if either oldQuantizationResiduals or
      *                                  quantizationResiduals are not length 6.
      */
-    public static BodyKinematics generate(final double timeInterval,
-                                          final BodyKinematics trueKinematics,
-                                          final IMUErrors errors, final Random random,
-                                          final double[] oldQuantizationResiduals,
-                                          final double[] quantizationResiduals) {
+    public static BodyKinematics generate(
+            final double timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors, final Random random,
+            final double[] oldQuantizationResiduals, final double[] quantizationResiduals) {
         final BodyKinematics result = new BodyKinematics();
-        generate(timeInterval, trueKinematics, errors, random,
-                oldQuantizationResiduals, result, quantizationResiduals);
+        generate(timeInterval, trueKinematics, errors, random, oldQuantizationResiduals, result, quantizationResiduals);
         return result;
     }
 
@@ -321,12 +305,10 @@ public class BodyKinematicsGenerator {
      * @throws IllegalArgumentException if either oldQuantizationResiduals or
      *                                  quantizationResiduals are not length 6.
      */
-    public static void generate(final double timeInterval,
-                                final BodyKinematics trueKinematics,
-                                final IMUErrors errors, final Random random,
-                                final double[] oldQuantizationResiduals,
-                                final BodyKinematics result,
-                                final double[] quantizationResiduals) {
+    public static void generate(
+            final double timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors, final Random random,
+            final double[] oldQuantizationResiduals, final BodyKinematics result,
+            final double[] quantizationResiduals) {
         try {
             final Matrix trueFibb = new Matrix(BodyKinematics.COMPONENTS, 1);
             final Matrix ma = errors.getAccelerometerScaleFactorAndCrossCouplingErrors();
@@ -335,16 +317,12 @@ public class BodyKinematicsGenerator {
             final Matrix mg = errors.getGyroScaleFactorAndCrossCouplingErrors();
             final Matrix bg = errors.getGyroBiasesAsMatrix();
             final Matrix gg = errors.getGyroGDependentBiases();
-            final Matrix identity = Matrix.identity(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
-            final Matrix tmp33 = new Matrix(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            final Matrix identity = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            final Matrix tmp33 = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             final Matrix tmp31a = new Matrix(BodyKinematics.COMPONENTS, 1);
             final Matrix tmp31b = new Matrix(BodyKinematics.COMPONENTS, 1);
-            internalGenerate(timeInterval, trueKinematics, errors, random,
-                    oldQuantizationResiduals, result, quantizationResiduals,
-                    trueFibb, ma, ba, trueOmegaIbb, mg, bg, gg, identity, tmp33, tmp31a,
-                    tmp31b);
+            internalGenerate(timeInterval, trueKinematics, errors, random, oldQuantizationResiduals, result,
+                    quantizationResiduals, trueFibb, ma, ba, trueOmegaIbb, mg, bg, gg, identity, tmp33, tmp31a, tmp31b);
         } catch (final WrongSizeException ignore) {
             // never happens
         }
@@ -383,31 +361,18 @@ public class BodyKinematicsGenerator {
      * @throws IllegalArgumentException if either oldQuantizationResiduals or
      *                                  quantizationResiduals are not length 6.
      */
-    private static void internalGenerate(final double timeInterval,
-                                         final BodyKinematics trueKinematics,
-                                         final IMUErrors errors, final Random random,
-                                         final double[] oldQuantizationResiduals,
-                                         final BodyKinematics result,
-                                         final double[] quantizationResiduals,
-                                         final Matrix trueFibb,
-                                         final Matrix ma,
-                                         final Matrix ba,
-                                         final Matrix trueOmegaibb,
-                                         final Matrix mg,
-                                         final Matrix bg,
-                                         final Matrix gg,
-                                         final Matrix identity,
-                                         final Matrix tmp33,
-                                         final Matrix tmp31a,
-                                         final Matrix tmp31b) throws WrongSizeException {
+    private static void internalGenerate(
+            final double timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors, final Random random,
+            final double[] oldQuantizationResiduals, final BodyKinematics result, final double[] quantizationResiduals,
+            final Matrix trueFibb, final Matrix ma, final Matrix ba, final Matrix trueOmegaibb, final Matrix mg,
+            final Matrix bg, final Matrix gg, final Matrix identity, final Matrix tmp33, final Matrix tmp31a,
+            final Matrix tmp31b) throws WrongSizeException {
 
         final int comp2 = 2 * BodyKinematics.COMPONENTS;
-        if (oldQuantizationResiduals != null &&
-                oldQuantizationResiduals.length != comp2) {
+        if (oldQuantizationResiduals != null && oldQuantizationResiduals.length != comp2) {
             throw new IllegalArgumentException();
         }
-        if (quantizationResiduals != null &&
-                quantizationResiduals.length != comp2) {
+        if (quantizationResiduals != null && quantizationResiduals.length != comp2) {
             throw new IllegalArgumentException();
         }
 
@@ -467,18 +432,11 @@ public class BodyKinematicsGenerator {
         final double uqOmegaIbbZ = tmp31a.getElementAtIndex(2) + gyroNoiseZ;
 
         // Quantize accelerometer outputs
-        if (errors.getAccelerometerQuantizationLevel() > 0.0
-                && oldQuantizationResiduals != null) {
+        if (errors.getAccelerometerQuantizationLevel() > 0.0 && oldQuantizationResiduals != null) {
             final double accelQuantLevel = errors.getAccelerometerQuantizationLevel();
-            final double fx = accelQuantLevel
-                    * Math.round((uqFibbX + oldQuantizationResiduals[0])
-                    / accelQuantLevel);
-            final double fy = accelQuantLevel
-                    * Math.round((uqFibbY + oldQuantizationResiduals[1])
-                    / accelQuantLevel);
-            final double fz = accelQuantLevel
-                    * Math.round((uqFibbZ + oldQuantizationResiduals[2])
-                    / accelQuantLevel);
+            final double fx = accelQuantLevel * Math.round((uqFibbX + oldQuantizationResiduals[0]) / accelQuantLevel);
+            final double fy = accelQuantLevel * Math.round((uqFibbY + oldQuantizationResiduals[1]) / accelQuantLevel);
+            final double fz = accelQuantLevel * Math.round((uqFibbZ + oldQuantizationResiduals[2]) / accelQuantLevel);
 
             result.setSpecificForceCoordinates(fx, fy, fz);
 
@@ -498,28 +456,21 @@ public class BodyKinematicsGenerator {
         }
 
         // Quantize gyro outputs
-        if (errors.getGyroQuantizationLevel() > 0.0
-                && oldQuantizationResiduals != null) {
+        if (errors.getGyroQuantizationLevel() > 0.0 && oldQuantizationResiduals != null) {
             final double gyroQuantLevel = errors.getGyroQuantizationLevel();
-            final double omegaX = gyroQuantLevel
-                    * Math.round((uqOmegaIbbX + oldQuantizationResiduals[3])
+            final double omegaX = gyroQuantLevel * Math.round((uqOmegaIbbX + oldQuantizationResiduals[3])
                     / gyroQuantLevel);
-            final double omegaY = gyroQuantLevel
-                    * Math.round((uqOmegaIbbY + oldQuantizationResiduals[4])
+            final double omegaY = gyroQuantLevel * Math.round((uqOmegaIbbY + oldQuantizationResiduals[4])
                     / gyroQuantLevel);
-            final double omegaZ = gyroQuantLevel
-                    * Math.round((uqOmegaIbbZ + oldQuantizationResiduals[5])
+            final double omegaZ = gyroQuantLevel * Math.round((uqOmegaIbbZ + oldQuantizationResiduals[5])
                     / gyroQuantLevel);
 
             result.setAngularRateCoordinates(omegaX, omegaY, omegaZ);
 
             if (quantizationResiduals != null) {
-                quantizationResiduals[3] = uqOmegaIbbX + oldQuantizationResiduals[3]
-                        - omegaX;
-                quantizationResiduals[4] = uqOmegaIbbY + oldQuantizationResiduals[4]
-                        - omegaY;
-                quantizationResiduals[5] = uqOmegaIbbZ + oldQuantizationResiduals[5]
-                        - omegaZ;
+                quantizationResiduals[3] = uqOmegaIbbX + oldQuantizationResiduals[3] - omegaX;
+                quantizationResiduals[4] = uqOmegaIbbY + oldQuantizationResiduals[4] - omegaY;
+                quantizationResiduals[5] = uqOmegaIbbZ + oldQuantizationResiduals[5] - omegaZ;
             }
         } else {
             result.setAngularRateCoordinates(uqOmegaIbbX, uqOmegaIbbY, uqOmegaIbbZ);
@@ -539,7 +490,6 @@ public class BodyKinematicsGenerator {
      * @return converted value.
      */
     private static double convertTime(final Time time) {
-        return TimeConverter.convert(time.getValue().doubleValue(),
-                time.getUnit(), TimeUnit.SECOND);
+        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);
     }
 }

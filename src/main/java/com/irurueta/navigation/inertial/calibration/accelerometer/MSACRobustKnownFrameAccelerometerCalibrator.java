@@ -50,8 +50,7 @@ import java.util.List;
  * - ftrue is ground-truth specific force.
  * - w is measurement noise.
  */
-public class MSACRobustKnownFrameAccelerometerCalibrator extends
-        RobustKnownFrameAccelerometerCalibrator {
+public class MSACRobustKnownFrameAccelerometerCalibrator extends RobustKnownFrameAccelerometerCalibrator {
 
     /**
      * Constant defining default threshold to determine whether samples are
@@ -95,8 +94,7 @@ public class MSACRobustKnownFrameAccelerometerCalibrator extends
      *                     deviations taken at different frames (positions, orientations
      *                     and velocities).
      */
-    public MSACRobustKnownFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements) {
+    public MSACRobustKnownFrameAccelerometerCalibrator(final List<StandardDeviationFrameBodyKinematics> measurements) {
         super(measurements);
     }
 
@@ -132,8 +130,7 @@ public class MSACRobustKnownFrameAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public MSACRobustKnownFrameAccelerometerCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownFrameAccelerometerCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownFrameAccelerometerCalibratorListener listener) {
         super(commonAxisUsed, listener);
     }
 
@@ -147,8 +144,7 @@ public class MSACRobustKnownFrameAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public MSACRobustKnownFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -163,8 +159,7 @@ public class MSACRobustKnownFrameAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public MSACRobustKnownFrameAccelerometerCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
     }
@@ -215,7 +210,7 @@ public class MSACRobustKnownFrameAccelerometerCalibrator extends
         }
 
         final MSACRobustEstimator<PreliminaryResult> innerEstimator =
-                new MSACRobustEstimator<>(new MSACRobustEstimatorListener<PreliminaryResult>() {
+                new MSACRobustEstimator<>(new MSACRobustEstimatorListener<>() {
                     @Override
                     public double getThreshold() {
                         return mThreshold;
@@ -233,14 +228,12 @@ public class MSACRobustKnownFrameAccelerometerCalibrator extends
 
                     @Override
                     public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List<PreliminaryResult> solutions) {
+                            final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                         computePreliminarySolutions(samplesIndices, solutions);
                     }
 
                     @Override
-                    public double computeResidual(
-                            final PreliminaryResult currentEstimation, final int i) {
+                    public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
                         return computeError(mMeasurements.get(i), currentEstimation);
                     }
 
@@ -250,21 +243,18 @@ public class MSACRobustKnownFrameAccelerometerCalibrator extends
                     }
 
                     @Override
-                    public void onEstimateStart(
-                            final RobustEstimator<PreliminaryResult> estimator) {
+                    public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                         // no action needed
                     }
 
                     @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator<PreliminaryResult> estimator) {
+                    public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                         // no action needed
                     }
 
                     @Override
                     public void onEstimateNextIteration(
-                            final RobustEstimator<PreliminaryResult> estimator,
-                            final int iteration) {
+                            final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                         if (mListener != null) {
                             mListener.onCalibrateNextIteration(
                                     MSACRobustKnownFrameAccelerometerCalibrator.this,
@@ -274,12 +264,10 @@ public class MSACRobustKnownFrameAccelerometerCalibrator extends
 
                     @Override
                     public void onEstimateProgressChange(
-                            final RobustEstimator<PreliminaryResult> estimator,
-                            final float progress) {
+                            final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                         if (mListener != null) {
                             mListener.onCalibrateProgressChange(
-                                    MSACRobustKnownFrameAccelerometerCalibrator.this,
-                                    progress);
+                                    MSACRobustKnownFrameAccelerometerCalibrator.this, progress);
                         }
                     }
                 });

@@ -23,6 +23,6 @@ import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyMagneti
  */
 public interface MagnetometerMeasurementsGeneratorListener extends
         MeasurementsGeneratorListener<StandardDeviationBodyMagneticFluxDensity,
-                MagnetometerMeasurementsGenerator,
-                MagnetometerMeasurementsGeneratorListener, BodyKinematicsAndMagneticFluxDensity> {
+                MagnetometerMeasurementsGenerator, MagnetometerMeasurementsGeneratorListener,
+                BodyKinematicsAndMagneticFluxDensity> {
 }

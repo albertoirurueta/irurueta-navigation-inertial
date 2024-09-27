@@ -261,8 +261,7 @@ public class BodyKinematicsBiasEstimator {
      */
     public BodyKinematicsBiasEstimator(
             final double latitude, final double longitude, final double height) {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                new NEDFrame(latitude, longitude, height));
+        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));
         rebuildExpectedKinematics();
     }
 
@@ -279,8 +278,7 @@ public class BodyKinematicsBiasEstimator {
      */
     public BodyKinematicsBiasEstimator(
             final Angle latitude, final Angle longitude, final double height) {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                new NEDFrame(latitude, longitude, height));
+        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));
         rebuildExpectedKinematics();
     }
 
@@ -297,8 +295,7 @@ public class BodyKinematicsBiasEstimator {
      */
     public BodyKinematicsBiasEstimator(
             final Angle latitude, final Angle longitude, final Distance height) {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                new NEDFrame(latitude, longitude, height));
+        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));
         rebuildExpectedKinematics();
     }
 
@@ -317,8 +314,7 @@ public class BodyKinematicsBiasEstimator {
     public BodyKinematicsBiasEstimator(
             final NEDPosition position, final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException {
-        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                new NEDFrame(position, nedC));
+        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(position, nedC));
         rebuildExpectedKinematics();
     }
 
@@ -338,8 +334,7 @@ public class BodyKinematicsBiasEstimator {
             final ECEFPosition position, final CoordinateTransformation nedC)
             throws InvalidSourceAndDestinationFrameTypeException {
         mFrame = new ECEFFrame(position);
-        final NEDFrame nedFrame = ECEFtoNEDFrameConverter
-                .convertECEFtoNEDAndReturnNew(mFrame);
+        final NEDFrame nedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mFrame);
         nedFrame.setCoordinateTransformation(nedC);
         NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);
         rebuildExpectedKinematics();
@@ -374,8 +369,7 @@ public class BodyKinematicsBiasEstimator {
      *                                                       navigation coordinates.
      */
     public BodyKinematicsBiasEstimator(
-            final CoordinateTransformation nedC,
-            final BodyKinematicsBiasEstimatorListener listener)
+            final CoordinateTransformation nedC, final BodyKinematicsBiasEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException {
         this(nedC);
         mListener = listener;
@@ -453,8 +447,7 @@ public class BodyKinematicsBiasEstimator {
      */
     public BodyKinematicsBiasEstimator(
             final NEDPosition position, final CoordinateTransformation nedC,
-            final BodyKinematicsBiasEstimatorListener listener)
-            throws InvalidSourceAndDestinationFrameTypeException {
+            final BodyKinematicsBiasEstimatorListener listener) throws InvalidSourceAndDestinationFrameTypeException {
         this(position, nedC);
         mListener = listener;
     }
@@ -474,8 +467,7 @@ public class BodyKinematicsBiasEstimator {
      */
     public BodyKinematicsBiasEstimator(
             final ECEFPosition position, final CoordinateTransformation nedC,
-            final BodyKinematicsBiasEstimatorListener listener)
-            throws InvalidSourceAndDestinationFrameTypeException {
+            final BodyKinematicsBiasEstimatorListener listener) throws InvalidSourceAndDestinationFrameTypeException {
         this(position, nedC);
         mListener = listener;
     }
@@ -545,8 +537,8 @@ public class BodyKinematicsBiasEstimator {
      *                     expressed in seconds (s).
      * @throws IllegalArgumentException if provided time interval is negative.
      */
-    public BodyKinematicsBiasEstimator(final double latitude, final double longitude,
-                                       final double height, final double timeInterval) {
+    public BodyKinematicsBiasEstimator(
+            final double latitude, final double longitude, final double height, final double timeInterval) {
         this(latitude, longitude, height);
         try {
             setTimeInterval(timeInterval);
@@ -570,8 +562,8 @@ public class BodyKinematicsBiasEstimator {
      *                     expressed in seconds (s).
      * @throws IllegalArgumentException if provided time interval is negative.
      */
-    public BodyKinematicsBiasEstimator(final Angle latitude, final Angle longitude,
-                                       final double height, final double timeInterval) {
+    public BodyKinematicsBiasEstimator(
+            final Angle latitude, final Angle longitude, final double height, final double timeInterval) {
         this(latitude, longitude, height);
         try {
             setTimeInterval(timeInterval);
@@ -595,8 +587,8 @@ public class BodyKinematicsBiasEstimator {
      *                     expressed in seconds (s).
      * @throws IllegalArgumentException if provided time interval is negative.
      */
-    public BodyKinematicsBiasEstimator(final Angle latitude, final Angle longitude,
-                                       final Distance height, final double timeInterval) {
+    public BodyKinematicsBiasEstimator(
+            final Angle latitude, final Angle longitude, final Distance height, final double timeInterval) {
         this(latitude, longitude, height);
         try {
             setTimeInterval(timeInterval);
@@ -623,8 +615,7 @@ public class BodyKinematicsBiasEstimator {
      *                                                       is negative.
      */
     public BodyKinematicsBiasEstimator(
-            final NEDPosition position, final CoordinateTransformation nedC,
-            final double timeInterval)
+            final NEDPosition position, final CoordinateTransformation nedC, final double timeInterval)
             throws InvalidSourceAndDestinationFrameTypeException {
         this(position, nedC);
         try {
@@ -652,8 +643,7 @@ public class BodyKinematicsBiasEstimator {
      *                                                       is negative.
      */
     public BodyKinematicsBiasEstimator(
-            final ECEFPosition position, final CoordinateTransformation nedC,
-            final double timeInterval)
+            final ECEFPosition position, final CoordinateTransformation nedC, final double timeInterval)
             throws InvalidSourceAndDestinationFrameTypeException {
         this(position, nedC);
         try {
@@ -676,8 +666,7 @@ public class BodyKinematicsBiasEstimator {
      * @param listener     listener to handle events raised by this estimator.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
-    public BodyKinematicsBiasEstimator(final double timeInterval,
-                                       final BodyKinematicsBiasEstimatorListener listener) {
+    public BodyKinematicsBiasEstimator(final double timeInterval, final BodyKinematicsBiasEstimatorListener listener) {
         this(timeInterval);
         mListener = listener;
     }
@@ -703,8 +692,7 @@ public class BodyKinematicsBiasEstimator {
      */
     public BodyKinematicsBiasEstimator(
             final CoordinateTransformation nedC, final double timeInterval,
-            final BodyKinematicsBiasEstimatorListener listener)
-            throws InvalidSourceAndDestinationFrameTypeException {
+            final BodyKinematicsBiasEstimatorListener listener) throws InvalidSourceAndDestinationFrameTypeException {
         this(nedC, timeInterval);
         mListener = listener;
     }
@@ -882,8 +870,8 @@ public class BodyKinematicsBiasEstimator {
      *                     (IMU acceleration + gyroscope) samples.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
-    public BodyKinematicsBiasEstimator(final double latitude, final double longitude,
-                                       final double height, final Time timeInterval) {
+    public BodyKinematicsBiasEstimator(
+            final double latitude, final double longitude, final double height, final Time timeInterval) {
         this(latitude, longitude, height, convertTime(timeInterval));
     }
 
@@ -901,8 +889,8 @@ public class BodyKinematicsBiasEstimator {
      *                     (IMU acceleration + gyroscope) samples.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
-    public BodyKinematicsBiasEstimator(final Angle latitude, final Angle longitude,
-                                       final double height, final Time timeInterval) {
+    public BodyKinematicsBiasEstimator(
+            final Angle latitude, final Angle longitude, final double height, final Time timeInterval) {
         this(latitude, longitude, height, convertTime(timeInterval));
     }
 
@@ -920,8 +908,8 @@ public class BodyKinematicsBiasEstimator {
      *                     (IMU acceleration + gyroscope) samples.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
-    public BodyKinematicsBiasEstimator(final Angle latitude, final Angle longitude,
-                                       final Distance height, final Time timeInterval) {
+    public BodyKinematicsBiasEstimator(
+            final Angle latitude, final Angle longitude, final Distance height, final Time timeInterval) {
         this(latitude, longitude, height, convertTime(timeInterval));
     }
 
@@ -942,8 +930,7 @@ public class BodyKinematicsBiasEstimator {
      *                                                       is negative.
      */
     public BodyKinematicsBiasEstimator(
-            final NEDPosition position, final CoordinateTransformation nedC,
-            final Time timeInterval)
+            final NEDPosition position, final CoordinateTransformation nedC, final Time timeInterval)
             throws InvalidSourceAndDestinationFrameTypeException {
         this(position, nedC, convertTime(timeInterval));
     }
@@ -965,8 +952,7 @@ public class BodyKinematicsBiasEstimator {
      *                                                       is negative.
      */
     public BodyKinematicsBiasEstimator(
-            final ECEFPosition position, final CoordinateTransformation nedC,
-            final Time timeInterval)
+            final ECEFPosition position, final CoordinateTransformation nedC, final Time timeInterval)
             throws InvalidSourceAndDestinationFrameTypeException {
         this(position, nedC, convertTime(timeInterval));
     }
@@ -983,8 +969,7 @@ public class BodyKinematicsBiasEstimator {
      * @param listener     listener to handle events raised by this estimator.
      * @throws IllegalArgumentException if provided time interval is negative.
      */
-    public BodyKinematicsBiasEstimator(final Time timeInterval,
-                                       final BodyKinematicsBiasEstimatorListener listener) {
+    public BodyKinematicsBiasEstimator(final Time timeInterval, final BodyKinematicsBiasEstimatorListener listener) {
         this(convertTime(timeInterval), listener);
     }
 
@@ -1008,8 +993,7 @@ public class BodyKinematicsBiasEstimator {
      */
     public BodyKinematicsBiasEstimator(
             final CoordinateTransformation nedC, final Time timeInterval,
-            final BodyKinematicsBiasEstimatorListener listener)
-            throws InvalidSourceAndDestinationFrameTypeException {
+            final BodyKinematicsBiasEstimatorListener listener) throws InvalidSourceAndDestinationFrameTypeException {
         this(nedC, convertTime(timeInterval), listener);
     }
 
@@ -1050,8 +1034,8 @@ public class BodyKinematicsBiasEstimator {
      * @throws IllegalArgumentException if provided time interval is negative.
      */
     public BodyKinematicsBiasEstimator(
-            final Angle latitude, final Angle longitude, final double height,
-            final Time timeInterval, final BodyKinematicsBiasEstimatorListener listener) {
+            final Angle latitude, final Angle longitude, final double height, final Time timeInterval,
+            final BodyKinematicsBiasEstimatorListener listener) {
         this(latitude, longitude, height, convertTime(timeInterval), listener);
     }
 
@@ -1228,8 +1212,7 @@ public class BodyKinematicsBiasEstimator {
      * @param z z position resolved around ECEF axes and expressed in meters (m).
      * @throws LockedException if estimator is currently running.
      */
-    public void setEcefPosition(final double x, final double y, final double z)
-            throws LockedException {
+    public void setEcefPosition(final double x, final double y, final double z) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1246,8 +1229,7 @@ public class BodyKinematicsBiasEstimator {
      * @param z z position resolved around ECEF axes.
      * @throws LockedException if estimator is currently running.
      */
-    public void setEcefPosition(final Distance x, final Distance y, final Distance z)
-            throws LockedException {
+    public void setEcefPosition(final Distance x, final Distance y, final Distance z) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1363,8 +1345,7 @@ public class BodyKinematicsBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void setNedPosition(
-            final double latitude, final double longitude, final double height)
-            throws LockedException {
+            final double latitude, final double longitude, final double height) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1384,8 +1365,7 @@ public class BodyKinematicsBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void setNedPosition(
-            final Angle latitude, final Angle longitude, final double height)
-            throws LockedException {
+            final Angle latitude, final Angle longitude, final double height) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1405,8 +1385,7 @@ public class BodyKinematicsBiasEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public void setNedPosition(
-            final Angle latitude, final Angle longitude, final Distance height)
-            throws LockedException {
+            final Angle latitude, final Angle longitude, final Distance height) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1583,8 +1562,7 @@ public class BodyKinematicsBiasEstimator {
      */
     public void setNedPositionAndNedOrientation(
             final double latitude, final double longitude, final double height,
-            final CoordinateTransformation nedC)
-            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+            final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1614,8 +1592,7 @@ public class BodyKinematicsBiasEstimator {
      */
     public void setNedPositionAndNedOrientation(
             final Angle latitude, final Angle longitude, final double height,
-            final CoordinateTransformation nedC)
-            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+            final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1645,8 +1622,7 @@ public class BodyKinematicsBiasEstimator {
      */
     public void setNedPositionAndNedOrientation(
             final Angle latitude, final Angle longitude, final Distance height,
-            final CoordinateTransformation nedC)
-            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+            final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1947,8 +1923,7 @@ public class BodyKinematicsBiasEstimator {
      */
     public void setEcefPositionAndNedOrientation(
             final double x, final double y, final double z,
-            final CoordinateTransformation nedC)
-            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+            final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1982,8 +1957,7 @@ public class BodyKinematicsBiasEstimator {
      */
     public void setEcefPositionAndNedOrientation(
             final Distance x, final Distance y, final Distance z,
-            final CoordinateTransformation nedC)
-            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+            final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2043,8 +2017,7 @@ public class BodyKinematicsBiasEstimator {
      * @param listener listener to handle events raised by this estimator.
      * @throws LockedException if this estimator is running.
      */
-    public void setListener(final BodyKinematicsBiasEstimatorListener listener)
-            throws LockedException {
+    public void setListener(final BodyKinematicsBiasEstimatorListener listener) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3056,8 +3029,7 @@ public class BodyKinematicsBiasEstimator {
      * @param kinematics kinematics instance to be added and processed.
      * @throws LockedException if estimator is currently running.
      */
-    public void addBodyKinematics(final BodyKinematics kinematics)
-            throws LockedException {
+    public void addBodyKinematics(final BodyKinematics kinematics) throws LockedException {
 
         if (mRunning) {
             throw new LockedException();
@@ -3091,18 +3063,14 @@ public class BodyKinematicsBiasEstimator {
         final double diffAngularRateZ = angularRateZ - expectedAngularRateZ;
 
         // compute biases
-        final double tmp = (double) mNumberOfProcessedSamples
-                / (double) mNumberOfProcessedSamplesPlusOne;
+        final double tmp = (double) mNumberOfProcessedSamples / (double) mNumberOfProcessedSamplesPlusOne;
         mBiasFx = mBiasFx * tmp + diffFx / mNumberOfProcessedSamplesPlusOne;
         mBiasFy = mBiasFy * tmp + diffFy / mNumberOfProcessedSamplesPlusOne;
         mBiasFz = mBiasFz * tmp + diffFz / mNumberOfProcessedSamplesPlusOne;
 
-        mBiasAngularRateX = mBiasAngularRateX * tmp
-                + diffAngularRateX / mNumberOfProcessedSamplesPlusOne;
-        mBiasAngularRateY = mBiasAngularRateY * tmp
-                + diffAngularRateY / mNumberOfProcessedSamplesPlusOne;
-        mBiasAngularRateZ = mBiasAngularRateZ * tmp
-                + diffAngularRateZ / mNumberOfProcessedSamplesPlusOne;
+        mBiasAngularRateX = mBiasAngularRateX * tmp + diffAngularRateX / mNumberOfProcessedSamplesPlusOne;
+        mBiasAngularRateY = mBiasAngularRateY * tmp + diffAngularRateY / mNumberOfProcessedSamplesPlusOne;
+        mBiasAngularRateZ = mBiasAngularRateZ * tmp + diffAngularRateZ / mNumberOfProcessedSamplesPlusOne;
 
         // compute variances
         final double diffBiasFx = diffFx - mBiasFx;
@@ -3115,26 +3083,17 @@ public class BodyKinematicsBiasEstimator {
         final double diffBiasFx2 = diffBiasFx * diffBiasFx;
         final double diffBiasFy2 = diffBiasFy * diffBiasFy;
         final double diffBiasFz2 = diffBiasFz * diffBiasFz;
-        final double diffBiasAngularRateX2 =
-                diffBiasAngularRateX * diffBiasAngularRateX;
-        final double diffBiasAngularRateY2 =
-                diffBiasAngularRateY * diffBiasAngularRateY;
-        final double diffBiasAngularRateZ2 =
-                diffBiasAngularRateZ * diffBiasAngularRateZ;
+        final double diffBiasAngularRateX2 = diffBiasAngularRateX * diffBiasAngularRateX;
+        final double diffBiasAngularRateY2 = diffBiasAngularRateY * diffBiasAngularRateY;
+        final double diffBiasAngularRateZ2 = diffBiasAngularRateZ * diffBiasAngularRateZ;
 
-        mVarianceFx = mVarianceFx * tmp
-                + diffBiasFx2 / mNumberOfProcessedSamplesPlusOne;
-        mVarianceFy = mVarianceFy * tmp
-                + diffBiasFy2 / mNumberOfProcessedSamplesPlusOne;
-        mVarianceFz = mVarianceFz * tmp
-                + diffBiasFz2 / mNumberOfProcessedSamplesPlusOne;
+        mVarianceFx = mVarianceFx * tmp + diffBiasFx2 / mNumberOfProcessedSamplesPlusOne;
+        mVarianceFy = mVarianceFy * tmp + diffBiasFy2 / mNumberOfProcessedSamplesPlusOne;
+        mVarianceFz = mVarianceFz * tmp + diffBiasFz2 / mNumberOfProcessedSamplesPlusOne;
 
-        mVarianceAngularRateX = mVarianceAngularRateX * tmp
-                + diffBiasAngularRateX2 / mNumberOfProcessedSamplesPlusOne;
-        mVarianceAngularRateY = mVarianceAngularRateY * tmp
-                + diffBiasAngularRateY2 / mNumberOfProcessedSamplesPlusOne;
-        mVarianceAngularRateZ = mVarianceAngularRateZ * tmp
-                + diffBiasAngularRateZ2 / mNumberOfProcessedSamplesPlusOne;
+        mVarianceAngularRateX = mVarianceAngularRateX * tmp + diffBiasAngularRateX2 / mNumberOfProcessedSamplesPlusOne;
+        mVarianceAngularRateY = mVarianceAngularRateY * tmp + diffBiasAngularRateY2 / mNumberOfProcessedSamplesPlusOne;
+        mVarianceAngularRateZ = mVarianceAngularRateZ * tmp + diffBiasAngularRateZ2 / mNumberOfProcessedSamplesPlusOne;
 
         mLastBodyKinematics = kinematics;
 
@@ -3196,8 +3155,7 @@ public class BodyKinematicsBiasEstimator {
      * @return obtained conversion in seconds.
      */
     private static double convertTime(final Time time) {
-        return TimeConverter.convert(time.getValue().doubleValue(),
-                time.getUnit(), TimeUnit.SECOND);
+        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);
     }
 
     /**

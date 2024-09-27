@@ -52,14 +52,12 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
 
     @Test
     public void testConstructor1() {
-        final WindowedAngularSpeedTriadNoiseEstimator estimator =
-                new WindowedAngularSpeedTriadNoiseEstimator();
+        final WindowedAngularSpeedTriadNoiseEstimator estimator = new WindowedAngularSpeedTriadNoiseEstimator();
 
         // check default values
-        assertEquals(WindowedAngularSpeedTriadNoiseEstimator.DEFAULT_WINDOW_SIZE,
-                estimator.getWindowSize());
-        assertEquals(WindowedAngularSpeedTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
-                estimator.getTimeInterval(), 0.0);
+        assertEquals(WindowedAngularSpeedTriadNoiseEstimator.DEFAULT_WINDOW_SIZE, estimator.getWindowSize());
+        assertEquals(WindowedAngularSpeedTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS, estimator.getTimeInterval(),
+                0.0);
         final Time time1 = estimator.getTimeIntervalAsTime();
         assertEquals(WindowedAngularSpeedTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 time1.getValue().doubleValue(), 0.0);
@@ -76,24 +74,21 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed avgX1 = estimator.getAvgXAsMeasurement();
         assertEquals(0.0, avgX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgX1.getUnit());
-        final AngularSpeed avgX2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed avgX2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getAvgXAsMeasurement(avgX2);
         assertEquals(avgX1, avgX2);
         assertEquals(0.0, estimator.getAvgY(), 0.0);
         final AngularSpeed avgY1 = estimator.getAvgYAsMeasurement();
         assertEquals(0.0, avgY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgY1.getUnit());
-        final AngularSpeed avgY2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed avgY2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getAvgYAsMeasurement(avgY2);
         assertEquals(avgY1, avgY2);
         assertEquals(0.0, estimator.getAvgZ(), 0.0);
         final AngularSpeed avgZ1 = estimator.getAvgZAsMeasurement();
         assertEquals(0.0, avgZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgZ1.getUnit());
-        final AngularSpeed avgZ2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed avgZ2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getAvgZAsMeasurement(avgZ2);
         assertEquals(avgZ1, avgZ2);
         final AngularSpeedTriad triad1 = estimator.getAvgTriad();
@@ -108,8 +103,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed norm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(0.0, norm1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, norm1.getUnit());
-        final AngularSpeed norm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed norm2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getAvgNormAsMeasurement(norm2);
         assertEquals(norm1, norm2);
         assertEquals(0.0, estimator.getVarianceX(), 0.0);
@@ -119,24 +113,21 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(0.0, stdX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdX1.getUnit());
-        final AngularSpeed stdX2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed stdX2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
         assertEquals(0.0, estimator.getStandardDeviationY(), 0.0);
         final AngularSpeed stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(0.0, stdY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdY1.getUnit());
-        final AngularSpeed stdY2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed stdY2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
         assertEquals(0.0, estimator.getStandardDeviationZ(), 0.0);
         final AngularSpeed stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(0.0, stdZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdZ1.getUnit());
-        final AngularSpeed stdZ2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed stdZ2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
         final AngularSpeedTriad stdTriad1 = estimator.getStandardDeviationTriad();
@@ -151,16 +142,14 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(0.0, stdNorm1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdNorm1.getUnit());
-        final AngularSpeed stdNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
         assertEquals(0.0, estimator.getAverageStandardDeviation(), 0.0);
         final AngularSpeed avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(0.0, avgStd1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgStd1.getUnit());
-        final AngularSpeed avgStd2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgStd2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
         assertEquals(0.0, estimator.getPsdX(), 0.0);
@@ -180,14 +169,13 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
 
     @Test
     public void testConstructor2() {
-        final WindowedAngularSpeedTriadNoiseEstimator estimator =
-                new WindowedAngularSpeedTriadNoiseEstimator(this);
+        final WindowedAngularSpeedTriadNoiseEstimator estimator = new WindowedAngularSpeedTriadNoiseEstimator(
+                this);
 
         // check default values
-        assertEquals(WindowedAngularSpeedTriadNoiseEstimator.DEFAULT_WINDOW_SIZE,
-                estimator.getWindowSize());
-        assertEquals(WindowedAngularSpeedTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
-                estimator.getTimeInterval(), 0.0);
+        assertEquals(WindowedAngularSpeedTriadNoiseEstimator.DEFAULT_WINDOW_SIZE, estimator.getWindowSize());
+        assertEquals(WindowedAngularSpeedTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS, estimator.getTimeInterval(),
+                0.0);
         final Time time1 = estimator.getTimeIntervalAsTime();
         assertEquals(WindowedAngularSpeedTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 time1.getValue().doubleValue(), 0.0);
@@ -204,24 +192,21 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed avgX1 = estimator.getAvgXAsMeasurement();
         assertEquals(0.0, avgX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgX1.getUnit());
-        final AngularSpeed avgX2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgX2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgXAsMeasurement(avgX2);
         assertEquals(avgX1, avgX2);
         assertEquals(0.0, estimator.getAvgY(), 0.0);
         final AngularSpeed avgY1 = estimator.getAvgYAsMeasurement();
         assertEquals(0.0, avgY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgY1.getUnit());
-        final AngularSpeed avgY2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgY2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgYAsMeasurement(avgY2);
         assertEquals(avgY1, avgY2);
         assertEquals(0.0, estimator.getAvgZ(), 0.0);
         final AngularSpeed avgZ1 = estimator.getAvgZAsMeasurement();
         assertEquals(0.0, avgZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgZ1.getUnit());
-        final AngularSpeed avgZ2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgZ2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgZAsMeasurement(avgZ2);
         assertEquals(avgZ1, avgZ2);
         final AngularSpeedTriad triad1 = estimator.getAvgTriad();
@@ -236,8 +221,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed norm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(0.0, norm1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, norm1.getUnit());
-        final AngularSpeed norm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed norm2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getAvgNormAsMeasurement(norm2);
         assertEquals(norm1, norm2);
         assertEquals(0.0, estimator.getVarianceX(), 0.0);
@@ -247,24 +231,21 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(0.0, stdX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdX1.getUnit());
-        final AngularSpeed stdX2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdX2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
         assertEquals(0.0, estimator.getStandardDeviationY(), 0.0);
         final AngularSpeed stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(0.0, stdY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdY1.getUnit());
-        final AngularSpeed stdY2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdY2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
         assertEquals(0.0, estimator.getStandardDeviationZ(), 0.0);
         final AngularSpeed stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(0.0, stdZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdZ1.getUnit());
-        final AngularSpeed stdZ2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdZ2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
         final AngularSpeedTriad stdTriad1 = estimator.getStandardDeviationTriad();
@@ -279,16 +260,14 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(0.0, stdNorm1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdNorm1.getUnit());
-        final AngularSpeed stdNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
         assertEquals(0.0, estimator.getAverageStandardDeviation(), 0.0);
         final AngularSpeed avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(0.0, avgStd1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgStd1.getUnit());
-        final AngularSpeed avgStd2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgStd2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
         assertEquals(0.0, estimator.getPsdX(), 0.0);
@@ -308,12 +287,10 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
 
     @Test
     public void testGetSetWindowSize() throws LockedException {
-        final WindowedAngularSpeedTriadNoiseEstimator estimator =
-                new WindowedAngularSpeedTriadNoiseEstimator();
+        final WindowedAngularSpeedTriadNoiseEstimator estimator = new WindowedAngularSpeedTriadNoiseEstimator();
 
         // check default value
-        assertEquals(WindowedAngularSpeedTriadNoiseEstimator.DEFAULT_WINDOW_SIZE,
-                estimator.getWindowSize());
+        assertEquals(WindowedAngularSpeedTriadNoiseEstimator.DEFAULT_WINDOW_SIZE, estimator.getWindowSize());
 
         // set new value
         estimator.setWindowSize(3);
@@ -322,26 +299,17 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         assertEquals(3, estimator.getWindowSize());
 
         // force IllegalArgumentException
-        try {
-            estimator.setWindowSize(1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator.setWindowSize(2);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setWindowSize(1));
+        assertThrows(IllegalArgumentException.class, () -> estimator.setWindowSize(2));
     }
 
     @Test
     public void testGetSetTimeInterval() throws LockedException {
-        final WindowedAngularSpeedTriadNoiseEstimator estimator =
-                new WindowedAngularSpeedTriadNoiseEstimator();
+        final WindowedAngularSpeedTriadNoiseEstimator estimator = new WindowedAngularSpeedTriadNoiseEstimator();
 
         // check default value
-        assertEquals(WindowedAngularSpeedTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
-                estimator.getTimeInterval(), 0.0);
+        assertEquals(WindowedAngularSpeedTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS, estimator.getTimeInterval(),
+                0.0);
 
         // set new value
         estimator.setTimeInterval(1.0);
@@ -350,17 +318,12 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         assertEquals(1.0, estimator.getTimeInterval(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            estimator.setTimeInterval(-1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setTimeInterval(-1.0));
     }
 
     @Test
     public void testGetSetTimeIntervalAsTime() throws LockedException {
-        final WindowedAngularSpeedTriadNoiseEstimator estimator =
-                new WindowedAngularSpeedTriadNoiseEstimator();
+        final WindowedAngularSpeedTriadNoiseEstimator estimator = new WindowedAngularSpeedTriadNoiseEstimator();
 
         // check default value
         final Time time1 = estimator.getTimeIntervalAsTime();
@@ -383,8 +346,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
 
     @Test
     public void testGetSetListener() throws LockedException {
-        final WindowedAngularSpeedTriadNoiseEstimator estimator =
-                new WindowedAngularSpeedTriadNoiseEstimator();
+        final WindowedAngularSpeedTriadNoiseEstimator estimator = new WindowedAngularSpeedTriadNoiseEstimator();
 
         // check default value
         assertNull(estimator.getListener());
@@ -408,8 +370,8 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
@@ -420,19 +382,18 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final WindowedAngularSpeedTriadNoiseEstimator estimator =
-                new WindowedAngularSpeedTriadNoiseEstimator(this);
+        final WindowedAngularSpeedTriadNoiseEstimator estimator = new WindowedAngularSpeedTriadNoiseEstimator(
+                this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mTriadAdded, 0);
-        assertEquals(mWindowFilled, 0);
-        assertEquals(mReset, 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mTriadAdded);
+        assertEquals(0, mWindowFilled);
+        assertEquals(0, mReset);
         assertFalse(estimator.isWindowFilled());
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.isRunning());
@@ -453,16 +414,15 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final List<AngularSpeedTriad> triads = new ArrayList<>();
         for (int i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedTriad(firstTriad)) {
-                assertEquals(estimator.getFirstWindowedTriad(), firstTriad);
+                assertEquals(firstTriad, estimator.getFirstWindowedTriad());
                 assertEquals(firstTriad, firstKinematics.getAngularRateTriad());
             }
             if (estimator.getLastWindowedTriad(lastTriad)) {
-                assertEquals(estimator.getLastWindowedTriad(), lastTriad);
+                assertEquals(lastTriad, estimator.getLastWindowedTriad());
                 assertEquals(lastTriad, triad);
             }
 
-            BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                    errors, random, kinematics);
+            BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
 
             if (i == 0) {
                 firstKinematics.copyFrom(kinematics);
@@ -478,7 +438,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
 
             assertTrue(estimator.getLastWindowedTriad(lastTriad));
             assertEquals(lastTriad, triad);
-            assertEquals(estimator.getNumberOfProcessedSamples(), i + 1);
+            assertEquals(i + 1, estimator.getNumberOfProcessedSamples());
             assertFalse(estimator.isRunning());
 
             avgWx += valueX;
@@ -524,8 +484,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         AngularSpeed w1 = estimator.getAvgXAsMeasurement();
         assertEquals(avgWx, w1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, w1.getUnit());
-        final AngularSpeed w2 = new AngularSpeed(
-                0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed w2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgXAsMeasurement(w2);
         assertEquals(w1, w2);
 
@@ -554,8 +513,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed norm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(triad1.getNorm(), norm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, norm1.getUnit());
-        final AngularSpeed norm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed norm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgNormAsMeasurement(norm2);
         assertEquals(norm1, norm2);
 
@@ -570,24 +528,21 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(stdWx, stdX1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdX1.getUnit());
-        final AngularSpeed stdX2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdX2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
 
         final AngularSpeed stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(stdWy, stdY1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdY1.getUnit());
-        final AngularSpeed stdY2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdY2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
 
         final AngularSpeed stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(stdWz, stdZ1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdZ1.getUnit());
-        final AngularSpeed stdZ2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdZ2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
 
@@ -604,8 +559,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(stdTriad1.getNorm(), stdNorm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdNorm1.getUnit());
-        final AngularSpeed stdNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
 
@@ -614,8 +568,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(avgStd, avgStd1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgStd1.getUnit());
-        final AngularSpeed avgStd2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgStd2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
 
@@ -638,24 +591,21 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final double avgPsd = (psdX + psdY + psdZ) / 3.0;
         assertEquals(avgPsd, estimator.getAvgNoisePsd(), ABSOLUTE_ERROR);
 
-        final double normRootPsd = Math.sqrt(rootPsdX * rootPsdX
-                + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
+        final double normRootPsd = Math.sqrt(rootPsdX * rootPsdX + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
         assertEquals(normRootPsd, estimator.getNoiseRootPsdNorm(), ABSOLUTE_ERROR);
-        assertEquals(estimator.getNoiseRootPsdNorm(),
-                estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
+        assertEquals(estimator.getNoiseRootPsdNorm(), estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
 
         assertEquals(windowSize, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, windowSize);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize, mTriadAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
         // if we add more triads, window filled is not called again
-        BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                errors, random, kinematics);
+        BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
         kinematics.getAngularRateTriad(triad);
 
         triads.add(new AngularSpeedTriad(triad));
@@ -666,19 +616,19 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(triads.size(), windowSize + 1);
+        assertEquals(windowSize + 1, triads.size());
         assertEquals(triads.get(1), estimator.getFirstWindowedTriad());
         assertEquals(triads.get(windowSize), estimator.getLastWindowedTriad());
 
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, windowSize + 1);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize + 1, mTriadAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(mReset, 1);
+        assertEquals(1, mReset);
 
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
@@ -719,8 +669,8 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
@@ -731,19 +681,18 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final WindowedAngularSpeedTriadNoiseEstimator estimator =
-                new WindowedAngularSpeedTriadNoiseEstimator(this);
+        final WindowedAngularSpeedTriadNoiseEstimator estimator = new WindowedAngularSpeedTriadNoiseEstimator(
+                this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mTriadAdded, 0);
-        assertEquals(mWindowFilled, 0);
-        assertEquals(mReset, 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mTriadAdded);
+        assertEquals(0, mWindowFilled);
+        assertEquals(0, mReset);
         assertFalse(estimator.isWindowFilled());
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.isRunning());
@@ -764,16 +713,15 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final List<AngularSpeedTriad> triads = new ArrayList<>();
         for (int i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedTriad(firstTriad)) {
-                assertEquals(estimator.getFirstWindowedTriad(), firstTriad);
+                assertEquals(firstTriad, estimator.getFirstWindowedTriad());
                 assertEquals(firstTriad, firstKinematics.getAngularRateTriad());
             }
             if (estimator.getLastWindowedTriad(lastTriad)) {
-                assertEquals(estimator.getLastWindowedTriad(), lastTriad);
+                assertEquals(lastTriad, estimator.getLastWindowedTriad());
                 assertEquals(lastTriad, triad);
             }
 
-            BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                    errors, random, kinematics);
+            BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
 
             if (i == 0) {
                 firstKinematics.copyFrom(kinematics);
@@ -789,7 +737,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
 
             assertTrue(estimator.getLastWindowedTriad(lastTriad));
             assertEquals(lastTriad, triad);
-            assertEquals(estimator.getNumberOfProcessedSamples(), i + 1);
+            assertEquals(i + 1, estimator.getNumberOfProcessedSamples());
             assertFalse(estimator.isRunning());
 
             avgWx += valueX;
@@ -835,8 +783,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         AngularSpeed w1 = estimator.getAvgXAsMeasurement();
         assertEquals(avgWx, w1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, w1.getUnit());
-        final AngularSpeed w2 = new AngularSpeed(
-                0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed w2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgXAsMeasurement(w2);
         assertEquals(w1, w2);
 
@@ -865,8 +812,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed norm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(triad1.getNorm(), norm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, norm1.getUnit());
-        final AngularSpeed norm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed norm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgNormAsMeasurement(norm2);
         assertEquals(norm1, norm2);
 
@@ -881,24 +827,21 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(stdWx, stdX1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdX1.getUnit());
-        final AngularSpeed stdX2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdX2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
 
         final AngularSpeed stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(stdWy, stdY1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdY1.getUnit());
-        final AngularSpeed stdY2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdY2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
 
         final AngularSpeed stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(stdWz, stdZ1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdZ1.getUnit());
-        final AngularSpeed stdZ2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdZ2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
 
@@ -915,8 +858,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(stdTriad1.getNorm(), stdNorm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdNorm1.getUnit());
-        final AngularSpeed stdNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
 
@@ -925,8 +867,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(avgStd, avgStd1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgStd1.getUnit());
-        final AngularSpeed avgStd2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgStd2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
 
@@ -949,48 +890,44 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final double avgPsd = (psdX + psdY + psdZ) / 3.0;
         assertEquals(avgPsd, estimator.getAvgNoisePsd(), ABSOLUTE_ERROR);
 
-        final double normRootPsd = Math.sqrt(rootPsdX * rootPsdX
-                + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
+        final double normRootPsd = Math.sqrt(rootPsdX * rootPsdX + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
         assertEquals(normRootPsd, estimator.getNoiseRootPsdNorm(), ABSOLUTE_ERROR);
-        assertEquals(estimator.getNoiseRootPsdNorm(),
-                estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
+        assertEquals(estimator.getNoiseRootPsdNorm(), estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
 
         assertEquals(windowSize, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, windowSize);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize, mTriadAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
         // if we add more triads, window filled is not called again
-        BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                errors, random, kinematics);
+        BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
         kinematics.getAngularRateTriad(triad);
 
         triads.add(new AngularSpeedTriad(triad));
 
-        estimator.addTriadAndProcess(
-                triad.getValueX(), triad.getValueY(), triad.getValueZ());
+        estimator.addTriadAndProcess(triad.getValueX(), triad.getValueY(), triad.getValueZ());
 
         assertEquals(windowSize + 1, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(triads.size(), windowSize + 1);
+        assertEquals(windowSize + 1, triads.size());
         assertEquals(triads.get(1), estimator.getFirstWindowedTriad());
         assertEquals(triads.get(windowSize), estimator.getLastWindowedTriad());
 
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, windowSize + 1);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize + 1, mTriadAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(mReset, 1);
+        assertEquals(1, mReset);
 
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
@@ -1031,8 +968,8 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
@@ -1043,19 +980,18 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final WindowedAngularSpeedTriadNoiseEstimator estimator =
-                new WindowedAngularSpeedTriadNoiseEstimator(this);
+        final WindowedAngularSpeedTriadNoiseEstimator estimator = new WindowedAngularSpeedTriadNoiseEstimator(
+                this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mTriadAdded, 0);
-        assertEquals(mWindowFilled, 0);
-        assertEquals(mReset, 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mTriadAdded);
+        assertEquals(0, mWindowFilled);
+        assertEquals(0, mReset);
         assertFalse(estimator.isWindowFilled());
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.isRunning());
@@ -1076,16 +1012,15 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final List<AngularSpeedTriad> triads = new ArrayList<>();
         for (int i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedTriad(firstTriad)) {
-                assertEquals(estimator.getFirstWindowedTriad(), firstTriad);
+                assertEquals(firstTriad, estimator.getFirstWindowedTriad());
                 assertEquals(firstTriad, firstKinematics.getAngularRateTriad());
             }
             if (estimator.getLastWindowedTriad(lastTriad)) {
-                assertEquals(estimator.getLastWindowedTriad(), lastTriad);
+                assertEquals(lastTriad, estimator.getLastWindowedTriad());
                 assertEquals(lastTriad, triad);
             }
 
-            BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                    errors, random, kinematics);
+            BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
 
             if (i == 0) {
                 firstKinematics.copyFrom(kinematics);
@@ -1097,12 +1032,11 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
             valueY = triad.getValueY();
             valueZ = triad.getValueZ();
 
-            estimator.addTriadAndProcess(
-                    triad.getMeasurementX(), triad.getMeasurementY(), triad.getMeasurementZ());
+            estimator.addTriadAndProcess(triad.getMeasurementX(), triad.getMeasurementY(), triad.getMeasurementZ());
 
             assertTrue(estimator.getLastWindowedTriad(lastTriad));
             assertEquals(lastTriad, triad);
-            assertEquals(estimator.getNumberOfProcessedSamples(), i + 1);
+            assertEquals(i + 1, estimator.getNumberOfProcessedSamples());
             assertFalse(estimator.isRunning());
 
             avgWx += valueX;
@@ -1148,8 +1082,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         AngularSpeed w1 = estimator.getAvgXAsMeasurement();
         assertEquals(avgWx, w1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, w1.getUnit());
-        final AngularSpeed w2 = new AngularSpeed(
-                0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed w2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgXAsMeasurement(w2);
         assertEquals(w1, w2);
 
@@ -1178,8 +1111,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed norm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(triad1.getNorm(), norm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, norm1.getUnit());
-        final AngularSpeed norm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed norm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgNormAsMeasurement(norm2);
         assertEquals(norm1, norm2);
 
@@ -1194,24 +1126,21 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(stdWx, stdX1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdX1.getUnit());
-        final AngularSpeed stdX2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdX2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
 
         final AngularSpeed stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(stdWy, stdY1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdY1.getUnit());
-        final AngularSpeed stdY2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdY2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
 
         final AngularSpeed stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(stdWz, stdZ1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdZ1.getUnit());
-        final AngularSpeed stdZ2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdZ2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
 
@@ -1228,8 +1157,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(stdTriad1.getNorm(), stdNorm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdNorm1.getUnit());
-        final AngularSpeed stdNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
 
@@ -1238,8 +1166,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final AngularSpeed avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(avgStd, avgStd1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgStd1.getUnit());
-        final AngularSpeed avgStd2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgStd2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
 
@@ -1262,48 +1189,44 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final double avgPsd = (psdX + psdY + psdZ) / 3.0;
         assertEquals(avgPsd, estimator.getAvgNoisePsd(), ABSOLUTE_ERROR);
 
-        final double normRootPsd = Math.sqrt(rootPsdX * rootPsdX
-                + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
+        final double normRootPsd = Math.sqrt(rootPsdX * rootPsdX + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
         assertEquals(normRootPsd, estimator.getNoiseRootPsdNorm(), ABSOLUTE_ERROR);
-        assertEquals(estimator.getNoiseRootPsdNorm(),
-                estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
+        assertEquals(estimator.getNoiseRootPsdNorm(), estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
 
         assertEquals(windowSize, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, windowSize);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize, mTriadAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
         // if we add more triads, window filled is not called again
-        BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                errors, random, kinematics);
+        BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
         kinematics.getAngularRateTriad(triad);
 
         triads.add(new AngularSpeedTriad(triad));
 
-        estimator.addTriadAndProcess(
-                triad.getMeasurementX(), triad.getMeasurementY(), triad.getMeasurementZ());
+        estimator.addTriadAndProcess(triad.getMeasurementX(), triad.getMeasurementY(), triad.getMeasurementZ());
 
         assertEquals(windowSize + 1, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(triads.size(), windowSize + 1);
+        assertEquals(windowSize + 1, triads.size());
         assertEquals(triads.get(1), estimator.getFirstWindowedTriad());
         assertEquals(triads.get(windowSize), estimator.getLastWindowedTriad());
 
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, windowSize + 1);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize + 1, mTriadAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(mReset, 1);
+        assertEquals(1, mReset);
 
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
@@ -1344,8 +1267,8 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
@@ -1356,19 +1279,18 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final WindowedAngularSpeedTriadNoiseEstimator estimator =
-                new WindowedAngularSpeedTriadNoiseEstimator(this);
+        final WindowedAngularSpeedTriadNoiseEstimator estimator = new WindowedAngularSpeedTriadNoiseEstimator(
+                this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mTriadAdded, 0);
-        assertEquals(mWindowFilled, 0);
-        assertEquals(mReset, 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mTriadAdded);
+        assertEquals(0, mWindowFilled);
+        assertEquals(0, mReset);
         assertFalse(estimator.isWindowFilled());
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.isRunning());
@@ -1391,8 +1313,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
                 assertEquals(lastTriad, triad);
             }
 
-            BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                    errors, random, kinematics);
+            BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
 
             if (i == 0) {
                 firstKinematics.copyFrom(kinematics);
@@ -1404,16 +1325,16 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
 
             assertTrue(estimator.getLastWindowedTriad(lastTriad));
             assertEquals(lastTriad, triad);
-            assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+            assertEquals(0, estimator.getNumberOfProcessedSamples());
             assertFalse(estimator.isRunning());
         }
 
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, windowSize);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize, mTriadAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
-        assertEquals(triads.size(), windowSize);
+        assertEquals(windowSize, triads.size());
         assertEquals(triads.get(0), estimator.getFirstWindowedTriad());
         assertEquals(triads.get(windowSize - 1), estimator.getLastWindowedTriad());
         assertEquals(0.0, estimator.getAvgX(), 0.0);
@@ -1453,8 +1374,8 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
@@ -1465,19 +1386,18 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final WindowedAngularSpeedTriadNoiseEstimator estimator =
-                new WindowedAngularSpeedTriadNoiseEstimator(this);
+        final WindowedAngularSpeedTriadNoiseEstimator estimator = new WindowedAngularSpeedTriadNoiseEstimator(
+                this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mTriadAdded, 0);
-        assertEquals(mWindowFilled, 0);
-        assertEquals(mReset, 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mTriadAdded);
+        assertEquals(0, mWindowFilled);
+        assertEquals(0, mReset);
         assertFalse(estimator.isWindowFilled());
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.isRunning());
@@ -1492,16 +1412,15 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final List<AngularSpeedTriad> triads = new ArrayList<>();
         for (int i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedTriad(firstTriad)) {
-                assertEquals(estimator.getFirstWindowedTriad(), firstTriad);
+                assertEquals(firstTriad, estimator.getFirstWindowedTriad());
                 assertEquals(firstTriad, firstKinematics.getAngularRateTriad());
             }
             if (estimator.getLastWindowedTriad(lastTriad)) {
-                assertEquals(estimator.getLastWindowedTriad(), lastTriad);
+                assertEquals(lastTriad, estimator.getLastWindowedTriad());
                 assertEquals(lastTriad, triad);
             }
 
-            BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                    errors, random, kinematics);
+            BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
 
             if (i == 0) {
                 firstKinematics.copyFrom(kinematics);
@@ -1513,16 +1432,16 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
 
             assertTrue(estimator.getLastWindowedTriad(lastTriad));
             assertEquals(lastTriad, triad);
-            assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+            assertEquals(0, estimator.getNumberOfProcessedSamples());
             assertFalse(estimator.isRunning());
         }
 
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, windowSize);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize, mTriadAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
-        assertEquals(triads.size(), windowSize);
+        assertEquals(windowSize, triads.size());
         assertEquals(triads.get(0), estimator.getFirstWindowedTriad());
         assertEquals(triads.get(windowSize - 1), estimator.getLastWindowedTriad());
         assertEquals(0.0, estimator.getAvgX(), 0.0);
@@ -1562,8 +1481,8 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
@@ -1574,19 +1493,18 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final WindowedAngularSpeedTriadNoiseEstimator estimator =
-                new WindowedAngularSpeedTriadNoiseEstimator(this);
+        final WindowedAngularSpeedTriadNoiseEstimator estimator = new WindowedAngularSpeedTriadNoiseEstimator(
+                this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mTriadAdded, 0);
-        assertEquals(mWindowFilled, 0);
-        assertEquals(mReset, 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mTriadAdded);
+        assertEquals(0, mWindowFilled);
+        assertEquals(0, mReset);
         assertFalse(estimator.isWindowFilled());
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.isRunning());
@@ -1601,16 +1519,15 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         final List<AngularSpeedTriad> triads = new ArrayList<>();
         for (int i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedTriad(firstTriad)) {
-                assertEquals(estimator.getFirstWindowedTriad(), firstTriad);
+                assertEquals(firstTriad, estimator.getFirstWindowedTriad());
                 assertEquals(firstTriad, firstKinematics.getAngularRateTriad());
             }
             if (estimator.getLastWindowedTriad(lastTriad)) {
-                assertEquals(estimator.getLastWindowedTriad(), lastTriad);
+                assertEquals(lastTriad, estimator.getLastWindowedTriad());
                 assertEquals(lastTriad, triad);
             }
 
-            BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                    errors, random, kinematics);
+            BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
 
             if (i == 0) {
                 firstKinematics.copyFrom(kinematics);
@@ -1618,21 +1535,20 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
 
             kinematics.getAngularRateTriad(triad);
             triads.add(new AngularSpeedTriad(triad));
-            estimator.addTriad(
-                    triad.getMeasurementX(), triad.getMeasurementY(), triad.getMeasurementZ());
+            estimator.addTriad(triad.getMeasurementX(), triad.getMeasurementY(), triad.getMeasurementZ());
 
             assertTrue(estimator.getLastWindowedTriad(lastTriad));
             assertEquals(lastTriad, triad);
-            assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+            assertEquals(0, estimator.getNumberOfProcessedSamples());
             assertFalse(estimator.isRunning());
         }
 
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, windowSize);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize, mTriadAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
-        assertEquals(triads.size(), windowSize);
+        assertEquals(windowSize, triads.size());
         assertEquals(triads.get(0), estimator.getFirstWindowedTriad());
         assertEquals(triads.get(windowSize - 1), estimator.getLastWindowedTriad());
         assertEquals(0.0, estimator.getAvgX(), 0.0);
@@ -1690,79 +1606,35 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
 
     private void checkLocked(final WindowedAngularSpeedTriadNoiseEstimator estimator) {
         assertTrue(estimator.isRunning());
-        try {
-            estimator.setWindowSize(3);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setTimeInterval(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setTimeInterval(new Time(0.0, TimeUnit.SECOND));
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setListener(this);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.addTriadAndProcess(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.addTriadAndProcess(0.0, 0.0, 0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
+        assertThrows(LockedException.class, () -> estimator.setWindowSize(3));
+        assertThrows(LockedException.class, () -> estimator.setTimeInterval(0.0));
+        assertThrows(LockedException.class, () -> estimator.setTimeInterval(new Time(0.0, TimeUnit.SECOND)));
+        assertThrows(LockedException.class, () -> estimator.setListener(this));
+        assertThrows(LockedException.class, () -> estimator.addTriadAndProcess(null));
+        assertThrows(LockedException.class, () -> estimator.addTriadAndProcess(0.0, 0.0, 0.0));
         final AngularSpeed w = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        try {
-            estimator.addTriadAndProcess(w, w, w);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.addTriad(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.addTriad(0.0, 0.0, 0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.addTriad(w, w, w);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.reset();
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
+        assertThrows(LockedException.class, () -> estimator.addTriadAndProcess(w, w, w));
+        assertThrows(LockedException.class, () -> estimator.addTriad(null));
+        assertThrows(LockedException.class, () -> estimator.addTriad(0.0, 0.0, 0.0));
+        assertThrows(LockedException.class, () -> estimator.addTriad(w, w, w));
+        assertThrows(LockedException.class, estimator::reset);
     }
 
-    private Matrix generateBa() {
+    private static Matrix generateBa() {
         return Matrix.newFromArray(new double[]{
                 900 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 -1300 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 800 * MICRO_G_TO_METERS_PER_SECOND_SQUARED});
     }
 
-    private Matrix generateBg() {
+    private static Matrix generateBg() {
         return Matrix.newFromArray(new double[]{
                 -9 * DEG_TO_RAD / 3600.0,
                 13 * DEG_TO_RAD / 3600.0,
                 -8 * DEG_TO_RAD / 3600.0});
     }
 
-    private Matrix generateMa() throws WrongSizeException {
+    private static Matrix generateMa() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
@@ -1773,7 +1645,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         return result;
     }
 
-    private Matrix generateMg() throws WrongSizeException {
+    private static Matrix generateMg() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
@@ -1784,7 +1656,7 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         return result;
     }
 
-    private Matrix generateGg() throws WrongSizeException {
+    private static Matrix generateGg() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         final double tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
@@ -1796,11 +1668,11 @@ public class WindowedAngularSpeedTriadNoiseEstimatorTest implements WindowedAngu
         return result;
     }
 
-    private double getAccelNoiseRootPsd() {
+    private static double getAccelNoiseRootPsd() {
         return 100.0 * MICRO_G_TO_METERS_PER_SECOND_SQUARED;
     }
 
-    private double getGyroNoiseRootPsd() {
+    private static double getGyroNoiseRootPsd() {
         return 0.01 * DEG_TO_RAD / 60.0;
     }
 }

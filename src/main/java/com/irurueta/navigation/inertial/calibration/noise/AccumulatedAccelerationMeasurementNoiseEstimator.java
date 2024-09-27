@@ -42,8 +42,7 @@ import com.irurueta.units.AccelerationUnit;
 public class AccumulatedAccelerationMeasurementNoiseEstimator extends
         AccumulatedMeasurementNoiseEstimator<AccelerationUnit, Acceleration,
                 AccumulatedAccelerationMeasurementNoiseEstimator,
-                AccumulatedAccelerationMeasurementNoiseEstimatorListener>
-        implements AccelerometerNoiseRootPsdSource {
+                AccumulatedAccelerationMeasurementNoiseEstimatorListener> implements AccelerometerNoiseRootPsdSource {
 
     /**
      * Constructor.
@@ -92,8 +91,7 @@ public class AccumulatedAccelerationMeasurementNoiseEstimator extends
      */
     @Override
     protected double convertToDefaultUnit(final Acceleration value) {
-        return AccelerationConverter.convert(value.getValue().doubleValue(),
-                value.getUnit(), getDefaultUnit());
+        return AccelerationConverter.convert(value.getValue().doubleValue(), value.getUnit(), getDefaultUnit());
     }
 
     /**

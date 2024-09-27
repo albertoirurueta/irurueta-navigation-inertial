@@ -66,12 +66,11 @@ public class MidPointQuaternionStepIntegratorTest {
         final Quaternion expectedResult = initialAttitude.combineAndReturnNew(delta);
         expectedResult.normalize();
 
-        final MidPointQuaternionStepIntegrator integrator =
-                new MidPointQuaternionStepIntegrator();
+        final MidPointQuaternionStepIntegrator integrator = new MidPointQuaternionStepIntegrator();
         final Quaternion result1 = new Quaternion();
         final Quaternion result2 = new Quaternion();
-        MidPointQuaternionStepIntegrator.integrationStep(initialAttitude, wx, wy, wz, wx, wy, wz,
-                TIME_INTERVAL, result1);
+        MidPointQuaternionStepIntegrator.integrationStep(initialAttitude, wx, wy, wz, wx, wy, wz, TIME_INTERVAL,
+                result1);
         integrator.integrate(initialAttitude, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result2);
 
         assertEquals(result1, result2);
@@ -79,8 +78,7 @@ public class MidPointQuaternionStepIntegratorTest {
     }
 
     @Test
-    public void integrate_whenMultipleSteps_computesExpectedResult()
-            throws RotationException {
+    public void integrate_whenMultipleSteps_computesExpectedResult() throws RotationException {
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer();
@@ -97,15 +95,13 @@ public class MidPointQuaternionStepIntegratorTest {
             final Quaternion expectedResult = initialAttitude.combineAndReturnNew(delta);
             expectedResult.normalize();
 
-            final MidPointQuaternionStepIntegrator integrator =
-                    new MidPointQuaternionStepIntegrator();
+            final MidPointQuaternionStepIntegrator integrator = new MidPointQuaternionStepIntegrator();
             final Quaternion result1 = new Quaternion(initialAttitude);
             final Quaternion result2 = new Quaternion(initialAttitude);
             for (int i = 0; i < NUM_SAMPLES; i++) {
-                MidPointQuaternionStepIntegrator.integrationStep(result1, wx, wy, wz, wx, wy, wz,
-                        TIME_INTERVAL, result1);
-                integrator.integrate(result2, wx, wy, wz, wx, wy, wz, TIME_INTERVAL,
-                        result2);
+                MidPointQuaternionStepIntegrator.integrationStep(result1, wx, wy, wz, wx, wy, wz, TIME_INTERVAL,
+                        result1);
+                integrator.integrate(result2, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result2);
             }
 
             assertEquals(result1, result2);
@@ -115,7 +111,7 @@ public class MidPointQuaternionStepIntegratorTest {
             final double[] diffAngles = ArrayUtils.subtractAndReturnNew(
                     expectedEulerAngles, resultEulerAngles);
             Logger.getLogger(MidPointQuaternionStepIntegratorTest.class.getName())
-                    .log(Level.INFO, "Error euler angles: " + Arrays.toString(diffAngles));
+                    .log(Level.INFO, String.format("Error euler angles: %s", Arrays.toString(diffAngles)));
 
             if (!expectedResult.equals(result1, ABSOLUTE_ERROR)) {
                 continue;
@@ -146,21 +142,16 @@ public class MidPointQuaternionStepIntegratorTest {
             final Quaternion expectedResult = initialAttitude.combineAndReturnNew(delta);
             expectedResult.normalize();
 
-            final EulerQuaternionStepIntegrator eulerIntegrator =
-                    new EulerQuaternionStepIntegrator();
-            final MidPointQuaternionStepIntegrator midPointIntegrator =
-                    new MidPointQuaternionStepIntegrator();
-            final RungeKuttaQuaternionStepIntegrator rungeKuttaIntegrator =
-                    new RungeKuttaQuaternionStepIntegrator();
+            final EulerQuaternionStepIntegrator eulerIntegrator = new EulerQuaternionStepIntegrator();
+            final MidPointQuaternionStepIntegrator midPointIntegrator = new MidPointQuaternionStepIntegrator();
+            final RungeKuttaQuaternionStepIntegrator rungeKuttaIntegrator = new RungeKuttaQuaternionStepIntegrator();
             final Quaternion result1 = new Quaternion(initialAttitude);
             final Quaternion result2 = new Quaternion(initialAttitude);
             final Quaternion result3 = new Quaternion(initialAttitude);
             for (int i = 0; i < NUM_SAMPLES; i++) {
                 eulerIntegrator.integrate(result1, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result1);
-                midPointIntegrator.integrate(result2, wx, wy, wz, wx, wy, wz, TIME_INTERVAL,
-                        result2);
-                rungeKuttaIntegrator.integrate(result3, wx, wy, wz, wx, wy, wz, TIME_INTERVAL,
-                        result3);
+                midPointIntegrator.integrate(result2, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result2);
+                rungeKuttaIntegrator.integrate(result3, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result3);
             }
 
             final double[] resultEulerAngles = result1.toEulerAngles();
@@ -168,23 +159,21 @@ public class MidPointQuaternionStepIntegratorTest {
             final double[] resultRungeKuttaEulerAngles = result3.toEulerAngles();
 
             final double[] expectedEulerAngles = expectedResult.toEulerAngles();
-            final double[] diffAngles1 = ArrayUtils.subtractAndReturnNew(
-                    expectedEulerAngles, resultEulerAngles);
-            final double[] diffAngles2 = ArrayUtils.subtractAndReturnNew(
-                    expectedEulerAngles, resultMidPointEulerAngles);
-            final double[] diffAngles3 = ArrayUtils.subtractAndReturnNew(
-                    expectedEulerAngles, resultRungeKuttaEulerAngles);
+            final double[] diffAngles1 = ArrayUtils.subtractAndReturnNew(expectedEulerAngles, resultEulerAngles);
+            final double[] diffAngles2 = ArrayUtils.subtractAndReturnNew(expectedEulerAngles,
+                    resultMidPointEulerAngles);
+            final double[] diffAngles3 = ArrayUtils.subtractAndReturnNew(expectedEulerAngles, resultRungeKuttaEulerAngles);
 
             final double error1 = Utils.normF(diffAngles1);
             final double error2 = Utils.normF(diffAngles2);
             final double error3 = Utils.normF(diffAngles3);
 
-            Logger.getLogger(MidPointQuaternionStepIntegratorTest.class.getName())
-                    .log(Level.INFO, "Euler error: " + error1 + " radians");
-            Logger.getLogger(MidPointQuaternionStepIntegratorTest.class.getName())
-                    .log(Level.INFO, "Mid-point error: " + error2 + " radians");
-            Logger.getLogger(MidPointQuaternionStepIntegratorTest.class.getName())
-                    .log(Level.INFO, "Runge-Kutta error: " + error3 + " radians");
+            Logger.getLogger(MidPointQuaternionStepIntegratorTest.class.getName()).log(
+                    Level.INFO, String.format("Euler error: %f radians", error1));
+            Logger.getLogger(MidPointQuaternionStepIntegratorTest.class.getName()).log(
+                    Level.INFO, String.format("Mid-point error: %f radians", error2));
+            Logger.getLogger(MidPointQuaternionStepIntegratorTest.class.getName()).log(
+                    Level.INFO, String.format("Runge-Kutta error: %f radians", error3));
 
             if (error1 < error2 || error1 < error3) {
                 continue;

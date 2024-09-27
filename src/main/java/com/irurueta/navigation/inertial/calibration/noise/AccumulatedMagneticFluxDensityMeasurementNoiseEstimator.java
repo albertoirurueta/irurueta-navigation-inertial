@@ -79,8 +79,7 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimator extends
      * @return created measurement.
      */
     @Override
-    protected MagneticFluxDensity createMeasurement(
-            final double value, final MagneticFluxDensityUnit unit) {
+    protected MagneticFluxDensity createMeasurement(final double value, final MagneticFluxDensityUnit unit) {
         return new MagneticFluxDensity(value, unit);
     }
 
@@ -92,7 +91,6 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimator extends
      */
     @Override
     protected double convertToDefaultUnit(final MagneticFluxDensity value) {
-        return MagneticFluxDensityConverter.convert(value.getValue().doubleValue(),
-                value.getUnit(), getDefaultUnit());
+        return MagneticFluxDensityConverter.convert(value.getValue().doubleValue(), value.getUnit(), getDefaultUnit());
     }
 }

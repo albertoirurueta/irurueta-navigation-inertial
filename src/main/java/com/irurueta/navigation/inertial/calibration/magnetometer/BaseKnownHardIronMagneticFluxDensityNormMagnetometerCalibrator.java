@@ -68,9 +68,10 @@ import java.util.Collection;
  * @param <C> Calibrator type.
  * @param <L> Listener type.
  */
-public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C extends BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<?, ?>,
-        L extends BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener<C>> implements
-        MagnetometerNonLinearCalibrator, KnownHardIronMagnetometerCalibrator,
+public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<
+        C extends BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<?, ?>,
+        L extends BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener<C>>
+        implements MagnetometerNonLinearCalibrator, KnownHardIronMagnetometerCalibrator,
         UnorderedStandardDeviationBodyMagneticFluxDensityMagnetometerCalibrator {
 
     /**
@@ -109,8 +110,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
     /**
      * Levenberg-Marquardt fitter to find a non-linear solution.
      */
-    private final LevenbergMarquardtMultiDimensionFitter mFitter =
-            new LevenbergMarquardtMultiDimensionFitter();
+    private final LevenbergMarquardtMultiDimensionFitter mFitter = new LevenbergMarquardtMultiDimensionFitter();
 
     /**
      * Known x-coordinate of hard-iron bias to be used to find a solution.
@@ -317,8 +317,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      *
      * @param listener listener to handle events raised by this calibrator.
      */
-    public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final L listener) {
+    public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(final L listener) {
         mListener = listener;
     }
 
@@ -347,8 +346,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @param listener     listener to handle events raised by this calibrator.
      */
     public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final L listener) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final L listener) {
         this(measurements);
         mListener = listener;
     }
@@ -359,8 +357,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-    public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final boolean commonAxisUsed) {
+    public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(final boolean commonAxisUsed) {
         mCommonAxisUsed = commonAxisUsed;
     }
 
@@ -376,8 +373,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         mMeasurements = measurements;
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -408,8 +404,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final double[] hardIron) {
+    public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(final double[] hardIron) {
         try {
             setHardIron(hardIron);
         } catch (final LockedException ignore) {
@@ -430,8 +425,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      *                                  not have length 3.
      */
     public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron) {
         this(hardIron);
         mMeasurements = measurements;
     }
@@ -450,8 +444,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      *                                  not have length 3.
      */
     public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron, final L listener) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
+            final L listener) {
         this(measurements, hardIron);
         mListener = listener;
     }
@@ -471,8 +465,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      *                                  not have length 3.
      */
     public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron) {
         this(measurements, hardIron);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -493,8 +487,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      *                                  not have length 3.
      */
     public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron, final L listener) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron, final L listener) {
         this(measurements, commonAxisUsed, hardIron);
         mListener = listener;
     }
@@ -506,8 +500,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Matrix hardIron) {
+    public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(final Matrix hardIron) {
         try {
             setHardIron(hardIron);
         } catch (final LockedException ignore) {
@@ -528,8 +521,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      *                                  3x1.
      */
     public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron) {
         this(hardIron);
         mMeasurements = measurements;
     }
@@ -548,8 +540,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      *                                  3x1.
      */
     public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final L listener) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final L listener) {
         this(measurements, hardIron);
         mListener = listener;
     }
@@ -569,8 +561,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      *                                  3x1.
      */
     public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron) {
         this(measurements, hardIron);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -591,8 +583,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      *                                  3x1.
      */
     public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron, final L listener) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final L listener) {
         this(measurements, commonAxisUsed, hardIron);
         mListener = listener;
     }
@@ -633,8 +625,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      *                                  3x3.
      */
     public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm) {
         this(hardIron, initialMm);
         mMeasurements = measurements;
     }
@@ -656,8 +648,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      *                                  3x3.
      */
     public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm, final L listener) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm, final L listener) {
         this(measurements, hardIron, initialMm);
         mListener = listener;
     }
@@ -680,9 +672,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      *                                  3x3.
      */
     public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm) {
         this(measurements, hardIron, initialMm);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -706,9 +697,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      *                                  3x3.
      */
     public BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm, final L listener) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm, final L listener) {
         this(measurements, commonAxisUsed, hardIron, initialMm);
         mListener = listener;
     }
@@ -732,8 +722,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
      */
     protected BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final L listener) {
+            final Double groundTruthMagneticFluxDensityNorm, final L listener) {
         this(groundTruthMagneticFluxDensityNorm);
         mListener = listener;
     }
@@ -770,8 +759,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     protected BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final L listener) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final L listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements);
         mListener = listener;
     }
@@ -791,8 +779,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     protected BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         this(groundTruthMagneticFluxDensityNorm, measurements);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -813,8 +800,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     protected BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final L listener) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final L listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
         mListener = listener;
     }
@@ -835,8 +822,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     protected BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron) {
         this(hardIron);
         internalSetGroundTruthMagneticFluxDensityNorm(groundTruthMagneticFluxDensityNorm);
         mMeasurements = measurements;
@@ -859,8 +845,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     protected BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron, final L listener) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
+            final L listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, hardIron);
         mListener = listener;
     }
@@ -883,8 +869,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     protected BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron) {
         this(groundTruthMagneticFluxDensityNorm, measurements, hardIron);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -908,8 +894,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     protected BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron, final L listener) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron, final L listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
         mListener = listener;
     }
@@ -930,8 +916,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     protected BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron) {
         this(hardIron);
         internalSetGroundTruthMagneticFluxDensityNorm(groundTruthMagneticFluxDensityNorm);
         mMeasurements = measurements;
@@ -954,8 +939,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     protected BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final L listener) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final L listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, hardIron);
         mListener = listener;
     }
@@ -978,8 +963,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     protected BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron) {
         this(groundTruthMagneticFluxDensityNorm, measurements, hardIron);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -1003,10 +988,9 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     protected BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron, final L listener) {
-        this(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed,
-                hardIron);
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final L listener) {
+        this(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
         mListener = listener;
     }
 
@@ -1029,8 +1013,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     protected BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm) {
         this(hardIron, initialMm);
         internalSetGroundTruthMagneticFluxDensityNorm(groundTruthMagneticFluxDensityNorm);
         mMeasurements = measurements;
@@ -1056,8 +1040,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     protected BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm, final L listener) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm, final L listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
         mListener = listener;
     }
@@ -1083,9 +1067,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     protected BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm) {
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm) {
         this(groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -1112,11 +1095,9 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     protected BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm, final L listener) {
-        this(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed,
-                hardIron, initialMm);
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm, final L listener) {
+        this(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm);
         mListener = listener;
     }
 
@@ -1176,8 +1157,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronX(final double hardIronX)
-            throws LockedException {
+    public void setHardIronX(final double hardIronX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1204,8 +1184,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronY(final double hardIronY)
-            throws LockedException {
+    public void setHardIronY(final double hardIronY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1232,8 +1211,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronZ(final double hardIronZ)
-            throws LockedException {
+    public void setHardIronZ(final double hardIronZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1247,8 +1225,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public MagneticFluxDensity getHardIronXAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mHardIronX,
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(mHardIronX, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -1257,8 +1234,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @param result instance where result will be stored.
      */
     @Override
-    public void getHardIronXAsMagneticFluxDensity(
-            final MagneticFluxDensity result) {
+    public void getHardIronXAsMagneticFluxDensity(final MagneticFluxDensity result) {
         result.setValue(mHardIronX);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
@@ -1270,8 +1246,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronX(final MagneticFluxDensity hardIronX)
-            throws LockedException {
+    public void setHardIronX(final MagneticFluxDensity hardIronX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1285,8 +1260,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public MagneticFluxDensity getHardIronYAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mHardIronY,
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(mHardIronY, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -1295,8 +1269,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @param result instance where result will be stored.
      */
     @Override
-    public void getHardIronYAsMagneticFluxDensity(
-            final MagneticFluxDensity result) {
+    public void getHardIronYAsMagneticFluxDensity(final MagneticFluxDensity result) {
         result.setValue(mHardIronY);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
@@ -1308,8 +1281,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronY(final MagneticFluxDensity hardIronY)
-            throws LockedException {
+    public void setHardIronY(final MagneticFluxDensity hardIronY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1323,8 +1295,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public MagneticFluxDensity getHardIronZAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mHardIronZ,
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(mHardIronZ, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -1333,8 +1304,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @param result instance where result will be stored.
      */
     @Override
-    public void getHardIronZAsMagneticFluxDensity(
-            final MagneticFluxDensity result) {
+    public void getHardIronZAsMagneticFluxDensity(final MagneticFluxDensity result) {
         result.setValue(mHardIronZ);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
@@ -1346,8 +1316,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronZ(final MagneticFluxDensity hardIronZ)
-            throws LockedException {
+    public void setHardIronZ(final MagneticFluxDensity hardIronZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1368,8 +1337,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public void setHardIronCoordinates(
-            final double hardIronX, final double hardIronY,
-            final double hardIronZ) throws LockedException {
+            final double hardIronX, final double hardIronY, final double hardIronZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1388,8 +1356,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public void setHardIronCoordinates(
-            final MagneticFluxDensity hardIronX,
-            final MagneticFluxDensity hardIronY,
+            final MagneticFluxDensity hardIronX, final MagneticFluxDensity hardIronY,
             final MagneticFluxDensity hardIronZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -1406,8 +1373,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public MagneticFluxDensityTriad getHardIronAsTriad() {
-        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,
-                mHardIronX, mHardIronY, mHardIronZ);
+        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, mHardIronX, mHardIronY, mHardIronZ);
     }
 
     /**
@@ -1417,9 +1383,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public void getHardIronAsTriad(final MagneticFluxDensityTriad result) {
-        result.setValueCoordinatesAndUnit(
-                mHardIronX, mHardIronY, mHardIronZ,
-                MagneticFluxDensityUnit.TESLA);
+        result.setValueCoordinatesAndUnit(mHardIronX, mHardIronY, mHardIronZ, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -1429,8 +1393,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIron(final MagneticFluxDensityTriad hardIron)
-            throws LockedException {
+    public void setHardIron(final MagneticFluxDensityTriad hardIron) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1457,8 +1420,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSx(final double initialSx)
-            throws LockedException {
+    public void setInitialSx(final double initialSx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1482,8 +1444,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSy(final double initialSy)
-            throws LockedException {
+    public void setInitialSy(final double initialSy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1507,8 +1468,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSz(final double initialSz)
-            throws LockedException {
+    public void setInitialSz(final double initialSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1532,8 +1492,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMxy(final double initialMxy)
-            throws LockedException {
+    public void setInitialMxy(final double initialMxy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1557,8 +1516,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMxz(final double initialMxz)
-            throws LockedException {
+    public void setInitialMxz(final double initialMxz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1582,8 +1540,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMyx(final double initialMyx)
-            throws LockedException {
+    public void setInitialMyx(final double initialMyx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1607,8 +1564,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMyz(final double initialMyz)
-            throws LockedException {
+    public void setInitialMyz(final double initialMyz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1632,8 +1588,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMzx(final double initialMzx)
-            throws LockedException {
+    public void setInitialMzx(final double initialMzx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1657,8 +1612,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMzy(final double initialMzy)
-            throws LockedException {
+    public void setInitialMzy(final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1675,10 +1629,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx,
-            final double initialSy,
-            final double initialSz)
-            throws LockedException {
+            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1700,13 +1651,8 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public void setInitialCrossCouplingErrors(
-            final double initialMxy,
-            final double initialMxz,
-            final double initialMyx,
-            final double initialMyz,
-            final double initialMzx,
-            final double initialMzy)
-            throws LockedException {
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1734,22 +1680,14 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public void setInitialScalingFactorsAndCrossCouplingErrors(
-            final double initialSx,
-            final double initialSy,
-            final double initialSz,
-            final double initialMxy,
-            final double initialMxz,
-            final double initialMyx,
-            final double initialMyz,
-            final double initialMzx,
-            final double initialMzy)
-            throws LockedException {
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
+        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
     }
 
     /**
@@ -1760,8 +1698,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public double[] getHardIron() {
-        final double[] result = new double[
-                BodyMagneticFluxDensity.COMPONENTS];
+        final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
         getHardIron(result);
         return result;
     }
@@ -1793,8 +1730,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     @Override
-    public void setHardIron(final double[] hardIron)
-            throws LockedException {
+    public void setHardIron(final double[] hardIron) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1816,8 +1752,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
     public Matrix getHardIronMatrix() {
         Matrix result;
         try {
-            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                    1);
+            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
             getHardIronMatrix(result);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -1834,8 +1769,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public void getHardIronMatrix(final Matrix result) {
-        if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mHardIronX);
@@ -1851,13 +1785,11 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     @Override
-    public void setHardIron(final Matrix hardIron)
-            throws LockedException {
+    public void setHardIron(final Matrix hardIron) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
-        if (hardIron.getRows() != BodyMagneticFluxDensity.COMPONENTS
-                || hardIron.getColumns() != 1) {
+        if (hardIron.getRows() != BodyMagneticFluxDensity.COMPONENTS || hardIron.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -1875,8 +1807,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
     public Matrix getInitialMm() {
         Matrix result;
         try {
-            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                    BodyMagneticFluxDensity.COMPONENTS);
+            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
             getInitialMm(result);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -1893,8 +1824,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public void getInitialMm(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS ||
-                result.getColumns() != BodyKinematics.COMPONENTS) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mInitialSx);
@@ -1918,13 +1848,11 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setInitialMm(final Matrix initialMm)
-            throws LockedException {
+    public void setInitialMm(final Matrix initialMm) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
-        if (initialMm.getRows() != BodyKinematics.COMPONENTS ||
-                initialMm.getColumns() != BodyKinematics.COMPONENTS) {
+        if (initialMm.getRows() != BodyKinematics.COMPONENTS || initialMm.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -1965,8 +1893,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setMeasurements(
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements)
+    public void setMeasurements(final Collection<StandardDeviationBodyMagneticFluxDensity> measurements)
             throws LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -2030,8 +1957,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws LockedException if estimator is currently running.
      */
     @Override
-    public void setCommonAxisUsed(final boolean commonAxisUsed)
-            throws LockedException {
+    public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2069,8 +1995,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public int getMinimumRequiredMeasurements() {
-        return mCommonAxisUsed ? MINIMUM_MEASUREMENTS_COMMON_Z_AXIS :
-                MINIMUM_MEASUREMENTS_GENERAL;
+        return mCommonAxisUsed ? MINIMUM_MEASUREMENTS_COMMON_Z_AXIS : MINIMUM_MEASUREMENTS_GENERAL;
     }
 
     /**
@@ -2102,8 +2027,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws CalibrationException if calibration fails for numerical reasons.
      */
     @Override
-    public void calibrate() throws LockedException, NotReadyException,
-            CalibrationException {
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2133,8 +2057,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
                 mListener.onCalibrateEnd((C) this);
             }
 
-        } catch (final AlgebraException | FittingException
-                | com.irurueta.numerical.NotReadyException e) {
+        } catch (final AlgebraException | FittingException | com.irurueta.numerical.NotReadyException e) {
             throw new CalibrationException(e);
         } finally {
             mRunning = false;
@@ -2196,8 +2119,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(0, 0) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 0) : null;
     }
 
     /**
@@ -2207,8 +2129,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(1, 1) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 1) : null;
     }
 
     /**
@@ -2218,8 +2139,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(2, 2) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 2) : null;
     }
 
     /**
@@ -2229,8 +2149,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(0, 1) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 1) : null;
     }
 
     /**
@@ -2240,8 +2159,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(0, 2) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 2) : null;
     }
 
     /**
@@ -2251,8 +2169,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(1, 0) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 0) : null;
     }
 
     /**
@@ -2262,8 +2179,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(1, 2) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 2) : null;
     }
 
     /**
@@ -2273,8 +2189,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(2, 0) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 0) : null;
     }
 
     /**
@@ -2284,8 +2199,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(2, 1) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 1) : null;
     }
 
     /**
@@ -2328,6 +2242,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @throws CalibrationException if anything fails.
      */
     protected void onBeforeCalibrate() throws CalibrationException {
+        // no action needed
     }
 
     /**
@@ -2354,14 +2269,12 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
         final double b2 = b * b;
 
         final int numMeasurements = mMeasurements.size();
-        final Matrix x = new Matrix(numMeasurements,
-                BodyMagneticFluxDensity.COMPONENTS);
+        final Matrix x = new Matrix(numMeasurements, BodyMagneticFluxDensity.COMPONENTS);
         final double[] y = new double[numMeasurements];
         final double[] specificForceStandardDeviations = new double[numMeasurements];
         int i = 0;
         for (final StandardDeviationBodyMagneticFluxDensity measurement : mMeasurements) {
-            final BodyMagneticFluxDensity measuredMagneticFluxDensity =
-                    measurement.getMagneticFluxDensity();
+            final BodyMagneticFluxDensity measuredMagneticFluxDensity = measurement.getMagneticFluxDensity();
 
             final double bmeasX = measuredMagneticFluxDensity.getBx();
             final double bmeasY = measuredMagneticFluxDensity.getBy();
@@ -2373,8 +2286,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
 
             y[i] = b2;
 
-            specificForceStandardDeviations[i] =
-                    measurement.getMagneticFluxDensityStandardDeviation();
+            specificForceStandardDeviations[i] = measurement.getMagneticFluxDensityStandardDeviation();
 
             i++;
         }
@@ -2433,17 +2345,9 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
         //     [m21 	m22 	m23]
         //     [m31 	m32 	m33]
 
-        final GradientEstimator gradientEstimator = new GradientEstimator(
-                new MultiDimensionFunctionEvaluatorListener() {
-                    @Override
-                    public double evaluate(final double[] point)
-                            throws EvaluationException {
-                        return evaluateGeneral(point);
-                    }
-                });
+        final GradientEstimator gradientEstimator = new GradientEstimator(this::evaluateGeneral);
 
-        final Matrix initialM = Matrix.identity(BodyMagneticFluxDensity.COMPONENTS,
-                BodyMagneticFluxDensity.COMPONENTS);
+        final Matrix initialM = Matrix.identity(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
         initialM.add(getInitialMm());
 
         mFitter.setFunctionEvaluator(
@@ -2462,8 +2366,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
 
                     @Override
                     public double evaluate(
-                            final int i, final double[] point,
-                            final double[] params, final double[] derivatives)
+                            final int i, final double[] point, final double[] params, final double[] derivatives)
                             throws EvaluationException {
 
                         mBmeasX = point[0];
@@ -2494,8 +2397,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
         final double m23 = result[7];
         final double m33 = result[8];
 
-        final Matrix m = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                BodyMagneticFluxDensity.COMPONENTS);
+        final Matrix m = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
         m.setElementAtIndex(0, m11);
         m.setElementAtIndex(1, m21);
         m.setElementAtIndex(2, m31);
@@ -2564,18 +2466,9 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
         //     [0 	 	0 		m33]
 
 
-        final GradientEstimator gradientEstimator = new GradientEstimator(
-                new MultiDimensionFunctionEvaluatorListener() {
-                    @Override
-                    public double evaluate(final double[] point)
-                            throws EvaluationException {
-                        return evaluateCommonAxis(point);
-                    }
-                });
+        final GradientEstimator gradientEstimator = new GradientEstimator(this::evaluateCommonAxis);
 
-        final Matrix initialM = Matrix.identity(
-                BodyMagneticFluxDensity.COMPONENTS,
-                BodyMagneticFluxDensity.COMPONENTS);
+        final Matrix initialM = Matrix.identity(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
         initialM.add(getInitialMm());
 
         // Force initial M to be upper diagonal
@@ -2611,8 +2504,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
 
                     @Override
                     public double evaluate(
-                            final int i, final double[] point,
-                            final double[] params, final double[] derivatives)
+                            final int i, final double[] point, final double[] params, final double[] derivatives)
                             throws EvaluationException {
 
                         mBmeasX = point[0];
@@ -2640,8 +2532,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
         final double m23 = result[4];
         final double m33 = result[5];
 
-        final Matrix m = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                BodyMagneticFluxDensity.COMPONENTS);
+        final Matrix m = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
         m.setElementAtIndex(0, m11);
         m.setElementAtIndex(1, 0.0);
         m.setElementAtIndex(2, 0.0);
@@ -2715,8 +2606,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
         }
 
         for (int i = 0; i < BodyMagneticFluxDensity.COMPONENTS; i++) {
-            mEstimatedMm.setElementAt(i, i,
-                    mEstimatedMm.getElementAt(i, i) - 1.0);
+            mEstimatedMm.setElementAt(i, i, mEstimatedMm.getElementAt(i, i) - 1.0);
         }
 
         // since only a constant term is subtracted, covariance is preserved
@@ -2749,8 +2639,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
         final double m23 = params[7];
         final double m33 = params[8];
 
-        return evaluate(m11, m21, m31, m12, m22, m32,
-                m13, m23, m33);
+        return evaluate(m11, m21, m31, m12, m22, m32, m13, m23, m33);
     }
 
     /**
@@ -2774,8 +2663,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
         final double m23 = params[4];
         final double m33 = params[5];
 
-        return evaluate(m11, 0.0, 0.0, m12, m22, 0.0,
-                m13, m23, m33);
+        return evaluate(m11, 0.0, 0.0, m12, m22, 0.0, m13, m23, m33);
     }
 
     /**
@@ -2799,8 +2687,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
     private double evaluate(
             final double m11, final double m21, final double m31,
             final double m12, final double m22, final double m32,
-            final double m13, final double m23, final double m33)
-            throws EvaluationException {
+            final double m13, final double m23, final double m33) throws EvaluationException {
 
         // bmeas = M*(btrue + b)
 
@@ -2808,28 +2695,22 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
 
         try {
             if (mBmeas == null) {
-                mBmeas = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                        1);
+                mBmeas = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
             }
             if (mM == null) {
-                mM = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                        BodyMagneticFluxDensity.COMPONENTS);
+                mM = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
             }
             if (mInvM == null) {
-                mInvM = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                        BodyMagneticFluxDensity.COMPONENTS);
+                mInvM = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
             }
             if (mB == null) {
-                mB = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                        1);
+                mB = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
             }
             if (mBtrue == null) {
-                mBtrue = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                        1);
+                mBtrue = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
             }
             if (mBm == null) {
-                mBm = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                        1);
+                mBm = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
             }
 
             getHardIronMatrix(mBm);
@@ -2874,8 +2755,7 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @return converted value.
      */
     private static double convertMagneticFluxDensity(final double value, final MagneticFluxDensityUnit unit) {
-        return MagneticFluxDensityConverter.convert(value, unit,
-                MagneticFluxDensityUnit.TESLA);
+        return MagneticFluxDensityConverter.convert(value, unit, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -2885,7 +2765,6 @@ public class BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator<C ex
      * @return converted value.
      */
     private static double convertMagneticFluxDensity(final MagneticFluxDensity magneticFluxDensity) {
-        return convertMagneticFluxDensity(magneticFluxDensity.getValue().doubleValue(),
-                magneticFluxDensity.getUnit());
+        return convertMagneticFluxDensity(magneticFluxDensity.getValue().doubleValue(), magneticFluxDensity.getUnit());
     }
 }

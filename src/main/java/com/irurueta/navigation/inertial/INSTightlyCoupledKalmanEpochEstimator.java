@@ -41,7 +41,9 @@ import java.util.Collection;
  * Kalman filter plus closed-loop correction of all inertial states.
  * This implementation is based on the equations defined in "Principles of GNSS, Inertial, and Multisensor
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
- * https://github.com/ymjdz/MATLAB-Codes/blob/master/TC_KF_Epoch.m
+ * <a href="https://github.com/ymjdz/MATLAB-Codes/blob/master/TC_KF_Epoch.m">
+ *     https://github.com/ymjdz/MATLAB-Codes/blob/master/TC_KF_Epoch.m
+ * </a>
  */
 public class INSTightlyCoupledKalmanEpochEstimator {
 
@@ -95,43 +97,32 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final double propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
-            final INSTightlyCoupledKalmanConfig config,
+            final Collection<GNSSMeasurement> measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSTightlyCoupledKalmanConfig config,
             final INSTightlyCoupledKalmanState result) throws AlgebraException {
 
         // Skew symmetric matrix of Earth rate
-        final Matrix omegaIe = Utils.skewMatrix(
-                new double[]{0.0, 0.0, EARTH_ROTATION_RATE});
+        final Matrix omegaIe = Utils.skewMatrix(new double[]{0.0, 0.0, EARTH_ROTATION_RATE});
 
         // SYSTEM PROPAGATION PHASE
 
         // 1. Determine transition matrix using (14.50) (first-order approx)
         final Matrix phiMatrix = Matrix.identity(
-                INSTightlyCoupledKalmanState.NUM_PARAMS,
-                INSTightlyCoupledKalmanState.NUM_PARAMS);
+                INSTightlyCoupledKalmanState.NUM_PARAMS, INSTightlyCoupledKalmanState.NUM_PARAMS);
 
-        final Matrix tmp1 = omegaIe.multiplyByScalarAndReturnNew(
-                propagationInterval);
-        final Matrix tmp2 = phiMatrix.getSubmatrix(0, 0,
-                2, 2);
+        final Matrix tmp1 = omegaIe.multiplyByScalarAndReturnNew(propagationInterval);
+        final Matrix tmp2 = phiMatrix.getSubmatrix(0, 0, 2, 2);
         tmp2.subtract(tmp1);
 
-        phiMatrix.setSubmatrix(0, 0,
-                2, 2, tmp2);
+        phiMatrix.setSubmatrix(0, 0, 2, 2, tmp2);
 
-        final Matrix estCbeOld = previousState
-                .getBodyToEcefCoordinateTransformationMatrix();
+        final Matrix estCbeOld = previousState.getBodyToEcefCoordinateTransformationMatrix();
         tmp1.copyFrom(estCbeOld);
         tmp1.multiplyByScalar(propagationInterval);
 
-        phiMatrix.setSubmatrix(0, 12,
-                2, 14, tmp1);
-        phiMatrix.setSubmatrix(3, 9,
-                5, 11, tmp1);
+        phiMatrix.setSubmatrix(0, 12, 2, 14, tmp1);
+        phiMatrix.setSubmatrix(3, 9, 5, 11, tmp1);
 
         final Matrix measFibb = new Matrix(BodyKinematics.COMPONENTS, 1);
         measFibb.setElementAtIndex(0, fx);
@@ -143,16 +134,13 @@ public class INSTightlyCoupledKalmanEpochEstimator {
         Utils.skewMatrix(tmp1, tmp2);
         tmp2.multiplyByScalar(-propagationInterval);
 
-        phiMatrix.setSubmatrix(3, 0,
-                5, 2, tmp2);
+        phiMatrix.setSubmatrix(3, 0, 5, 2, tmp2);
 
-        phiMatrix.getSubmatrix(3, 3,
-                5, 5, tmp1);
+        phiMatrix.getSubmatrix(3, 3, 5, 5, tmp1);
         tmp2.copyFrom(omegaIe);
         tmp2.multiplyByScalar(2.0 * propagationInterval);
         tmp1.subtract(tmp2);
-        phiMatrix.setSubmatrix(3, 3,
-                5, 5, tmp1);
+        phiMatrix.setSubmatrix(3, 3, 5, 5, tmp1);
 
         final double sinPrevLat = Math.sin(previousLatitude);
         final double cosPrevLat = Math.cos(previousLatitude);
@@ -162,17 +150,14 @@ public class INSTightlyCoupledKalmanEpochEstimator {
         // From (2.137)
         final double geocentricRadius = EARTH_EQUATORIAL_RADIUS_WGS84
                 / Math.sqrt(1.0 - Math.pow(EARTH_ECCENTRICITY * sinPrevLat, 2.0))
-                * Math.sqrt(cosPrevLat2
-                + Math.pow(1.0 - EARTH_ECCENTRICITY * EARTH_ECCENTRICITY, 2.0) * sinPrevLat2);
+                * Math.sqrt(cosPrevLat2 + Math.pow(1.0 - EARTH_ECCENTRICITY * EARTH_ECCENTRICITY, 2.0) * sinPrevLat2);
 
         final double prevX = previousState.getX();
         final double prevY = previousState.getY();
         final double prevZ = previousState.getZ();
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
-                prevX, prevY, prevZ);
+        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(prevX, prevY, prevZ);
 
-        final double previousPositionNorm = Math.sqrt(prevX * prevX +
-                prevY * prevY + prevZ * prevZ);
+        final double previousPositionNorm = Math.sqrt(prevX * prevX + prevY * prevY + prevZ * prevZ);
 
         final Matrix estRebeOld = new Matrix(com.irurueta.navigation.frames.ECEFPosition.COMPONENTS, 1);
         estRebeOld.setElementAtIndex(0, prevX);
@@ -187,8 +172,7 @@ public class INSTightlyCoupledKalmanEpochEstimator {
 
         g.multiply(estRebeOldTrans, tmp1);
 
-        phiMatrix.setSubmatrix(3, 6,
-                5, 8, tmp1);
+        phiMatrix.setSubmatrix(3, 6, 5, 8, tmp1);
 
         for (int i = 0; i < ECEFPosition.COMPONENTS; i++) {
             phiMatrix.setElementAt(6 + i, 3 + i, propagationInterval);
@@ -198,8 +182,7 @@ public class INSTightlyCoupledKalmanEpochEstimator {
 
         // 2. Determine approximate system noise covariance matrix using (14.82)
         final Matrix qPrimeMatrix = new Matrix(
-                INSTightlyCoupledKalmanState.NUM_PARAMS,
-                INSTightlyCoupledKalmanState.NUM_PARAMS);
+                INSTightlyCoupledKalmanState.NUM_PARAMS, INSTightlyCoupledKalmanState.NUM_PARAMS);
 
         final double gyroNoisePSD = config.getGyroNoisePSD();
         final double gyroNoiseValue = gyroNoisePSD * propagationInterval;
@@ -239,8 +222,7 @@ public class INSTightlyCoupledKalmanEpochEstimator {
         final double prevClockDrift = previousState.getReceiverClockDrift();
 
         final Matrix xEstPropagated = new Matrix(INSTightlyCoupledKalmanState.NUM_PARAMS, 1);
-        xEstPropagated.setElementAtIndex(15, prevClockOffset
-                + prevClockDrift * propagationInterval);
+        xEstPropagated.setElementAtIndex(15, prevClockOffset + prevClockDrift * propagationInterval);
         xEstPropagated.setElementAtIndex(16, prevClockDrift);
 
         // 4. Propagate state estimation error covariance matrix using (3.46)
@@ -262,8 +244,7 @@ public class INSTightlyCoupledKalmanEpochEstimator {
         final Matrix uAseT = new Matrix(numberOfMeasurements, 3);
         final Matrix predMeas = new Matrix(numberOfMeasurements, 2);
 
-        final Matrix cei = Matrix.identity(CoordinateTransformation.ROWS,
-                CoordinateTransformation.COLS);
+        final Matrix cei = Matrix.identity(CoordinateTransformation.ROWS, CoordinateTransformation.COLS);
         final Matrix satellitePosition = new Matrix(CoordinateTransformation.ROWS, 1);
         final Matrix satelliteVelocity = new Matrix(CoordinateTransformation.ROWS, 1);
         final Matrix deltaR = new Matrix(CoordinateTransformation.ROWS, 1);
@@ -308,13 +289,11 @@ public class INSTightlyCoupledKalmanEpochEstimator {
 
             cei.multiply(satellitePosition, deltaR);
             for (int i = 0; i < CoordinateTransformation.ROWS; i++) {
-                deltaR.setElementAtIndex(i, deltaR.getElementAtIndex(i)
-                        - estRebeOld.getElementAtIndex(i));
+                deltaR.setElementAtIndex(i, deltaR.getElementAtIndex(i) - estRebeOld.getElementAtIndex(i));
             }
             final double range = Utils.normF(deltaR);
 
-            predMeas.setElementAt(j, 0, range
-                    + xEstPropagated.getElementAtIndex(15));
+            predMeas.setElementAt(j, 0, range + xEstPropagated.getElementAtIndex(15));
 
             // Predict line of sight
             for (int i = 0; i < CoordinateTransformation.ROWS; i++) {
@@ -339,8 +318,7 @@ public class INSTightlyCoupledKalmanEpochEstimator {
 
             final double rangeRate = Utils.dotProduct(tmp7b, tmp5b);
 
-            predMeas.setElementAt(j, 1, rangeRate
-                    + xEstPropagated.getElementAtIndex(16));
+            predMeas.setElementAt(j, 1, rangeRate + xEstPropagated.getElementAtIndex(16));
 
             j++;
         }
@@ -372,8 +350,7 @@ public class INSTightlyCoupledKalmanEpochEstimator {
 
         // 7. Calculate Kalman gain using (3.21)
         final Matrix hTransposed = h.transposeAndReturnNew();
-        final Matrix tmp8b = h.multiplyAndReturnNew(
-                pMatrixPropagated.multiplyAndReturnNew(hTransposed));
+        final Matrix tmp8b = h.multiplyAndReturnNew(pMatrixPropagated.multiplyAndReturnNew(hTransposed));
         tmp8b.add(r);
         final Matrix tmp9b = Utils.inverse(tmp8b);
         final Matrix k = pMatrixPropagated.multiplyAndReturnNew(hTransposed);
@@ -384,10 +361,8 @@ public class INSTightlyCoupledKalmanEpochEstimator {
         int i1 = 0;
         int i2 = numberOfMeasurements;
         for (final GNSSMeasurement measurement : measurements) {
-            deltaZ.setElementAtIndex(i1, measurement.getPseudoRange()
-                    - predMeas.getElementAt(i1, 0));
-            deltaZ.setElementAtIndex(i2, measurement.getPseudoRate()
-                    - predMeas.getElementAt(i1, 1));
+            deltaZ.setElementAtIndex(i1, measurement.getPseudoRange() - predMeas.getElementAt(i1, 0));
+            deltaZ.setElementAtIndex(i2, measurement.getPseudoRate() - predMeas.getElementAt(i1, 1));
 
             i1++;
             i2++;
@@ -400,11 +375,10 @@ public class INSTightlyCoupledKalmanEpochEstimator {
 
         // 10. Update state estimation error covariance matrix using (3.25)
         Matrix updatedCovariance = result.getCovariance();
-        if (updatedCovariance == null ||
-                updatedCovariance.getRows() != INSTightlyCoupledKalmanState.NUM_PARAMS ||
+        if (updatedCovariance == null || updatedCovariance.getRows() != INSTightlyCoupledKalmanState.NUM_PARAMS ||
                 updatedCovariance.getColumns() != INSTightlyCoupledKalmanState.NUM_PARAMS) {
-            updatedCovariance = Matrix.identity(INSTightlyCoupledKalmanState.NUM_PARAMS,
-                    INSTightlyCoupledKalmanState.NUM_PARAMS);
+            updatedCovariance = Matrix.identity(
+                    INSTightlyCoupledKalmanState.NUM_PARAMS, INSTightlyCoupledKalmanState.NUM_PARAMS);
         } else {
             Matrix.identity(updatedCovariance);
         }
@@ -416,11 +390,9 @@ public class INSTightlyCoupledKalmanEpochEstimator {
 
         // Correct attitude, velocity, and position using (14.7-9)
 
-        final Matrix estCbeNew = Matrix.identity(CoordinateTransformation.ROWS,
-                CoordinateTransformation.COLS);
+        final Matrix estCbeNew = Matrix.identity(CoordinateTransformation.ROWS, CoordinateTransformation.COLS);
 
-        xEstPropagated.getSubmatrix(0, 0,
-                2, 0, tmp1b);
+        xEstPropagated.getSubmatrix(0, 0, 2, 0, tmp1b);
         estCbeNew.subtract(Utils.skewMatrix(tmp1b));
         estCbeNew.multiply(estCbeOld);
 
@@ -479,15 +451,11 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSTightlyCoupledKalmanState estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final double propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
-            final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+            final Collection<GNSSMeasurement> measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
         final INSTightlyCoupledKalmanState result = new INSTightlyCoupledKalmanState();
-        estimate(measurements, propagationInterval, previousState,
-                fx, fy, fz, previousLatitude, config, result);
+        estimate(measurements, propagationInterval, previousState, fx, fy, fz, previousLatitude, config, result);
         return result;
     }
 
@@ -514,15 +482,12 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final Time propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
-            final INSTightlyCoupledKalmanConfig config,
+            final Collection<GNSSMeasurement> measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSTightlyCoupledKalmanConfig config,
             final INSTightlyCoupledKalmanState result) throws AlgebraException {
-        estimate(measurements, convertTime(propagationInterval),
-                previousState, fx, fy, fz, previousLatitude, config, result);
+        estimate(measurements, convertTime(propagationInterval), previousState, fx, fy, fz, previousLatitude, config,
+                result);
     }
 
     /**
@@ -547,14 +512,11 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSTightlyCoupledKalmanState estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final Time propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
-            final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(measurements, convertTime(propagationInterval),
-                previousState, fx, fy, fz, previousLatitude, config);
+            final Collection<GNSSMeasurement> measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(measurements, convertTime(propagationInterval), previousState, fx, fy, fz, previousLatitude,
+                config);
     }
 
     /**
@@ -579,24 +541,19 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final double propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final INSTightlyCoupledKalmanConfig config,
-            final INSTightlyCoupledKalmanState result) throws AlgebraException {
+            final Collection<GNSSMeasurement> measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final INSTightlyCoupledKalmanConfig config, final INSTightlyCoupledKalmanState result) throws AlgebraException {
 
         final NEDPosition prevNedPosition = new NEDPosition();
         final NEDVelocity prevNedVelocity = new NEDVelocity();
         ECEFtoNEDPositionVelocityConverter.convertECEFtoNED(
                 previousState.getX(), previousState.getY(), previousState.getZ(),
-                previousState.getVx(), previousState.getVy(), previousState.getVz(),
-                prevNedPosition, prevNedVelocity);
+                previousState.getVx(), previousState.getVy(), previousState.getVz(), prevNedPosition, prevNedVelocity);
 
         final double previousLatitude = prevNedPosition.getLatitude();
 
-        estimate(measurements, propagationInterval, previousState,
-                fx, fy, fz, previousLatitude, config, result);
+        estimate(measurements, propagationInterval, previousState, fx, fy, fz, previousLatitude, config, result);
     }
 
     /**
@@ -620,14 +577,11 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSTightlyCoupledKalmanState estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final double propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
+            final Collection<GNSSMeasurement> measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
             final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
         final INSTightlyCoupledKalmanState result = new INSTightlyCoupledKalmanState();
-        estimate(measurements, propagationInterval, previousState, fx, fy, fz,
-                config, result);
+        estimate(measurements, propagationInterval, previousState, fx, fy, fz, config, result);
         return result;
     }
 
@@ -653,14 +607,11 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final Time propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final INSTightlyCoupledKalmanConfig config,
-            final INSTightlyCoupledKalmanState result) throws AlgebraException {
-        estimate(measurements, convertTime(propagationInterval),
-                previousState, fx, fy, fz, config, result);
+            final Collection<GNSSMeasurement> measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final INSTightlyCoupledKalmanConfig config, final INSTightlyCoupledKalmanState result)
+            throws AlgebraException {
+        estimate(measurements, convertTime(propagationInterval), previousState, fx, fy, fz, config, result);
     }
 
     /**
@@ -683,13 +634,10 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSTightlyCoupledKalmanState estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final Time propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
+            final Collection<GNSSMeasurement> measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
             final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(measurements, convertTime(propagationInterval),
-                previousState, fx, fy, fz, config);
+        return estimate(measurements, convertTime(propagationInterval), previousState, fx, fy, fz, config);
     }
 
     /**
@@ -708,20 +656,16 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final double propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
-            final INSTightlyCoupledKalmanConfig config,
+            final Collection<GNSSMeasurement> measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSTightlyCoupledKalmanConfig config,
             final INSTightlyCoupledKalmanState result) throws AlgebraException {
 
         final double fx = bodyKinematics.getFx();
         final double fy = bodyKinematics.getFy();
         final double fz = bodyKinematics.getFz();
 
-        estimate(measurements, propagationInterval, previousState,
-                fx, fy, fz, previousLatitude, config, result);
+        estimate(measurements, propagationInterval, previousState, fx, fy, fz, previousLatitude, config, result);
     }
 
     /**
@@ -739,15 +683,11 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSTightlyCoupledKalmanState estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final double propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
-            final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+            final Collection<GNSSMeasurement> measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
         final INSTightlyCoupledKalmanState result = new INSTightlyCoupledKalmanState();
-        estimate(measurements, propagationInterval, previousState,
-                bodyKinematics, previousLatitude, config, result);
+        estimate(measurements, propagationInterval, previousState, bodyKinematics, previousLatitude, config, result);
         return result;
     }
 
@@ -767,15 +707,12 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final Time propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
-            final INSTightlyCoupledKalmanConfig config,
+            final Collection<GNSSMeasurement> measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSTightlyCoupledKalmanConfig config,
             final INSTightlyCoupledKalmanState result) throws AlgebraException {
-        estimate(measurements, convertTime(propagationInterval),
-                previousState, bodyKinematics, previousLatitude, config, result);
+        estimate(measurements, convertTime(propagationInterval), previousState, bodyKinematics, previousLatitude,
+                config, result);
     }
 
     /**
@@ -793,14 +730,11 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSTightlyCoupledKalmanState estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final Time propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
-            final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(measurements, convertTime(propagationInterval),
-                previousState, bodyKinematics, previousLatitude, config);
+            final Collection<GNSSMeasurement> measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(measurements, convertTime(propagationInterval), previousState, bodyKinematics, previousLatitude,
+                config);
     }
 
     /**
@@ -818,19 +752,16 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final double propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final INSTightlyCoupledKalmanConfig config,
-            final INSTightlyCoupledKalmanState result) throws AlgebraException {
+            final Collection<GNSSMeasurement> measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final INSTightlyCoupledKalmanConfig config, final INSTightlyCoupledKalmanState result)
+            throws AlgebraException {
 
         final double fx = bodyKinematics.getFx();
         final double fy = bodyKinematics.getFy();
         final double fz = bodyKinematics.getFz();
 
-        estimate(measurements, propagationInterval, previousState,
-                fx, fy, fz, config, result);
+        estimate(measurements, propagationInterval, previousState, fx, fy, fz, config, result);
     }
 
     /**
@@ -847,14 +778,11 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSTightlyCoupledKalmanState estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final double propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
+            final Collection<GNSSMeasurement> measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
             final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
         final INSTightlyCoupledKalmanState result = new INSTightlyCoupledKalmanState();
-        estimate(measurements, propagationInterval, previousState, bodyKinematics,
-                config, result);
+        estimate(measurements, propagationInterval, previousState, bodyKinematics, config, result);
         return result;
     }
 
@@ -873,14 +801,11 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final Time propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final INSTightlyCoupledKalmanConfig config,
-            final INSTightlyCoupledKalmanState result) throws AlgebraException {
-        estimate(measurements, convertTime(propagationInterval), previousState,
-                bodyKinematics, config, result);
+            final Collection<GNSSMeasurement> measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final INSTightlyCoupledKalmanConfig config, final INSTightlyCoupledKalmanState result)
+            throws AlgebraException {
+        estimate(measurements, convertTime(propagationInterval), previousState, bodyKinematics, config, result);
     }
 
     /**
@@ -897,13 +822,10 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSTightlyCoupledKalmanState estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final Time propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
+            final Collection<GNSSMeasurement> measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
             final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(measurements, convertTime(propagationInterval),
-                previousState, bodyKinematics, config);
+        return estimate(measurements, convertTime(propagationInterval), previousState, bodyKinematics, config);
     }
 
     /**
@@ -929,81 +851,11 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final double propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
-            final INSTightlyCoupledKalmanConfig config,
+            final Collection<GNSSMeasurement> measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final Angle previousLatitude, final INSTightlyCoupledKalmanConfig config,
             final INSTightlyCoupledKalmanState result) throws AlgebraException {
-        estimate(measurements, propagationInterval, previousState,
-                fx, fy, fz, convertAngle(previousLatitude), config, result);
-    }
-
-    /**
-     * Estimates the update of Kalman filter state and covariance matrix for a single
-     * epoch.
-     *
-     * @param measurements        satellite measurements data.
-     * @param propagationInterval propagation interval expressed in seconds (s).
-     * @param previousState       previous Kalman filter state.
-     * @param fx                  measured specific force resolved along body frame
-     *                            x-axis and expressed in meters per squared
-     *                            second (m/s^2).
-     * @param fy                  measured specific force resolved along body frame
-     *                            y-axis and expressed in meters per squared
-     *                            second (m/s^2).
-     * @param fz                  measured specific force resolved along body frame
-     *                            z-axis and expressed in meters per squared
-     *                            second (m/s^2).
-     * @param previousLatitude    previous latitude solution.
-     * @param config              Tightly Coupled Kalman filter configuration.
-     * @return new state of Kalman filter.
-     * @throws AlgebraException if there are numerical instabilities.
-     */
-    public static INSTightlyCoupledKalmanState estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final double propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
-            final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(measurements, propagationInterval, previousState,
-                fx, fy, fz, convertAngle(previousLatitude), config);
-    }
-
-    /**
-     * Estimates the update of Kalman filter state and covariance matrix for a single
-     * epoch.
-     *
-     * @param measurements        satellite measurements data.
-     * @param propagationInterval propagation interval expressed in seconds (s).
-     * @param previousState       previous Kalman filter state.
-     * @param fx                  measured specific force resolved along body frame
-     *                            x-axis and expressed in meters per squared
-     *                            second (m/s^2).
-     * @param fy                  measured specific force resolved along body frame
-     *                            y-axis and expressed in meters per squared
-     *                            second (m/s^2).
-     * @param fz                  measured specific force resolved along body frame
-     *                            z-axis and expressed in meters per squared
-     *                            second (m/s^2).
-     * @param previousLatitude    previous latitude solution.
-     * @param config              Tightly Coupled Kalman filter configuration.
-     * @param result              instance where new state of Kalman filter will be
-     *                            stored.
-     * @throws AlgebraException if there are numerical instabilities.
-     */
-    public static void estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final Time propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
-            final INSTightlyCoupledKalmanConfig config,
-            final INSTightlyCoupledKalmanState result) throws AlgebraException {
-        estimate(measurements, propagationInterval, previousState,
-                fx, fy, fz, convertAngle(previousLatitude), config,
+        estimate(measurements, propagationInterval, previousState, fx, fy, fz, convertAngle(previousLatitude), config,
                 result);
     }
 
@@ -1029,14 +881,71 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSTightlyCoupledKalmanState estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final Time propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
-            final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(measurements, propagationInterval, previousState,
-                fx, fy, fz, convertAngle(previousLatitude), config);
+            final Collection<GNSSMeasurement> measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final Angle previousLatitude, final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(measurements, propagationInterval, previousState, fx, fy, fz, convertAngle(previousLatitude),
+                config);
+    }
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param fx                  measured specific force resolved along body frame
+     *                            x-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fy                  measured specific force resolved along body frame
+     *                            y-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fz                  measured specific force resolved along body frame
+     *                            z-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param previousLatitude    previous latitude solution.
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @param result              instance where new state of Kalman filter will be
+     *                            stored.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static void estimate(
+            final Collection<GNSSMeasurement> measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final Angle previousLatitude, final INSTightlyCoupledKalmanConfig config,
+            final INSTightlyCoupledKalmanState result) throws AlgebraException {
+        estimate(measurements, propagationInterval, previousState, fx, fy, fz, convertAngle(previousLatitude), config,
+                result);
+    }
+
+    /**
+     * Estimates the update of Kalman filter state and covariance matrix for a single
+     * epoch.
+     *
+     * @param measurements        satellite measurements data.
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param fx                  measured specific force resolved along body frame
+     *                            x-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fy                  measured specific force resolved along body frame
+     *                            y-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fz                  measured specific force resolved along body frame
+     *                            z-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param previousLatitude    previous latitude solution.
+     * @param config              Tightly Coupled Kalman filter configuration.
+     * @return new state of Kalman filter.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static INSTightlyCoupledKalmanState estimate(
+            final Collection<GNSSMeasurement> measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final Angle previousLatitude, final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(measurements, propagationInterval, previousState, fx, fy, fz, convertAngle(previousLatitude),
+                config);
     }
 
     /**
@@ -1055,15 +964,12 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final double propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSTightlyCoupledKalmanConfig config,
+            final Collection<GNSSMeasurement> measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final Angle previousLatitude, final INSTightlyCoupledKalmanConfig config,
             final INSTightlyCoupledKalmanState result) throws AlgebraException {
-        estimate(measurements, propagationInterval, previousState,
-                bodyKinematics, convertAngle(previousLatitude), config, result);
+        estimate(measurements, propagationInterval, previousState, bodyKinematics, convertAngle(previousLatitude),
+                config, result);
     }
 
     /**
@@ -1081,14 +987,11 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSTightlyCoupledKalmanState estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final double propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(measurements, propagationInterval, previousState,
-                bodyKinematics, convertAngle(previousLatitude), config);
+            final Collection<GNSSMeasurement> measurements, final double propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final Angle previousLatitude, final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(measurements, propagationInterval, previousState, bodyKinematics,
+                convertAngle(previousLatitude), config);
     }
 
     /**
@@ -1107,15 +1010,12 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final Time propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSTightlyCoupledKalmanConfig config,
+            final Collection<GNSSMeasurement> measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final Angle previousLatitude, final INSTightlyCoupledKalmanConfig config,
             final INSTightlyCoupledKalmanState result) throws AlgebraException {
-        estimate(measurements, propagationInterval, previousState,
-                bodyKinematics, convertAngle(previousLatitude), config, result);
+        estimate(measurements, propagationInterval, previousState, bodyKinematics, convertAngle(previousLatitude),
+                config, result);
     }
 
     /**
@@ -1133,14 +1033,11 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSTightlyCoupledKalmanState estimate(
-            final Collection<GNSSMeasurement> measurements,
-            final Time propagationInterval,
-            final INSTightlyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(measurements, propagationInterval, previousState,
-                bodyKinematics, convertAngle(previousLatitude), config);
+            final Collection<GNSSMeasurement> measurements, final Time propagationInterval,
+            final INSTightlyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final Angle previousLatitude, final INSTightlyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(measurements, propagationInterval, previousState, bodyKinematics,
+                convertAngle(previousLatitude), config);
     }
 
     /**
@@ -1150,8 +1047,7 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @return time value expressed in seconds.
      */
     private static double convertTime(final Time time) {
-        return TimeConverter.convert(time.getValue().doubleValue(),
-                time.getUnit(), TimeUnit.SECOND);
+        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);
     }
 
     /**
@@ -1161,7 +1057,6 @@ public class INSTightlyCoupledKalmanEpochEstimator {
      * @return angle value expressed in radians.
      */
     private static double convertAngle(final Angle angle) {
-        return AngleConverter.convert(angle.getValue().doubleValue(),
-                angle.getUnit(), AngleUnit.RADIANS);
+        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(), AngleUnit.RADIANS);
     }
 }

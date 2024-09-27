@@ -66,8 +66,7 @@ import java.util.List;
  * - ftrue is ground-truth specific force. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
-public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
-        RobustKnownBiasTurntableGyroscopeCalibrator {
+public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends RobustKnownBiasTurntableGyroscopeCalibrator {
 
     /**
      * Constant defining default threshold to determine whether samples are inliers or not.
@@ -145,15 +144,10 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
-            final Matrix initialMg,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias, final Matrix initialMg,
             final Matrix initialGg) {
-        super(position, turntableRotationRate, timeInterval,
-                measurements, bias, initialMg, initialGg);
+        super(position, turntableRotationRate, timeInterval, measurements, bias, initialMg, initialGg);
     }
 
     /**
@@ -189,16 +183,10 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                bias, initialMg, initialGg, listener);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias, final Matrix initialMg,
+            final Matrix initialGg, final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
+        super(position, turntableRotationRate, timeInterval, measurements, bias, initialMg, initialGg, listener);
     }
 
     /**
@@ -232,15 +220,10 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final Matrix initialMg,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] bias, final Matrix initialMg,
             final Matrix initialGg) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                bias, initialMg, initialGg);
+        super(position, turntableRotationRate, timeInterval, measurements, bias, initialMg, initialGg);
     }
 
     /**
@@ -276,16 +259,10 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                bias, initialMg, initialGg, listener);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] bias, final Matrix initialMg,
+            final Matrix initialGg, final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
+        super(position, turntableRotationRate, timeInterval, measurements, bias, initialMg, initialGg, listener);
     }
 
     /**
@@ -325,18 +302,11 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                bias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] bias, final Matrix initialMg,
+            final Matrix initialGg, final double[] accelerometerBias, final Matrix accelerometerMa) {
+        super(position, turntableRotationRate, timeInterval, measurements, bias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -377,19 +347,12 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] bias, final Matrix initialMg,
+            final Matrix initialGg, final double[] accelerometerBias, final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                bias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, listener);
+        super(position, turntableRotationRate, timeInterval, measurements, bias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, listener);
     }
 
     /**
@@ -429,18 +392,11 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                bias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa) {
+        super(position, turntableRotationRate, timeInterval, measurements, bias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -481,19 +437,12 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                bias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, listener);
+        super(position, turntableRotationRate, timeInterval, measurements, bias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, listener);
     }
 
     /**
@@ -537,18 +486,12 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix bias,
-            final Matrix initialMg,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix bias, final Matrix initialMg,
             final Matrix initialGg) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, bias,
-                initialMg, initialGg);
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, bias, initialMg, initialGg);
     }
 
     /**
@@ -593,19 +536,12 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, bias,
-                initialMg, initialGg, listener);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix bias, final Matrix initialMg,
+            final Matrix initialGg, final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, bias, initialMg, initialGg, listener);
     }
 
     /**
@@ -650,18 +586,12 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] bias,
-            final Matrix initialMg,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] bias, final Matrix initialMg,
             final Matrix initialGg) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, bias,
-                initialMg, initialGg);
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, bias, initialMg, initialGg);
     }
 
     /**
@@ -708,19 +638,12 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, bias,
-                initialMg, initialGg, listener);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] bias, final Matrix initialMg,
+            final Matrix initialGg, final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, bias, initialMg, initialGg, listener);
     }
 
     /**
@@ -772,20 +695,12 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, bias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] bias, final Matrix initialMg,
+            final Matrix initialGg, final double[] accelerometerBias, final Matrix accelerometerMa) {
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, bias, initialMg, initialGg, accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -838,21 +753,14 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] bias, final Matrix initialMg,
+            final Matrix initialGg, final double[] accelerometerBias, final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, bias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa, listener);
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, bias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                listener);
     }
 
     /**
@@ -902,20 +810,12 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, bias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix bias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa) {
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, bias, initialMg, initialGg, accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -967,21 +867,13 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix bias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, bias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa,
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, bias, initialMg, initialGg, accelerometerBias, accelerometerMa,
                 listener);
     }
 
@@ -1016,15 +908,10 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
-            final Matrix initialMg,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias, final Matrix initialMg,
             final Matrix initialGg) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                bias, initialMg, initialGg);
+        super(position, turntableRotationRate, timeInterval, measurements, bias, initialMg, initialGg);
     }
 
     /**
@@ -1060,16 +947,10 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                bias, initialMg, initialGg, listener);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias, final Matrix initialMg,
+            final Matrix initialGg, final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
+        super(position, turntableRotationRate, timeInterval, measurements, bias, initialMg, initialGg, listener);
     }
 
     /**
@@ -1103,15 +984,10 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                bias, initialMg, initialGg);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] bias,
+            final Matrix initialMg, final Matrix initialGg) {
+        super(position, turntableRotationRate, timeInterval, measurements, bias, initialMg, initialGg);
     }
 
     /**
@@ -1147,16 +1023,11 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] bias,
+            final Matrix initialMg, final Matrix initialGg,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                bias, initialMg, initialGg, listener);
+        super(position, turntableRotationRate, timeInterval, measurements, bias, initialMg, initialGg, listener);
     }
 
     /**
@@ -1196,18 +1067,11 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                bias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] bias, final Matrix initialMg,
+            final Matrix initialGg, final double[] accelerometerBias, final Matrix accelerometerMa) {
+        super(position, turntableRotationRate, timeInterval, measurements, bias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -1248,19 +1112,12 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] bias, final Matrix initialMg,
+            final Matrix initialGg, final double[] accelerometerBias, final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                bias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, listener);
+        super(position, turntableRotationRate, timeInterval, measurements, bias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, listener);
     }
 
     /**
@@ -1300,18 +1157,11 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                bias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa) {
+        super(position, turntableRotationRate, timeInterval, measurements, bias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -1352,19 +1202,12 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix bias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                bias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, listener);
+        super(position, turntableRotationRate, timeInterval, measurements, bias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, listener);
     }
 
     /**
@@ -1408,18 +1251,12 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix bias,
-            final Matrix initialMg,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix bias, final Matrix initialMg,
             final Matrix initialGg) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, bias,
-                initialMg, initialGg);
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, bias, initialMg, initialGg);
     }
 
     /**
@@ -1464,19 +1301,12 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, bias,
-                initialMg, initialGg, listener);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix bias, final Matrix initialMg,
+            final Matrix initialGg, final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, bias, initialMg, initialGg, listener);
     }
 
     /**
@@ -1521,18 +1351,12 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] bias,
-            final Matrix initialMg,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] bias, final Matrix initialMg,
             final Matrix initialGg) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, bias,
-                initialMg, initialGg);
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, bias, initialMg, initialGg);
     }
 
     /**
@@ -1579,19 +1403,12 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, bias,
-                initialMg, initialGg, listener);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] bias, final Matrix initialMg,
+            final Matrix initialGg, final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, bias, initialMg, initialGg, listener);
     }
 
     /**
@@ -1643,20 +1460,12 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, bias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] bias, final Matrix initialMg,
+            final Matrix initialGg, final double[] accelerometerBias, final Matrix accelerometerMa) {
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, bias, initialMg, initialGg, accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -1709,21 +1518,13 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] bias, final Matrix initialMg,
+            final Matrix initialGg, final double[] accelerometerBias, final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, bias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa,
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, bias, initialMg, initialGg, accelerometerBias, accelerometerMa,
                 listener);
     }
 
@@ -1774,20 +1575,12 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, bias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix bias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa) {
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, bias, initialMg, initialGg, accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -1839,21 +1632,13 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public RANSACRobustKnownBiasTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix bias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix bias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, bias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa,
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, bias, initialMg, initialGg, accelerometerBias, accelerometerMa,
                 listener);
     }
 
@@ -1904,9 +1689,7 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                              false if inliers only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepInliersEnabled(
-            final boolean computeAndKeepInliers)
-            throws LockedException {
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1930,9 +1713,7 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                false if residuals only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepResidualsEnabled(
-            final boolean computeAndKeepResiduals)
-            throws LockedException {
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1948,8 +1729,7 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
      * @throws CalibrationException if estimation fails for numerical reasons.
      */
     @Override
-    public void calibrate() throws LockedException, NotReadyException,
-            CalibrationException {
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1959,7 +1739,7 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
 
         final RANSACRobustEstimator<PreliminaryResult> innerEstimator =
                 new RANSACRobustEstimator<>(
-                        new RANSACRobustEstimatorListener<PreliminaryResult>() {
+                        new RANSACRobustEstimatorListener<>() {
                             @Override
                             public double getThreshold() {
                                 return mThreshold;
@@ -1977,14 +1757,12 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
 
                             @Override
                             public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<PreliminaryResult> solutions) {
+                                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                                 computePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override
-                            public double computeResidual(
-                                    final PreliminaryResult currentEstimation, final int i) {
+                            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
                                 return computeError(mMeasurements.get(i), currentEstimation);
                             }
 
@@ -1994,36 +1772,30 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
                             }
 
                             @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
                             public void onEstimateNextIteration(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final int iteration) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                                 if (mListener != null) {
                                     mListener.onCalibrateNextIteration(
-                                            RANSACRobustKnownBiasTurntableGyroscopeCalibrator.this,
-                                            iteration);
+                                            RANSACRobustKnownBiasTurntableGyroscopeCalibrator.this, iteration);
                                 }
                             }
 
                             @Override
                             public void onEstimateProgressChange(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final float progress) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                                 if (mListener != null) {
                                     mListener.onCalibrateProgressChange(
-                                            RANSACRobustKnownBiasTurntableGyroscopeCalibrator.this,
-                                            progress);
+                                            RANSACRobustKnownBiasTurntableGyroscopeCalibrator.this, progress);
                                 }
                             }
                         });
@@ -2036,10 +1808,8 @@ public class RANSACRobustKnownBiasTurntableGyroscopeCalibrator extends
             }
 
             mInliersData = null;
-            innerEstimator.setComputeAndKeepInliersEnabled(
-                    mComputeAndKeepInliers || mRefineResult);
-            innerEstimator.setComputeAndKeepResidualsEnabled(
-                    mComputeAndKeepResiduals || mRefineResult);
+            innerEstimator.setComputeAndKeepInliersEnabled(mComputeAndKeepInliers || mRefineResult);
+            innerEstimator.setComputeAndKeepResidualsEnabled(mComputeAndKeepResiduals || mRefineResult);
             innerEstimator.setConfidence(mConfidence);
             innerEstimator.setMaxIterations(mMaxIterations);
             innerEstimator.setProgressDelta(mProgressDelta);

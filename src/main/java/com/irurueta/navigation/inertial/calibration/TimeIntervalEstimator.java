@@ -109,8 +109,7 @@ public class TimeIntervalEstimator {
      * @param listener     listener to handle events raised by this estimator.
      * @throws IllegalArgumentException if provided total samples is zero or negative.
      */
-    public TimeIntervalEstimator(final int totalSamples,
-                                 final TimeIntervalEstimatorListener listener) {
+    public TimeIntervalEstimator(final int totalSamples, final TimeIntervalEstimatorListener listener) {
         this(totalSamples);
         mListener = listener;
     }
@@ -166,8 +165,7 @@ public class TimeIntervalEstimator {
      * @param listener listener to handle events raised by this estimator.
      * @throws LockedException if this estimator is running.
      */
-    public void setListener(final TimeIntervalEstimatorListener listener)
-            throws LockedException {
+    public void setListener(final TimeIntervalEstimatorListener listener) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -191,8 +189,7 @@ public class TimeIntervalEstimator {
      * @return last provided timestamp or null.
      */
     public Time getLastTimestampAsTime() {
-        return mLastTimestamp != null ?
-                new Time(mLastTimestamp, TimeUnit.SECOND) : null;
+        return mLastTimestamp != null ? new Time(mLastTimestamp, TimeUnit.SECOND) : null;
     }
 
     /**
@@ -335,8 +332,8 @@ public class TimeIntervalEstimator {
      * @throws LockedException if estimator is currently running.
      */
     public boolean addTimestamp(final Time timestamp) throws LockedException {
-        return addTimestamp(TimeConverter.convert(timestamp.getValue().doubleValue(),
-                timestamp.getUnit(), TimeUnit.SECOND));
+        return addTimestamp(TimeConverter.convert(timestamp.getValue().doubleValue(), timestamp.getUnit(),
+                TimeUnit.SECOND));
     }
 
     /**

@@ -23,6 +23,6 @@ import com.irurueta.units.MagneticFluxDensityUnit;
  * Listener for {@link WindowedMagneticFluxDensityTriadNoiseEstimator} to handle generated events.
  */
 public interface WindowedMagneticFluxDensityTriadNoiseEstimatorListener extends
-        WindowedTriadNoiseEstimatorListener<MagneticFluxDensityUnit, MagneticFluxDensity,
-                MagneticFluxDensityTriad, WindowedMagneticFluxDensityTriadNoiseEstimator> {
+        WindowedTriadNoiseEstimatorListener<MagneticFluxDensityUnit, MagneticFluxDensity, MagneticFluxDensityTriad,
+                WindowedMagneticFluxDensityTriadNoiseEstimator> {
 }

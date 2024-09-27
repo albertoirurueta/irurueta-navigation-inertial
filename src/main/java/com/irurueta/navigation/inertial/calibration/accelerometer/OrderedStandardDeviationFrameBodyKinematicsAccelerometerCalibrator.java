@@ -24,8 +24,7 @@ import java.util.List;
  * Defines an accelerometer calibrator using ordered collections of
  * {@link StandardDeviationFrameBodyKinematics} measurements.
  */
-public interface OrderedStandardDeviationFrameBodyKinematicsAccelerometerCalibrator extends
-        AccelerometerCalibrator {
+public interface OrderedStandardDeviationFrameBodyKinematicsAccelerometerCalibrator extends AccelerometerCalibrator {
 
     /**
      * Gets a list of body kinematics measurements taken at different
@@ -64,7 +63,5 @@ public interface OrderedStandardDeviationFrameBodyKinematicsAccelerometerCalibra
      *                     frames (positions, orientations and velocities).
      * @throws LockedException if calibrator is currently running.
      */
-    void setMeasurements(
-            final List<StandardDeviationFrameBodyKinematics> measurements)
-            throws LockedException;
+    void setMeasurements(final List<StandardDeviationFrameBodyKinematics> measurements) throws LockedException;
 }

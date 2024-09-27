@@ -105,9 +105,7 @@ public class MSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCalibr
      */
     public MSACRobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg) {
         super(sequences, initialBias, initialMg, initialGg);
     }
 
@@ -131,9 +129,7 @@ public class MSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCalibr
      */
     public MSACRobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg,
             final RobustEasyGyroscopeCalibratorListener listener) {
         super(sequences, initialBias, initialMg, initialGg, listener);
     }
@@ -156,9 +152,7 @@ public class MSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCalibr
      */
     public MSACRobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg) {
         super(sequences, initialBias, initialMg, initialGg);
     }
 
@@ -182,9 +176,7 @@ public class MSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCalibr
      */
     public MSACRobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
             final RobustEasyGyroscopeCalibratorListener listener) {
         super(sequences, initialBias, initialMg, initialGg, listener);
     }
@@ -213,11 +205,8 @@ public class MSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCalibr
      */
     public MSACRobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa) {
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
+            final double[] accelerometerBias, final Matrix accelerometerMa) {
         super(sequences, initialBias, initialMg, initialGg,
                 accelerometerBias, accelerometerMa);
     }
@@ -248,14 +237,10 @@ public class MSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCalibr
      */
     public MSACRobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
+            final double[] accelerometerBias, final Matrix accelerometerMa,
             final RobustEasyGyroscopeCalibratorListener listener) {
-        super(sequences, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, listener);
+        super(sequences, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, listener);
     }
 
     /**
@@ -281,13 +266,9 @@ public class MSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCalibr
      */
     public MSACRobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-        super(sequences, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+        super(sequences, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -315,13 +296,206 @@ public class MSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCalibr
      */
     public MSACRobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEasyGyroscopeCalibratorListener listener) {
-        super(sequences, initialBias, initialMg, initialGg,
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustEasyGyroscopeCalibratorListener listener) {
+        super(sequences, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa, listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param sequences                     collection of sequences containing timestamped body
+     *                                      kinematics measurements.
+     * @param commonAxisUsed                indicates whether z-axis is
+     *                                      assumed to be common for
+     *                                      accelerometer and gyroscope.
+     * @param estimateGDependentCrossBiases true if G-dependent cross biases
+     *                                      will be estimated, false
+     *                                      otherwise.
+     * @param initialBias                   initial gyroscope bias to be used to find a
+     *                                      solution. This must be 3x1 and is expressed
+     *                                      in radians per second (rad/s).
+     * @param initialMg                     initial gyroscope scale factors and cross coupling
+     *                                      errors matrix. Must be 3x3.
+     * @param initialGg                     initial gyroscope G-dependent cross biases
+     *                                      introduced on the gyroscope by the specific forces
+     *                                      sensed by the accelerometer. Must be 3x3.
+     * @throws IllegalArgumentException if any of the provided values does
+     *                                  not have proper size.
+     */
+    public MSACRobustEasyGyroscopeCalibrator(
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg) {
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param sequences                     collection of sequences containing timestamped body
+     *                                      kinematics measurements.
+     * @param commonAxisUsed                indicates whether z-axis is
+     *                                      assumed to be common for
+     *                                      accelerometer and gyroscope.
+     * @param estimateGDependentCrossBiases true if G-dependent cross biases
+     *                                      will be estimated, false
+     *                                      otherwise.
+     * @param initialBias                   initial gyroscope bias to be used to find a
+     *                                      solution. This must be 3x1 and is expressed
+     *                                      in radians per second (rad/s).
+     * @param initialMg                     initial gyroscope scale factors and cross coupling
+     *                                      errors matrix. Must be 3x3.
+     * @param initialGg                     initial gyroscope G-dependent cross biases
+     *                                      introduced on the gyroscope by the specific forces
+     *                                      sensed by the accelerometer. Must be 3x3.
+     * @param listener                      listener to handle events raised by this
+     *                                      calibrator.
+     * @throws IllegalArgumentException if any of the provided values does
+     *                                  not have proper size.
+     */
+    public MSACRobustEasyGyroscopeCalibrator(
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final RobustEasyGyroscopeCalibratorListener listener) {
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param sequences                     collection of sequences containing timestamped body
+     *                                      kinematics measurements.
+     * @param commonAxisUsed                indicates whether z-axis is
+     *                                      assumed to be common for
+     *                                      accelerometer and gyroscope.
+     * @param estimateGDependentCrossBiases true if G-dependent cross biases
+     *                                      will be estimated, false
+     *                                      otherwise.
+     * @param initialBias                   initial gyroscope bias to be used to find a
+     *                                      solution. This must have length 3 and is expressed
+     *                                      in radians per second (rad/s).
+     * @param initialMg                     initial gyroscope scale factors and cross coupling
+     *                                      errors matrix. Must be 3x3.
+     * @param initialGg                     initial gyroscope G-dependent cross biases
+     *                                      introduced on the gyroscope by the specific forces
+     *                                      sensed by the accelerometer. Must be 3x3.
+     * @throws IllegalArgumentException if any of the provided values does
+     *                                  not have proper size.
+     */
+    public MSACRobustEasyGyroscopeCalibrator(
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg) {
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param sequences                     collection of sequences containing timestamped body
+     *                                      kinematics measurements.
+     * @param commonAxisUsed                indicates whether z-axis is
+     *                                      assumed to be common for
+     *                                      accelerometer and gyroscope.
+     * @param estimateGDependentCrossBiases true if G-dependent cross biases
+     *                                      will be estimated, false
+     *                                      otherwise.
+     * @param initialBias                   initial gyroscope bias to be used to find a
+     *                                      solution. This must have length 3 and is expressed
+     *                                      in radians per second (rad/s).
+     * @param initialMg                     initial gyroscope scale factors and cross coupling
+     *                                      errors matrix. Must be 3x3.
+     * @param initialGg                     initial gyroscope G-dependent cross biases
+     *                                      introduced on the gyroscope by the specific forces
+     *                                      sensed by the accelerometer. Must be 3x3.
+     * @param listener                      listener to handle events raised by this
+     *                                      calibrator.
+     * @throws IllegalArgumentException if any of the provided values does
+     *                                  not have proper size.
+     */
+    public MSACRobustEasyGyroscopeCalibrator(
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final RobustEasyGyroscopeCalibratorListener listener) {
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param sequences                     collection of sequences containing timestamped body
+     *                                      kinematics measurements.
+     * @param commonAxisUsed                indicates whether z-axis is
+     *                                      assumed to be common for
+     *                                      accelerometer and gyroscope.
+     * @param estimateGDependentCrossBiases true if G-dependent cross biases
+     *                                      will be estimated, false
+     *                                      otherwise.
+     * @param initialBias                   initial gyroscope bias to be used to find a
+     *                                      solution. This must have length 3 and is expressed
+     *                                      in radians per second (rad/s).
+     * @param initialMg                     initial gyroscope scale factors and cross coupling
+     *                                      errors matrix. Must be 3x3.
+     * @param initialGg                     initial gyroscope G-dependent cross biases
+     *                                      introduced on the gyroscope by the specific forces
+     *                                      sensed by the accelerometer. Must be 3x3.
+     * @param accelerometerBias             known accelerometer bias. This
+     *                                      must have length 3 and is
+     *                                      expressed in meters per squared
+     *                                      second (m/s^2).
+     * @param accelerometerMa               known accelerometer scale factors
+     *                                      and cross coupling matrix. Must
+     *                                      be 3x3.
+     * @throws IllegalArgumentException if any of the provided values does
+     *                                  not have proper size.
+     */
+    public MSACRobustEasyGyroscopeCalibrator(
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
+            final Matrix accelerometerMa) {
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param sequences                     collection of sequences containing timestamped body
+     *                                      kinematics measurements.
+     * @param commonAxisUsed                indicates whether z-axis is
+     *                                      assumed to be common for
+     *                                      accelerometer and gyroscope.
+     * @param estimateGDependentCrossBiases true if G-dependent cross biases
+     *                                      will be estimated, false
+     *                                      otherwise.
+     * @param initialBias                   initial gyroscope bias to be used to find a
+     *                                      solution. This must have length 3 and is expressed
+     *                                      in radians per second (rad/s).
+     * @param initialMg                     initial gyroscope scale factors and cross coupling
+     *                                      errors matrix. Must be 3x3.
+     * @param initialGg                     initial gyroscope G-dependent cross biases
+     *                                      introduced on the gyroscope by the specific forces
+     *                                      sensed by the accelerometer. Must be 3x3.
+     * @param accelerometerBias             known accelerometer bias. This
+     *                                      must have length 3 and is
+     *                                      expressed in meters per squared
+     *                                      second (m/s^2).
+     * @param accelerometerMa               known accelerometer scale factors
+     *                                      and cross coupling matrix. Must
+     *                                      be 3x3.
+     * @param listener                      listener to handle events raised by this
+     *                                      calibrator.
+     * @throws IllegalArgumentException if any of the provided values does
+     *                                  not have proper size.
+     */
+    public MSACRobustEasyGyroscopeCalibrator(
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
+            final Matrix accelerometerMa, final RobustEasyGyroscopeCalibratorListener listener) {
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg,
                 accelerometerBias, accelerometerMa, listener);
     }
 
@@ -344,144 +518,6 @@ public class MSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCalibr
      * @param initialGg                     initial gyroscope G-dependent cross biases
      *                                      introduced on the gyroscope by the specific forces
      *                                      sensed by the accelerometer. Must be 3x3.
-     * @throws IllegalArgumentException if any of the provided values does
-     *                                  not have proper size.
-     */
-    public MSACRobustEasyGyroscopeCalibrator(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
-        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                initialBias, initialMg, initialGg);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param sequences                     collection of sequences containing timestamped body
-     *                                      kinematics measurements.
-     * @param commonAxisUsed                indicates whether z-axis is
-     *                                      assumed to be common for
-     *                                      accelerometer and gyroscope.
-     * @param estimateGDependentCrossBiases true if G-dependent cross biases
-     *                                      will be estimated, false
-     *                                      otherwise.
-     * @param initialBias                   initial gyroscope bias to be used to find a
-     *                                      solution. This must be 3x1 and is expressed
-     *                                      in radians per second (rad/s).
-     * @param initialMg                     initial gyroscope scale factors and cross coupling
-     *                                      errors matrix. Must be 3x3.
-     * @param initialGg                     initial gyroscope G-dependent cross biases
-     *                                      introduced on the gyroscope by the specific forces
-     *                                      sensed by the accelerometer. Must be 3x3.
-     * @param listener                      listener to handle events raised by this
-     *                                      calibrator.
-     * @throws IllegalArgumentException if any of the provided values does
-     *                                  not have proper size.
-     */
-    public MSACRobustEasyGyroscopeCalibrator(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustEasyGyroscopeCalibratorListener listener) {
-        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                initialBias, initialMg, initialGg, listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param sequences                     collection of sequences containing timestamped body
-     *                                      kinematics measurements.
-     * @param commonAxisUsed                indicates whether z-axis is
-     *                                      assumed to be common for
-     *                                      accelerometer and gyroscope.
-     * @param estimateGDependentCrossBiases true if G-dependent cross biases
-     *                                      will be estimated, false
-     *                                      otherwise.
-     * @param initialBias                   initial gyroscope bias to be used to find a
-     *                                      solution. This must have length 3 and is expressed
-     *                                      in radians per second (rad/s).
-     * @param initialMg                     initial gyroscope scale factors and cross coupling
-     *                                      errors matrix. Must be 3x3.
-     * @param initialGg                     initial gyroscope G-dependent cross biases
-     *                                      introduced on the gyroscope by the specific forces
-     *                                      sensed by the accelerometer. Must be 3x3.
-     * @throws IllegalArgumentException if any of the provided values does
-     *                                  not have proper size.
-     */
-    public MSACRobustEasyGyroscopeCalibrator(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
-        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                initialBias, initialMg, initialGg);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param sequences                     collection of sequences containing timestamped body
-     *                                      kinematics measurements.
-     * @param commonAxisUsed                indicates whether z-axis is
-     *                                      assumed to be common for
-     *                                      accelerometer and gyroscope.
-     * @param estimateGDependentCrossBiases true if G-dependent cross biases
-     *                                      will be estimated, false
-     *                                      otherwise.
-     * @param initialBias                   initial gyroscope bias to be used to find a
-     *                                      solution. This must have length 3 and is expressed
-     *                                      in radians per second (rad/s).
-     * @param initialMg                     initial gyroscope scale factors and cross coupling
-     *                                      errors matrix. Must be 3x3.
-     * @param initialGg                     initial gyroscope G-dependent cross biases
-     *                                      introduced on the gyroscope by the specific forces
-     *                                      sensed by the accelerometer. Must be 3x3.
-     * @param listener                      listener to handle events raised by this
-     *                                      calibrator.
-     * @throws IllegalArgumentException if any of the provided values does
-     *                                  not have proper size.
-     */
-    public MSACRobustEasyGyroscopeCalibrator(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustEasyGyroscopeCalibratorListener listener) {
-        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                initialBias, initialMg, initialGg, listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param sequences                     collection of sequences containing timestamped body
-     *                                      kinematics measurements.
-     * @param commonAxisUsed                indicates whether z-axis is
-     *                                      assumed to be common for
-     *                                      accelerometer and gyroscope.
-     * @param estimateGDependentCrossBiases true if G-dependent cross biases
-     *                                      will be estimated, false
-     *                                      otherwise.
-     * @param initialBias                   initial gyroscope bias to be used to find a
-     *                                      solution. This must have length 3 and is expressed
-     *                                      in radians per second (rad/s).
-     * @param initialMg                     initial gyroscope scale factors and cross coupling
-     *                                      errors matrix. Must be 3x3.
-     * @param initialGg                     initial gyroscope G-dependent cross biases
-     *                                      introduced on the gyroscope by the specific forces
-     *                                      sensed by the accelerometer. Must be 3x3.
      * @param accelerometerBias             known accelerometer bias. This
      *                                      must have length 3 and is
      *                                      expressed in meters per squared
@@ -494,104 +530,10 @@ public class MSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCalibr
      */
     public MSACRobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param sequences                     collection of sequences containing timestamped body
-     *                                      kinematics measurements.
-     * @param commonAxisUsed                indicates whether z-axis is
-     *                                      assumed to be common for
-     *                                      accelerometer and gyroscope.
-     * @param estimateGDependentCrossBiases true if G-dependent cross biases
-     *                                      will be estimated, false
-     *                                      otherwise.
-     * @param initialBias                   initial gyroscope bias to be used to find a
-     *                                      solution. This must have length 3 and is expressed
-     *                                      in radians per second (rad/s).
-     * @param initialMg                     initial gyroscope scale factors and cross coupling
-     *                                      errors matrix. Must be 3x3.
-     * @param initialGg                     initial gyroscope G-dependent cross biases
-     *                                      introduced on the gyroscope by the specific forces
-     *                                      sensed by the accelerometer. Must be 3x3.
-     * @param accelerometerBias             known accelerometer bias. This
-     *                                      must have length 3 and is
-     *                                      expressed in meters per squared
-     *                                      second (m/s^2).
-     * @param accelerometerMa               known accelerometer scale factors
-     *                                      and cross coupling matrix. Must
-     *                                      be 3x3.
-     * @param listener                      listener to handle events raised by this
-     *                                      calibrator.
-     * @throws IllegalArgumentException if any of the provided values does
-     *                                  not have proper size.
-     */
-    public MSACRobustEasyGyroscopeCalibrator(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEasyGyroscopeCalibratorListener listener) {
-        super(sequences, commonAxisUsed,
-                estimateGDependentCrossBiases, initialBias, initialMg,
-                initialGg, accelerometerBias, accelerometerMa, listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param sequences                     collection of sequences containing timestamped body
-     *                                      kinematics measurements.
-     * @param commonAxisUsed                indicates whether z-axis is
-     *                                      assumed to be common for
-     *                                      accelerometer and gyroscope.
-     * @param estimateGDependentCrossBiases true if G-dependent cross biases
-     *                                      will be estimated, false
-     *                                      otherwise.
-     * @param initialBias                   initial gyroscope bias to be used to find a
-     *                                      solution. This must be 3x1 and is expressed
-     *                                      in radians per second (rad/s).
-     * @param initialMg                     initial gyroscope scale factors and cross coupling
-     *                                      errors matrix. Must be 3x3.
-     * @param initialGg                     initial gyroscope G-dependent cross biases
-     *                                      introduced on the gyroscope by the specific forces
-     *                                      sensed by the accelerometer. Must be 3x3.
-     * @param accelerometerBias             known accelerometer bias. This
-     *                                      must have length 3 and is
-     *                                      expressed in meters per squared
-     *                                      second (m/s^2).
-     * @param accelerometerMa               known accelerometer scale factors
-     *                                      and cross coupling matrix. Must
-     *                                      be 3x3.
-     * @throws IllegalArgumentException if any of the provided values does
-     *                                  not have proper size.
-     */
-    public MSACRobustEasyGyroscopeCalibrator(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa) {
-        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                initialBias, initialMg, initialGg,
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg,
                 accelerometerBias, accelerometerMa);
     }
 
@@ -628,17 +570,11 @@ public class MSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCalibr
      */
     public MSACRobustEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustEasyGyroscopeCalibratorListener listener) {
-        super(sequences, commonAxisUsed,
-                estimateGDependentCrossBiases, initialBias, initialMg,
-                initialGg, accelerometerBias, accelerometerMa, listener);
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final RobustEasyGyroscopeCalibratorListener listener) {
+        super(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, listener);
     }
 
     /**
@@ -678,8 +614,7 @@ public class MSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCalibr
      */
     @SuppressWarnings("DuplicatedCode")
     @Override
-    public void calibrate() throws LockedException, NotReadyException,
-            CalibrationException {
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -689,7 +624,7 @@ public class MSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCalibr
 
         final MSACRobustEstimator<PreliminaryResult> innerEstimator =
                 new MSACRobustEstimator<>(
-                        new MSACRobustEstimatorListener<PreliminaryResult>() {
+                        new MSACRobustEstimatorListener<>() {
                             @Override
                             public double getThreshold() {
                                 return mThreshold;
@@ -707,15 +642,13 @@ public class MSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCalibr
 
                             @Override
                             public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<PreliminaryResult> solutions) {
+                                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                                 computePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override
                             public double computeResidual(
-                                    final PreliminaryResult currentEstimation,
-                                    final int i) {
+                                    final PreliminaryResult currentEstimation, final int i) {
                                 return computeError(mSequences.get(i), currentEstimation);
                             }
 
@@ -725,36 +658,30 @@ public class MSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCalibr
                             }
 
                             @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
-                            public void onEstimateNextIteration(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final int iteration) {
+                            public void onEstimateNextIteration(final RobustEstimator<PreliminaryResult> estimator,
+                                                                final int iteration) {
                                 if (mListener != null) {
                                     mListener.onCalibrateNextIteration(
-                                            MSACRobustEasyGyroscopeCalibrator.this,
-                                            iteration);
+                                            MSACRobustEasyGyroscopeCalibrator.this, iteration);
                                 }
                             }
 
                             @Override
-                            public void onEstimateProgressChange(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final float progress) {
+                            public void onEstimateProgressChange(final RobustEstimator<PreliminaryResult> estimator,
+                                                                 final float progress) {
                                 if (mListener != null) {
                                     mListener.onCalibrateProgressChange(
-                                            MSACRobustEasyGyroscopeCalibrator.this,
-                                            progress);
+                                            MSACRobustEasyGyroscopeCalibrator.this, progress);
                                 }
                             }
                         });

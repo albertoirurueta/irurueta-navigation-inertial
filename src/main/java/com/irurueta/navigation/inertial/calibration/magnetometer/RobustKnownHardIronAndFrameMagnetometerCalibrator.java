@@ -68,9 +68,8 @@ import java.util.List;
  * - mBtrue is ground-truth magnetic flux density. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
-public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implements
-        MagnetometerNonLinearCalibrator, KnownHardIronMagnetometerCalibrator,
-        OrderedStandardDeviationFrameBodyMagneticFluxDensityMagnetometerCalibrator,
+public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implements MagnetometerNonLinearCalibrator,
+        KnownHardIronMagnetometerCalibrator, OrderedStandardDeviationFrameBodyMagneticFluxDensityMagnetometerCalibrator,
         QualityScoredMagnetometerCalibrator {
 
     /**
@@ -98,8 +97,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
     /**
      * Default robust estimator method when none is provided.
      */
-    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD =
-            RobustEstimatorMethod.LMedS;
+    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD = RobustEstimatorMethod.LMEDS;
 
     /**
      * Indicates that result is refined by default using a non-linear calibrator
@@ -450,8 +448,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @param listener       listener to handle events raised by this calibrator.
      */
     protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
         this(commonAxisUsed);
         mListener = listener;
     }
@@ -466,8 +463,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         this(measurements);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -483,8 +479,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @param listener       listener to handle events raised by this calibrator.
      */
     protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
         this(measurements, commonAxisUsed);
         mListener = listener;
@@ -509,8 +504,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronX(
-            final double hardIronX) throws LockedException {
+    public void setHardIronX(final double hardIronX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -536,8 +530,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronY(
-            final double hardIronY) throws LockedException {
+    public void setHardIronY(final double hardIronY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -563,8 +556,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronZ(
-            final double hardIronZ) throws LockedException {
+    public void setHardIronZ(final double hardIronZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -578,8 +570,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public MagneticFluxDensity getHardIronXAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mHardIronX,
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(mHardIronX, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -588,8 +579,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @param result instance where result will be stored.
      */
     @Override
-    public void getHardIronXAsMagneticFluxDensity(
-            final MagneticFluxDensity result) {
+    public void getHardIronXAsMagneticFluxDensity(final MagneticFluxDensity result) {
         result.setValue(mHardIronX);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
@@ -601,8 +591,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronX(final MagneticFluxDensity hardIronX)
-            throws LockedException {
+    public void setHardIronX(final MagneticFluxDensity hardIronX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -616,8 +605,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public MagneticFluxDensity getHardIronYAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mHardIronY,
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(mHardIronY, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -626,8 +614,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @param result instance where result will be stored.
      */
     @Override
-    public void getHardIronYAsMagneticFluxDensity(
-            final MagneticFluxDensity result) {
+    public void getHardIronYAsMagneticFluxDensity(final MagneticFluxDensity result) {
         result.setValue(mHardIronY);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
@@ -639,8 +626,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronY(final MagneticFluxDensity hardIronY)
-            throws LockedException {
+    public void setHardIronY(final MagneticFluxDensity hardIronY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -654,8 +640,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public MagneticFluxDensity getHardIronZAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mHardIronZ,
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(mHardIronZ, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -664,8 +649,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @param result instance where result will be stored.
      */
     @Override
-    public void getHardIronZAsMagneticFluxDensity(
-            final MagneticFluxDensity result) {
+    public void getHardIronZAsMagneticFluxDensity(final MagneticFluxDensity result) {
         result.setValue(mHardIronZ);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
@@ -677,8 +661,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronZ(final MagneticFluxDensity hardIronZ)
-            throws LockedException {
+    public void setHardIronZ(final MagneticFluxDensity hardIronZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -696,9 +679,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public void setHardIronCoordinates(
-            final double hardIronX,
-            final double hardIronY,
-            final double hardIronZ) throws LockedException {
+            final double hardIronX, final double hardIronY, final double hardIronZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -717,8 +698,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public void setHardIronCoordinates(
-            final MagneticFluxDensity hardIronX,
-            final MagneticFluxDensity hardIronY,
+            final MagneticFluxDensity hardIronX, final MagneticFluxDensity hardIronY,
             final MagneticFluxDensity hardIronZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -735,8 +715,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public MagneticFluxDensityTriad getHardIronAsTriad() {
-        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,
-                mHardIronX, mHardIronY, mHardIronZ);
+        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, mHardIronX, mHardIronY, mHardIronZ);
     }
 
     /**
@@ -746,9 +725,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public void getHardIronAsTriad(final MagneticFluxDensityTriad result) {
-        result.setValueCoordinatesAndUnit(
-                mHardIronX, mHardIronY, mHardIronZ,
-                MagneticFluxDensityUnit.TESLA);
+        result.setValueCoordinatesAndUnit(mHardIronX, mHardIronY, mHardIronZ, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -758,8 +735,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIron(final MagneticFluxDensityTriad hardIron)
-            throws LockedException {
+    public void setHardIron(final MagneticFluxDensityTriad hardIron) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -786,8 +762,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSx(
-            final double initialSx) throws LockedException {
+    public void setInitialSx(final double initialSx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -811,8 +786,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSy(
-            final double initialSy) throws LockedException {
+    public void setInitialSy(final double initialSy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -836,8 +810,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSz(
-            final double initialSz) throws LockedException {
+    public void setInitialSz(final double initialSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -861,8 +834,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMxy(
-            final double initialMxy) throws LockedException {
+    public void setInitialMxy(final double initialMxy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -886,8 +858,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMxz(
-            final double initialMxz) throws LockedException {
+    public void setInitialMxz(final double initialMxz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -911,8 +882,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMyx(
-            final double initialMyx) throws LockedException {
+    public void setInitialMyx(final double initialMyx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -936,8 +906,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMyz(
-            final double initialMyz) throws LockedException {
+    public void setInitialMyz(final double initialMyz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -961,8 +930,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMzx(
-            final double initialMzx) throws LockedException {
+    public void setInitialMzx(final double initialMzx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -986,8 +954,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMzy(
-            final double initialMzy) throws LockedException {
+    public void setInitialMzy(final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1004,9 +971,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx,
-            final double initialSy,
-            final double initialSz) throws LockedException {
+            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1028,12 +993,8 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public void setInitialCrossCouplingErrors(
-            final double initialMxy,
-            final double initialMxz,
-            final double initialMyx,
-            final double initialMyz,
-            final double initialMzx,
-            final double initialMzy) throws LockedException {
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1061,21 +1022,14 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public void setInitialScalingFactorsAndCrossCouplingErrors(
-            final double initialSx,
-            final double initialSy,
-            final double initialSz,
-            final double initialMxy,
-            final double initialMxz,
-            final double initialMyx,
-            final double initialMyz,
-            final double initialMzx,
-            final double initialMzy) throws LockedException {
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
+        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
     }
 
     /**
@@ -1086,8 +1040,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public double[] getHardIron() {
-        final double[] result = new double[
-                BodyMagneticFluxDensity.COMPONENTS];
+        final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
         getHardIron(result);
         return result;
     }
@@ -1142,8 +1095,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
     public Matrix getHardIronMatrix() {
         Matrix result;
         try {
-            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                    1);
+            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
             getHardIronMatrix(result);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -1160,8 +1112,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public void getHardIronMatrix(final Matrix result) {
-        if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mHardIronX);
@@ -1181,8 +1132,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
         if (mRunning) {
             throw new LockedException();
         }
-        if (hardIron.getRows() != BodyMagneticFluxDensity.COMPONENTS
-                || hardIron.getColumns() != 1) {
+        if (hardIron.getRows() != BodyMagneticFluxDensity.COMPONENTS || hardIron.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -1200,8 +1150,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
     public Matrix getInitialMm() {
         Matrix result;
         try {
-            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                    BodyMagneticFluxDensity.COMPONENTS);
+            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
             getInitialMm(result);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -1218,8 +1167,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public void getInitialMm(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS ||
-                result.getColumns() != BodyKinematics.COMPONENTS) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mInitialSx);
@@ -1243,13 +1191,11 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setInitialMm(final Matrix initialMm)
-            throws LockedException {
+    public void setInitialMm(final Matrix initialMm) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
-        if (initialMm.getRows() != BodyKinematics.COMPONENTS ||
-                initialMm.getColumns() != BodyKinematics.COMPONENTS) {
+        if (initialMm.getRows() != BodyKinematics.COMPONENTS || initialMm.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -1307,8 +1253,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public void setMeasurements(
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements)
-            throws LockedException {
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1360,8 +1305,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException if estimator is currently running.
      */
     @Override
-    public void setCommonAxisUsed(final boolean commonAxisUsed)
-            throws LockedException {
+    public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1385,8 +1329,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException if calibrator is currently running.
      */
     public void setListener(
-            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener)
-            throws LockedException {
+            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1439,8 +1382,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @param magneticModel Earth's magnetic model to be set.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setMagneticModel(final WorldMagneticModel magneticModel)
-            throws LockedException {
+    public void setMagneticModel(final WorldMagneticModel magneticModel) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1466,8 +1408,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                             or not for preliminary solutions.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setLinearCalibratorUsed(final boolean linearCalibratorUsed)
-            throws LockedException {
+    public void setLinearCalibratorUsed(final boolean linearCalibratorUsed) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1497,8 +1438,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                                   initial linear solution, false otherwise.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setPreliminarySolutionRefined(final boolean preliminarySolutionRefined)
-            throws LockedException {
+    public void setPreliminarySolutionRefined(final boolean preliminarySolutionRefined) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1530,8 +1470,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
         if (mRunning) {
             throw new LockedException();
         }
-        if (progressDelta < MIN_PROGRESS_DELTA ||
-                progressDelta > MAX_PROGRESS_DELTA) {
+        if (progressDelta < MIN_PROGRESS_DELTA || progressDelta > MAX_PROGRESS_DELTA) {
             throw new IllegalArgumentException();
         }
         mProgressDelta = progressDelta;
@@ -1683,8 +1622,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setQualityScores(final double[] qualityScores)
-            throws LockedException {
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
     }
 
     /**
@@ -1742,8 +1680,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(0, 0) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 0) : null;
     }
 
     /**
@@ -1753,8 +1690,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(1, 1) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 1) : null;
     }
 
     /**
@@ -1764,8 +1700,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(2, 2) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 2) : null;
     }
 
     /**
@@ -1775,8 +1710,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(0, 1) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 1) : null;
     }
 
     /**
@@ -1786,8 +1720,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(0, 2) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 2) : null;
     }
 
     /**
@@ -1797,8 +1730,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(1, 0) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 0) : null;
     }
 
     /**
@@ -1808,8 +1740,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(1, 2) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 2) : null;
     }
 
     /**
@@ -1819,8 +1750,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(2, 0) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 0) : null;
     }
 
     /**
@@ -1830,8 +1760,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(2, 1) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 1) : null;
     }
 
     /**
@@ -1885,8 +1814,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided value is less than {@link #MINIMUM_MEASUREMENTS}.
      */
-    public void setPreliminarySubsetSize(final int preliminarySubsetSize)
-            throws LockedException {
+    public void setPreliminarySubsetSize(final int preliminarySubsetSize) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1896,18 +1824,6 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
 
         mPreliminarySubsetSize = preliminarySubsetSize;
     }
-
-    /**
-     * Estimates magnetometer calibration parameters containing soft-iron
-     * scale factors and cross-coupling errors.
-     *
-     * @throws LockedException      if calibrator is currently running.
-     * @throws NotReadyException    if calibrator is not ready.
-     * @throws CalibrationException if estimation fails for numerical reasons.
-     */
-    @Override
-    public abstract void calibrate() throws LockedException, NotReadyException,
-            CalibrationException;
 
     /**
      * Returns method being used for robust estimation.
@@ -1923,21 +1839,14 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @param method robust estimator method.
      * @return a robust known frame magnetometer calibrator.
      */
-    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator();
-            case LMedS:
-                return new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator();
-            case MSAC:
-                return new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator();
-            case PROSAC:
-                return new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator();
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator();
-        }
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator();
+            case LMEDS -> new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator();
+            case MSAC -> new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator();
+            case PROSAC -> new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator();
+            default -> new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator();
+        };
     }
 
     /**
@@ -1951,24 +1860,13 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
     public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(listener);
+            case LMEDS -> new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(listener);
+            case MSAC -> new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(listener);
+            case PROSAC -> new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(listener);
+            default -> new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(listener);
+        };
     }
 
     /**
@@ -1983,24 +1881,13 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
     public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements);
-            case LMedS:
-                return new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements);
-            case MSAC:
-                return new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements);
+            case LMEDS -> new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements);
+            case MSAC -> new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements);
+            case PROSAC -> new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements);
+            default -> new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements);
+        };
     }
 
     /**
@@ -2017,24 +1904,13 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, listener);
+            case MSAC -> new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, listener);
+            default -> new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, listener);
+        };
     }
 
     /**
@@ -2046,26 +1922,14 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @return a robust known frame magnetometer calibrator.
      */
     public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
-            final boolean commonAxisUsed,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        commonAxisUsed);
-        }
+            final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed);
+            case MSAC -> new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed);
+            default -> new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed);
+        };
     }
 
     /**
@@ -2078,27 +1942,15 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @return a robust known frame magnetometer calibrator.
      */
     public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
-            final boolean commonAxisUsed,
-            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
+            final boolean commonAxisUsed, final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        commonAxisUsed, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        commonAxisUsed, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        commonAxisUsed, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        commonAxisUsed, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -2113,27 +1965,15 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @return a robust known frame magnetometer calibrator.
      */
     public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, commonAxisUsed);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, commonAxisUsed);
+            default -> new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, commonAxisUsed);
+        };
     }
 
     /**
@@ -2149,28 +1989,21 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @return a robust known frame magnetometer calibrator.
      */
     public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
+                    measurements, commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
+                    measurements, commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
+                    measurements, commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
+                    measurements, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
+                    measurements, commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -2185,23 +2018,14 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                                  is smaller than 4 samples.
      */
     public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator();
-            case LMedS:
-                return new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator();
-            case MSAC:
-                return new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator();
-            case PROSAC:
-                return new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        qualityScores);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        qualityScores);
-        }
+            final double[] qualityScores, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator();
+            case LMEDS -> new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator();
+            case MSAC -> new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator();
+            case PROSAC -> new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores);
+            default -> new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores);
+        };
     }
 
     /**
@@ -2218,27 +2042,15 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                                  is smaller than 4 samples.
      */
     public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
+            final double[] qualityScores, final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        qualityScores, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        qualityScores, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(listener);
+            case LMEDS -> new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(listener);
+            case MSAC -> new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(listener);
+            case PROSAC -> new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, listener);
+            default -> new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, listener);
+        };
     }
 
     /**
@@ -2256,27 +2068,15 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                                  is smaller than 4 samples.
      */
     public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements);
-            case LMedS:
-                return new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements);
-            case MSAC:
-                return new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        qualityScores, measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        qualityScores, measurements);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements);
+            case LMEDS -> new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements);
+            case MSAC -> new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements);
+            case PROSAC -> new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, measurements);
+            default -> new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, measurements);
+        };
     }
 
     /**
@@ -2295,28 +2095,18 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                                  is smaller than 4 samples.
      */
     public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        qualityScores, measurements, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        qualityScores, measurements, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, listener);
+            case MSAC -> new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, measurements,
+                    listener);
+            default -> new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, measurements,
+                    listener);
+        };
     }
 
     /**
@@ -2333,27 +2123,14 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                                  is smaller than 4 samples.
      */
     public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final boolean commonAxisUsed,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        qualityScores, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        qualityScores, commonAxisUsed);
-        }
+            final double[] qualityScores, final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed);
+            case MSAC -> new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, commonAxisUsed);
+            default -> new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, commonAxisUsed);
+        };
     }
 
     /**
@@ -2371,28 +2148,18 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                                  is smaller than 4 samples.
      */
     public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final boolean commonAxisUsed,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        commonAxisUsed, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        commonAxisUsed, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        commonAxisUsed, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        qualityScores, commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        qualityScores, commonAxisUsed, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, commonAxisUsed,
+                    listener);
+            default -> new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, commonAxisUsed,
+                    listener);
+        };
     }
 
     /**
@@ -2412,28 +2179,17 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                                  is smaller than 4 samples.
      */
     public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed);
-        }
+            final double[] qualityScores, final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(measurements, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, measurements,
+                    commonAxisUsed);
+            default -> new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(qualityScores, measurements,
+                    commonAxisUsed);
+        };
     }
 
     /**
@@ -2454,31 +2210,21 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                                  is smaller than 4 samples.
      */
     public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
+                    measurements, commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
+                    measurements, commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
+                    measurements, commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -2527,8 +2273,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
     public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
-        return create(measurements, listener,
-                DEFAULT_ROBUST_METHOD);
+        return create(measurements, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2538,8 +2283,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                       for the accelerometer, gyroscope and magnetometer.
      * @return a robust known frame magnetometer calibrator.
      */
-    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
-            final boolean commonAxisUsed) {
+    public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(final boolean commonAxisUsed) {
         return create(commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2552,10 +2296,8 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @return a robust known frame magnetometer calibrator.
      */
     public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
-            final boolean commonAxisUsed,
-            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
-        return create(commonAxisUsed, listener,
-                DEFAULT_ROBUST_METHOD);
+            final boolean commonAxisUsed, final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
+        return create(commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2569,10 +2311,8 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @return a robust known frame magnetometer calibrator.
      */
     public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
-        return create(measurements, commonAxisUsed,
-                DEFAULT_ROBUST_METHOD);
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
+        return create(measurements, commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2587,11 +2327,9 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @return a robust known frame magnetometer calibrator.
      */
     public static RobustKnownHardIronAndFrameMagnetometerCalibrator create(
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
-        return create(measurements, commonAxisUsed, listener,
-                DEFAULT_ROBUST_METHOD);
+        return create(measurements, commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2615,8 +2353,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @return computed error.
      */
     protected double computeError(
-            final StandardDeviationFrameBodyMagneticFluxDensity measurement,
-            final Matrix preliminaryResult) {
+            final StandardDeviationFrameBodyMagneticFluxDensity measurement, final Matrix preliminaryResult) {
         // The magnetometer model is:
         // mBmeas = ba + (I + Mm) * mBtrue
 
@@ -2625,8 +2362,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
         // [mBmeasy] = [by]     [0  1   0]   [myx   sy  myz]  [mBtruey]
         // [mBmeasz] = [bz]     [0  0   1]   [mzx   mzy sz ]  [mBtruez]
 
-        final BodyMagneticFluxDensity measuredMagneticFluxDensity =
-                measurement.getMagneticFluxDensity();
+        final BodyMagneticFluxDensity measuredMagneticFluxDensity = measurement.getMagneticFluxDensity();
         final ECEFFrame ecefFrame = measurement.getFrame();
 
         final NEDFrame nedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(ecefFrame);
@@ -2636,8 +2372,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
         final double longitude = nedFrame.getLongitude();
         final double height = nedFrame.getHeight();
 
-        final NEDMagneticFluxDensity earthB = mWmmEstimator.estimate(
-                latitude, longitude, height, year);
+        final NEDMagneticFluxDensity earthB = mWmmEstimator.estimate(latitude, longitude, height, year);
 
         final CoordinateTransformation cbn = new CoordinateTransformation(
                 FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
@@ -2659,8 +2394,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
         final double bTrueZ = expectedMagneticFluxDensity.getBz();
 
         try {
-            final Matrix m = Matrix.identity(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            final Matrix m = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             m.add(preliminaryResult);
 
             final Matrix btrue = new Matrix(BodyKinematics.COMPONENTS, 1);
@@ -2691,12 +2425,9 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @param samplesIndices indices of samples picked by the robust estimator.
      * @param solutions      list where estimated preliminary solution will be stored.
      */
-    protected void computePreliminarySolutions(
-            final int[] samplesIndices,
-            final List<Matrix> solutions) {
+    protected void computePreliminarySolutions(final int[] samplesIndices, final List<Matrix> solutions) {
 
-        final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
-                new ArrayList<>();
+        final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements = new ArrayList<>();
 
         for (final int samplesIndex : samplesIndices) {
             measurements.add(mMeasurements.get(samplesIndex));
@@ -2744,8 +2475,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
             final BitSet inliers = mInliersData.getInliers();
             final int nSamples = mMeasurements.size();
 
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> inlierMeasurements =
-                    new ArrayList<>();
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> inlierMeasurements = new ArrayList<>();
             for (int i = 0; i < nSamples; i++) {
                 if (inliers.get(i)) {
                     // sample is inlier
@@ -2793,8 +2523,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @return converted value.
      */
     private static double convertMagneticFluxDensity(final double value, final MagneticFluxDensityUnit unit) {
-        return MagneticFluxDensityConverter.convert(value, unit,
-                MagneticFluxDensityUnit.TESLA);
+        return MagneticFluxDensityConverter.convert(value, unit, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -2804,7 +2533,6 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @return converted value.
      */
     private static double convertMagneticFluxDensity(final MagneticFluxDensity magneticFluxDensity) {
-        return convertMagneticFluxDensity(magneticFluxDensity.getValue().doubleValue(),
-                magneticFluxDensity.getUnit());
+        return convertMagneticFluxDensity(magneticFluxDensity.getValue().doubleValue(), magneticFluxDensity.getUnit());
     }
 }

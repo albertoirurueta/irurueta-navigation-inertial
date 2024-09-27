@@ -114,12 +114,9 @@ public class AttitudeEstimator {
     public void getAttitude(
             final double latitude, final double longitude, final double height,
             final double year, final double fx, final double fy, final double fz,
-            final double bx, final double by, final double bz,
-            final CoordinateTransformation result) {
-        final double declination = mWMMEstimator.getDeclination(
-                latitude, longitude, height, year);
-        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination,
-                result);
+            final double bx, final double by, final double bz, final CoordinateTransformation result) {
+        final double declination = mWMMEstimator.getDeclination(latitude, longitude, height, year);
+        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination, result);
     }
 
     /**
@@ -156,10 +153,8 @@ public class AttitudeEstimator {
             final double latitude, final double longitude, final double height,
             final double year, final double fx, final double fy, final double fz,
             final double bx, final double by, final double bz) {
-        final double declination = mWMMEstimator.getDeclination(
-                latitude, longitude, height, year);
-        return getAttitude(latitude, height, fx, fy, fz, bx, by, bz,
-                declination);
+        final double declination = mWMMEstimator.getDeclination(latitude, longitude, height, year);
+        return getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination);
     }
 
     /**
@@ -194,13 +189,10 @@ public class AttitudeEstimator {
      */
     public void getAttitude(
             final double latitude, final double longitude, final double height,
-            final GregorianCalendar calendar, final double fx, final double fy,
-            final double fz, final double bx, final double by, final double bz,
-            final CoordinateTransformation result) {
-        final double declination = mWMMEstimator.getDeclination(
-                latitude, longitude, height, calendar);
-        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination,
-                result);
+            final GregorianCalendar calendar, final double fx, final double fy, final double fz,
+            final double bx, final double by, final double bz, final CoordinateTransformation result) {
+        final double declination = mWMMEstimator.getDeclination(latitude, longitude, height, calendar);
+        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination, result);
     }
 
     /**
@@ -235,12 +227,10 @@ public class AttitudeEstimator {
      */
     public CoordinateTransformation getAttitude(
             final double latitude, final double longitude, final double height,
-            final GregorianCalendar calendar, final double fx, final double fy,
-            final double fz, final double bx, final double by, final double bz) {
-        final double declination = mWMMEstimator.getDeclination(
-                latitude, longitude, height, calendar);
-        return getAttitude(latitude, height, fx, fy, fz, bx, by, bz,
-                declination);
+            final GregorianCalendar calendar, final double fx, final double fy, final double fz,
+            final double bx, final double by, final double bz) {
+        final double declination = mWMMEstimator.getDeclination(latitude, longitude, height, calendar);
+        return getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination);
     }
 
     /**
@@ -274,14 +264,11 @@ public class AttitudeEstimator {
      * @see WMMEarthMagneticFluxDensityEstimator
      */
     public void getAttitude(
-            final double latitude, final double longitude, final double height,
-            final Date timestamp, final double fx, final double fy,
-            final double fz, final double bx, final double by, final double bz,
+            final double latitude, final double longitude, final double height, final Date timestamp,
+            final double fx, final double fy, final double fz, final double bx, final double by, final double bz,
             final CoordinateTransformation result) {
-        final double declination = mWMMEstimator.getDeclination(
-                latitude, longitude, height, timestamp);
-        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination,
-                result);
+        final double declination = mWMMEstimator.getDeclination(latitude, longitude, height, timestamp);
+        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination, result);
     }
 
     /**
@@ -315,13 +302,10 @@ public class AttitudeEstimator {
      * @see WMMEarthMagneticFluxDensityEstimator
      */
     public CoordinateTransformation getAttitude(
-            final double latitude, final double longitude, final double height,
-            final Date timestamp, final double fx, final double fy,
-            final double fz, final double bx, final double by, final double bz) {
-        final double declination = mWMMEstimator.getDeclination(
-                latitude, longitude, height, timestamp);
-        return getAttitude(latitude, height, fx, fy, fz, bx, by, bz,
-                declination);
+            final double latitude, final double longitude, final double height, final Date timestamp,
+            final double fx, final double fy, final double fz, final double bx, final double by, final double bz) {
+        final double declination = mWMMEstimator.getDeclination(latitude, longitude, height, timestamp);
+        return getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination);
     }
 
     /**
@@ -342,15 +326,10 @@ public class AttitudeEstimator {
      * @see WMMEarthMagneticFluxDensityEstimator
      */
     public void getAttitude(
-            final NEDPosition position,
-            final double year,
-            final BodyKinematics kinematics,
-            final BodyMagneticFluxDensity b,
-            final CoordinateTransformation result) {
-        getAttitude(position.getLatitude(), position.getLongitude(),
-                position.getHeight(), year, kinematics.getFx(),
-                kinematics.getFy(), kinematics.getFz(), b.getBx(),
-                b.getBy(), b.getBz(), result);
+            final NEDPosition position, final double year, final BodyKinematics kinematics,
+            final BodyMagneticFluxDensity b, final CoordinateTransformation result) {
+        getAttitude(position.getLatitude(), position.getLongitude(), position.getHeight(), year, kinematics.getFx(),
+                kinematics.getFy(), kinematics.getFz(), b.getBx(), b.getBy(), b.getBz(), result);
     }
 
     /**
@@ -371,14 +350,10 @@ public class AttitudeEstimator {
      * @see WMMEarthMagneticFluxDensityEstimator
      */
     public CoordinateTransformation getAttitude(
-            final NEDPosition position,
-            final double year,
-            final BodyKinematics kinematics,
+            final NEDPosition position, final double year, final BodyKinematics kinematics,
             final BodyMagneticFluxDensity b) {
-        return getAttitude(position.getLatitude(), position.getLongitude(),
-                position.getHeight(), year, kinematics.getFx(),
-                kinematics.getFy(), kinematics.getFz(), b.getBx(),
-                b.getBy(), b.getBz());
+        return getAttitude(position.getLatitude(), position.getLongitude(), position.getHeight(), year,
+                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(), b.getBx(), b.getBy(), b.getBz());
     }
 
     /**
@@ -399,15 +374,10 @@ public class AttitudeEstimator {
      * @see WMMEarthMagneticFluxDensityEstimator
      */
     public void getAttitude(
-            final NEDPosition position,
-            final GregorianCalendar calendar,
-            final BodyKinematics kinematics,
-            final BodyMagneticFluxDensity b,
-            final CoordinateTransformation result) {
-        getAttitude(position.getLatitude(), position.getLongitude(),
-                position.getHeight(), calendar, kinematics.getFx(),
-                kinematics.getFy(), kinematics.getFz(), b.getBx(),
-                b.getBy(), b.getBz(), result);
+            final NEDPosition position, final GregorianCalendar calendar, final BodyKinematics kinematics,
+            final BodyMagneticFluxDensity b, final CoordinateTransformation result) {
+        getAttitude(position.getLatitude(), position.getLongitude(), position.getHeight(), calendar, kinematics.getFx(),
+                kinematics.getFy(), kinematics.getFz(), b.getBx(), b.getBy(), b.getBz(), result);
     }
 
     /**
@@ -428,14 +398,10 @@ public class AttitudeEstimator {
      * @see WMMEarthMagneticFluxDensityEstimator
      */
     public CoordinateTransformation getAttitude(
-            final NEDPosition position,
-            final GregorianCalendar calendar,
-            final BodyKinematics kinematics,
+            final NEDPosition position, final GregorianCalendar calendar, final BodyKinematics kinematics,
             final BodyMagneticFluxDensity b) {
-        return getAttitude(position.getLatitude(), position.getLongitude(),
-                position.getHeight(), calendar, kinematics.getFx(),
-                kinematics.getFy(), kinematics.getFz(), b.getBx(),
-                b.getBy(), b.getBz());
+        return getAttitude(position.getLatitude(), position.getLongitude(), position.getHeight(), calendar,
+                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(), b.getBx(), b.getBy(), b.getBz());
     }
 
     /**
@@ -456,15 +422,10 @@ public class AttitudeEstimator {
      * @see WMMEarthMagneticFluxDensityEstimator
      */
     public void getAttitude(
-            final NEDPosition position,
-            final Date timestamp,
-            final BodyKinematics kinematics,
-            final BodyMagneticFluxDensity b,
-            final CoordinateTransformation result) {
-        getAttitude(position.getLatitude(), position.getLongitude(),
-                position.getHeight(), timestamp, kinematics.getFx(),
-                kinematics.getFy(), kinematics.getFz(), b.getBx(),
-                b.getBy(), b.getBz(), result);
+            final NEDPosition position, final Date timestamp, final BodyKinematics kinematics,
+            final BodyMagneticFluxDensity b, final CoordinateTransformation result) {
+        getAttitude(position.getLatitude(), position.getLongitude(), position.getHeight(), timestamp,
+                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(), b.getBx(), b.getBy(), b.getBz(), result);
     }
 
     /**
@@ -485,14 +446,10 @@ public class AttitudeEstimator {
      * @see WMMEarthMagneticFluxDensityEstimator
      */
     public CoordinateTransformation getAttitude(
-            final NEDPosition position,
-            final Date timestamp,
-            final BodyKinematics kinematics,
+            final NEDPosition position, final Date timestamp, final BodyKinematics kinematics,
             final BodyMagneticFluxDensity b) {
-        return getAttitude(position.getLatitude(), position.getLongitude(),
-                position.getHeight(), timestamp, kinematics.getFx(),
-                kinematics.getFy(), kinematics.getFz(), b.getBx(),
-                b.getBy(), b.getBz());
+        return getAttitude(position.getLatitude(), position.getLongitude(), position.getHeight(), timestamp,
+                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(), b.getBx(), b.getBy(), b.getBz());
     }
 
     /**
@@ -527,8 +484,7 @@ public class AttitudeEstimator {
      */
     public static void getAttitude(
             final double fx, final double fy, final double fz,
-            final double bx, final double by, final double bz,
-            final double declination,
+            final double bx, final double by, final double bz, final double declination,
             final CoordinateTransformation result) {
         result.setSourceType(FrameType.LOCAL_NAVIGATION_FRAME);
         result.setDestinationType(FrameType.BODY_FRAME);
@@ -572,15 +528,13 @@ public class AttitudeEstimator {
      */
     public static CoordinateTransformation getAttitude(
             final double fx, final double fy, final double fz,
-            final double bx, final double by, final double bz,
-            final double declination) {
+            final double bx, final double by, final double bz, final double declination) {
 
         final double roll = LevelingEstimator.getRoll(fy, fz);
         final double pitch = LevelingEstimator.getPitch(fx, fy, fz);
         final double yaw = getYaw(bx, by, bz, declination, roll, pitch);
 
-        return new CoordinateTransformation(roll, pitch, yaw,
-                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+        return new CoordinateTransformation(roll, pitch, yaw, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
     }
 
     /**
@@ -611,11 +565,9 @@ public class AttitudeEstimator {
      */
     public static void getAttitude(
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
-            final double bx, final double by, final double bz,
-            final Angle declination,
+            final double bx, final double by, final double bz, final Angle declination,
             final CoordinateTransformation result) {
-        getAttitude(convertAcceleration(fx), convertAcceleration(fy),
-                convertAcceleration(fz), bx, by, bz,
+        getAttitude(convertAcceleration(fx), convertAcceleration(fy), convertAcceleration(fz), bx, by, bz,
                 convertAngle(declination), result);
     }
 
@@ -647,10 +599,8 @@ public class AttitudeEstimator {
      */
     public static CoordinateTransformation getAttitude(
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
-            final double bx, final double by, final double bz,
-            final Angle declination) {
-        return getAttitude(convertAcceleration(fx), convertAcceleration(fy),
-                convertAcceleration(fz), bx, by, bz,
+            final double bx, final double by, final double bz, final Angle declination) {
+        return getAttitude(convertAcceleration(fx), convertAcceleration(fy), convertAcceleration(fz), bx, by, bz,
                 convertAngle(declination));
     }
 
@@ -675,12 +625,10 @@ public class AttitudeEstimator {
      * @see LevelingEstimator
      */
     public static void getAttitude(
-            final BodyKinematics kinematics,
-            final BodyMagneticFluxDensity b,
-            final double declination,
+            final BodyKinematics kinematics, final BodyMagneticFluxDensity b, final double declination,
             final CoordinateTransformation result) {
-        getAttitude(kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
-                b.getBx(), b.getBy(), b.getBz(), declination, result);
+        getAttitude(kinematics.getFx(), kinematics.getFy(), kinematics.getFz(), b.getBx(), b.getBy(), b.getBz(),
+                declination, result);
     }
 
     /**
@@ -704,11 +652,8 @@ public class AttitudeEstimator {
      * @see LevelingEstimator
      */
     public static CoordinateTransformation getAttitude(
-            final BodyKinematics kinematics,
-            final BodyMagneticFluxDensity b,
-            final double declination) {
-        return getAttitude(kinematics.getFx(), kinematics.getFy(),
-                kinematics.getFz(), b.getBx(), b.getBy(), b.getBz(),
+            final BodyKinematics kinematics, final BodyMagneticFluxDensity b, final double declination) {
+        return getAttitude(kinematics.getFx(), kinematics.getFy(), kinematics.getFz(), b.getBx(), b.getBy(), b.getBz(),
                 declination);
     }
 
@@ -732,9 +677,7 @@ public class AttitudeEstimator {
      * @see LevelingEstimator
      */
     public static void getAttitude(
-            final BodyKinematics kinematics,
-            final BodyMagneticFluxDensity b,
-            final Angle declination,
+            final BodyKinematics kinematics, final BodyMagneticFluxDensity b, final Angle declination,
             final CoordinateTransformation result) {
         getAttitude(kinematics, b, convertAngle(declination), result);
     }
@@ -759,9 +702,7 @@ public class AttitudeEstimator {
      * @see LevelingEstimator
      */
     public static CoordinateTransformation getAttitude(
-            final BodyKinematics kinematics,
-            final BodyMagneticFluxDensity b,
-            final Angle declination) {
+            final BodyKinematics kinematics, final BodyMagneticFluxDensity b, final Angle declination) {
         return getAttitude(kinematics, b, convertAngle(declination));
     }
 
@@ -802,14 +743,11 @@ public class AttitudeEstimator {
      * @see LevelingEstimator2
      */
     public static void getAttitude(
-            final double latitude, final double height,
-            final double fx, final double fy, final double fz,
-            final double bx, final double by, final double bz,
-            final double declination,
+            final double latitude, final double height, final double fx, final double fy, final double fz,
+            final double bx, final double by, final double bz, final double declination,
             final CoordinateTransformation result) {
 
-        LevelingEstimator2.getPartialAttitude(latitude, height,
-                fx, fy, fz, result);
+        LevelingEstimator2.getPartialAttitude(latitude, height, fx, fy, fz, result);
 
         // fix yaw angle
         final double roll = result.getRollEulerAngle();
@@ -856,15 +794,12 @@ public class AttitudeEstimator {
      * @see LevelingEstimator2
      */
     public static CoordinateTransformation getAttitude(
-            final double latitude, final double height,
-            final double fx, final double fy, final double fz,
-            final double bx, final double by, final double bz,
-            final double declination) {
+            final double latitude, final double height, final double fx, final double fy, final double fz,
+            final double bx, final double by, final double bz, final double declination) {
 
         final CoordinateTransformation result = new CoordinateTransformation(
                 FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
-        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination,
-                result);
+        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination, result);
         return result;
     }
 
@@ -903,13 +838,10 @@ public class AttitudeEstimator {
     public static void getAttitude(
             final Angle latitude, final Distance height,
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
-            final double bx, final double by, final double bz,
-            final Angle declination,
+            final double bx, final double by, final double bz, final Angle declination,
             final CoordinateTransformation result) {
-        getAttitude(convertAngle(latitude), convertDistance(height),
-                convertAcceleration(fx), convertAcceleration(fy),
-                convertAcceleration(fz), bx, by, bz,
-                convertAngle(declination), result);
+        getAttitude(convertAngle(latitude), convertDistance(height), convertAcceleration(fx), convertAcceleration(fy),
+                convertAcceleration(fz), bx, by, bz, convertAngle(declination), result);
     }
 
     /**
@@ -947,11 +879,9 @@ public class AttitudeEstimator {
     public static CoordinateTransformation getAttitude(
             final Angle latitude, final Distance height,
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
-            final double bx, final double by, final double bz,
-            final Angle declination) {
+            final double bx, final double by, final double bz, final Angle declination) {
         return getAttitude(convertAngle(latitude), convertDistance(height),
-                convertAcceleration(fx), convertAcceleration(fy),
-                convertAcceleration(fz), bx, by, bz,
+                convertAcceleration(fx), convertAcceleration(fy), convertAcceleration(fz), bx, by, bz,
                 convertAngle(declination));
     }
 
@@ -981,15 +911,11 @@ public class AttitudeEstimator {
      * @see LevelingEstimator2
      */
     public static void getAttitude(
-            final NEDPosition position,
-            final BodyKinematics kinematics,
-            final BodyMagneticFluxDensity b,
-            final double declination,
-            final CoordinateTransformation result) {
+            final NEDPosition position, final BodyKinematics kinematics, final BodyMagneticFluxDensity b,
+            final double declination, final CoordinateTransformation result) {
         getAttitude(position.getLatitude(), position.getHeight(),
-                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
-                b.getBx(), b.getBy(), b.getBz(), declination,
-                result);
+                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(), b.getBx(), b.getBy(), b.getBz(),
+                declination, result);
     }
 
     /**
@@ -1018,9 +944,7 @@ public class AttitudeEstimator {
      * @see LevelingEstimator2
      */
     public static CoordinateTransformation getAttitude(
-            final NEDPosition position,
-            final BodyKinematics kinematics,
-            final BodyMagneticFluxDensity b,
+            final NEDPosition position, final BodyKinematics kinematics, final BodyMagneticFluxDensity b,
             final double declination) {
         return getAttitude(position.getLatitude(), position.getHeight(),
                 kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
@@ -1052,13 +976,9 @@ public class AttitudeEstimator {
      * @see LevelingEstimator2
      */
     public static void getAttitude(
-            final NEDPosition position,
-            final BodyKinematics kinematics,
-            final BodyMagneticFluxDensity b,
-            final Angle declination,
-            final CoordinateTransformation result) {
-        getAttitude(position, kinematics, b, convertAngle(declination),
-                result);
+            final NEDPosition position, final BodyKinematics kinematics, final BodyMagneticFluxDensity b,
+            final Angle declination, final CoordinateTransformation result) {
+        getAttitude(position, kinematics, b, convertAngle(declination), result);
     }
 
     /**
@@ -1086,12 +1006,9 @@ public class AttitudeEstimator {
      * @see LevelingEstimator
      */
     public static CoordinateTransformation getAttitude(
-            final NEDPosition position,
-            final BodyKinematics kinematics,
-            final BodyMagneticFluxDensity b,
+            final NEDPosition position, final BodyKinematics kinematics, final BodyMagneticFluxDensity b,
             final Angle declination) {
-        return getAttitude(position, kinematics, b,
-                convertAngle(declination));
+        return getAttitude(position, kinematics, b, convertAngle(declination));
     }
 
     /**
@@ -1109,8 +1026,7 @@ public class AttitudeEstimator {
      */
     @SuppressWarnings("DuplicatedCode")
     public static double getMagneticHeading(
-            final double bx, final double by, final double bz,
-            final double roll, final double pitch) {
+            final double bx, final double by, final double bz, final double roll, final double pitch) {
 
         final double sinRoll = Math.sin(roll);
         final double cosRoll = Math.cos(roll);
@@ -1119,8 +1035,7 @@ public class AttitudeEstimator {
         final double cosPitch = Math.cos(pitch);
 
         final double tmp1 = -by * cosRoll + bz * sinRoll;
-        final double tmp2 = bx * cosPitch + by * sinRoll * sinPitch
-                + bz * cosRoll * sinPitch;
+        final double tmp2 = bx * cosPitch + by * sinRoll * sinPitch + bz * cosRoll * sinPitch;
 
         return Math.atan2(tmp1, tmp2);
     }
@@ -1133,11 +1048,8 @@ public class AttitudeEstimator {
      * @param pitch known body pitch angle expressed in radians (rad).
      * @return magnetic heading expressed in radians (rad).
      */
-    public static double getMagneticHeading(
-            final BodyMagneticFluxDensity b,
-            final double roll, final double pitch) {
-        return getMagneticHeading(b.getBx(), b.getBy(), b.getBz(),
-                roll, pitch);
+    public static double getMagneticHeading(final BodyMagneticFluxDensity b, final double roll, final double pitch) {
+        return getMagneticHeading(b.getBx(), b.getBy(), b.getBz(), roll, pitch);
     }
 
     /**
@@ -1154,10 +1066,8 @@ public class AttitudeEstimator {
      * @return magnetic heading expressed in radians (rad).
      */
     public static double getMagneticHeading(
-            final double bx, final double by, final double bz,
-            final Angle roll, final Angle pitch) {
-        return getMagneticHeading(bx, by, bz, convertAngle(roll),
-                convertAngle(pitch));
+            final double bx, final double by, final double bz, final Angle roll, final Angle pitch) {
+        return getMagneticHeading(bx, by, bz, convertAngle(roll), convertAngle(pitch));
     }
 
     /**
@@ -1169,10 +1079,8 @@ public class AttitudeEstimator {
      * @return magnetic heading expressed in radians (rad).
      */
     public static double getMagneticHeading(
-            final BodyMagneticFluxDensity b,
-            final Angle roll, final Angle pitch) {
-        return getMagneticHeading(b, convertAngle(roll),
-                convertAngle(pitch));
+            final BodyMagneticFluxDensity b, final Angle roll, final Angle pitch) {
+        return getMagneticHeading(b, convertAngle(roll), convertAngle(pitch));
     }
 
     /**
@@ -1209,10 +1117,8 @@ public class AttitudeEstimator {
      * @return magnetic heading.
      */
     public static Angle getMagneticHeadingAsAngle(
-            final double bx, final double by, final double bz,
-            final double roll, final double pitch) {
-        return new Angle(getMagneticHeading(bx, by, bz, roll, pitch),
-                AngleUnit.RADIANS);
+            final double bx, final double by, final double bz, final double roll, final double pitch) {
+        return new Angle(getMagneticHeading(bx, by, bz, roll, pitch), AngleUnit.RADIANS);
     }
 
     /**
@@ -1224,8 +1130,7 @@ public class AttitudeEstimator {
      * @param result instance where magnetic heading will be stored.
      */
     public static void getMagneticHeadingAsAngle(
-            final BodyMagneticFluxDensity b,
-            final double roll, final double pitch, final Angle result) {
+            final BodyMagneticFluxDensity b, final double roll, final double pitch, final Angle result) {
         result.setUnit(AngleUnit.RADIANS);
         result.setValue(getMagneticHeading(b, roll, pitch));
     }
@@ -1239,10 +1144,8 @@ public class AttitudeEstimator {
      * @return magnetic heading.
      */
     public static Angle getMagneticHeadingAsAngle(
-            final BodyMagneticFluxDensity b,
-            final double roll, final double pitch) {
-        return new Angle(getMagneticHeading(b, roll, pitch),
-                AngleUnit.RADIANS);
+            final BodyMagneticFluxDensity b, final double roll, final double pitch) {
+        return new Angle(getMagneticHeading(b, roll, pitch), AngleUnit.RADIANS);
     }
 
     /**
@@ -1279,10 +1182,8 @@ public class AttitudeEstimator {
      * @return magnetic heading.
      */
     public static Angle getMagneticHeadingAsAngle(
-            final double bx, final double by, final double bz,
-            final Angle roll, final Angle pitch) {
-        return new Angle(getMagneticHeading(bx, by, bz, roll, pitch),
-                AngleUnit.RADIANS);
+            final double bx, final double by, final double bz, final Angle roll, final Angle pitch) {
+        return new Angle(getMagneticHeading(bx, by, bz, roll, pitch), AngleUnit.RADIANS);
     }
 
     /**
@@ -1294,8 +1195,7 @@ public class AttitudeEstimator {
      * @param result instance where magnetic heading will be stored.
      */
     public static void getMagneticHeadingAsAngle(
-            final BodyMagneticFluxDensity b,
-            final Angle roll, final Angle pitch, final Angle result) {
+            final BodyMagneticFluxDensity b, final Angle roll, final Angle pitch, final Angle result) {
         result.setUnit(AngleUnit.RADIANS);
         result.setValue(getMagneticHeading(b, roll, pitch));
     }
@@ -1309,10 +1209,8 @@ public class AttitudeEstimator {
      * @return magnetic heading.
      */
     public static Angle getMagneticHeadingAsAngle(
-            final BodyMagneticFluxDensity b,
-            final Angle roll, final Angle pitch) {
-        return new Angle(getMagneticHeading(b, roll, pitch),
-                AngleUnit.RADIANS);
+            final BodyMagneticFluxDensity b, final Angle roll, final Angle pitch) {
+        return new Angle(getMagneticHeading(b, roll, pitch), AngleUnit.RADIANS);
     }
 
     /**
@@ -1340,8 +1238,8 @@ public class AttitudeEstimator {
      * @see EarthMagneticFluxDensityEstimator
      */
     public static double getYaw(
-            final double bx, final double by, final double bz,
-            final double declination, final double roll, final double pitch) {
+            final double bx, final double by, final double bz, final double declination,
+            final double roll, final double pitch) {
         return getMagneticHeading(bx, by, bz, roll, pitch) + declination;
     }
 
@@ -1365,10 +1263,8 @@ public class AttitudeEstimator {
      * @see EarthMagneticFluxDensityEstimator
      */
     public static double getYaw(
-            final BodyMagneticFluxDensity b, final double declination,
-            final double roll, final double pitch) {
-        return getYaw(b.getBx(), b.getBy(), b.getBz(), declination,
-                roll, pitch);
+            final BodyMagneticFluxDensity b, final double declination, final double roll, final double pitch) {
+        return getYaw(b.getBx(), b.getBy(), b.getBz(), declination, roll, pitch);
     }
 
     /**
@@ -1397,8 +1293,7 @@ public class AttitudeEstimator {
     public static double getYaw(
             final double bx, final double by, final double bz,
             final Angle declination, final Angle roll, final Angle pitch) {
-        return getYaw(bx, by, bz, convertAngle(declination),
-                convertAngle(roll), convertAngle(pitch));
+        return getYaw(bx, by, bz, convertAngle(declination), convertAngle(roll), convertAngle(pitch));
     }
 
     /**
@@ -1420,10 +1315,8 @@ public class AttitudeEstimator {
      * @see EarthMagneticFluxDensityEstimator
      */
     public static double getYaw(
-            final BodyMagneticFluxDensity b, final Angle declination,
-            final Angle roll, final Angle pitch) {
-        return getYaw(b, convertAngle(declination), convertAngle(roll),
-                convertAngle(pitch));
+            final BodyMagneticFluxDensity b, final Angle declination, final Angle roll, final Angle pitch) {
+        return getYaw(b, convertAngle(declination), convertAngle(roll), convertAngle(pitch));
     }
 
     /**
@@ -1453,8 +1346,7 @@ public class AttitudeEstimator {
      */
     public static void getYawAsAngle(
             final double bx, final double by, final double bz,
-            final double declination, final double roll, final double pitch,
-            final Angle result) {
+            final double declination, final double roll, final double pitch, final Angle result) {
         result.setUnit(AngleUnit.RADIANS);
         result.setValue(getYaw(bx, by, bz, declination, roll, pitch));
     }
@@ -1484,10 +1376,9 @@ public class AttitudeEstimator {
      * @see EarthMagneticFluxDensityEstimator
      */
     public static Angle getYawAsAngle(
-            final double bx, final double by, final double bz,
-            final double declination, final double roll, final double pitch) {
-        return new Angle(getYaw(bx, by, bz, declination, roll, pitch),
-                AngleUnit.RADIANS);
+            final double bx, final double by, final double bz, final double declination,
+            final double roll, final double pitch) {
+        return new Angle(getYaw(bx, by, bz, declination, roll, pitch), AngleUnit.RADIANS);
     }
 
     /**
@@ -1511,8 +1402,8 @@ public class AttitudeEstimator {
      * @see EarthMagneticFluxDensityEstimator
      */
     public static void getYawAsAngle(
-            final BodyMagneticFluxDensity b, final double declination,
-            final double roll, final double pitch, final Angle result) {
+            final BodyMagneticFluxDensity b, final double declination, final double roll, final double pitch,
+            final Angle result) {
         result.setUnit(AngleUnit.RADIANS);
         result.setValue(getYaw(b, declination, roll, pitch));
     }
@@ -1537,10 +1428,8 @@ public class AttitudeEstimator {
      * @see EarthMagneticFluxDensityEstimator
      */
     public static Angle getYawAsAngle(
-            final BodyMagneticFluxDensity b, final double declination,
-            final double roll, final double pitch) {
-        return new Angle(getYaw(b, declination, roll, pitch),
-                AngleUnit.RADIANS);
+            final BodyMagneticFluxDensity b, final double declination, final double roll, final double pitch) {
+        return new Angle(getYaw(b, declination, roll, pitch), AngleUnit.RADIANS);
     }
 
     /**
@@ -1569,8 +1458,7 @@ public class AttitudeEstimator {
      */
     public static void getYawAsAngle(
             final double bx, final double by, final double bz,
-            final Angle declination, final Angle roll, final Angle pitch,
-            final Angle result) {
+            final Angle declination, final Angle roll, final Angle pitch, final Angle result) {
         result.setUnit(AngleUnit.RADIANS);
         result.setValue(getYaw(bx, by, bz, declination, roll, pitch));
     }
@@ -1601,8 +1489,7 @@ public class AttitudeEstimator {
     public static Angle getYawAsAngle(
             final double bx, final double by, final double bz,
             final Angle declination, final Angle roll, final Angle pitch) {
-        return new Angle(getYaw(bx, by, bz, declination, roll, pitch),
-                AngleUnit.RADIANS);
+        return new Angle(getYaw(bx, by, bz, declination, roll, pitch), AngleUnit.RADIANS);
     }
 
     /**
@@ -1650,10 +1537,8 @@ public class AttitudeEstimator {
      * @see EarthMagneticFluxDensityEstimator
      */
     public static Angle getYawAsAngle(
-            final BodyMagneticFluxDensity b, final Angle declination,
-            final Angle roll, final Angle pitch) {
-        return new Angle(getYaw(b, declination, roll, pitch),
-                AngleUnit.RADIANS);
+            final BodyMagneticFluxDensity b, final Angle declination, final Angle roll, final Angle pitch) {
+        return new Angle(getYaw(b, declination, roll, pitch), AngleUnit.RADIANS);
     }
 
     /**
@@ -1663,8 +1548,7 @@ public class AttitudeEstimator {
      * @return converted value expressed in meters.
      */
     private static double convertDistance(final Distance distance) {
-        return DistanceConverter.convert(distance.getValue().doubleValue(),
-                distance.getUnit(), DistanceUnit.METER);
+        return DistanceConverter.convert(distance.getValue().doubleValue(), distance.getUnit(), DistanceUnit.METER);
     }
 
     /**
@@ -1674,8 +1558,7 @@ public class AttitudeEstimator {
      * @return converted value expressed in radians.
      */
     private static double convertAngle(final Angle angle) {
-        return AngleConverter.convert(angle.getValue().doubleValue(),
-                angle.getUnit(), AngleUnit.RADIANS);
+        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(), AngleUnit.RADIANS);
     }
 
     /**
@@ -1685,9 +1568,7 @@ public class AttitudeEstimator {
      * @return converted acceleration value.
      */
     private static double convertAcceleration(final Acceleration acceleration) {
-        return AccelerationConverter.convert(
-                acceleration.getValue().doubleValue(),
-                acceleration.getUnit(),
+        return AccelerationConverter.convert(acceleration.getValue().doubleValue(), acceleration.getUnit(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 }

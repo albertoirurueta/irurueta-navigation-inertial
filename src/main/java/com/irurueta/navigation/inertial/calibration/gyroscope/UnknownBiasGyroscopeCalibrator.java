@@ -61,8 +61,7 @@ public interface UnknownBiasGyroscopeCalibrator {
      * @return true if result was updated, false otherwise.
      * @throws WrongSizeException if provided result instance has invalid size.
      */
-    boolean getEstimatedBiasesAsMatrix(final Matrix result)
-            throws WrongSizeException;
+    boolean getEstimatedBiasesAsMatrix(final Matrix result) throws WrongSizeException;
 
     /**
      * Gets x coordinate of estimated gyroscope bias expressed in radians per second

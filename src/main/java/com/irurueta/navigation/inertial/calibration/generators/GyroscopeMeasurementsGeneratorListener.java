@@ -24,6 +24,5 @@ import com.irurueta.navigation.inertial.calibration.TimedBodyKinematics;
  */
 public interface GyroscopeMeasurementsGeneratorListener extends
         MeasurementsGeneratorListener<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>,
-                GyroscopeMeasurementsGenerator, GyroscopeMeasurementsGeneratorListener,
-                TimedBodyKinematics> {
+                GyroscopeMeasurementsGenerator, GyroscopeMeasurementsGeneratorListener, TimedBodyKinematics> {
 }
