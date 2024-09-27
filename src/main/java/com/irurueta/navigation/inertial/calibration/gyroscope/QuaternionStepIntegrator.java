@@ -92,6 +92,7 @@ public abstract class QuaternionStepIntegrator {
      *                   Must be 4x1.
      * @param omegaSkew  instance being reused containing the skew antisymmetric matrix. Must be 4x4.
      * @param result     instance where computed time derivative will be stored. Must be 4x1.
+     * @throws WrongSizeException if provided matrices do not have proper size.
      */
     protected static void computeTimeDerivative(
             final Matrix quaternion, final Matrix omegaSkew, final Matrix result) throws WrongSizeException {

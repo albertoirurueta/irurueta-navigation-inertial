@@ -50,7 +50,6 @@ import java.util.Collection;
  * To use this calibrator at least 10 measurements taken at a single unknown position must
  * be taken at 10 different unknown orientations and zero velocity when common z-axis is
  * assumed, otherwise at least 13 measurements are required.
- * <p></p>
  * <p>
  * Measured specific force is assumed to follow the model shown below:
  * <pre>

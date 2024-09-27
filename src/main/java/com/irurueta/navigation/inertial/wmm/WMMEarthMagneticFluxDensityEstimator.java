@@ -213,14 +213,29 @@ public class WMMEarthMagneticFluxDensityEstimator {
     // Below: internal values being reused. These values are only
     // recalculated if the height (altitude) changes.
 
+    /**
+     * This is the magnetic field strength at the magnetic pole.
+     */
     private double mR;
 
+    /**
+     * This is the cosine of the magnetic inclination at the magnetic pole.
+     */
     private double mCa;
 
+    /**
+     * This is the sine of the magnetic inclination at the magnetic pole.
+     */
     private double mSa;
 
+    /**
+     * This is the cosine of the magnetic declination at the magnetic pole.
+     */
     private double mCt;
 
+    /**
+     * This is the sine of the magnetic declination at the magnetic pole.
+     */
     private double mSt;
 
     /**

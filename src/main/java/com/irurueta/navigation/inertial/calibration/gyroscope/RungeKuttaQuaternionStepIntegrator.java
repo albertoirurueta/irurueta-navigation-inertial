@@ -24,7 +24,9 @@ import com.irurueta.geometry.RotationException;
 /**
  * Computes one step of a Runge-Kutta (RK4) integration algorithm.
  * More information available here:
- * <a href="https://en.wikipedia.org/wiki/Runge–Kutta_methods">https://en.wikipedia.org/wiki/Runge–Kutta_methods</a>
+ * <a href="https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods">
+ *     https://en.wikipedia.org/wiki/Runge–Kutta_methods
+ * </a>
  */
 public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator {
 
@@ -131,7 +133,9 @@ public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator
     /**
      * Performs an RK4 Runge-Kutta integration step.
      * More information available here:
-     * <a href="https://en.wikipedia.org/wiki/Runge–Kutta_methods">https://en.wikipedia.org/wiki/Runge–Kutta_methods</a>–
+     * <a href="https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods">
+     *     https://en.wikipedia.org/wiki/Runge–Kutta_methods
+     * </a>–
      *
      * @param initialAttitude initial attitude.
      * @param initialWx       initial x-coordinate rotation velocity at initial timestamp expressed in
@@ -162,7 +166,9 @@ public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator
     /**
      * Performs an RK4 Runge-Kutta integration step.
      * More information available here:
-     * <a href="https://en.wikipedia.org/wiki/Runge–Kutta_methods">https://en.wikipedia.org/wiki/Runge–Kutta_methods</a>
+     * <a href="https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods">
+     *     https://en.wikipedia.org/wiki/Runge–Kutta_methods
+     * </a>
      *
      * @param initialAttitude initial attitude.
      * @param initialWx       initial x-coordinate rotation velocity at initial timestamp expressed in
@@ -207,7 +213,9 @@ public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator
     /**
      * Performs an RK4 Runge-Kutta integration step.
      * More information available here:
-     * <a href="https://en.wikipedia.org/wiki/Runge–Kutta_methods">https://en.wikipedia.org/wiki/Runge–Kutta_methods</a>
+     * <a href="https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods">
+     *     https://en.wikipedia.org/wiki/Runge–Kutta_methods
+     * </a>
      *
      * @param initialAttitude initial attitude.
      * @param initialWx       initial x-coordinate rotation velocity at initial timestamp expressed in

@@ -29,6 +29,29 @@ import com.irurueta.units.Acceleration;
 
 import java.util.List;
 
+/**
+ * Robustly estimates accelerometer cross couplings and scaling factors
+ * using MSAC algorithm to discard outliers.
+ * <p>
+ * To use this calibrator at least 7 measurements taken at a single position
+ * where gravity norm is known must be taken at 7 different unknown
+ * orientations and zero velocity when common z-axis
+ * is assumed, otherwise at least 10 measurements are required.
+ * <p>
+ * Measured specific force is assumed to follow the model shown below:
+ * <pre>
+ *     fmeas = ba + (I + Ma) * ftrue + w
+ * </pre>
+ * Where:
+ * - fmeas is the measured specific force. This is a 3x1 vector.
+ * - ba is accelerometer bias. Ideally, on a perfect accelerometer, this should be a
+ * 3x1 zero vector.
+ * - I is the 3x3 identity matrix.
+ * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on
+ * a perfect accelerometer, this should be a 3x3 zero matrix.
+ * - ftrue is ground-truth specific force.
+ * - w is measurement noise.
+ */
 public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
         RobustKnownBiasAndGravityNormAccelerometerCalibrator {
 

@@ -80,7 +80,6 @@ import java.util.GregorianCalendar;
  * <p>
  * This estimator does NOT compute average bias values over a period of time, it only
  * computes accumulated averages.
- * <p>
  */
 public class BodyMagneticFluxDensityBiasEstimator {
 
