@@ -72,6 +72,9 @@ public abstract class QuaternionStepIntegrator {
         return switch (type) {
             case EULER_METHOD -> new EulerQuaternionStepIntegrator();
             case MID_POINT -> new MidPointQuaternionStepIntegrator();
+            case SUH -> new SuhQuaternionStepIntegrator();
+            case TRAWNY -> new TrawnyQuaternionStepIntegrator();
+            case YUAN -> new YuanQuaternionStepIntegrator();
             default -> new RungeKuttaQuaternionStepIntegrator();
         };
     }

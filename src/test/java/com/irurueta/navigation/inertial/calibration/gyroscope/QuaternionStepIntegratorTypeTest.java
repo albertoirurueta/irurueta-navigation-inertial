@@ -23,6 +23,6 @@ public class QuaternionStepIntegratorTypeTest {
 
     @Test
     public void enum_hasExpectedNumberOfValues() {
-        assertEquals(3, QuaternionStepIntegratorType.values().length);
+        assertEquals(6, QuaternionStepIntegratorType.values().length);
     }
 }

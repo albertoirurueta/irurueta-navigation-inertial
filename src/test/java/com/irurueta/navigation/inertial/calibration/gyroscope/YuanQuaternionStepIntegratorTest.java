@@ -1,29 +1,10 @@
-/*
- * Copyright (C) 2022 Alberto Irurueta Carro (alberto@irurueta.com)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.irurueta.navigation.inertial.calibration.gyroscope;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import com.irurueta.algebra.ArrayUtils;
 import com.irurueta.algebra.Utils;
 import com.irurueta.geometry.Quaternion;
 import com.irurueta.geometry.RotationException;
 import com.irurueta.statistics.UniformRandomizer;
-
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -35,7 +16,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-public class EulerQuaternionStepIntegratorTest {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+public class YuanQuaternionStepIntegratorTest {
 
     private static final double TIME_INTERVAL = 0.02;
 
@@ -53,7 +37,7 @@ public class EulerQuaternionStepIntegratorTest {
 
     private static final double ABSOLUTE_ERROR = 1e-2;
 
-    private static final double SMALL_ABSOLUTE_ERROR = 2e-4;
+    private static final double SMALL_ABSOLUTE_ERROR = 1e-3;
 
     @Test
     public void integrate_whenOneStep_computesExpectedResult() throws RotationException {
@@ -71,10 +55,10 @@ public class EulerQuaternionStepIntegratorTest {
         final Quaternion expectedResult = initialAttitude.combineAndReturnNew(delta);
         expectedResult.normalize();
 
-        final EulerQuaternionStepIntegrator integrator = new EulerQuaternionStepIntegrator();
+        final YuanQuaternionStepIntegrator integrator = new YuanQuaternionStepIntegrator();
         final Quaternion result1 = new Quaternion();
         final Quaternion result2 = new Quaternion();
-        EulerQuaternionStepIntegrator.integrationStep(initialAttitude, wx, wy, wz, TIME_INTERVAL, result1);
+        YuanQuaternionStepIntegrator.integrationStep(initialAttitude, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result1);
         integrator.integrate(initialAttitude, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result2);
 
         assertEquals(result1, result2);
@@ -82,8 +66,7 @@ public class EulerQuaternionStepIntegratorTest {
     }
 
     @Test
-    public void integrate_whenMultipleSteps_computesExpectedResult()
-            throws RotationException {
+    public void integrate_whenMultipleSteps_computesExpectedResult() throws RotationException {
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer();
@@ -100,11 +83,11 @@ public class EulerQuaternionStepIntegratorTest {
             final Quaternion expectedResult = initialAttitude.combineAndReturnNew(delta);
             expectedResult.normalize();
 
-            final EulerQuaternionStepIntegrator integrator = new EulerQuaternionStepIntegrator();
+            final YuanQuaternionStepIntegrator integrator = new YuanQuaternionStepIntegrator();
             final Quaternion result1 = new Quaternion(initialAttitude);
             final Quaternion result2 = new Quaternion(initialAttitude);
             for (int i = 0; i < NUM_SAMPLES; i++) {
-                EulerQuaternionStepIntegrator.integrationStep(result1, wx, wy, wz, TIME_INTERVAL, result1);
+                YuanQuaternionStepIntegrator.integrationStep(result1, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result1);
                 integrator.integrate(result2, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result2);
             }
 
@@ -114,8 +97,8 @@ public class EulerQuaternionStepIntegratorTest {
             final double[] expectedEulerAngles = expectedResult.toEulerAngles();
             final double[] diffAngles = ArrayUtils.subtractAndReturnNew(
                     expectedEulerAngles, resultEulerAngles);
-            Logger.getLogger(EulerQuaternionStepIntegratorTest.class.getName()).log(Level.INFO,
-                    String.format("Error euler angles: %s", Arrays.toString(diffAngles)));
+            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName())
+                    .log(Level.INFO, "Error euler angles: " + Arrays.toString(diffAngles));
 
             if (!expectedResult.equals(result1, ABSOLUTE_ERROR)) {
                 continue;
@@ -169,17 +152,17 @@ public class EulerQuaternionStepIntegratorTest {
                 suhIntegrator.integrate(result1, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result1);
                 trawnyIntegrator.integrate(result2, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result2);
                 yuanIntegrator.integrate(result3, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result3);
-                eulerIntegrator.integrate(result1, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result4);
-                midPointIntegrator.integrate(result2, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result5);
-                rungeKuttaIntegrator.integrate(result3, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result6);
+                eulerIntegrator.integrate(result4, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result4);
+                midPointIntegrator.integrate(result5, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result5);
+                rungeKuttaIntegrator.integrate(result6, wx, wy, wz, wx, wy, wz, TIME_INTERVAL, result6);
             }
 
             final double[] resultSuhAngles = result1.toEulerAngles();
             final double[] resultTrawnyEulerAngles = result2.toEulerAngles();
             final double[] resultYuanAngles = result2.toEulerAngles();
-            final double[] resultEulerAngles = result1.toEulerAngles();
-            final double[] resultMidPointEulerAngles = result2.toEulerAngles();
-            final double[] resultRungeKuttaEulerAngles = result3.toEulerAngles();
+            final double[] resultEulerAngles = result3.toEulerAngles();
+            final double[] resultMidPointEulerAngles = result4.toEulerAngles();
+            final double[] resultRungeKuttaEulerAngles = result5.toEulerAngles();
 
             final double[] expectedEulerAngles = expectedResult.toEulerAngles();
             final double[] diffAngles1 = ArrayUtils.subtractAndReturnNew(expectedEulerAngles, resultSuhAngles);
@@ -198,17 +181,17 @@ public class EulerQuaternionStepIntegratorTest {
             final double error5 = Utils.normF(diffAngles5);
             final double error6 = Utils.normF(diffAngles6);
 
-            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName())
+            Logger.getLogger(YuanQuaternionStepIntegratorTest.class.getName())
                     .log(Level.INFO, "Suh error: " + error1 + " radians");
-            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName())
+            Logger.getLogger(YuanQuaternionStepIntegratorTest.class.getName())
                     .log(Level.INFO, "Trawny error: " + error2 + " radians");
-            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName())
+            Logger.getLogger(YuanQuaternionStepIntegratorTest.class.getName())
                     .log(Level.INFO, "Yuan error: " + error3 + " radians");
-            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName())
+            Logger.getLogger(YuanQuaternionStepIntegratorTest.class.getName())
                     .log(Level.INFO, "Euler error: " + error4 + " radians");
-            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName())
+            Logger.getLogger(YuanQuaternionStepIntegratorTest.class.getName())
                     .log(Level.INFO, "Mid-point error: " + error5 + " radians");
-            Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName())
+            Logger.getLogger(YuanQuaternionStepIntegratorTest.class.getName())
                     .log(Level.INFO, "Runge-Kutta error: " + error6 + " radians");
 
             avgError1 += error1;
@@ -219,8 +202,7 @@ public class EulerQuaternionStepIntegratorTest {
             avgError6 += error6;
             num++;
 
-            if (error1 < error2 || error1 < error3 || error1 < error4 || error1 < error5
-                    || error1 < error6) {
+            if (error1 < error2 || error1 < error3 || error1 < error4 || error1 < error5) {
                 continue;
             }
 
@@ -256,7 +238,7 @@ public class EulerQuaternionStepIntegratorTest {
                 .map(entry -> entry.getKey() + ": " + entry.getValue())
                 .collect(Collectors.toList());
         final String methods = String.join(", ", methodsList);
-        Logger.getLogger(SuhQuaternionStepIntegratorTest.class.getName())
+        Logger.getLogger(YuanQuaternionStepIntegratorTest.class.getName())
                 .log(Level.INFO, "Methods (ordered more accurate to less accurate): " + methods);
     }
 
