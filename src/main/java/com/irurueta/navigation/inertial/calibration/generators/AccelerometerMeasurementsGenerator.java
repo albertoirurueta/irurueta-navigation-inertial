@@ -39,8 +39,7 @@ import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyKinemat
  * and all its implementations.
  */
 public class AccelerometerMeasurementsGenerator extends
-        MeasurementsGenerator<StandardDeviationBodyKinematics,
-                AccelerometerMeasurementsGenerator,
+        MeasurementsGenerator<StandardDeviationBodyKinematics, AccelerometerMeasurementsGenerator,
                 AccelerometerMeasurementsGeneratorListener, BodyKinematics> {
 
     /**
@@ -55,8 +54,7 @@ public class AccelerometerMeasurementsGenerator extends
      *
      * @param listener listener to handle events raised by this generator.
      */
-    public AccelerometerMeasurementsGenerator(
-            final AccelerometerMeasurementsGeneratorListener listener) {
+    public AccelerometerMeasurementsGenerator(final AccelerometerMeasurementsGeneratorListener listener) {
         super(listener);
     }
 
@@ -77,8 +75,7 @@ public class AccelerometerMeasurementsGenerator extends
      * @param sample input sample.
      */
     @Override
-    protected void getAccelerationTriadFromInputSample(
-            final BodyKinematics sample) {
+    protected void getAccelerationTriadFromInputSample(final BodyKinematics sample) {
         sample.getSpecificForceTriad(mTriad);
     }
 
@@ -106,12 +103,8 @@ public class AccelerometerMeasurementsGenerator extends
      */
     @Override
     protected void handleStaticToDynamicChange(
-            final double accumulatedAvgX,
-            final double accumulatedAvgY,
-            final double accumulatedAvgZ,
-            final double accumulatedStdX,
-            final double accumulatedStdY,
-            final double accumulatedStdZ) {
+            final double accumulatedAvgX, final double accumulatedAvgY, final double accumulatedAvgZ,
+            final double accumulatedStdX, final double accumulatedStdY, final double accumulatedStdZ) {
         // if last static interval must not be skipped, keep accumulated average
         // specific force during last static interval and generate new measurement
         // NOTE: generated body kinematics instances will have zero angular rate
@@ -119,8 +112,7 @@ public class AccelerometerMeasurementsGenerator extends
         if (!isStaticIntervalSkipped()) {
 
             final BodyKinematics kinematics = new BodyKinematics();
-            kinematics.setSpecificForceCoordinates(
-                    accumulatedAvgX, accumulatedAvgY, accumulatedAvgZ);
+            kinematics.setSpecificForceCoordinates(accumulatedAvgX, accumulatedAvgY, accumulatedAvgZ);
 
             final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics();
             measurement.setKinematics(kinematics);

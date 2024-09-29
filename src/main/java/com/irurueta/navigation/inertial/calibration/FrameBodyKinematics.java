@@ -24,6 +24,7 @@ import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -38,6 +39,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -152,8 +154,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      *                      used to obtain current frame and previous frame.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    public FrameBodyKinematics(final ECEFFrame frame, final ECEFFrame previousFrame,
-                               final double timeInterval) {
+    public FrameBodyKinematics(final ECEFFrame frame, final ECEFFrame previousFrame, final double timeInterval) {
         this(frame, previousFrame);
         setTimeInterval(timeInterval);
     }
@@ -167,8 +168,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      *                      current frame and previous frame.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    public FrameBodyKinematics(final ECEFFrame frame, final ECEFFrame previousFrame,
-                               final Time timeInterval) {
+    public FrameBodyKinematics(final ECEFFrame frame, final ECEFFrame previousFrame, final Time timeInterval) {
         this(frame, previousFrame);
         setTimeInterval(timeInterval);
     }
@@ -184,8 +184,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      *                      used to obtain current frame and previous frame.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    public FrameBodyKinematics(final NEDFrame frame, final NEDFrame previousFrame,
-                               final double timeInterval) {
+    public FrameBodyKinematics(final NEDFrame frame, final NEDFrame previousFrame, final double timeInterval) {
         this(frame, previousFrame);
         setTimeInterval(timeInterval);
     }
@@ -201,8 +200,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      *                      current frame and previous frame.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    public FrameBodyKinematics(final NEDFrame frame, final NEDFrame previousFrame,
-                               final Time timeInterval) {
+    public FrameBodyKinematics(final NEDFrame frame, final NEDFrame previousFrame, final Time timeInterval) {
         this(frame, previousFrame);
         setTimeInterval(timeInterval);
     }
@@ -237,8 +235,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @param frame         current ECEF frame associated to measurement.
      * @param previousFrame previous ECEF frame associated to measurement.
      */
-    public FrameBodyKinematics(final BodyKinematics kinematics, final ECEFFrame frame,
-                               final ECEFFrame previousFrame) {
+    public FrameBodyKinematics(final BodyKinematics kinematics, final ECEFFrame frame, final ECEFFrame previousFrame) {
         this(kinematics, frame);
         mPreviousFrame = previousFrame;
     }
@@ -252,8 +249,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @param previousFrame previous NED frame associated to measurement. Internally it
      *                      will be converted to its corresponding ECEF frame.
      */
-    public FrameBodyKinematics(final BodyKinematics kinematics, final NEDFrame frame,
-                               final NEDFrame previousFrame) {
+    public FrameBodyKinematics(final BodyKinematics kinematics, final NEDFrame frame, final NEDFrame previousFrame) {
         this(kinematics, frame);
         setPreviousNedFrame(previousFrame);
     }
@@ -268,8 +264,8 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      *                      used to obtain current frame and previous frame.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    public FrameBodyKinematics(final BodyKinematics kinematics, final ECEFFrame frame,
-                               final ECEFFrame previousFrame, final double timeInterval) {
+    public FrameBodyKinematics(final BodyKinematics kinematics, final ECEFFrame frame, final ECEFFrame previousFrame,
+                               final double timeInterval) {
         this(kinematics, frame, previousFrame);
         setTimeInterval(timeInterval);
     }
@@ -284,8 +280,8 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      *                      current frame and previous frame.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    public FrameBodyKinematics(final BodyKinematics kinematics, final ECEFFrame frame,
-                               final ECEFFrame previousFrame, final Time timeInterval) {
+    public FrameBodyKinematics(final BodyKinematics kinematics, final ECEFFrame frame, final ECEFFrame previousFrame,
+                               final Time timeInterval) {
         this(kinematics, frame, previousFrame);
         setTimeInterval(timeInterval);
     }
@@ -302,8 +298,8 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      *                      used to obtain current frame and previous frame.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    public FrameBodyKinematics(final BodyKinematics kinematics, final NEDFrame frame,
-                               final NEDFrame previousFrame, final double timeInterval) {
+    public FrameBodyKinematics(final BodyKinematics kinematics, final NEDFrame frame, final NEDFrame previousFrame,
+                               final double timeInterval) {
         this(kinematics, frame, previousFrame);
         setTimeInterval(timeInterval);
     }
@@ -320,8 +316,8 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      *                      current frame and previous frame.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    public FrameBodyKinematics(final BodyKinematics kinematics, final NEDFrame frame,
-                               final NEDFrame previousFrame, final Time timeInterval) {
+    public FrameBodyKinematics(final BodyKinematics kinematics, final NEDFrame frame, final NEDFrame previousFrame,
+                               final Time timeInterval) {
         this(kinematics, frame, previousFrame);
         setTimeInterval(timeInterval);
     }
@@ -390,8 +386,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * not available.
      */
     public NEDFrame getNedFrame() {
-        return mFrame != null ?
-                ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mFrame) : null;
+        return mFrame != null ? ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mFrame) : null;
     }
 
     /**
@@ -472,8 +467,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * null if not available.
      */
     public NEDFrame getPreviousNedFrame() {
-        return mPreviousFrame != null ?
-                ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mPreviousFrame) : null;
+        return mPreviousFrame != null ? ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mPreviousFrame) : null;
     }
 
     /**
@@ -508,8 +502,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
             if (mPreviousFrame != null) {
                 NEDtoECEFFrameConverter.convertNEDtoECEF(previousNedFrame, mPreviousFrame);
             } else {
-                mPreviousFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                        previousNedFrame);
+                mPreviousFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(previousNedFrame);
             }
         } else {
             mPreviousFrame = null;
@@ -572,8 +565,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     public void setTimeInterval(final Time timeInterval) {
         setTimeInterval(TimeConverter.convert(
-                timeInterval.getValue().doubleValue(), timeInterval.getUnit(),
-                TimeUnit.SECOND));
+                timeInterval.getValue().doubleValue(), timeInterval.getUnit(), TimeUnit.SECOND));
     }
 
     /**

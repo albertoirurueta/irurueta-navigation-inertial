@@ -36,8 +36,8 @@ import com.irurueta.units.AngleUnit;
  * Geomagnetic Reference Field (IGRF) or the 336-coefficient U.D/U.K
  * World Magnetic Model (WMM).
  * <p>
- * IGRF: https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html
- * WMM: https://www.ngdc.noaa.gov/geomag/WMM
+ * IGRF: <a href="https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html">https://www.ngdc.noaa.gov/IAGA/vmod/igrf.html</a>
+ * WMM: <a href="https://www.ngdc.noaa.gov/geomag/WMM">https://www.ngdc.noaa.gov/geomag/WMM</a>
  */
 public class EarthMagneticFluxDensityEstimator {
 
@@ -58,10 +58,7 @@ public class EarthMagneticFluxDensityEstimator {
      */
     @SuppressWarnings("DuplicatedCode")
     public static void estimate(
-            final double magnitude,
-            final double declination,
-            final double dip,
-            final NEDMagneticFluxDensity result) {
+            final double magnitude, final double declination, final double dip, final NEDMagneticFluxDensity result) {
 
         final double cosDeclination = Math.cos(declination);
         final double sinDeclination = Math.sin(declination);
@@ -86,12 +83,8 @@ public class EarthMagneticFluxDensityEstimator {
      *                    around NED frame.
      */
     public static void estimate(
-            final double magnitude,
-            final Angle declination,
-            final Angle dip,
-            final NEDMagneticFluxDensity result) {
-        estimate(magnitude, convertAngle(declination), convertAngle(dip),
-                result);
+            final double magnitude, final Angle declination, final Angle dip, final NEDMagneticFluxDensity result) {
+        estimate(magnitude, convertAngle(declination), convertAngle(dip), result);
     }
 
     /**
@@ -102,12 +95,8 @@ public class EarthMagneticFluxDensityEstimator {
      * @param dip         dip (or inclination) angle expressed in radians.
      * @return Earth magnetic flux density resolved around NED frame.
      */
-    public static NEDMagneticFluxDensity estimate(
-            final double magnitude,
-            final double declination,
-            final double dip) {
-        final NEDMagneticFluxDensity result =
-                new NEDMagneticFluxDensity();
+    public static NEDMagneticFluxDensity estimate(final double magnitude, final double declination, final double dip) {
+        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();
         estimate(magnitude, declination, dip, result);
         return result;
     }
@@ -120,12 +109,8 @@ public class EarthMagneticFluxDensityEstimator {
      * @param dip         dip (or inclination) angle.
      * @return Earth magnetic flux density resolved around NED frame.
      */
-    public static NEDMagneticFluxDensity estimate(
-            final double magnitude,
-            final Angle declination,
-            final Angle dip) {
-        return estimate(magnitude, convertAngle(declination),
-                convertAngle(dip));
+    public static NEDMagneticFluxDensity estimate(final double magnitude, final Angle declination, final Angle dip) {
+        return estimate(magnitude, convertAngle(declination), convertAngle(dip));
     }
 
     /**
@@ -147,8 +132,7 @@ public class EarthMagneticFluxDensityEstimator {
      * @param b      a magnetic flux density resolved around NED frame.
      * @param result instance where declination angle will be stored.
      */
-    public static void getDeclinationAsAngle(
-            final NEDMagneticFluxDensity b, final Angle result) {
+    public static void getDeclinationAsAngle(final NEDMagneticFluxDensity b, final Angle result) {
         result.setUnit(AngleUnit.RADIANS);
         result.setValue(getDeclination(b));
     }
@@ -159,8 +143,7 @@ public class EarthMagneticFluxDensityEstimator {
      * @param b a magnetic flux density resolved around NED frame.
      * @return declination angle.
      */
-    public static Angle getDeclinationAsAngle(
-            final NEDMagneticFluxDensity b) {
+    public static Angle getDeclinationAsAngle(final NEDMagneticFluxDensity b) {
         return new Angle(getDeclination(b), AngleUnit.RADIANS);
     }
 
@@ -186,8 +169,7 @@ public class EarthMagneticFluxDensityEstimator {
      * @param b      a magnetic flux density resolved around NED frame.
      * @param result instance where dip angle will be stored.
      */
-    public static void getDipAsAngle(
-            final NEDMagneticFluxDensity b, final Angle result) {
+    public static void getDipAsAngle(final NEDMagneticFluxDensity b, final Angle result) {
         result.setUnit(AngleUnit.RADIANS);
         result.setValue(getDip(b));
     }
@@ -209,7 +191,6 @@ public class EarthMagneticFluxDensityEstimator {
      * @return converted value into radians.
      */
     private static double convertAngle(final Angle angle) {
-        return AngleConverter.convert(angle.getValue().doubleValue(),
-                angle.getUnit(), AngleUnit.RADIANS);
+        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(), AngleUnit.RADIANS);
     }
 }

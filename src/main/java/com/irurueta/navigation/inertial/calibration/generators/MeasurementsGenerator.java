@@ -314,8 +314,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @throws IllegalArgumentException if provided value is less than
      *                                  {@link TriadStaticIntervalDetector#MINIMUM_INITIAL_STATIC_SAMPLES}
      */
-    public void setInitialStaticSamples(final int initialStaticSamples)
-            throws LockedException {
+    public void setInitialStaticSamples(final int initialStaticSamples) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -343,8 +342,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @throws LockedException          if detector is busy.
      * @throws IllegalArgumentException if provided value is zero or negative.
      */
-    public void setThresholdFactor(final double thresholdFactor)
-            throws LockedException {
+    public void setThresholdFactor(final double thresholdFactor) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -376,14 +374,12 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @throws LockedException          if detector is busy.
      * @throws IllegalArgumentException if provided value is zero or negative.
      */
-    public void setInstantaneousNoiseLevelFactor(
-            final double instantaneousNoiseLevelFactor) throws LockedException {
+    public void setInstantaneousNoiseLevelFactor(final double instantaneousNoiseLevelFactor) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
 
-        mStaticIntervalDetector.setInstantaneousNoiseLevelFactor(
-                instantaneousNoiseLevelFactor);
+        mStaticIntervalDetector.setInstantaneousNoiseLevelFactor(instantaneousNoiseLevelFactor);
     }
 
     /**
@@ -413,14 +409,13 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @throws LockedException          if detector is busy.
      * @throws IllegalArgumentException if provided value is zero or negative.
      */
-    public void setBaseNoiseLevelAbsoluteThreshold(
-            final double baseNoiseLevelAbsoluteThreshold) throws LockedException {
+    public void setBaseNoiseLevelAbsoluteThreshold(final double baseNoiseLevelAbsoluteThreshold)
+            throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
 
-        mStaticIntervalDetector.setBaseNoiseLevelAbsoluteThreshold(
-                baseNoiseLevelAbsoluteThreshold);
+        mStaticIntervalDetector.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
     }
 
     /**
@@ -444,10 +439,8 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      *
      * @param result instance where result will be stored.
      */
-    public void getBaseNoiseLevelAbsoluteThresholdAsMeasurement(
-            final Acceleration result) {
-        mStaticIntervalDetector.getBaseNoiseLevelAbsoluteThresholdAsMeasurement(
-                result);
+    public void getBaseNoiseLevelAbsoluteThresholdAsMeasurement(final Acceleration result) {
+        mStaticIntervalDetector.getBaseNoiseLevelAbsoluteThresholdAsMeasurement(result);
     }
 
     /**
@@ -462,14 +455,13 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * @throws LockedException          if detector is busy.
      * @throws IllegalArgumentException if provided value is zero or negative.
      */
-    public void setBaseNoiseLevelAbsoluteThreshold(
-            final Acceleration baseNoiseLevelAbsoluteThreshold) throws LockedException {
+    public void setBaseNoiseLevelAbsoluteThreshold(final Acceleration baseNoiseLevelAbsoluteThreshold)
+            throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
 
-        mStaticIntervalDetector.setBaseNoiseLevelAbsoluteThreshold(
-                baseNoiseLevelAbsoluteThreshold);
+        mStaticIntervalDetector.setBaseNoiseLevelAbsoluteThreshold(baseNoiseLevelAbsoluteThreshold);
     }
 
     /**
@@ -513,8 +505,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      *
      * @param result instance where result will be stored.
      */
-    public void getAccelerometerBaseNoiseLevelAsMeasurement(
-            final Acceleration result) {
+    public void getAccelerometerBaseNoiseLevelAsMeasurement(final Acceleration result) {
         mStaticIntervalDetector.getBaseNoiseLevelAsMeasurement(result);
     }
 
@@ -679,8 +670,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      *
      * @param sample input sample.
      */
-    protected abstract void getAccelerationTriadFromInputSample(
-            final I sample);
+    protected abstract void getAccelerationTriadFromInputSample(final I sample);
 
     /**
      * Handles a static-to-dynamic interval change.
@@ -705,12 +695,8 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      *                        squared second (m/s^2).
      */
     protected abstract void handleStaticToDynamicChange(
-            final double accumulatedAvgX,
-            final double accumulatedAvgY,
-            final double accumulatedAvgZ,
-            final double accumulatedStdX,
-            final double accumulatedStdY,
-            final double accumulatedStdZ);
+            final double accumulatedAvgX, final double accumulatedAvgY, final double accumulatedAvgZ,
+            final double accumulatedStdX, final double accumulatedStdY, final double accumulatedStdZ);
 
     /**
      * Handles a dynamic-to-static interval change.
@@ -765,8 +751,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
         final AccelerationTriadStaticIntervalDetectorListener listener =
                 new AccelerationTriadStaticIntervalDetectorListener() {
                     @Override
-                    public void onInitializationStarted(
-                            final AccelerationTriadStaticIntervalDetector detector) {
+                    public void onInitializationStarted(final AccelerationTriadStaticIntervalDetector detector) {
 
                         if (mListener != null) {
                             //noinspection unchecked
@@ -776,16 +761,13 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
 
                     @Override
                     public void onInitializationCompleted(
-                            final AccelerationTriadStaticIntervalDetector detector,
-                            final double baseNoiseLevel) {
+                            final AccelerationTriadStaticIntervalDetector detector, final double baseNoiseLevel) {
 
                         handleInitializationCompleted();
 
                         if (mListener != null) {
                             //noinspection unchecked
-                            mListener.onInitializationCompleted(
-                                    (G) MeasurementsGenerator.this,
-                                    baseNoiseLevel);
+                            mListener.onInitializationCompleted((G) MeasurementsGenerator.this, baseNoiseLevel);
                         }
                     }
 

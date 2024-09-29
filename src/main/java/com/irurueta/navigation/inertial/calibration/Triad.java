@@ -28,8 +28,7 @@ import java.util.Objects;
  * @param <U> type of unit.
  * @param <T> a type of measurement.
  */
-public abstract class Triad<U extends Enum<?>, T extends Measurement<U>>
-        implements Serializable {
+public abstract class Triad<U extends Enum<?>, T extends Measurement<U>> implements Serializable {
 
     /**
      * Number of components of measurements.
@@ -79,8 +78,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>>
      * @param valueZ value of z-coordinate.
      * @throws IllegalArgumentException if provided unit is null.
      */
-    protected Triad(final U unit, final double valueX, final double valueY,
-                 final double valueZ) {
+    protected Triad(final U unit, final double valueX, final double valueY, final double valueZ) {
         this(unit);
         setValueCoordinates(valueX, valueY, valueZ);
     }
@@ -155,8 +153,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>>
      * @param valueY y coordinate of measurement.
      * @param valueZ z coordinate of measurement.
      */
-    public void setValueCoordinates(
-            final double valueX, final double valueY, final double valueZ) {
+    public void setValueCoordinates(final double valueX, final double valueY, final double valueZ) {
         mValueX = valueX;
         mValueY = valueY;
         mValueZ = valueZ;
@@ -194,8 +191,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>>
      * @throws IllegalArgumentException if provided unit is null.
      */
     public void setValueCoordinatesAndUnit(
-            final double valueX, final double valueY, final double valueZ,
-            final U unit) {
+            final double valueX, final double valueY, final double valueZ, final U unit) {
         setValueCoordinates(valueX, valueY, valueZ);
         setUnit(unit);
     }
@@ -457,10 +453,8 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>>
             return false;
         }
 
-        return Math.abs(mValueX - other.mValueX) <= threshold
-                && Math.abs(mValueY - other.mValueY) <= threshold
-                && Math.abs(mValueZ - other.mValueZ) <= threshold
-                && Objects.equals(mUnit, other.mUnit);
+        return Math.abs(mValueX - other.mValueX) <= threshold && Math.abs(mValueY - other.mValueY) <= threshold
+                && Math.abs(mValueZ - other.mValueZ) <= threshold && Objects.equals(mUnit, other.mUnit);
     }
 
 

@@ -65,8 +65,7 @@ import java.util.List;
  */
 public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator implements
         MagnetometerNonLinearCalibrator, KnownHardIronMagnetometerCalibrator,
-        OrderedStandardDeviationBodyMagneticFluxDensityMagnetometerCalibrator,
-        QualityScoredMagnetometerCalibrator {
+        OrderedStandardDeviationBodyMagneticFluxDensityMagnetometerCalibrator, QualityScoredMagnetometerCalibrator {
 
     /**
      * Indicates whether by default a common z-axis is assumed for the accelerometer,
@@ -78,19 +77,18 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * Required minimum number of measurements when common z-axis is assumed.
      */
     public static final int MINIMUM_MEASUREMENTS_COMMON_Z_AXIS =
-            KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS;
+            BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS;
 
     /**
      * Required minimum number of measurements for the general case.
      */
     public static final int MINIMUM_MEASUREMENTS_GENERAL =
-            KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
+            BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
 
     /**
      * Default robust estimator method when none is provided.
      */
-    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD =
-            RobustEstimatorMethod.LMedS;
+    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD = RobustEstimatorMethod.LMEDS;
 
     /**
      * Indicates that result is refined by default.
@@ -407,8 +405,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-    protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final boolean commonAxisUsed) {
+    protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(final boolean commonAxisUsed) {
         mCommonAxisUsed = commonAxisUsed;
     }
 
@@ -419,8 +416,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final double[] hardIron) {
+    protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(final double[] hardIron) {
         try {
             setHardIron(hardIron);
         } catch (final LockedException ignore) {
@@ -435,8 +431,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Matrix hardIron) {
+    protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(final Matrix hardIron) {
         try {
             setHardIron(hardIron);
         } catch (final LockedException ignore) {
@@ -493,8 +488,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         mMeasurements = measurements;
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -512,8 +506,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @param listener       listener to handle events raised by this calibrator.
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         this(measurements, commonAxisUsed);
         mListener = listener;
@@ -532,8 +525,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  not have length 3.
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron) {
         this(hardIron);
         mMeasurements = measurements;
     }
@@ -552,8 +544,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  not have length 3.
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         this(measurements, hardIron);
         mListener = listener;
@@ -574,8 +565,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  not have length 3.
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron) {
         this(measurements, hardIron);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -596,8 +587,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  not have length 3.
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         this(measurements, commonAxisUsed, hardIron);
         mListener = listener;
@@ -616,8 +607,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x1.
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron) {
         this(hardIron);
         mMeasurements = measurements;
     }
@@ -636,8 +626,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x1.
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         this(measurements, hardIron);
         mListener = listener;
@@ -658,8 +647,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x1.
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron) {
         this(measurements, hardIron);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -680,8 +669,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x1.
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         this(measurements, commonAxisUsed, hardIron);
         mListener = listener;
@@ -703,8 +692,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x3.
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm) {
         this(hardIron, initialMm);
         mMeasurements = measurements;
     }
@@ -726,8 +715,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x3.
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         this(measurements, hardIron, initialMm);
         mListener = listener;
@@ -751,9 +740,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x3.
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm) {
         this(measurements, hardIron, initialMm);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -777,9 +765,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x3.
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         this(measurements, commonAxisUsed, hardIron, initialMm);
         mListener = listener;
@@ -837,8 +824,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final boolean commonAxisUsed) {
+            final Double groundTruthMagneticFluxDensityNorm, final boolean commonAxisUsed) {
         this(groundTruthMagneticFluxDensityNorm);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -853,8 +839,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  not have length 3.
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final double[] hardIron) {
+            final Double groundTruthMagneticFluxDensityNorm, final double[] hardIron) {
         this(hardIron);
         internalSetGroundTruthMagneticFluxDensityNorm(groundTruthMagneticFluxDensityNorm);
     }
@@ -869,8 +854,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x1.
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final Matrix hardIron) {
+            final Double groundTruthMagneticFluxDensityNorm, final Matrix hardIron) {
         this(hardIron);
         internalSetGroundTruthMagneticFluxDensityNorm(groundTruthMagneticFluxDensityNorm);
     }
@@ -888,8 +872,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x3.
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final Matrix hardIron, final Matrix initialMm) {
+            final Double groundTruthMagneticFluxDensityNorm, final Matrix hardIron, final Matrix initialMm) {
         this(hardIron, initialMm);
         internalSetGroundTruthMagneticFluxDensityNorm(groundTruthMagneticFluxDensityNorm);
     }
@@ -929,8 +912,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         this(groundTruthMagneticFluxDensityNorm, measurements);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -951,8 +933,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
         mListener = listener;
@@ -973,8 +954,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron) {
         this(measurements, hardIron);
         internalSetGroundTruthMagneticFluxDensityNorm(groundTruthMagneticFluxDensityNorm);
     }
@@ -995,8 +975,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, hardIron);
         mListener = listener;
@@ -1019,8 +998,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron) {
         this(measurements, commonAxisUsed, hardIron);
         internalSetGroundTruthMagneticFluxDensityNorm(groundTruthMagneticFluxDensityNorm);
     }
@@ -1043,8 +1022,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
         mListener = listener;
@@ -1065,8 +1044,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron) {
         this(measurements, hardIron);
         internalSetGroundTruthMagneticFluxDensityNorm(groundTruthMagneticFluxDensityNorm);
     }
@@ -1087,8 +1065,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, hardIron);
         mListener = listener;
@@ -1111,8 +1088,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron) {
         this(measurements, commonAxisUsed, hardIron);
         internalSetGroundTruthMagneticFluxDensityNorm(groundTruthMagneticFluxDensityNorm);
     }
@@ -1135,8 +1112,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
         mListener = listener;
@@ -1160,8 +1137,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm) {
         this(measurements, hardIron, initialMm);
         internalSetGroundTruthMagneticFluxDensityNorm(groundTruthMagneticFluxDensityNorm);
     }
@@ -1185,8 +1162,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
         mListener = listener;
@@ -1212,9 +1189,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm) {
         this(measurements, commonAxisUsed, hardIron, initialMm);
         internalSetGroundTruthMagneticFluxDensityNorm(groundTruthMagneticFluxDensityNorm);
     }
@@ -1240,9 +1216,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     protected RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         this(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm);
         mListener = listener;
@@ -1344,8 +1319,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronX(final double hardIronX)
-            throws LockedException {
+    public void setHardIronX(final double hardIronX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1372,8 +1346,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronY(final double hardIronY)
-            throws LockedException {
+    public void setHardIronY(final double hardIronY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1400,8 +1373,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronZ(final double hardIronZ)
-            throws LockedException {
+    public void setHardIronZ(final double hardIronZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1415,8 +1387,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public MagneticFluxDensity getHardIronXAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mHardIronX,
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(mHardIronX, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -1425,8 +1396,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @param result instance where result will be stored.
      */
     @Override
-    public void getHardIronXAsMagneticFluxDensity(
-            final MagneticFluxDensity result) {
+    public void getHardIronXAsMagneticFluxDensity(final MagneticFluxDensity result) {
         result.setValue(mHardIronX);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
@@ -1438,8 +1408,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronX(final MagneticFluxDensity hardIronX)
-            throws LockedException {
+    public void setHardIronX(final MagneticFluxDensity hardIronX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1453,8 +1422,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public MagneticFluxDensity getHardIronYAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mHardIronY,
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(mHardIronY, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -1463,8 +1431,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @param result instance where result will be stored.
      */
     @Override
-    public void getHardIronYAsMagneticFluxDensity(
-            final MagneticFluxDensity result) {
+    public void getHardIronYAsMagneticFluxDensity(final MagneticFluxDensity result) {
         result.setValue(mHardIronY);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
@@ -1476,8 +1443,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronY(final MagneticFluxDensity hardIronY)
-            throws LockedException {
+    public void setHardIronY(final MagneticFluxDensity hardIronY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1491,8 +1457,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public MagneticFluxDensity getHardIronZAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(mHardIronZ,
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(mHardIronZ, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -1501,8 +1466,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @param result instance where result will be stored.
      */
     @Override
-    public void getHardIronZAsMagneticFluxDensity(
-            final MagneticFluxDensity result) {
+    public void getHardIronZAsMagneticFluxDensity(final MagneticFluxDensity result) {
         result.setValue(mHardIronZ);
         result.setUnit(MagneticFluxDensityUnit.TESLA);
     }
@@ -1514,8 +1478,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIronZ(final MagneticFluxDensity hardIronZ)
-            throws LockedException {
+    public void setHardIronZ(final MagneticFluxDensity hardIronZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1536,9 +1499,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public void setHardIronCoordinates(
-            final double hardIronX,
-            final double hardIronY,
-            final double hardIronZ) throws LockedException {
+            final double hardIronX, final double hardIronY, final double hardIronZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1557,8 +1518,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public void setHardIronCoordinates(
-            final MagneticFluxDensity hardIronX,
-            final MagneticFluxDensity hardIronY,
+            final MagneticFluxDensity hardIronX, final MagneticFluxDensity hardIronY,
             final MagneticFluxDensity hardIronZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -1575,8 +1535,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public MagneticFluxDensityTriad getHardIronAsTriad() {
-        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,
-                mHardIronX, mHardIronY, mHardIronZ);
+        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, mHardIronX, mHardIronY, mHardIronZ);
     }
 
     /**
@@ -1586,9 +1545,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public void getHardIronAsTriad(final MagneticFluxDensityTriad result) {
-        result.setValueCoordinatesAndUnit(
-                mHardIronX, mHardIronY, mHardIronZ,
-                MagneticFluxDensityUnit.TESLA);
+        result.setValueCoordinatesAndUnit(mHardIronX, mHardIronY, mHardIronZ, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -1598,8 +1555,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setHardIron(final MagneticFluxDensityTriad hardIron)
-            throws LockedException {
+    public void setHardIron(final MagneticFluxDensityTriad hardIron) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1626,8 +1582,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSx(final double initialSx)
-            throws LockedException {
+    public void setInitialSx(final double initialSx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1651,8 +1606,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSy(final double initialSy)
-            throws LockedException {
+    public void setInitialSy(final double initialSy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1676,8 +1630,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSz(final double initialSz)
-            throws LockedException {
+    public void setInitialSz(final double initialSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1701,8 +1654,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMxy(final double initialMxy)
-            throws LockedException {
+    public void setInitialMxy(final double initialMxy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1726,8 +1678,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMxz(final double initialMxz)
-            throws LockedException {
+    public void setInitialMxz(final double initialMxz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1751,8 +1702,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMyx(final double initialMyx)
-            throws LockedException {
+    public void setInitialMyx(final double initialMyx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1776,8 +1726,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMyz(final double initialMyz)
-            throws LockedException {
+    public void setInitialMyz(final double initialMyz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1801,8 +1750,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMzx(final double initialMzx)
-            throws LockedException {
+    public void setInitialMzx(final double initialMzx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1826,8 +1774,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMzy(final double initialMzy)
-            throws LockedException {
+    public void setInitialMzy(final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1844,10 +1791,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx,
-            final double initialSy,
-            final double initialSz)
-            throws LockedException {
+            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1869,13 +1813,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public void setInitialCrossCouplingErrors(
-            final double initialMxy,
-            final double initialMxz,
-            final double initialMyx,
-            final double initialMyz,
-            final double initialMzx,
-            final double initialMzy)
-            throws LockedException {
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1903,22 +1842,14 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public void setInitialScalingFactorsAndCrossCouplingErrors(
-            final double initialSx,
-            final double initialSy,
-            final double initialSz,
-            final double initialMxy,
-            final double initialMxz,
-            final double initialMyx,
-            final double initialMyz,
-            final double initialMzx,
-            final double initialMzy)
-            throws LockedException {
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
+        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
     }
 
     /**
@@ -1929,8 +1860,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public double[] getHardIron() {
-        final double[] result = new double[
-                BodyMagneticFluxDensity.COMPONENTS];
+        final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
         getHardIron(result);
         return result;
     }
@@ -1962,8 +1892,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     @Override
-    public void setHardIron(final double[] hardIron)
-            throws LockedException {
+    public void setHardIron(final double[] hardIron) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1985,8 +1914,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
     public Matrix getHardIronMatrix() {
         Matrix result;
         try {
-            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                    1);
+            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
             getHardIronMatrix(result);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -2003,8 +1931,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public void getHardIronMatrix(final Matrix result) {
-        if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mHardIronX);
@@ -2020,13 +1947,11 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     @Override
-    public void setHardIron(final Matrix hardIron)
-            throws LockedException {
+    public void setHardIron(final Matrix hardIron) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
-        if (hardIron.getRows() != BodyMagneticFluxDensity.COMPONENTS
-                || hardIron.getColumns() != 1) {
+        if (hardIron.getRows() != BodyMagneticFluxDensity.COMPONENTS || hardIron.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -2044,8 +1969,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
     public Matrix getInitialMm() {
         Matrix result;
         try {
-            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                    BodyMagneticFluxDensity.COMPONENTS);
+            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
             getInitialMm(result);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -2062,8 +1986,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public void getInitialMm(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS ||
-                result.getColumns() != BodyKinematics.COMPONENTS) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mInitialSx);
@@ -2087,13 +2010,11 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setInitialMm(final Matrix initialMm)
-            throws LockedException {
+    public void setInitialMm(final Matrix initialMm) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
-        if (initialMm.getRows() != BodyKinematics.COMPONENTS ||
-                initialMm.getColumns() != BodyKinematics.COMPONENTS) {
+        if (initialMm.getRows() != BodyKinematics.COMPONENTS || initialMm.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -2135,8 +2056,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public void setMeasurements(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements)
-            throws LockedException {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2188,8 +2108,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException if estimator is currently running.
      */
     @Override
-    public void setCommonAxisUsed(final boolean commonAxisUsed)
-            throws LockedException {
+    public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2229,8 +2148,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public int getMinimumRequiredMeasurements() {
-        return mCommonAxisUsed ? MINIMUM_MEASUREMENTS_COMMON_Z_AXIS :
-                MINIMUM_MEASUREMENTS_GENERAL;
+        return mCommonAxisUsed ? MINIMUM_MEASUREMENTS_COMMON_Z_AXIS : MINIMUM_MEASUREMENTS_GENERAL;
     }
 
     /**
@@ -2240,8 +2158,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public boolean isReady() {
-        return mMeasurements != null
-                && mMeasurements.size() >= getMinimumRequiredMeasurements()
+        return mMeasurements != null && mMeasurements.size() >= getMinimumRequiredMeasurements()
                 && mGroundTruthMagneticFluxDensityNorm != null;
     }
 
@@ -2279,8 +2196,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
         if (mRunning) {
             throw new LockedException();
         }
-        if (progressDelta < MIN_PROGRESS_DELTA ||
-                progressDelta > MAX_PROGRESS_DELTA) {
+        if (progressDelta < MIN_PROGRESS_DELTA || progressDelta > MAX_PROGRESS_DELTA) {
             throw new IllegalArgumentException();
         }
         mProgressDelta = progressDelta;
@@ -2432,8 +2348,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setQualityScores(final double[] qualityScores)
-            throws LockedException {
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
     }
 
     /**
@@ -2491,8 +2406,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(0, 0) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 0) : null;
     }
 
     /**
@@ -2502,8 +2416,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(1, 1) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 1) : null;
     }
 
     /**
@@ -2513,8 +2426,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(2, 2) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 2) : null;
     }
 
     /**
@@ -2524,8 +2436,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(0, 1) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 1) : null;
     }
 
     /**
@@ -2535,8 +2446,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(0, 2) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(0, 2) : null;
     }
 
     /**
@@ -2546,8 +2456,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(1, 0) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 0) : null;
     }
 
     /**
@@ -2557,8 +2466,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(1, 2) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(1, 2) : null;
     }
 
     /**
@@ -2568,8 +2476,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(2, 0) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 0) : null;
     }
 
     /**
@@ -2579,8 +2486,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMm != null ?
-                mEstimatedMm.getElementAt(2, 1) : null;
+        return mEstimatedMm != null ? mEstimatedMm.getElementAt(2, 1) : null;
     }
 
     /**
@@ -2634,8 +2540,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided value is less than {@link #MINIMUM_MEASUREMENTS_COMMON_Z_AXIS}.
      */
-    public void setPreliminarySubsetSize(final int preliminarySubsetSize)
-            throws LockedException {
+    public void setPreliminarySubsetSize(final int preliminarySubsetSize) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2645,19 +2550,6 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
 
         mPreliminarySubsetSize = preliminarySubsetSize;
     }
-
-    /**
-     * Estimates magnetometer calibration parameters containing hard-iron
-     * bias and soft-iron scale factors
-     * and cross-coupling errors.
-     *
-     * @throws LockedException      if calibrator is currently running.
-     * @throws NotReadyException    if calibrator is not ready.
-     * @throws CalibrationException if estimation fails for numerical reasons.
-     */
-    @Override
-    public abstract void calibrate() throws LockedException, NotReadyException,
-            CalibrationException;
 
     /**
      * Returns method being used for robust estimation.
@@ -2674,19 +2566,13 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+        };
     }
 
     /**
@@ -2699,19 +2585,13 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(listener);
+        };
     }
 
     /**
@@ -2726,21 +2606,14 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements);
-        }
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements);
+        };
     }
 
     /**
@@ -2753,19 +2626,13 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final boolean commonAxisUsed, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(commonAxisUsed);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(commonAxisUsed);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(commonAxisUsed);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(commonAxisUsed);
+        };
     }
 
     /**
@@ -2778,21 +2645,14 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  not have length 3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
-        }
+            final double[] hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
+        };
     }
 
     /**
@@ -2806,19 +2666,13 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Matrix hardIron, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
+        };
     }
 
     /**
@@ -2834,26 +2688,19 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final Matrix hardIron, final Matrix initialMm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        hardIron, initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        hardIron, initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        hardIron, initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        hardIron, initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        hardIron, initialMm);
-        }
+            final Matrix hardIron, final Matrix initialMm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    hardIron, initialMm);
+        };
     }
 
     /**
@@ -2872,24 +2719,18 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, listener);
+        };
     }
 
     /**
@@ -2906,26 +2747,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed);
-        }
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed);
+        };
     }
 
     /**
@@ -2943,28 +2778,21 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -2982,26 +2810,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  not have length 3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron);
-        }
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron);
+        };
     }
 
     /**
@@ -3020,108 +2842,88 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  not have length 3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
+            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, listener);
+        };
+    }
+
+    /**
+     * Creates a robust magnetometer calibrator.
+     *
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param method         robust estimator method.
+     * @return a robust magnetometer calibrator.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron);
+        };
+    }
+
+    /**
+     * Creates a robust magnetometer calibrator.
+     *
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @param method         robust estimator method.
+     * @return a robust magnetometer calibrator.
+     */
+    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final double[] hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, listener);
-        }
-    }
-
-    /**
-     * Creates a robust magnetometer calibrator.
-     *
-     * @param measurements   collection of body magnetic flux density
-     *                       measurements with standard deviation of
-     *                       magnetometer measurements taken at the same
-     *                       position with zero velocity and unknown different
-     *                       orientations.
-     * @param commonAxisUsed indicates whether z-axis is assumed to be common
-     *                       for the accelerometer, gyroscope and magnetometer.
-     * @param hardIron       known hard-iron.
-     * @param method         robust estimator method.
-     * @return a robust magnetometer calibrator.
-     * @throws IllegalArgumentException if provided hard-iron array does
-     *                                  not have length 3.
-     */
-    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron);
-        }
-    }
-
-    /**
-     * Creates a robust magnetometer calibrator.
-     *
-     * @param measurements   collection of body magnetic flux density
-     *                       measurements with standard deviation of
-     *                       magnetometer measurements taken at the same
-     *                       position with zero velocity and unknown different
-     *                       orientations.
-     * @param commonAxisUsed indicates whether z-axis is assumed to be common
-     *                       for the accelerometer, gyroscope and magnetometer.
-     * @param hardIron       known hard-iron.
-     * @param listener       listener to handle events raised by this calibrator.
-     * @param method         robust estimator method.
-     * @return a robust magnetometer calibrator.
-     */
-    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
-            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, listener);
+        };
     }
 
     /**
@@ -3139,26 +2941,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x1.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron);
-        }
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron);
+        };
     }
 
     /**
@@ -3177,110 +2973,90 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x1.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, listener);
+        };
+    }
+
+    /**
+     * Creates a robust magnetometer calibrator.
+     *
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param method         robust estimator method.
+     * @return a robust magnetometer calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron);
+        };
+    }
+
+    /**
+     * Creates a robust magnetometer calibrator.
+     *
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron       known hard-iron.
+     * @param listener       listener to handle events raised by this calibrator.
+     * @param method         robust estimator method.
+     * @return a robust magnetometer calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final Matrix hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, listener);
-        }
-    }
-
-    /**
-     * Creates a robust magnetometer calibrator.
-     *
-     * @param measurements   collection of body magnetic flux density
-     *                       measurements with standard deviation of
-     *                       magnetometer measurements taken at the same
-     *                       position with zero velocity and unknown different
-     *                       orientations.
-     * @param commonAxisUsed indicates whether z-axis is assumed to be common
-     *                       for the accelerometer, gyroscope and magnetometer.
-     * @param hardIron       known hard-iron.
-     * @param method         robust estimator method.
-     * @return a robust magnetometer calibrator.
-     * @throws IllegalArgumentException if provided hard-iron matrix is not
-     *                                  3x1.
-     */
-    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron);
-        }
-    }
-
-    /**
-     * Creates a robust magnetometer calibrator.
-     *
-     * @param measurements   collection of body magnetic flux density
-     *                       measurements with standard deviation of
-     *                       magnetometer measurements taken at the same
-     *                       position with zero velocity and unknown different
-     *                       orientations.
-     * @param commonAxisUsed indicates whether z-axis is assumed to be common
-     *                       for the accelerometer, gyroscope and magnetometer.
-     * @param hardIron       known hard-iron.
-     * @param listener       listener to handle events raised by this calibrator.
-     * @param method         robust estimator method.
-     * @return a robust magnetometer calibrator.
-     * @throws IllegalArgumentException if provided hard-iron matrix is not
-     *                                  3x1.
-     */
-    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, listener);
+        };
     }
 
     /**
@@ -3301,27 +3077,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, initialMm);
-        }
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, initialMm);
+        };
     }
 
     /**
@@ -3343,28 +3112,22 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, initialMm, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, initialMm, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, initialMm, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, initialMm, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, initialMm, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, initialMm, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, initialMm, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, initialMm, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, initialMm, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, initialMm, listener);
+        };
     }
 
     /**
@@ -3387,27 +3150,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, initialMm);
-        }
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, initialMm);
+        };
     }
 
     /**
@@ -3431,34 +3187,22 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, initialMm,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, initialMm,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, initialMm,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, initialMm,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, initialMm,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, initialMm, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, initialMm, listener);
+        };
     }
 
     /**
@@ -3470,26 +3214,19 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm);
-        }
+            final Double groundTruthMagneticFluxDensityNorm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm);
+        };
     }
 
     /**
@@ -3505,24 +3242,18 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
             final Double groundTruthMagneticFluxDensityNorm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, listener);
+        };
     }
 
     /**
@@ -3540,26 +3271,19 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements);
-        }
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements);
+        };
     }
 
     /**
@@ -3573,26 +3297,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final boolean commonAxisUsed, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, commonAxisUsed);
-        }
+            final Double groundTruthMagneticFluxDensityNorm, final boolean commonAxisUsed,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, commonAxisUsed);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, commonAxisUsed);
+        };
     }
 
     /**
@@ -3607,26 +3325,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  not have length 3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final double[] hardIron, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron);
-        }
+            final Double groundTruthMagneticFluxDensityNorm, final double[] hardIron,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron);
+        };
     }
 
     /**
@@ -3641,26 +3353,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x1.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final Matrix hardIron, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron);
-        }
+            final Double groundTruthMagneticFluxDensityNorm, final Matrix hardIron,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron);
+        };
     }
 
     /**
@@ -3678,27 +3384,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final Matrix hardIron, final Matrix initialMm,
+            final Double groundTruthMagneticFluxDensityNorm, final Matrix hardIron, final Matrix initialMm,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
+        };
     }
 
     /**
@@ -3720,24 +3419,18 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, listener);
+        };
     }
 
     /**
@@ -3757,26 +3450,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
-        }
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
+        };
     }
 
     /**
@@ -3797,28 +3484,21 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -3838,26 +3518,90 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+        };
+    }
+
+    /**
+     * Creates a robust magnetometer calibrator.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param hardIron                           known hard-iron.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @param method                             robust estimator method.
+     * @return a robust magnetometer calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3.
+     */
+    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
+            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+        };
+    }
+
+    /**
+     * Creates a robust magnetometer calibrator.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron                           known hard-iron.
+     * @param method                             robust estimator method.
+     * @return a robust magnetometer calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3.
+     */
+    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final double[] hardIron, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+        };
     }
 
     /**
@@ -3869,6 +3613,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                           magnetometer measurements taken at the same
      *                                           position with zero velocity and unknown different
      *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
      * @param hardIron                           known hard-iron.
      * @param listener                           listener to handle events raised by this calibrator.
      * @param method                             robust estimator method.
@@ -3878,28 +3624,22 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final double[] hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
+        };
     }
 
     /**
@@ -3911,37 +3651,28 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                           magnetometer measurements taken at the same
      *                                           position with zero velocity and unknown different
      *                                           orientations.
-     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
-     *                                           for the accelerometer, gyroscope and magnetometer.
      * @param hardIron                           known hard-iron.
      * @param method                             robust estimator method.
      * @return a robust magnetometer calibrator.
      * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
-     *                                  or if provided hard-iron array does not have length 3.
+     *                                  or if provided hard-iron matrix is not 3x1.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+        };
     }
 
     /**
@@ -3953,39 +3684,30 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                           magnetometer measurements taken at the same
      *                                           position with zero velocity and unknown different
      *                                           orientations.
-     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
-     *                                           for the accelerometer, gyroscope and magnetometer.
      * @param hardIron                           known hard-iron.
      * @param listener                           listener to handle events raised by this calibrator.
      * @param method                             robust estimator method.
      * @return a robust magnetometer calibrator.
      * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
-     *                                  or if provided hard-iron array does not have length 3.
+     *                                  or if provided hard-iron matrix is not 3x1.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+        };
     }
 
     /**
@@ -3997,6 +3719,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                           magnetometer measurements taken at the same
      *                                           position with zero velocity and unknown different
      *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
      * @param hardIron                           known hard-iron.
      * @param method                             robust estimator method.
      * @return a robust magnetometer calibrator.
@@ -4005,26 +3729,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final Matrix hardIron, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+        };
     }
 
     /**
@@ -4036,6 +3754,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                           magnetometer measurements taken at the same
      *                                           position with zero velocity and unknown different
      *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
      * @param hardIron                           known hard-iron.
      * @param listener                           listener to handle events raised by this calibrator.
      * @param method                             robust estimator method.
@@ -4045,114 +3765,22 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final Matrix hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-        }
-    }
-
-    /**
-     * Creates a robust magnetometer calibrator.
-     *
-     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
-     * @param measurements                       collection of body magnetic flux density
-     *                                           measurements with standard deviation of
-     *                                           magnetometer measurements taken at the same
-     *                                           position with zero velocity and unknown different
-     *                                           orientations.
-     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
-     *                                           for the accelerometer, gyroscope and magnetometer.
-     * @param hardIron                           known hard-iron.
-     * @param method                             robust estimator method.
-     * @return a robust magnetometer calibrator.
-     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
-     *                                  or if provided hard-iron matrix is not 3x1.
-     */
-    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
-        }
-    }
-
-    /**
-     * Creates a robust magnetometer calibrator.
-     *
-     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
-     * @param measurements                       collection of body magnetic flux density
-     *                                           measurements with standard deviation of
-     *                                           magnetometer measurements taken at the same
-     *                                           position with zero velocity and unknown different
-     *                                           orientations.
-     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
-     *                                           for the accelerometer, gyroscope and magnetometer.
-     * @param hardIron                           known hard-iron.
-     * @param listener                           listener to handle events raised by this calibrator.
-     * @param method                             robust estimator method.
-     * @return a robust magnetometer calibrator.
-     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
-     *                                  or if provided hard-iron matrix is not 3x1.
-     */
-    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
+        };
     }
 
     /**
@@ -4175,117 +3803,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
-        }
-    }
-
-    /**
-     * Creates a robust magnetometer calibrator.
-     *
-     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
-     * @param measurements                       collection of body magnetic flux density
-     *                                           measurements with standard deviation of
-     *                                           magnetometer measurements taken at the same
-     *                                           position with zero velocity and unknown different
-     *                                           orientations.
-     * @param hardIron                           known hard-iron.
-     * @param initialMm                          initial soft-iron matrix containing scale factors
-     *                                           and cross coupling errors.
-     * @param listener                           listener to handle events raised by this calibrator.
-     * @param method                             robust estimator method.
-     * @return a robust magnetometer calibrator.
-     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
-     *                                  or if provided hard-iron matrix is not 3x1 or if
-     *                                  soft-iron matrix is not 3x3.
-     */
-    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
-            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener);
-        }
-    }
-
-    /**
-     * Creates a robust magnetometer calibrator.
-     *
-     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
-     * @param measurements                       collection of body magnetic flux density
-     *                                           measurements with standard deviation of
-     *                                           magnetometer measurements taken at the same
-     *                                           position with zero velocity and unknown different
-     *                                           orientations.
-     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
-     *                                           for the accelerometer, gyroscope and magnetometer.
-     * @param hardIron                           known hard-iron.
-     * @param initialMm                          initial soft-iron matrix containing scale factors
-     *                                           and cross coupling errors.
-     * @param method                             robust estimator method.
-     * @return a robust magnetometer calibrator.
-     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
-     *                                  or if provided hard-iron matrix is not 3x1
-     *                                  or if soft-iron matrix is not 3x3.
-     */
-    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
             final Matrix initialMm, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
+        };
     }
 
     /**
@@ -4297,8 +3828,6 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                           magnetometer measurements taken at the same
      *                                           position with zero velocity and unknown different
      *                                           orientations.
-     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
-     *                                           for the accelerometer, gyroscope and magnetometer.
      * @param hardIron                           known hard-iron.
      * @param initialMm                          initial soft-iron matrix containing scale factors
      *                                           and cross coupling errors.
@@ -4306,39 +3835,106 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @param method                             robust estimator method.
      * @return a robust magnetometer calibrator.
      * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
-     *                                  or if provided hard-iron matrix is not 3x1
-     *                                  or if soft-iron matrix is not 3x3.
+     *                                  or if provided hard-iron matrix is not 3x1 or if
+     *                                  soft-iron matrix is not 3x3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
             final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener);
+        };
+    }
+
+    /**
+     * Creates a robust magnetometer calibrator.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron                           known hard-iron.
+     * @param initialMm                          initial soft-iron matrix containing scale factors
+     *                                           and cross coupling errors.
+     * @param method                             robust estimator method.
+     * @return a robust magnetometer calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1
+     *                                  or if soft-iron matrix is not 3x3.
+     */
+    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm);
+        };
+    }
+
+    /**
+     * Creates a robust magnetometer calibrator.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron                           known hard-iron.
+     * @param initialMm                          initial soft-iron matrix containing scale factors
+     *                                           and cross coupling errors.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @param method                             robust estimator method.
+     * @return a robust magnetometer calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1
+     *                                  or if soft-iron matrix is not 3x3.
+     */
+    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm,
+            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm, listener);
+        };
     }
 
     /**
@@ -4358,22 +3954,17 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(qualityScores, measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(qualityScores, measurements);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(qualityScores,
+                    measurements);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(qualityScores,
+                    measurements);
+        };
     }
 
     /**
@@ -4390,24 +3981,16 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final boolean commonAxisUsed,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, commonAxisUsed);
-        }
+            final double[] qualityScores, final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(commonAxisUsed);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(qualityScores,
+                    commonAxisUsed);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(qualityScores,
+                    commonAxisUsed);
+        };
     }
 
     /**
@@ -4425,24 +4008,16 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final double[] hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, hardIron);
-        }
+            final double[] qualityScores, final double[] hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(qualityScores,
+                    hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(qualityScores,
+                    hardIron);
+        };
     }
 
     /**
@@ -4459,24 +4034,16 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Matrix hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, hardIron);
-        }
+            final double[] qualityScores, final Matrix hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(qualityScores,
+                    hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(qualityScores,
+                    hardIron);
+        };
     }
 
     /**
@@ -4496,24 +4063,19 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Matrix hardIron, final Matrix initialMm,
+            final double[] qualityScores, final Matrix hardIron, final Matrix initialMm,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron, initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron, initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron, initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, hardIron, initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, hardIron, initialMm);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron,
+                    initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron,
+                    initialMm);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(qualityScores,
+                    hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(qualityScores,
+                    hardIron, initialMm);
+        };
     }
 
     /**
@@ -4534,25 +4096,21 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
+                    listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
+                    listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(measurements,
+                    listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(qualityScores,
+                    measurements, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(qualityScores,
+                    measurements, listener);
+        };
     }
 
     /**
@@ -4574,28 +4132,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed);
-        }
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed);
+        };
     }
 
     /**
@@ -4618,29 +4168,22 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -4662,28 +4205,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  scores length is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, hardIron);
-        }
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, hardIron);
+        };
     }
 
     /**
@@ -4706,29 +4241,22 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  scores length is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, hardIron, listener);
+        };
     }
 
     /**
@@ -4752,28 +4280,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  scores length is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed, hardIron);
-        }
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final double[] hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed, hardIron);
+        };
     }
 
     /**
@@ -4798,29 +4318,22 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  scores length is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed, hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed, hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed, hardIron, listener);
+        };
     }
 
     /**
@@ -4842,28 +4355,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, hardIron);
-        }
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final Matrix hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, hardIron);
+        };
     }
 
     /**
@@ -4886,29 +4391,22 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, hardIron, listener);
+        };
     }
 
     /**
@@ -4932,28 +4430,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed, hardIron);
-        }
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed, hardIron);
+        };
     }
 
     /**
@@ -4978,29 +4468,22 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed, hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed, hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed, hardIron, listener);
+        };
     }
 
     /**
@@ -5025,28 +4508,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, hardIron, initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, hardIron, initialMm);
-        }
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final Matrix hardIron, final Matrix initialMm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, hardIron, initialMm);
+        };
     }
 
     /**
@@ -5072,29 +4547,22 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, initialMm, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, initialMm, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, hardIron, initialMm, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, hardIron, initialMm, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, hardIron, initialMm, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, initialMm, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, initialMm, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIron, initialMm, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, hardIron, initialMm, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, hardIron, initialMm, listener);
+        };
     }
 
     /**
@@ -5121,29 +4589,21 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed, hardIron, initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed, hardIron, initialMm);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed, hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed, hardIron, initialMm);
+        };
     }
 
     /**
@@ -5171,30 +4631,22 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, initialMm, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, initialMm, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        measurements, commonAxisUsed, hardIron, initialMm, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed, hardIron, initialMm, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, measurements, commonAxisUsed, hardIron, initialMm, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, measurements, commonAxisUsed, hardIron, initialMm, listener);
+        };
     }
 
     /**
@@ -5211,27 +4663,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm);
+        };
     }
 
     /**
@@ -5249,28 +4694,21 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, listener);
+        };
     }
 
     /**
@@ -5292,28 +4730,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements);
-        }
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements);
+        };
     }
 
     /**
@@ -5332,28 +4762,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm, final boolean commonAxisUsed,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, commonAxisUsed);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, commonAxisUsed);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, commonAxisUsed);
+        };
     }
 
     /**
@@ -5372,28 +4794,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final double[] hardIron,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm, final double[] hardIron,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, hardIron);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, hardIron);
+        };
     }
 
     /**
@@ -5412,28 +4826,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final Matrix hardIron,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm, final Matrix hardIron,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, hardIron);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, hardIron);
+        };
     }
 
     /**
@@ -5455,28 +4861,20 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final Matrix hardIron, final Matrix initialMm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
-        }
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm, final Matrix hardIron,
+            final Matrix initialMm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, hardIron, initialMm);
+        };
     }
 
     /**
@@ -5499,29 +4897,22 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, listener);
+        };
     }
 
     /**
@@ -5545,29 +4936,21 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
+        };
     }
 
     /**
@@ -5592,30 +4975,22 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -5639,179 +5014,146 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+        };
+    }
+
+    /**
+     * Creates a robust magnetometer calibrator.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param hardIron                           known hard-iron.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @param method                             robust estimator method.
+     * @return a robust magnetometer calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3,
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
+            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+        };
+    }
+
+    /**
+     * Creates a robust magnetometer calibrator.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron                           known hard-iron.
+     * @param method                             robust estimator method.
+     * @return a robust magnetometer calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3,
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+        };
+    }
+
+    /**
+     * Creates a robust magnetometer calibrator.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron                           known hard-iron.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @param method                             robust estimator method.
+     * @return a robust magnetometer calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3,
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final double[] hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-        }
-    }
-
-    /**
-     * Creates a robust magnetometer calibrator.
-     *
-     * @param qualityScores                      quality scores corresponding to each provided
-     *                                           measurement. The larger the score value the better
-     *                                           the quality of the sample.
-     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
-     * @param measurements                       collection of body magnetic flux density
-     *                                           measurements with standard deviation of
-     *                                           magnetometer measurements taken at the same
-     *                                           position with zero velocity and unknown different
-     *                                           orientations.
-     * @param hardIron                           known hard-iron.
-     * @param listener                           listener to handle events raised by this calibrator.
-     * @param method                             robust estimator method.
-     * @return a robust magnetometer calibrator.
-     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
-     *                                  or if provided hard-iron array does not have length 3,
-     *                                  or if provided quality scores length is smaller
-     *                                  than 10 samples.
-     */
-    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-        }
-    }
-
-    /**
-     * Creates a robust magnetometer calibrator.
-     *
-     * @param qualityScores                      quality scores corresponding to each provided
-     *                                           measurement. The larger the score value the better
-     *                                           the quality of the sample.
-     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
-     * @param measurements                       collection of body magnetic flux density
-     *                                           measurements with standard deviation of
-     *                                           magnetometer measurements taken at the same
-     *                                           position with zero velocity and unknown different
-     *                                           orientations.
-     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
-     *                                           for the accelerometer, gyroscope and magnetometer.
-     * @param hardIron                           known hard-iron.
-     * @param method                             robust estimator method.
-     * @return a robust magnetometer calibrator.
-     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
-     *                                  or if provided hard-iron array does not have length 3,
-     *                                  or if provided quality scores length is smaller
-     *                                  than 10 samples.
-     */
-    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed,
-                        hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed,
-                        hardIron);
-        }
-    }
-
-    /**
-     * Creates a robust magnetometer calibrator.
-     *
-     * @param qualityScores                      quality scores corresponding to each provided
-     *                                           measurement. The larger the score value the better
-     *                                           the quality of the sample.
-     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
-     * @param measurements                       collection of body magnetic flux density
-     *                                           measurements with standard deviation of
-     *                                           magnetometer measurements taken at the same
-     *                                           position with zero velocity and unknown different
-     *                                           orientations.
-     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
-     *                                           for the accelerometer, gyroscope and magnetometer.
-     * @param hardIron                           known hard-iron.
-     * @param listener                           listener to handle events raised by this calibrator.
-     * @param method                             robust estimator method.
-     * @return a robust magnetometer calibrator.
-     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
-     *                                  or if provided hard-iron array does not have length 3,
-     *                                  or if provided quality scores length is smaller
-     *                                  than 10 samples.
-     */
-    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
-            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed,
-                        hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed,
-                        hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron,
+                    listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron,
+                    listener);
+        };
     }
 
     /**
@@ -5835,29 +5177,21 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron);
+        };
     }
 
     /**
@@ -5882,132 +5216,107 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
+        };
+    }
+
+    /**
+     * Creates a robust magnetometer calibrator.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron                           known hard-iron.
+     * @param method                             robust estimator method.
+     * @return a robust magnetometer calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1,
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
+        };
+    }
+
+    /**
+     * Creates a robust magnetometer calibrator.
+     *
+     * @param qualityScores                      quality scores corresponding to each provided
+     *                                           measurement. The larger the score value the better
+     *                                           the quality of the sample.
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron                           known hard-iron.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @param method                             robust estimator method.
+     * @return a robust magnetometer calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1,
+     *                                  or if provided quality scores length is smaller
+     *                                  than 10 samples.
+     */
+    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final Matrix hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener);
-        }
-    }
-
-    /**
-     * Creates a robust magnetometer calibrator.
-     *
-     * @param qualityScores                      quality scores corresponding to each provided
-     *                                           measurement. The larger the score value the better
-     *                                           the quality of the sample.
-     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
-     * @param measurements                       collection of body magnetic flux density
-     *                                           measurements with standard deviation of
-     *                                           magnetometer measurements taken at the same
-     *                                           position with zero velocity and unknown different
-     *                                           orientations.
-     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
-     *                                           for the accelerometer, gyroscope and magnetometer.
-     * @param hardIron                           known hard-iron.
-     * @param method                             robust estimator method.
-     * @return a robust magnetometer calibrator.
-     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
-     *                                  or if provided hard-iron matrix is not 3x1,
-     *                                  or if provided quality scores length is smaller
-     *                                  than 10 samples.
-     */
-    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed,
-                        hardIron);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed,
-                        hardIron);
-        }
-    }
-
-    /**
-     * Creates a robust magnetometer calibrator.
-     *
-     * @param qualityScores                      quality scores corresponding to each provided
-     *                                           measurement. The larger the score value the better
-     *                                           the quality of the sample.
-     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
-     * @param measurements                       collection of body magnetic flux density
-     *                                           measurements with standard deviation of
-     *                                           magnetometer measurements taken at the same
-     *                                           position with zero velocity and unknown different
-     *                                           orientations.
-     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
-     *                                           for the accelerometer, gyroscope and magnetometer.
-     * @param hardIron                           known hard-iron.
-     * @param listener                           listener to handle events raised by this calibrator.
-     * @param method                             robust estimator method.
-     * @return a robust magnetometer calibrator.
-     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
-     *                                  or if provided hard-iron matrix is not 3x1,
-     *                                  or if provided quality scores length is smaller
-     *                                  than 10 samples.
-     */
-    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed,
-                        hardIron, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed,
-                        hardIron, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron,
+                    listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron,
+                    listener);
+        };
     }
 
     /**
@@ -6033,29 +5342,21 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  quality scores length is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
-        }
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm);
+        };
     }
 
     /**
@@ -6082,32 +5383,23 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  quality scores length is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener);
+        };
     }
 
     /**
@@ -6136,32 +5428,23 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed,
-                        hardIron, initialMm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed,
-                        hardIron, initialMm);
-        }
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron,
+                    initialMm);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron,
+                    initialMm);
+        };
     }
 
     /**
@@ -6191,36 +5474,25 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed,
-                        hardIron, initialMm, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
-                        qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed,
-                        hardIron, initialMm, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case LMEDS -> new LMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case MSAC -> new MSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm, listener);
+            case PROSAC -> new PROSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron,
+                    initialMm, listener);
+            default -> new PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron,
+                    initialMm, listener);
+        };
     }
 
     /**
@@ -6278,8 +5550,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] hardIron) {
+    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(final double[] hardIron) {
         return create(hardIron, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6291,8 +5562,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final Matrix hardIron) {
+    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(final Matrix hardIron) {
         return create(hardIron, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6342,8 +5612,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         return create(measurements, commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6361,8 +5630,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(measurements, commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -6381,8 +5649,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  not have length 3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron) {
         return create(measurements, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6401,8 +5668,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  not have length 3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(measurements, hardIron, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -6423,8 +5689,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  not have length 3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron) {
         return create(measurements, commonAxisUsed, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6443,8 +5709,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @return a robust magnetometer calibrator.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(measurements, commonAxisUsed, hardIron, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -6463,8 +5729,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x1.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron) {
         return create(measurements, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6483,8 +5748,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x1.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(measurements, hardIron, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -6505,8 +5769,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x1.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron) {
         return create(measurements, commonAxisUsed, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6527,8 +5791,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x1.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(measurements, commonAxisUsed, hardIron, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -6550,8 +5814,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm) {
         return create(measurements, hardIron, initialMm, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6573,8 +5837,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(measurements, hardIron, initialMm, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -6598,9 +5862,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm) {
         return create(measurements, commonAxisUsed, hardIron, initialMm, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6624,9 +5887,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(measurements, commonAxisUsed, hardIron, initialMm, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -6685,8 +5947,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final boolean commonAxisUsed) {
+            final Double groundTruthMagneticFluxDensityNorm, final boolean commonAxisUsed) {
         return create(groundTruthMagneticFluxDensityNorm, commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6701,8 +5962,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  not have length 3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final double[] hardIron) {
+            final Double groundTruthMagneticFluxDensityNorm, final double[] hardIron) {
         return create(groundTruthMagneticFluxDensityNorm, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6717,8 +5977,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x1.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final Matrix hardIron) {
+            final Double groundTruthMagneticFluxDensityNorm, final Matrix hardIron) {
         return create(groundTruthMagneticFluxDensityNorm, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6736,8 +5995,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  3x3.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final Matrix hardIron, final Matrix initialMm) {
+            final Double groundTruthMagneticFluxDensityNorm, final Matrix hardIron, final Matrix initialMm) {
         return create(groundTruthMagneticFluxDensityNorm, hardIron, initialMm, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6777,8 +6035,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         return create(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6799,8 +6056,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener,
                 DEFAULT_ROBUST_METHOD);
@@ -6822,8 +6078,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron) {
         return create(groundTruthMagneticFluxDensityNorm, measurements, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6844,59 +6099,57 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
+            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+        return create(groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust magnetometer calibrator with default robust method.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron                           known hard-iron.
+     * @return a robust magnetometer calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3.
+     */
+    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron) {
+        return create(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron,
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust magnetometer calibrator with default robust method.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param hardIron                           known hard-iron.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @return a robust magnetometer calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3.
+     */
+    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final double[] hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
-        return create(groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener,
-                DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust magnetometer calibrator with default robust method.
-     *
-     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
-     * @param measurements                       collection of body magnetic flux density
-     *                                           measurements with standard deviation of
-     *                                           magnetometer measurements taken at the same
-     *                                           position with zero velocity and unknown different
-     *                                           orientations.
-     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
-     *                                           for the accelerometer, gyroscope and magnetometer.
-     * @param hardIron                           known hard-iron.
-     * @return a robust magnetometer calibrator.
-     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
-     *                                  or if provided hard-iron array does not have length 3.
-     */
-    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron) {
-        return create(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron,
-                DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust magnetometer calibrator with default robust method.
-     *
-     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
-     * @param measurements                       collection of body magnetic flux density
-     *                                           measurements with standard deviation of
-     *                                           magnetometer measurements taken at the same
-     *                                           position with zero velocity and unknown different
-     *                                           orientations.
-     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
-     *                                           for the accelerometer, gyroscope and magnetometer.
-     * @param hardIron                           known hard-iron.
-     * @param listener                           listener to handle events raised by this calibrator.
-     * @return a robust magnetometer calibrator.
-     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
-     *                                  or if provided hard-iron array does not have length 3.
-     */
-    public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
-            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener,
                 DEFAULT_ROBUST_METHOD);
     }
@@ -6917,8 +6170,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron) {
         return create(groundTruthMagneticFluxDensityNorm, measurements, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6939,11 +6191,9 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
-        return create(groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener,
-                DEFAULT_ROBUST_METHOD);
+        return create(groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6964,8 +6214,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron) {
         return create(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron,
                 DEFAULT_ROBUST_METHOD);
     }
@@ -6989,8 +6239,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, listener,
                 DEFAULT_ROBUST_METHOD);
@@ -7015,10 +6265,9 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm) {
-        return create(groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm,
-                DEFAULT_ROBUST_METHOD);
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm) {
+        return create(groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7041,8 +6290,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm, listener,
                 DEFAULT_ROBUST_METHOD);
@@ -7069,9 +6318,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm) {
         return create(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm,
                 DEFAULT_ROBUST_METHOD);
     }
@@ -7099,11 +6347,10 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
             final Double groundTruthMagneticFluxDensityNorm,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
-        return create(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm,
-                listener, DEFAULT_ROBUST_METHOD);
+        return create(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron, initialMm, listener,
+                DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7122,8 +6369,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         return create(qualityScores, measurements, DEFAULT_ROBUST_METHOD);
     }
 
@@ -7140,8 +6386,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final boolean commonAxisUsed) {
+            final double[] qualityScores, final boolean commonAxisUsed) {
         return create(qualityScores, commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
@@ -7159,8 +6404,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final double[] hardIron) {
+            final double[] qualityScores, final double[] hardIron) {
         return create(qualityScores, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
@@ -7177,8 +6421,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Matrix hardIron) {
+            final double[] qualityScores, final Matrix hardIron) {
         return create(qualityScores, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
@@ -7198,8 +6441,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Matrix hardIron, final Matrix initialMm) {
+            final double[] qualityScores, final Matrix hardIron, final Matrix initialMm) {
         return create(qualityScores, hardIron, initialMm, DEFAULT_ROBUST_METHOD);
     }
 
@@ -7220,8 +6462,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(qualityScores, measurements, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -7244,8 +6485,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
         return create(qualityScores, measurements, commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
@@ -7269,8 +6509,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(qualityScores, measurements, commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);
@@ -7294,8 +6533,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  scores length is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron) {
         return create(qualityScores, measurements, hardIron, DEFAULT_ROBUST_METHOD);
     }
@@ -7319,8 +6557,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  scores length is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(qualityScores, measurements, hardIron, listener, DEFAULT_ROBUST_METHOD);
@@ -7346,8 +6583,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  scores length is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron) {
         return create(qualityScores, measurements, commonAxisUsed, hardIron, DEFAULT_ROBUST_METHOD);
     }
@@ -7373,8 +6609,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  scores length is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(qualityScores, measurements, commonAxisUsed, hardIron, listener, DEFAULT_ROBUST_METHOD);
@@ -7398,8 +6633,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron) {
         return create(qualityScores, measurements, hardIron, DEFAULT_ROBUST_METHOD);
     }
@@ -7423,8 +6657,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(qualityScores, measurements, hardIron, listener, DEFAULT_ROBUST_METHOD);
@@ -7450,8 +6683,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron) {
         return create(qualityScores, measurements, commonAxisUsed, hardIron, DEFAULT_ROBUST_METHOD);
     }
@@ -7477,8 +6709,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(qualityScores, measurements, commonAxisUsed, hardIron, listener, DEFAULT_ROBUST_METHOD);
@@ -7505,8 +6736,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm) {
         return create(qualityScores, measurements, hardIron, initialMm, DEFAULT_ROBUST_METHOD);
     }
@@ -7533,8 +6763,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(qualityScores, measurements, hardIron, initialMm, listener, DEFAULT_ROBUST_METHOD);
@@ -7563,10 +6792,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm) {
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm) {
         return create(qualityScores, measurements, commonAxisUsed, hardIron, initialMm, DEFAULT_ROBUST_METHOD);
     }
 
@@ -7594,10 +6821,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final double[] qualityScores, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(qualityScores, measurements, commonAxisUsed, hardIron, initialMm, listener,
                 DEFAULT_ROBUST_METHOD);
@@ -7616,8 +6841,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm) {
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, DEFAULT_ROBUST_METHOD);
     }
 
@@ -7635,8 +6859,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -7659,8 +6882,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, measurements, DEFAULT_ROBUST_METHOD);
     }
@@ -7680,8 +6902,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
             final boolean commonAxisUsed) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
@@ -7701,8 +6922,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  length is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
             final double[] hardIron) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, hardIron, DEFAULT_ROBUST_METHOD);
     }
@@ -7722,8 +6942,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
             final Matrix hardIron) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, hardIron, DEFAULT_ROBUST_METHOD);
     }
@@ -7746,11 +6965,9 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
             final Matrix hardIron, final Matrix initialMm) {
-        return create(qualityScores, groundTruthMagneticFluxDensityNorm, hardIron, initialMm,
-                DEFAULT_ROBUST_METHOD);
+        return create(qualityScores, groundTruthMagneticFluxDensityNorm, hardIron, initialMm, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7772,8 +6989,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, measurements, listener, DEFAULT_ROBUST_METHOD);
@@ -7799,10 +7015,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed,
                 DEFAULT_ROBUST_METHOD);
     }
@@ -7828,10 +7042,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener,
                 DEFAULT_ROBUST_METHOD);
@@ -7857,12 +7069,9 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron) {
-        return create(qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron,
-                DEFAULT_ROBUST_METHOD);
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron) {
+        return create(qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7886,10 +7095,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] hardIron,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener,
                 DEFAULT_ROBUST_METHOD);
@@ -7917,10 +7124,9 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron) {
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron,
                 DEFAULT_ROBUST_METHOD);
     }
@@ -7948,10 +7154,9 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] hardIron,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron,
                 listener, DEFAULT_ROBUST_METHOD);
@@ -7977,12 +7182,9 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron) {
-        return create(qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron,
-                DEFAULT_ROBUST_METHOD);
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron) {
+        return create(qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -8006,10 +7208,8 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, listener,
                 DEFAULT_ROBUST_METHOD);
@@ -8037,10 +7237,9 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron) {
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron,
                 DEFAULT_ROBUST_METHOD);
     }
@@ -8068,10 +7267,9 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron,
                 listener, DEFAULT_ROBUST_METHOD);
@@ -8099,10 +7297,9 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  quality scores length is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm) {
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm,
                 DEFAULT_ROBUST_METHOD);
     }
@@ -8130,10 +7327,9 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  quality scores length is smaller than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron, final Matrix initialMm,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix hardIron,
+            final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, measurements, hardIron, initialMm,
                 listener, DEFAULT_ROBUST_METHOD);
@@ -8164,11 +7360,9 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm) {
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron,
                 initialMm, DEFAULT_ROBUST_METHOD);
     }
@@ -8199,11 +7393,9 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      *                                  than 10 samples.
      */
     public static RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final double[] qualityScores, final Double groundTruthMagneticFluxDensityNorm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         return create(qualityScores, groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, hardIron,
                 initialMm, listener, DEFAULT_ROBUST_METHOD);
@@ -8217,8 +7409,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @return computed error.
      */
     protected double computeError(
-            final StandardDeviationBodyMagneticFluxDensity measurement,
-            final PreliminaryResult preliminaryResult) {
+            final StandardDeviationBodyMagneticFluxDensity measurement, final PreliminaryResult preliminaryResult) {
 
         try {
             // The magnetometer model is:
@@ -8234,14 +7425,11 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
             final Matrix estimatedMm = preliminaryResult.mEstimatedMm;
 
             if (mIdentity == null) {
-                mIdentity = Matrix.identity(
-                        BodyMagneticFluxDensity.COMPONENTS,
-                        BodyMagneticFluxDensity.COMPONENTS);
+                mIdentity = Matrix.identity(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
             }
 
             if (mTmp1 == null) {
-                mTmp1 = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                        BodyMagneticFluxDensity.COMPONENTS);
+                mTmp1 = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
             }
 
             if (mTmp2 == null) {
@@ -8260,8 +7448,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
 
             Utils.inverse(mTmp1, mTmp2);
 
-            final BodyMagneticFluxDensity measuredMagneticFluxDensity =
-                    measurement.getMagneticFluxDensity();
+            final BodyMagneticFluxDensity measuredMagneticFluxDensity = measurement.getMagneticFluxDensity();
             final double bMeasX = measuredMagneticFluxDensity.getBx();
             final double bMeasY = measuredMagneticFluxDensity.getBy();
             final double bMeasZ = measuredMagneticFluxDensity.getBz();
@@ -8292,8 +7479,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
             final int[] samplesIndices,
             final List<PreliminaryResult> solutions) {
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                new ArrayList<>();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = new ArrayList<>();
 
         for (final int samplesIndex : samplesIndices) {
             measurements.add(mMeasurements.get(samplesIndex));
@@ -8342,8 +7528,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
             final BitSet inliers = mInliersData.getInliers();
             final int nSamples = mMeasurements.size();
 
-            final List<StandardDeviationBodyMagneticFluxDensity> inlierMeasurements =
-                    new ArrayList<>();
+            final List<StandardDeviationBodyMagneticFluxDensity> inlierMeasurements = new ArrayList<>();
             for (int i = 0; i < nSamples; i++) {
                 if (inliers.get(i)) {
                     // sample is inlier
@@ -8406,8 +7591,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @return converted value.
      */
     private static double convertMagneticFluxDensity(final double value, final MagneticFluxDensityUnit unit) {
-        return MagneticFluxDensityConverter.convert(value, unit,
-                MagneticFluxDensityUnit.TESLA);
+        return MagneticFluxDensityConverter.convert(value, unit, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -8417,8 +7601,7 @@ public abstract class RobustKnownHardIronMagneticFluxDensityNormMagnetometerCali
      * @return converted value.
      */
     private static double convertMagneticFluxDensity(final MagneticFluxDensity magneticFluxDensity) {
-        return convertMagneticFluxDensity(magneticFluxDensity.getValue().doubleValue(),
-                magneticFluxDensity.getUnit());
+        return convertMagneticFluxDensity(magneticFluxDensity.getValue().doubleValue(), magneticFluxDensity.getUnit());
     }
 
     /**

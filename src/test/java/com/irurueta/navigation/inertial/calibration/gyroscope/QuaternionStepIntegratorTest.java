@@ -43,6 +43,36 @@ public class QuaternionStepIntegratorTest {
     }
 
     @Test
+    public void create_whenSuhType_returnsExpectedIntegratorType() {
+        final QuaternionStepIntegrator integrator = QuaternionStepIntegrator.create(
+                QuaternionStepIntegratorType.SUH);
+
+        // check
+        assertEquals(QuaternionStepIntegratorType.SUH, integrator.getType());
+        assertTrue(integrator instanceof SuhQuaternionStepIntegrator);
+    }
+
+    @Test
+    public void create_whenTrawnyType_returnsExpectedIntegratorType() {
+        final QuaternionStepIntegrator integrator = QuaternionStepIntegrator.create(
+                QuaternionStepIntegratorType.TRAWNY);
+
+        // check
+        assertEquals(QuaternionStepIntegratorType.TRAWNY, integrator.getType());
+        assertTrue(integrator instanceof TrawnyQuaternionStepIntegrator);
+    }
+
+    @Test
+    public void create_whenYuanType_returnsExpectedIntegratorType() {
+        final QuaternionStepIntegrator integrator = QuaternionStepIntegrator.create(
+                QuaternionStepIntegratorType.YUAN);
+
+        // check
+        assertEquals(QuaternionStepIntegratorType.YUAN, integrator.getType());
+        assertTrue(integrator instanceof YuanQuaternionStepIntegrator);
+    }
+
+    @Test
     public void create_whenRungeKuttaType_returnsExpectedIntegratorType() {
         final QuaternionStepIntegrator integrator = QuaternionStepIntegrator.create(
                 QuaternionStepIntegratorType.RUNGE_KUTTA);

@@ -65,8 +65,7 @@ import java.util.List;
  * - ftrue is ground-truth specific force. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
-public class LMedSRobustTurntableGyroscopeCalibrator extends
-        RobustTurntableGyroscopeCalibrator {
+public class LMedSRobustTurntableGyroscopeCalibrator extends RobustTurntableGyroscopeCalibrator {
 
     /**
      * Default value to be used for stop threshold. Stop threshold can be used to
@@ -149,15 +148,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final Matrix initialMg,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias, final Matrix initialMg,
             final Matrix initialGg) {
-        super(position, turntableRotationRate, timeInterval,
-                measurements, initialBias, initialMg, initialGg);
+        super(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg);
     }
 
     /**
@@ -194,16 +188,11 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg, listener);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias, final Matrix initialMg,
+            final Matrix initialGg, final RobustTurntableGyroscopeCalibratorListener listener) {
+        super(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg,
+                listener);
     }
 
     /**
@@ -238,15 +227,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg) {
+        super(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg);
     }
 
     /**
@@ -283,16 +267,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg, listener);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final RobustTurntableGyroscopeCalibratorListener listener) {
+        super(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg, listener);
     }
 
     /**
@@ -333,18 +311,12 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa);
+        super(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -386,19 +358,12 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, listener);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
+            final Matrix accelerometerMa, final RobustTurntableGyroscopeCalibratorListener listener) {
+        super(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, listener);
     }
 
     /**
@@ -439,18 +404,11 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa) {
+        super(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -492,19 +450,12 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, listener);
+        super(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, listener);
     }
 
     /**
@@ -549,18 +500,12 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix initialBias, final Matrix initialMg,
             final Matrix initialGg) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg);
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
     }
 
     /**
@@ -606,19 +551,12 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg, listener);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix initialBias, final Matrix initialMg,
+            final Matrix initialGg, final RobustTurntableGyroscopeCalibratorListener listener) {
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
     }
 
     /**
@@ -664,18 +602,12 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] initialBias, final Matrix initialMg,
             final Matrix initialGg) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg);
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
     }
 
     /**
@@ -723,19 +655,12 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg, listener);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] initialBias, final Matrix initialMg,
+            final Matrix initialGg, final RobustTurntableGyroscopeCalibratorListener listener) {
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
     }
 
     /**
@@ -788,20 +713,12 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] initialBias, final Matrix initialMg,
+            final Matrix initialGg, final double[] accelerometerBias, final Matrix accelerometerMa) {
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -855,21 +772,14 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa, listener);
+            final ECEFPosition position, final double turntableRotationRate,
+            final double timeInterval, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
+            final Matrix accelerometerMa, final RobustTurntableGyroscopeCalibratorListener listener) {
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                listener);
     }
 
     /**
@@ -920,20 +830,12 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix initialBias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa) {
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -986,21 +888,13 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix initialBias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa,
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
                 listener);
     }
 
@@ -1036,15 +930,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final Matrix initialMg,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias, final Matrix initialMg,
             final Matrix initialGg) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg);
+        super(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg);
     }
 
     /**
@@ -1081,16 +970,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg, listener);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias, final Matrix initialMg,
+            final Matrix initialGg, final RobustTurntableGyroscopeCalibratorListener listener) {
+        super(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg, listener);
     }
 
     /**
@@ -1125,15 +1008,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg) {
+        super(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg);
     }
 
     /**
@@ -1170,16 +1048,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg, listener);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final RobustTurntableGyroscopeCalibratorListener listener) {
+        super(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg, listener);
     }
 
     /**
@@ -1220,18 +1092,12 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa);
+        super(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -1273,19 +1139,12 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final RobustTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, listener);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
+            final Matrix accelerometerMa, final RobustTurntableGyroscopeCalibratorListener listener) {
+        super(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, listener);
     }
 
     /**
@@ -1326,18 +1185,11 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa) {
+        super(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -1379,19 +1231,12 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, listener);
+        super(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa, listener);
     }
 
     /**
@@ -1436,18 +1281,12 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix initialBias, final Matrix initialMg,
             final Matrix initialGg) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg);
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
     }
 
     /**
@@ -1493,19 +1332,12 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg, listener);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix initialBias, final Matrix initialMg,
+            final Matrix initialGg, final RobustTurntableGyroscopeCalibratorListener listener) {
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
     }
 
     /**
@@ -1551,18 +1383,12 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] initialBias, final Matrix initialMg,
             final Matrix initialGg) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg);
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
     }
 
     /**
@@ -1610,19 +1436,12 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final RobustTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg, listener);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] initialBias, final Matrix initialMg,
+            final Matrix initialGg, final RobustTurntableGyroscopeCalibratorListener listener) {
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
     }
 
     /**
@@ -1675,20 +1494,12 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] initialBias, final Matrix initialMg,
+            final Matrix initialGg, final double[] accelerometerBias, final Matrix accelerometerMa) {
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -1742,21 +1553,13 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] initialBias, final Matrix initialMg,
+            final Matrix initialGg, final double[] accelerometerBias, final Matrix accelerometerMa,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa,
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
                 listener);
     }
 
@@ -1808,20 +1611,12 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix initialBias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa) {
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -1874,21 +1669,13 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      *                                  time interval is zero or negative.
      */
     public LMedSRobustTurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix initialBias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-        super(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa,
+        super(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
                 listener);
     }
 
@@ -1956,8 +1743,7 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      * @throws CalibrationException if estimation fails for numerical reasons.
      */
     @Override
-    public void calibrate() throws LockedException, NotReadyException,
-            CalibrationException {
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1967,7 +1753,7 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
 
         final LMedSRobustEstimator<PreliminaryResult> innerEstimator =
                 new LMedSRobustEstimator<>(
-                        new LMedSRobustEstimatorListener<PreliminaryResult>() {
+                        new LMedSRobustEstimatorListener<>() {
                             @Override
                             public int getTotalSamples() {
                                 return mMeasurements.size();
@@ -1980,8 +1766,7 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
 
                             @Override
                             public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<PreliminaryResult> solutions) {
+                                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                                 computePreliminarySolutions(samplesIndices, solutions);
                             }
 
@@ -1997,36 +1782,30 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
                             }
 
                             @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
                             public void onEstimateNextIteration(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final int iteration) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                                 if (mListener != null) {
                                     mListener.onCalibrateNextIteration(
-                                            LMedSRobustTurntableGyroscopeCalibrator.this,
-                                            iteration);
+                                            LMedSRobustTurntableGyroscopeCalibrator.this, iteration);
                                 }
                             }
 
                             @Override
                             public void onEstimateProgressChange(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final float progress) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                                 if (mListener != null) {
                                     mListener.onCalibrateProgressChange(
-                                            LMedSRobustTurntableGyroscopeCalibrator.this,
-                                            progress);
+                                            LMedSRobustTurntableGyroscopeCalibrator.this, progress);
                                 }
                             }
                         });
@@ -2070,7 +1849,7 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.LMedS;
+        return RobustEstimatorMethod.LMEDS;
     }
 
     /**

@@ -39,7 +39,9 @@ import com.irurueta.units.TimeUnit;
  * Kalman filter plus closed-loop correction of all inertial states.
  * This implementation is based on the equations defined in "Principles of GNSS, Inertial, and Multisensor
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
- * https://github.com/ymjdz/MATLAB-Codes/blob/master/LC_KF_Epoch.m
+ * <a href="https://github.com/ymjdz/MATLAB-Codes/blob/master/LC_KF_Epoch.m">
+ *     https://github.com/ymjdz/MATLAB-Codes/blob/master/LC_KF_Epoch.m
+ * </a>
  */
 public class INSLooselyCoupledKalmanEpochEstimator {
 
@@ -84,15 +86,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
         final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();
-        estimate(userPosition, userVelocity, propagationInterval, previousState,
-                bodyKinematics, config, result);
+        estimate(userPosition, userVelocity, propagationInterval, previousState, bodyKinematics, config, result);
         return result;
     }
 
@@ -111,20 +109,16 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final INSLooselyCoupledKalmanConfig config,
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final BodyKinematics bodyKinematics, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
 
         final double fx = bodyKinematics.getFx();
         final double fy = bodyKinematics.getFy();
         final double fz = bodyKinematics.getFz();
 
-        estimate(userPosition, userVelocity, propagationInterval, previousState,
-                fx, fy, fz, config, result);
+        estimate(userPosition, userVelocity, propagationInterval, previousState, fx, fy, fz, config, result);
     }
 
     /**
@@ -142,16 +136,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
         final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();
-        estimate(userPosition, userVelocity, propagationInterval, previousState,
-                bodyKinematics, previousLatitude, config, result);
+        estimate(userPosition, userVelocity, propagationInterval, previousState, bodyKinematics, previousLatitude,
+                config, result);
         return result;
     }
 
@@ -171,21 +161,17 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
 
         final double fx = bodyKinematics.getFx();
         final double fy = bodyKinematics.getFy();
         final double fz = bodyKinematics.getFz();
 
-        estimate(userPosition, userVelocity, propagationInterval, previousState,
-                fx, fy, fz, previousLatitude, config, result);
+        estimate(userPosition, userVelocity, propagationInterval, previousState, fx, fy, fz, previousLatitude, config,
+                result);
     }
 
     /**
@@ -209,15 +195,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final double fx, final double fy, final double fz, final INSLooselyCoupledKalmanConfig config)
+            throws AlgebraException {
         final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();
-        estimate(userPosition, userVelocity, propagationInterval,
-                previousState, fx, fy, fz, config, result);
+        estimate(userPosition, userVelocity, propagationInterval, previousState, fx, fy, fz, config, result);
         return result;
     }
 
@@ -243,13 +226,10 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
 
         final double x = userPosition.getX();
         final double y = userPosition.getY();
@@ -259,8 +239,7 @@ public class INSLooselyCoupledKalmanEpochEstimator {
         final double vy = userVelocity.getVy();
         final double vz = userVelocity.getVz();
 
-        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
-                fx, fy, fz, config, result);
+        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState, fx, fy, fz, config, result);
     }
 
     /**
@@ -285,16 +264,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
         final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();
-        estimate(userPosition, userVelocity, propagationInterval, previousState,
-                fx, fy, fz, previousLatitude, config, result);
+        estimate(userPosition, userVelocity, propagationInterval, previousState, fx, fy, fz, previousLatitude, config,
+                result);
         return result;
     }
 
@@ -321,13 +296,9 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
 
         final double x = userPosition.getX();
@@ -338,8 +309,7 @@ public class INSLooselyCoupledKalmanEpochEstimator {
         final double vy = userVelocity.getVy();
         final double vz = userVelocity.getVz();
 
-        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
-                fx, fy, fz, previousLatitude, config, result);
+        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState, fx, fy, fz, previousLatitude, config, result);
     }
 
     /**
@@ -366,15 +336,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final BodyKinematics bodyKinematics, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
         final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();
-        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
-                bodyKinematics, config, result);
+        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState, bodyKinematics, config, result);
         return result;
     }
 
@@ -403,20 +369,16 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final INSLooselyCoupledKalmanConfig config,
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final BodyKinematics bodyKinematics, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
 
         final double fx = bodyKinematics.getFx();
         final double fy = bodyKinematics.getFy();
         final double fz = bodyKinematics.getFz();
 
-        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
-                fx, fy, fz, config, result);
+        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState, fx, fy, fz, config, result);
     }
 
     /**
@@ -444,16 +406,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final BodyKinematics bodyKinematics, final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
         final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();
-        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
-                bodyKinematics, previousLatitude, config, result);
+        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState, bodyKinematics, previousLatitude, config,
+                result);
         return result;
     }
 
@@ -483,21 +442,17 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final BodyKinematics bodyKinematics, final double previousLatitude,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
 
         final double fx = bodyKinematics.getFx();
         final double fy = bodyKinematics.getFy();
         final double fz = bodyKinematics.getFz();
 
-        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
-                fx, fy, fz, previousLatitude, config, result);
+        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState, fx, fy, fz, previousLatitude, config, result);
     }
 
     /**
@@ -531,15 +486,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, double fy, final double fz,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final double fx, double fy, final double fz, final INSLooselyCoupledKalmanConfig config)
+            throws AlgebraException {
         final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();
-        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
-                fx, fy, fz, config, result);
+        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState, fx, fy, fz, config, result);
         return result;
     }
 
@@ -575,25 +527,20 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final INSLooselyCoupledKalmanConfig config,
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final double fx, final double fy, final double fz, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
 
         final com.irurueta.navigation.frames.NEDPosition prevNedPosition = new NEDPosition();
         final com.irurueta.navigation.frames.NEDVelocity prevNedVelocity = new NEDVelocity();
         ECEFtoNEDPositionVelocityConverter.convertECEFtoNED(
                 previousState.getX(), previousState.getY(), previousState.getZ(),
-                previousState.getVx(), previousState.getVy(), previousState.getVz(),
-                prevNedPosition, prevNedVelocity);
+                previousState.getVx(), previousState.getVy(), previousState.getVz(), prevNedPosition, prevNedVelocity);
 
         final double previousLatitude = prevNedPosition.getLatitude();
 
-        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
-                fx, fy, fz, previousLatitude, config, result);
+        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState, fx, fy, fz, previousLatitude, config, result);
     }
 
     /**
@@ -628,16 +575,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final double fx, final double fy, final double fz, final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
         final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();
-        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
-                fx, fy, fz, previousLatitude, config, result);
+        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState, fx, fy, fz, previousLatitude, config, result);
         return result;
     }
 
@@ -674,17 +617,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final double fx, final double fy, final double fz, final double previousLatitude,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
 
-        final Matrix omegaIe = Utils.skewMatrix(
-                new double[]{0.0, 0.0, EARTH_ROTATION_RATE});
+        final Matrix omegaIe = Utils.skewMatrix(new double[]{0.0, 0.0, EARTH_ROTATION_RATE});
 
         // SYSTEM PROPAGATION PHASE
 
@@ -693,24 +632,18 @@ public class INSLooselyCoupledKalmanEpochEstimator {
                 INSLooselyCoupledKalmanState.NUM_PARAMS,
                 INSLooselyCoupledKalmanState.NUM_PARAMS);
 
-        final Matrix tmp1 = omegaIe.multiplyByScalarAndReturnNew(
-                propagationInterval);
-        final Matrix tmp2 = phiMatrix.getSubmatrix(0, 0,
-                2, 2);
+        final Matrix tmp1 = omegaIe.multiplyByScalarAndReturnNew(propagationInterval);
+        final Matrix tmp2 = phiMatrix.getSubmatrix(0, 0, 2, 2);
         tmp2.subtract(tmp1);
 
-        phiMatrix.setSubmatrix(0, 0,
-                2, 2, tmp2);
+        phiMatrix.setSubmatrix(0, 0, 2, 2, tmp2);
 
-        final Matrix estCbeOld = previousState
-                .getBodyToEcefCoordinateTransformationMatrix();
+        final Matrix estCbeOld = previousState.getBodyToEcefCoordinateTransformationMatrix();
         tmp1.copyFrom(estCbeOld);
         tmp1.multiplyByScalar(propagationInterval);
 
-        phiMatrix.setSubmatrix(0, 12,
-                2, 14, tmp1);
-        phiMatrix.setSubmatrix(3, 9,
-                5, 11, tmp1);
+        phiMatrix.setSubmatrix(0, 12, 2, 14, tmp1);
+        phiMatrix.setSubmatrix(3, 9, 5, 11, tmp1);
 
         final Matrix measFibb = new Matrix(BodyKinematics.COMPONENTS, 1);
         measFibb.setElementAtIndex(0, fx);
@@ -722,16 +655,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
         Utils.skewMatrix(tmp1, tmp2);
         tmp2.multiplyByScalar(-propagationInterval);
 
-        phiMatrix.setSubmatrix(3, 0,
-                5, 2, tmp2);
+        phiMatrix.setSubmatrix(3, 0, 5, 2, tmp2);
 
-        phiMatrix.getSubmatrix(3, 3,
-                5, 5, tmp1);
+        phiMatrix.getSubmatrix(3, 3, 5, 5, tmp1);
         tmp2.copyFrom(omegaIe);
         tmp2.multiplyByScalar(2.0 * propagationInterval);
         tmp1.subtract(tmp2);
-        phiMatrix.setSubmatrix(3, 3,
-                5, 5, tmp1);
+        phiMatrix.setSubmatrix(3, 3, 5, 5, tmp1);
 
         final double sinPrevLat = Math.sin(previousLatitude);
         final double cosPrevLat = Math.cos(previousLatitude);
@@ -740,18 +670,15 @@ public class INSLooselyCoupledKalmanEpochEstimator {
 
         // From (2.137)
         final double geocentricRadius = EARTH_EQUATORIAL_RADIUS_WGS84
-                / Math.sqrt(1.0 - Math.pow(EARTH_ECCENTRICITY * sinPrevLat, 2.0))
-                * Math.sqrt(cosPrevLat2
+                / Math.sqrt(1.0 - Math.pow(EARTH_ECCENTRICITY * sinPrevLat, 2.0)) * Math.sqrt(cosPrevLat2
                 + Math.pow(1.0 - EARTH_ECCENTRICITY * EARTH_ECCENTRICITY, 2.0) * sinPrevLat2);
 
         final double prevX = previousState.getX();
         final double prevY = previousState.getY();
         final double prevZ = previousState.getZ();
-        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(
-                prevX, prevY, prevZ);
+        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(prevX, prevY, prevZ);
 
-        final double previousPositionNorm = Math.sqrt(prevX * prevX +
-                prevY * prevY + prevZ * prevZ);
+        final double previousPositionNorm = Math.sqrt(prevX * prevX + prevY * prevY + prevZ * prevZ);
 
         final Matrix estRebeOld = new Matrix(com.irurueta.navigation.frames.ECEFPosition.COMPONENTS, 1);
         estRebeOld.setElementAtIndex(0, prevX);
@@ -766,8 +693,7 @@ public class INSLooselyCoupledKalmanEpochEstimator {
 
         g.multiply(estRebeOldTrans, tmp1);
 
-        phiMatrix.setSubmatrix(3, 6,
-                5, 8, tmp1);
+        phiMatrix.setSubmatrix(3, 6, 5, 8, tmp1);
 
         for (int i = 0; i < com.irurueta.navigation.frames.ECEFPosition.COMPONENTS; i++) {
             phiMatrix.setElementAt(6 + i, 3 + i, propagationInterval);
@@ -822,8 +748,7 @@ public class INSLooselyCoupledKalmanEpochEstimator {
         // MEASUREMENT UPDATE PHASE
 
         // 5. Set-up measurement matrix using (14.115)
-        final Matrix h = new Matrix(POS_AND_VEL_COMPONENTS,
-                INSLooselyCoupledKalmanState.NUM_PARAMS);
+        final Matrix h = new Matrix(POS_AND_VEL_COMPONENTS, INSLooselyCoupledKalmanState.NUM_PARAMS);
         for (int i = 0; i < 3; i++) {
             h.setElementAt(i, POS_AND_VEL_COMPONENTS + i, -1.0);
             final int j = com.irurueta.navigation.frames.ECEFPosition.COMPONENTS + i;
@@ -886,12 +811,10 @@ public class INSLooselyCoupledKalmanEpochEstimator {
         // CLOSED-LOOP CORRECTION
 
         // Correct attitude, velocity, and position using (14.7-9)
-        final Matrix tmp6 = xEstNew.getSubmatrix(0, 0,
-                2, 0);
+        final Matrix tmp6 = xEstNew.getSubmatrix(0, 0, 2, 0);
         Matrix tmp7 = Utils.skewMatrix(tmp6);
 
-        final Matrix estCbeNew = Matrix.identity(com.irurueta.navigation.frames.ECEFPosition.COMPONENTS,
-                com.irurueta.navigation.frames.ECEFPosition.COMPONENTS);
+        final Matrix estCbeNew = Matrix.identity(ECEFPosition.COMPONENTS, ECEFPosition.COMPONENTS);
         estCbeNew.subtract(tmp7);
         estCbeNew.multiply(estCbeOld);
 
@@ -904,28 +827,20 @@ public class INSLooselyCoupledKalmanEpochEstimator {
         final double newZ = prevZ - xEstNew.getElementAtIndex(8);
 
         // Update IMU bias estimates
-        final double newAccelerationBiasX = previousState.getAccelerationBiasX()
-                + xEstNew.getElementAtIndex(9);
-        final double newAccelerationBiasY = previousState.getAccelerationBiasY()
-                + xEstNew.getElementAtIndex(10);
-        final double newAccelerationBiasZ = previousState.getAccelerationBiasZ()
-                + xEstNew.getElementAtIndex(11);
+        final double newAccelerationBiasX = previousState.getAccelerationBiasX() + xEstNew.getElementAtIndex(9);
+        final double newAccelerationBiasY = previousState.getAccelerationBiasY() + xEstNew.getElementAtIndex(10);
+        final double newAccelerationBiasZ = previousState.getAccelerationBiasZ() + xEstNew.getElementAtIndex(11);
 
-        final double newGyroBiasX = previousState.getGyroBiasX()
-                + xEstNew.getElementAtIndex(12);
-        final double newGyroBiasY = previousState.getGyroBiasY()
-                + xEstNew.getElementAtIndex(13);
-        final double newGyroBiasZ = previousState.getGyroBiasZ()
-                + xEstNew.getElementAtIndex(14);
+        final double newGyroBiasX = previousState.getGyroBiasX() + xEstNew.getElementAtIndex(12);
+        final double newGyroBiasY = previousState.getGyroBiasY() + xEstNew.getElementAtIndex(13);
+        final double newGyroBiasZ = previousState.getGyroBiasZ() + xEstNew.getElementAtIndex(14);
 
         // set result values
         result.setBodyToEcefCoordinateTransformationMatrix(estCbeNew);
         result.setVelocityCoordinates(newVx, newVy, newVz);
         result.setPositionCoordinates(newX, newY, newZ);
-        result.setAccelerationBiasCoordinates(newAccelerationBiasX,
-                newAccelerationBiasY, newAccelerationBiasZ);
-        result.setGyroBiasCoordinates(newGyroBiasX, newGyroBiasY,
-                newGyroBiasZ);
+        result.setAccelerationBiasCoordinates(newAccelerationBiasX, newAccelerationBiasY, newAccelerationBiasZ);
+        result.setGyroBiasCoordinates(newGyroBiasX, newGyroBiasY, newGyroBiasZ);
         result.setCovariance(pNew);
     }
 
@@ -943,14 +858,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition, userVelocity, convertTime(propagationInterval),
-                previousState, bodyKinematics, config);
+        return estimate(userPosition, userVelocity, convertTime(propagationInterval), previousState, bodyKinematics,
+                config);
     }
 
     /**
@@ -968,15 +880,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition, userVelocity, convertTime(propagationInterval),
-                previousState, bodyKinematics, config, result);
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
+        estimate(userPosition, userVelocity, convertTime(propagationInterval), previousState, bodyKinematics, config,
+                result);
     }
 
     /**
@@ -994,15 +903,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition, userVelocity, convertTime(propagationInterval),
-                previousState, bodyKinematics, previousLatitude, config);
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(userPosition, userVelocity, convertTime(propagationInterval), previousState, bodyKinematics,
+                previousLatitude, config);
     }
 
     /**
@@ -1021,16 +926,69 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition, userVelocity, convertTime(propagationInterval),
-                previousState, bodyKinematics, previousLatitude, config,
+        estimate(userPosition, userVelocity, convertTime(propagationInterval), previousState, bodyKinematics,
+                previousLatitude, config, result);
+    }
+
+    /**
+     * Estimates the update of Kalman filter state of a single epoch.
+     *
+     * @param userPosition        ECEF user position.
+     * @param userVelocity        ECEF user velocity.
+     * @param propagationInterval propagation interval.
+     * @param previousState       previous Kalman filter state.
+     * @param fx                  measured specific force resolved along body frame
+     *                            x-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fy                  measured specific force resolved along body frame
+     *                            y-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fz                  measured specific force resolved along body frame
+     *                            z-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param config              Loosely Coupled Kalman filter configuration.
+     * @return new state of Kalman filter.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static INSLooselyCoupledKalmanState estimate(
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(userPosition, userVelocity, convertTime(propagationInterval), previousState, fx, fy, fz,
+                config);
+    }
+
+    /**
+     * Estimates the update of Kalman filter state of a single epoch.
+     *
+     * @param userPosition        ECEF user position.
+     * @param userVelocity        ECEF user velocity.
+     * @param propagationInterval propagation interval.
+     * @param previousState       previous Kalman filter state.
+     * @param fx                  measured specific force resolved along body frame
+     *                            x-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fy                  measured specific force resolved along body frame
+     *                            y-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fz                  measured specific force resolved along body frame
+     *                            z-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param config              Loosely Coupled Kalman filter configuration.
+     * @param result              instance where new state of Kalman filter will be
+     *                            stored.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static void estimate(
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
+        estimate(userPosition, userVelocity, convertTime(propagationInterval), previousState, fx, fy, fz, config,
                 result);
     }
 
@@ -1050,85 +1008,17 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @param fz                  measured specific force resolved along body frame
      *                            z-axis and expressed in meters per squared
      *                            second (m/s^2).
-     * @param config              Loosely Coupled Kalman filter configuration.
-     * @return new state of Kalman filter.
-     * @throws AlgebraException if there are numerical instabilities.
-     */
-    public static INSLooselyCoupledKalmanState estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition, userVelocity, convertTime(propagationInterval),
-                previousState, fx, fy, fz, config);
-    }
-
-    /**
-     * Estimates the update of Kalman filter state of a single epoch.
-     *
-     * @param userPosition        ECEF user position.
-     * @param userVelocity        ECEF user velocity.
-     * @param propagationInterval propagation interval.
-     * @param previousState       previous Kalman filter state.
-     * @param fx                  measured specific force resolved along body frame
-     *                            x-axis and expressed in meters per squared
-     *                            second (m/s^2).
-     * @param fy                  measured specific force resolved along body frame
-     *                            y-axis and expressed in meters per squared
-     *                            second (m/s^2).
-     * @param fz                  measured specific force resolved along body frame
-     *                            z-axis and expressed in meters per squared
-     *                            second (m/s^2).
-     * @param config              Loosely Coupled Kalman filter configuration.
-     * @param result              instance where new state of Kalman filter will be
-     *                            stored.
-     * @throws AlgebraException if there are numerical instabilities.
-     */
-    public static void estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition, userVelocity, convertTime(propagationInterval),
-                previousState, fx, fy, fz, config, result);
-    }
-
-    /**
-     * Estimates the update of Kalman filter state of a single epoch.
-     *
-     * @param userPosition        ECEF user position.
-     * @param userVelocity        ECEF user velocity.
-     * @param propagationInterval propagation interval.
-     * @param previousState       previous Kalman filter state.
-     * @param fx                  measured specific force resolved along body frame
-     *                            x-axis and expressed in meters per squared
-     *                            second (m/s^2).
-     * @param fy                  measured specific force resolved along body frame
-     *                            y-axis and expressed in meters per squared
-     *                            second (m/s^2).
-     * @param fz                  measured specific force resolved along body frame
-     *                            z-axis and expressed in meters per squared
-     *                            second (m/s^2).
      * @param previousLatitude    previous latitude solution expressed in radians (rad).
      * @param config              Loosely Coupled Kalman filter configuration.
      * @return new state of Kalman filter.
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition, userVelocity, convertTime(propagationInterval),
-                previousState, fx, fy, fz, previousLatitude, config);
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(userPosition, userVelocity, convertTime(propagationInterval), previousState, fx, fy, fz,
+                previousLatitude, config);
     }
 
     /**
@@ -1154,16 +1044,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition, userVelocity, convertTime(propagationInterval),
-                previousState, fx, fy, fz, previousLatitude, config, result);
+        estimate(userPosition, userVelocity, convertTime(propagationInterval), previousState, fx, fy, fz,
+                previousLatitude, config, result);
     }
 
     /**
@@ -1190,14 +1076,10 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),
-                previousState, bodyKinematics, config);
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final Time propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final BodyKinematics bodyKinematics, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval), previousState, bodyKinematics, config);
     }
 
     /**
@@ -1225,15 +1107,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final INSLooselyCoupledKalmanConfig config,
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final Time propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final BodyKinematics bodyKinematics, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval), previousState,
-                bodyKinematics, config, result);
+        estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval), previousState, bodyKinematics, config, result);
     }
 
     /**
@@ -1261,15 +1139,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final Time propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final BodyKinematics bodyKinematics, final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),
-                previousState, bodyKinematics, previousLatitude, config);
+        return estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval), previousState, bodyKinematics,
+                previousLatitude, config);
     }
 
     /**
@@ -1298,16 +1173,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),
-                previousState, bodyKinematics, previousLatitude, config, result);
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final Time propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final BodyKinematics bodyKinematics, final double previousLatitude,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
+        estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval), previousState, bodyKinematics, previousLatitude,
+                config, result);
     }
 
     /**
@@ -1341,14 +1213,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),
-                previousState, fx, fy, fz, config);
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final Time propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final double fx, final double fy, final double fz, final INSLooselyCoupledKalmanConfig config)
+            throws AlgebraException {
+        return estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval), previousState, fx, fy, fz, config);
     }
 
     /**
@@ -1383,15 +1252,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final INSLooselyCoupledKalmanConfig config,
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final Time propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final double fx, final double fy, final double fz, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),
-                previousState, fx, fy, fz, config, result);
+        estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval), previousState, fx, fy, fz, config, result);
     }
 
     /**
@@ -1426,15 +1291,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final Time propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final double fx, final double fy, final double fz, final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),
-                previousState, fx, fy, fz, previousLatitude, config);
+        return estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval), previousState, fx, fy, fz,
+                previousLatitude, config);
     }
 
     /**
@@ -1470,16 +1332,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),
-                previousState, fx, fy, fz, previousLatitude, config, result);
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final Time propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final double fx, final double fy, final double fz, final double previousLatitude,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
+        estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval), previousState, fx, fy, fz, previousLatitude,
+                config, result);
     }
 
     /**
@@ -1496,16 +1355,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),
-                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),
-                userVelocity.getVz(), propagationInterval, previousState, bodyKinematics,
-                config);
+            final Point3D userPosition, final ECEFVelocity userVelocity,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final BodyKinematics bodyKinematics, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(userPosition.getInhomX(), userPosition.getInhomY(), userPosition.getInhomZ(),
+                userVelocity.getVx(), userVelocity.getVy(), userVelocity.getVz(), propagationInterval, previousState,
+                bodyKinematics, config);
     }
 
     /**
@@ -1523,16 +1378,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition.getInhomX(), userPosition.getInhomY(),
-                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),
-                userVelocity.getVz(), propagationInterval, previousState,
+            final Point3D userPosition, final ECEFVelocity userVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result) throws AlgebraException {
+        estimate(userPosition.getInhomX(), userPosition.getInhomY(), userPosition.getInhomZ(),
+                userVelocity.getVx(), userVelocity.getVy(), userVelocity.getVz(), propagationInterval, previousState,
                 bodyKinematics, config, result);
     }
 
@@ -1551,16 +1401,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),
-                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),
-                userVelocity.getVz(), propagationInterval,
+            final Point3D userPosition, final ECEFVelocity userVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(userPosition.getInhomX(), userPosition.getInhomY(), userPosition.getInhomZ(),
+                userVelocity.getVx(), userVelocity.getVy(), userVelocity.getVz(), propagationInterval,
                 previousState, bodyKinematics, previousLatitude, config);
     }
 
@@ -1580,17 +1425,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final Point3D userPosition, final ECEFVelocity userVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition.getInhomX(), userPosition.getInhomY(),
-                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),
-                userVelocity.getVz(), propagationInterval, previousState,
+        estimate(userPosition.getInhomX(), userPosition.getInhomY(), userPosition.getInhomZ(),
+                userVelocity.getVx(), userVelocity.getVy(), userVelocity.getVz(), propagationInterval, previousState,
                 bodyKinematics, previousLatitude, config, result);
     }
 
@@ -1615,15 +1455,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
+            final Point3D userPosition, final ECEFVelocity userVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),
-                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),
-                userVelocity.getVz(), propagationInterval, previousState,
+        return estimate(userPosition.getInhomX(), userPosition.getInhomY(), userPosition.getInhomZ(),
+                userVelocity.getVx(), userVelocity.getVy(), userVelocity.getVz(), propagationInterval, previousState,
                 fx, fy, fz, config);
     }
 
@@ -1649,16 +1485,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final INSLooselyCoupledKalmanConfig config,
+            final Point3D userPosition, final ECEFVelocity userVelocity,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final double fx, final double fy, final double fz, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition.getInhomX(), userPosition.getInhomY(),
-                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),
-                userVelocity.getVz(), propagationInterval, previousState,
+        estimate(userPosition.getInhomX(), userPosition.getInhomY(), userPosition.getInhomZ(),
+                userVelocity.getVx(), userVelocity.getVy(), userVelocity.getVz(), propagationInterval, previousState,
                 fx, fy, fz, config, result);
     }
 
@@ -1684,16 +1516,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),
-                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),
-                userVelocity.getVz(), propagationInterval, previousState,
+            final Point3D userPosition, final ECEFVelocity userVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(userPosition.getInhomX(), userPosition.getInhomY(), userPosition.getInhomZ(),
+                userVelocity.getVx(), userVelocity.getVy(), userVelocity.getVz(), propagationInterval, previousState,
                 fx, fy, fz, previousLatitude, config);
     }
 
@@ -1720,17 +1547,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final Point3D userPosition, final ECEFVelocity userVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition.getInhomX(), userPosition.getInhomY(),
-                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),
-                userVelocity.getVz(), propagationInterval, previousState,
+        estimate(userPosition.getInhomX(), userPosition.getInhomY(), userPosition.getInhomZ(),
+                userVelocity.getVx(), userVelocity.getVy(), userVelocity.getVz(), propagationInterval, previousState,
                 fx, fy, fz, previousLatitude, config, result);
     }
 
@@ -1748,15 +1570,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
+            final Point3D userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),
-                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),
-                userVelocity.getVz(), propagationInterval, previousState,
+        return estimate(userPosition.getInhomX(), userPosition.getInhomY(), userPosition.getInhomZ(),
+                userVelocity.getVx(), userVelocity.getVy(), userVelocity.getVz(), propagationInterval, previousState,
                 bodyKinematics, config);
     }
 
@@ -1775,18 +1593,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final INSLooselyCoupledKalmanConfig config,
+            final Point3D userPosition, final ECEFVelocity userVelocity,
+            final Time propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final BodyKinematics bodyKinematics, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition.getInhomX(), userPosition.getInhomY(),
-                userPosition.getInhomZ(), userVelocity.getVx(),
-                userVelocity.getVy(), userVelocity.getVz(),
-                propagationInterval, previousState, bodyKinematics, config,
-                result);
+        estimate(userPosition.getInhomX(), userPosition.getInhomY(), userPosition.getInhomZ(),
+                userVelocity.getVx(), userVelocity.getVy(), userVelocity.getVz(), propagationInterval, previousState,
+                bodyKinematics, config, result);
     }
 
     /**
@@ -1804,16 +1617,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
+            final Point3D userPosition, final ECEFVelocity userVelocity,
+            final Time propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final BodyKinematics bodyKinematics, final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),
-                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),
-                userVelocity.getVz(), propagationInterval, previousState,
+        return estimate(userPosition.getInhomX(), userPosition.getInhomY(), userPosition.getInhomZ(),
+                userVelocity.getVx(), userVelocity.getVy(), userVelocity.getVz(), propagationInterval, previousState,
                 bodyKinematics, previousLatitude, config);
     }
 
@@ -1833,17 +1642,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final Point3D userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition.getInhomX(), userPosition.getInhomY(),
-                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),
-                userVelocity.getVz(), propagationInterval, previousState,
+        estimate(userPosition.getInhomX(), userPosition.getInhomY(), userPosition.getInhomZ(),
+                userVelocity.getVx(), userVelocity.getVy(), userVelocity.getVz(), propagationInterval, previousState,
                 bodyKinematics, previousLatitude, config, result);
     }
 
@@ -1868,15 +1672,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
+            final Point3D userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),
-                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),
-                userVelocity.getVz(), propagationInterval, previousState,
+        return estimate(userPosition.getInhomX(), userPosition.getInhomY(), userPosition.getInhomZ(),
+                userVelocity.getVx(), userVelocity.getVy(), userVelocity.getVz(), propagationInterval, previousState,
                 fx, fy, fz, config);
     }
 
@@ -1902,16 +1702,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition.getInhomX(), userPosition.getInhomY(),
-                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),
-                userVelocity.getVz(), propagationInterval, previousState,
+            final Point3D userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
+        estimate(userPosition.getInhomX(), userPosition.getInhomY(), userPosition.getInhomZ(),
+                userVelocity.getVx(), userVelocity.getVy(), userVelocity.getVz(), propagationInterval, previousState,
                 fx, fy, fz, config, result);
     }
 
@@ -1937,16 +1733,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),
-                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),
-                userVelocity.getVz(), propagationInterval, previousState,
+            final Point3D userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(userPosition.getInhomX(), userPosition.getInhomY(), userPosition.getInhomZ(),
+                userVelocity.getVx(), userVelocity.getVy(), userVelocity.getVz(), propagationInterval, previousState,
                 fx, fy, fz, previousLatitude, config);
     }
 
@@ -1973,17 +1764,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final Point3D userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition.getInhomX(), userPosition.getInhomY(),
-                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),
-                userVelocity.getVz(), propagationInterval, previousState,
+        estimate(userPosition.getInhomX(), userPosition.getInhomY(), userPosition.getInhomZ(),
+                userVelocity.getVx(), userVelocity.getVy(), userVelocity.getVz(), propagationInterval, previousState,
                 fx, fy, fz, previousLatitude, config, result);
     }
 
@@ -2000,16 +1786,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
+            final ECEFPositionAndVelocity positionAndVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),
-                positionAndVelocity.getZ(), positionAndVelocity.getVx(),
-                positionAndVelocity.getVy(), positionAndVelocity.getVz(),
-                propagationInterval, previousState, bodyKinematics,
-                config);
+        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(), positionAndVelocity.getZ(),
+                positionAndVelocity.getVx(), positionAndVelocity.getVy(), positionAndVelocity.getVz(),
+                propagationInterval, previousState, bodyKinematics, config);
     }
 
     /**
@@ -2026,17 +1808,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),
-                positionAndVelocity.getZ(), positionAndVelocity.getVx(),
-                positionAndVelocity.getVy(), positionAndVelocity.getVz(),
-                propagationInterval, previousState, bodyKinematics,
-                config, result);
+            final ECEFPositionAndVelocity positionAndVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
+        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(), positionAndVelocity.getZ(),
+                positionAndVelocity.getVx(), positionAndVelocity.getVy(), positionAndVelocity.getVz(),
+                propagationInterval, previousState, bodyKinematics, config, result);
     }
 
     /**
@@ -2053,17 +1831,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),
-                positionAndVelocity.getZ(), positionAndVelocity.getVx(),
-                positionAndVelocity.getVy(), positionAndVelocity.getVz(),
-                propagationInterval, previousState, bodyKinematics,
-                previousLatitude, config);
+            final ECEFPositionAndVelocity positionAndVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(), positionAndVelocity.getZ(),
+                positionAndVelocity.getVx(), positionAndVelocity.getVy(), positionAndVelocity.getVz(),
+                propagationInterval, previousState, bodyKinematics, previousLatitude, config);
     }
 
     /**
@@ -2081,18 +1854,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final ECEFPositionAndVelocity positionAndVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),
-                positionAndVelocity.getZ(), positionAndVelocity.getVx(),
-                positionAndVelocity.getVy(), positionAndVelocity.getVz(),
-                propagationInterval, previousState, bodyKinematics,
-                previousLatitude, config, result);
+        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(), positionAndVelocity.getZ(),
+                positionAndVelocity.getVx(), positionAndVelocity.getVy(), positionAndVelocity.getVz(),
+                propagationInterval, previousState, bodyKinematics, previousLatitude, config, result);
     }
 
     /**
@@ -2115,14 +1883,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
+            final ECEFPositionAndVelocity positionAndVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),
-                positionAndVelocity.getZ(), positionAndVelocity.getVx(),
-                positionAndVelocity.getVy(), positionAndVelocity.getVz(),
+        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(), positionAndVelocity.getZ(),
+                positionAndVelocity.getVx(), positionAndVelocity.getVy(), positionAndVelocity.getVz(),
                 propagationInterval, previousState, fx, fy, fz, config);
     }
 
@@ -2146,15 +1911,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),
-                positionAndVelocity.getZ(), positionAndVelocity.getVx(),
-                positionAndVelocity.getVy(), positionAndVelocity.getVz(),
+            final ECEFPositionAndVelocity positionAndVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
+        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(), positionAndVelocity.getZ(),
+                positionAndVelocity.getVx(), positionAndVelocity.getVy(), positionAndVelocity.getVz(),
                 propagationInterval, previousState, fx, fy, fz, config, result);
     }
 
@@ -2179,17 +1941,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),
-                positionAndVelocity.getZ(), positionAndVelocity.getVx(),
-                positionAndVelocity.getVy(), positionAndVelocity.getVz(),
-                propagationInterval, previousState, fx, fy, fz, previousLatitude,
-                config);
+            final ECEFPositionAndVelocity positionAndVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(), positionAndVelocity.getZ(),
+                positionAndVelocity.getVx(), positionAndVelocity.getVy(), positionAndVelocity.getVz(),
+                propagationInterval, previousState, fx, fy, fz, previousLatitude, config);
     }
 
     /**
@@ -2214,18 +1971,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final ECEFPositionAndVelocity positionAndVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),
-                positionAndVelocity.getZ(), positionAndVelocity.getVx(),
-                positionAndVelocity.getVy(), positionAndVelocity.getVz(),
-                propagationInterval, previousState, fx, fy, fz, previousLatitude,
-                config, result);
+        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(), positionAndVelocity.getZ(),
+                positionAndVelocity.getVx(), positionAndVelocity.getVy(), positionAndVelocity.getVz(),
+                propagationInterval, previousState, fx, fy, fz, previousLatitude, config, result);
     }
 
     /**
@@ -2241,14 +1993,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
+            final ECEFPositionAndVelocity positionAndVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),
-                positionAndVelocity.getZ(), positionAndVelocity.getVx(),
-                positionAndVelocity.getVy(), positionAndVelocity.getVz(),
+        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(), positionAndVelocity.getZ(),
+                positionAndVelocity.getVx(), positionAndVelocity.getVy(), positionAndVelocity.getVz(),
                 propagationInterval, previousState, bodyKinematics, config);
     }
 
@@ -2266,17 +2015,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),
-                positionAndVelocity.getZ(), positionAndVelocity.getVx(),
-                positionAndVelocity.getVy(), positionAndVelocity.getVz(),
-                propagationInterval, previousState, bodyKinematics,
-                config, result);
+            final ECEFPositionAndVelocity positionAndVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
+        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(), positionAndVelocity.getZ(),
+                positionAndVelocity.getVx(), positionAndVelocity.getVy(), positionAndVelocity.getVz(),
+                propagationInterval, previousState, bodyKinematics, config, result);
     }
 
     /**
@@ -2293,17 +2038,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),
-                positionAndVelocity.getZ(), positionAndVelocity.getVx(),
-                positionAndVelocity.getVy(), positionAndVelocity.getVz(),
-                propagationInterval, previousState, bodyKinematics,
-                previousLatitude, config);
+            final ECEFPositionAndVelocity positionAndVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(), positionAndVelocity.getZ(),
+                positionAndVelocity.getVx(), positionAndVelocity.getVy(), positionAndVelocity.getVz(),
+                propagationInterval, previousState, bodyKinematics, previousLatitude, config);
     }
 
     /**
@@ -2321,18 +2061,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final ECEFPositionAndVelocity positionAndVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),
-                positionAndVelocity.getZ(), positionAndVelocity.getVx(),
-                positionAndVelocity.getVy(), positionAndVelocity.getVz(),
-                propagationInterval, previousState, bodyKinematics,
-                previousLatitude, config, result);
+        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(), positionAndVelocity.getZ(),
+                positionAndVelocity.getVx(), positionAndVelocity.getVy(), positionAndVelocity.getVz(),
+                propagationInterval, previousState, bodyKinematics, previousLatitude, config, result);
     }
 
     /**
@@ -2355,14 +2090,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
+            final ECEFPositionAndVelocity positionAndVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),
-                positionAndVelocity.getZ(), positionAndVelocity.getVx(),
-                positionAndVelocity.getVy(), positionAndVelocity.getVz(),
+        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(), positionAndVelocity.getZ(),
+                positionAndVelocity.getVx(), positionAndVelocity.getVy(), positionAndVelocity.getVz(),
                 propagationInterval, previousState, fx, fy, fz, config);
     }
 
@@ -2387,15 +2119,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),
-                positionAndVelocity.getZ(), positionAndVelocity.getVx(),
-                positionAndVelocity.getVy(), positionAndVelocity.getVz(),
+            final ECEFPositionAndVelocity positionAndVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
+        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(), positionAndVelocity.getZ(),
+                positionAndVelocity.getVx(), positionAndVelocity.getVy(), positionAndVelocity.getVz(),
                 propagationInterval, previousState, fx, fy, fz, config, result);
     }
 
@@ -2420,17 +2149,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),
-                positionAndVelocity.getZ(), positionAndVelocity.getVx(),
-                positionAndVelocity.getVy(), positionAndVelocity.getVz(),
-                propagationInterval, previousState, fx, fy, fz, previousLatitude,
-                config);
+            final ECEFPositionAndVelocity positionAndVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(), positionAndVelocity.getZ(),
+                positionAndVelocity.getVx(), positionAndVelocity.getVy(), positionAndVelocity.getVz(),
+                propagationInterval, previousState, fx, fy, fz, previousLatitude, config);
     }
 
     /**
@@ -2455,18 +2179,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final double previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final ECEFPositionAndVelocity positionAndVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final double previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),
-                positionAndVelocity.getZ(), positionAndVelocity.getVx(),
-                positionAndVelocity.getVy(), positionAndVelocity.getVz(),
-                propagationInterval, previousState, fx, fy, fz, previousLatitude,
-                config, result);
+        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(), positionAndVelocity.getZ(),
+                positionAndVelocity.getVx(), positionAndVelocity.getVy(), positionAndVelocity.getVz(),
+                propagationInterval, previousState, fx, fy, fz, previousLatitude, config, result);
     }
 
     /**
@@ -2484,16 +2203,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition, userVelocity, propagationInterval,
-                previousState, bodyKinematics, convertAngle(previousLatitude),
-                config);
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(userPosition, userVelocity, propagationInterval, previousState, bodyKinematics,
+                convertAngle(previousLatitude), config);
     }
 
     /**
@@ -2512,16 +2226,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition, userVelocity, propagationInterval, previousState,
-                bodyKinematics, convertAngle(previousLatitude), config, result);
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final BodyKinematics bodyKinematics, final Angle previousLatitude,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
+        estimate(userPosition, userVelocity, propagationInterval, previousState, bodyKinematics,
+                convertAngle(previousLatitude), config, result);
     }
 
     /**
@@ -2546,15 +2257,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final double fx, final double fy, final double fz, final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition, userVelocity, propagationInterval,
-                previousState, fx, fy, fz, convertAngle(previousLatitude), config);
+        return estimate(userPosition, userVelocity, propagationInterval, previousState, fx, fy, fz,
+                convertAngle(previousLatitude), config);
     }
 
     /**
@@ -2580,184 +2288,168 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition, userVelocity, propagationInterval,
-                previousState, fx, fy, fz, convertAngle(previousLatitude),
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final double fx, final double fy, final double fz, final Angle previousLatitude,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
+        estimate(userPosition, userVelocity, propagationInterval, previousState, fx, fy, fz,
+                convertAngle(previousLatitude), config, result);
+    }
+
+    /**
+     * Estimates the update of Kalman filter state for a single epoch.
+     *
+     * @param x                   ECEF x coordinate of user position expressed in
+     *                            meters (m).
+     * @param y                   ECEF y coordinate of user position expressed in
+     *                            meters (m).
+     * @param z                   ECEF z coordinate of user position expressed in
+     *                            meters (m).
+     * @param vx                  ECEF x coordinate of user velocity expressed in
+     *                            meters per second (m/s).
+     * @param vy                  ECEF y coordinate of user velocity expressed in
+     *                            meters per second (m/s).
+     * @param vz                  ECEF z coordinate of user velocity expressed in
+     *                            meters per second (m/s).
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param bodyKinematics      body kinematics containing measured specific force
+     *                            resolved along body frame axes.
+     * @param previousLatitude    previous latitude solution.
+     * @param config              Loosely Coupled Kalman filter configuration.
+     * @return new state of Kalman filter.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static INSLooselyCoupledKalmanState estimate(
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final BodyKinematics bodyKinematics, final Angle previousLatitude,
+            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(x, y, z, vx, vy, vz, propagationInterval, previousState, bodyKinematics,
+                convertAngle(previousLatitude), config);
+    }
+
+    /**
+     * Estimates the update of Kalman filter state for a single epoch.
+     *
+     * @param x                   ECEF x coordinate of user position expressed in
+     *                            meters (m).
+     * @param y                   ECEF y coordinate of user position expressed in
+     *                            meters (m).
+     * @param z                   ECEF z coordinate of user position expressed in
+     *                            meters (m).
+     * @param vx                  ECEF x coordinate of user velocity expressed in
+     *                            meters per second (m/s).
+     * @param vy                  ECEF y coordinate of user velocity expressed in
+     *                            meters per second (m/s).
+     * @param vz                  ECEF z coordinate of user velocity expressed in
+     *                            meters per second (m/s).
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param bodyKinematics      body kinematics containing measured specific force
+     *                            resolved along body frame axes.
+     * @param previousLatitude    previous latitude solution.
+     * @param config              Loosely Coupled Kalman filter configuration.
+     * @param result              instance where new state of Kalman filter will be
+     *                            stored.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static void estimate(
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final BodyKinematics bodyKinematics, final Angle previousLatitude,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
+        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState, bodyKinematics,
+                convertAngle(previousLatitude), config, result);
+    }
+
+    /**
+     * Estimates the update of Kalman filter state for a single epoch.
+     *
+     * @param x                   ECEF x coordinate of user position expressed in
+     *                            meters (m).
+     * @param y                   ECEF y coordinate of user position expressed in
+     *                            meters (m).
+     * @param z                   ECEF z coordinate of user position expressed in
+     *                            meters (m).
+     * @param vx                  ECEF x coordinate of user velocity expressed in
+     *                            meters per second (m/s).
+     * @param vy                  ECEF y coordinate of user velocity expressed in
+     *                            meters per second (m/s).
+     * @param vz                  ECEF z coordinate of user velocity expressed in
+     *                            meters per second (m/s).
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param fx                  measured specific force resolved along body frame
+     *                            x-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fy                  measured specific force resolved along body frame
+     *                            y-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fz                  measured specific force resolved along body frame
+     *                            z-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param previousLatitude    previous latitude solution.
+     * @param config              Loosely Coupled Kalman filter configuration.
+     * @return new state of Kalman filter.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static INSLooselyCoupledKalmanState estimate(
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final double fx, final double fy, final double fz, final Angle previousLatitude,
+            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(x, y, z, vx, vy, vz, propagationInterval, previousState, fx, fy, fz,
+                convertAngle(previousLatitude), config);
+    }
+
+    /**
+     * Estimates the update of Kalman filter state for a single epoch.
+     *
+     * @param x                   ECEF x coordinate of user position expressed in
+     *                            meters (m).
+     * @param y                   ECEF y coordinate of user position expressed in
+     *                            meters (m).
+     * @param z                   ECEF z coordinate of user position expressed in
+     *                            meters (m).
+     * @param vx                  ECEF x coordinate of user velocity expressed in
+     *                            meters per second (m/s).
+     * @param vy                  ECEF y coordinate of user velocity expressed in
+     *                            meters per second (m/s).
+     * @param vz                  ECEF z coordinate of user velocity expressed in
+     *                            meters per second (m/s).
+     * @param propagationInterval propagation interval expressed in seconds (s).
+     * @param previousState       previous Kalman filter state.
+     * @param fx                  measured specific force resolved along body frame
+     *                            x-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fy                  measured specific force resolved along body frame
+     *                            y-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param fz                  measured specific force resolved along body frame
+     *                            z-axis and expressed in meters per squared
+     *                            second (m/s^2).
+     * @param previousLatitude    previous latitude solution.
+     * @param config              Loosely Coupled Kalman filter configuration.
+     * @param result              instance where new state of Kalman filter will be
+     *                            stored.
+     * @throws AlgebraException if there are numerical instabilities.
+     */
+    public static void estimate(
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final double propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final double fx, final double fy, final double fz, final Angle previousLatitude,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
+        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState, fx, fy, fz, convertAngle(previousLatitude),
                 config, result);
     }
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
      *
-     * @param x                   ECEF x coordinate of user position expressed in
-     *                            meters (m).
-     * @param y                   ECEF y coordinate of user position expressed in
-     *                            meters (m).
-     * @param z                   ECEF z coordinate of user position expressed in
-     *                            meters (m).
-     * @param vx                  ECEF x coordinate of user velocity expressed in
-     *                            meters per second (m/s).
-     * @param vy                  ECEF y coordinate of user velocity expressed in
-     *                            meters per second (m/s).
-     * @param vz                  ECEF z coordinate of user velocity expressed in
-     *                            meters per second (m/s).
-     * @param propagationInterval propagation interval expressed in seconds (s).
-     * @param previousState       previous Kalman filter state.
-     * @param bodyKinematics      body kinematics containing measured specific force
-     *                            resolved along body frame axes.
-     * @param previousLatitude    previous latitude solution.
-     * @param config              Loosely Coupled Kalman filter configuration.
-     * @return new state of Kalman filter.
-     * @throws AlgebraException if there are numerical instabilities.
-     */
-    public static INSLooselyCoupledKalmanState estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
-                bodyKinematics, convertAngle(previousLatitude), config);
-    }
-
-    /**
-     * Estimates the update of Kalman filter state for a single epoch.
-     *
-     * @param x                   ECEF x coordinate of user position expressed in
-     *                            meters (m).
-     * @param y                   ECEF y coordinate of user position expressed in
-     *                            meters (m).
-     * @param z                   ECEF z coordinate of user position expressed in
-     *                            meters (m).
-     * @param vx                  ECEF x coordinate of user velocity expressed in
-     *                            meters per second (m/s).
-     * @param vy                  ECEF y coordinate of user velocity expressed in
-     *                            meters per second (m/s).
-     * @param vz                  ECEF z coordinate of user velocity expressed in
-     *                            meters per second (m/s).
-     * @param propagationInterval propagation interval expressed in seconds (s).
-     * @param previousState       previous Kalman filter state.
-     * @param bodyKinematics      body kinematics containing measured specific force
-     *                            resolved along body frame axes.
-     * @param previousLatitude    previous latitude solution.
-     * @param config              Loosely Coupled Kalman filter configuration.
-     * @param result              instance where new state of Kalman filter will be
-     *                            stored.
-     * @throws AlgebraException if there are numerical instabilities.
-     */
-    public static void estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
-                bodyKinematics, convertAngle(previousLatitude), config, result);
-    }
-
-    /**
-     * Estimates the update of Kalman filter state for a single epoch.
-     *
-     * @param x                   ECEF x coordinate of user position expressed in
-     *                            meters (m).
-     * @param y                   ECEF y coordinate of user position expressed in
-     *                            meters (m).
-     * @param z                   ECEF z coordinate of user position expressed in
-     *                            meters (m).
-     * @param vx                  ECEF x coordinate of user velocity expressed in
-     *                            meters per second (m/s).
-     * @param vy                  ECEF y coordinate of user velocity expressed in
-     *                            meters per second (m/s).
-     * @param vz                  ECEF z coordinate of user velocity expressed in
-     *                            meters per second (m/s).
-     * @param propagationInterval propagation interval expressed in seconds (s).
-     * @param previousState       previous Kalman filter state.
-     * @param fx                  measured specific force resolved along body frame
-     *                            x-axis and expressed in meters per squared
-     *                            second (m/s^2).
-     * @param fy                  measured specific force resolved along body frame
-     *                            y-axis and expressed in meters per squared
-     *                            second (m/s^2).
-     * @param fz                  measured specific force resolved along body frame
-     *                            z-axis and expressed in meters per squared
-     *                            second (m/s^2).
-     * @param previousLatitude    previous latitude solution.
-     * @param config              Loosely Coupled Kalman filter configuration.
-     * @return new state of Kalman filter.
-     * @throws AlgebraException if there are numerical instabilities.
-     */
-    public static INSLooselyCoupledKalmanState estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
-                fx, fy, fz, convertAngle(previousLatitude), config);
-    }
-
-    /**
-     * Estimates the update of Kalman filter state for a single epoch.
-     *
-     * @param x                   ECEF x coordinate of user position expressed in
-     *                            meters (m).
-     * @param y                   ECEF y coordinate of user position expressed in
-     *                            meters (m).
-     * @param z                   ECEF z coordinate of user position expressed in
-     *                            meters (m).
-     * @param vx                  ECEF x coordinate of user velocity expressed in
-     *                            meters per second (m/s).
-     * @param vy                  ECEF y coordinate of user velocity expressed in
-     *                            meters per second (m/s).
-     * @param vz                  ECEF z coordinate of user velocity expressed in
-     *                            meters per second (m/s).
-     * @param propagationInterval propagation interval expressed in seconds (s).
-     * @param previousState       previous Kalman filter state.
-     * @param fx                  measured specific force resolved along body frame
-     *                            x-axis and expressed in meters per squared
-     *                            second (m/s^2).
-     * @param fy                  measured specific force resolved along body frame
-     *                            y-axis and expressed in meters per squared
-     *                            second (m/s^2).
-     * @param fz                  measured specific force resolved along body frame
-     *                            z-axis and expressed in meters per squared
-     *                            second (m/s^2).
-     * @param previousLatitude    previous latitude solution.
-     * @param config              Loosely Coupled Kalman filter configuration.
-     * @param result              instance where new state of Kalman filter will be
-     *                            stored.
-     * @throws AlgebraException if there are numerical instabilities.
-     */
-    public static void estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
-                fx, fy, fz, convertAngle(previousLatitude), config, result);
-    }
-
-    /**
-     * Estimates the update of Kalman filter state for a single epoch.
-     *
      * @param userPosition        ECEF user position.
      * @param userVelocity        ECEF user velocity.
      * @param propagationInterval propagation interval.
@@ -2770,16 +2462,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition, userVelocity, propagationInterval,
-                previousState, bodyKinematics, convertAngle(previousLatitude),
-                config);
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(userPosition, userVelocity, propagationInterval, previousState, bodyKinematics,
+                convertAngle(previousLatitude), config);
     }
 
     /**
@@ -2798,16 +2485,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition, userVelocity, propagationInterval, previousState,
-                bodyKinematics, convertAngle(previousLatitude), config, result);
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity,
+            final Time propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final BodyKinematics bodyKinematics, final Angle previousLatitude,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
+        estimate(userPosition, userVelocity, propagationInterval, previousState, bodyKinematics,
+                convertAngle(previousLatitude), config, result);
     }
 
     /**
@@ -2832,16 +2516,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final com.irurueta.navigation.frames.ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition, userVelocity, propagationInterval,
-                previousState, fx, fy, fz, convertAngle(previousLatitude),
-                config);
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(userPosition, userVelocity, propagationInterval, previousState, fx, fy, fz,
+                convertAngle(previousLatitude), config);
     }
 
     /**
@@ -2867,16 +2546,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final ECEFPosition userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final ECEFPosition userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition, userVelocity, propagationInterval, previousState,
-                fx, fy, fz, convertAngle(previousLatitude), config, result);
+        estimate(userPosition, userVelocity, propagationInterval, previousState, fx, fy, fz,
+                convertAngle(previousLatitude), config, result);
     }
 
     /**
@@ -2904,15 +2579,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final Time propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final BodyKinematics bodyKinematics, final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
-                bodyKinematics, convertAngle(previousLatitude), config);
+        return estimate(x, y, z, vx, vy, vz, propagationInterval, previousState, bodyKinematics,
+                convertAngle(previousLatitude), config);
     }
 
     /**
@@ -2941,16 +2613,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
-                bodyKinematics, convertAngle(previousLatitude), config, result);
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final Time propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final BodyKinematics bodyKinematics, final Angle previousLatitude,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
+        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState, bodyKinematics,
+                convertAngle(previousLatitude), config, result);
     }
 
     /**
@@ -2985,15 +2654,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final Time propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final double fx, final double fy, final double fz, final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
-                fx, fy, fz, convertAngle(previousLatitude), config);
+        return estimate(x, y, z, vx, vy, vz, propagationInterval, previousState, fx, fy, fz,
+                convertAngle(previousLatitude), config);
     }
 
     /**
@@ -3029,16 +2695,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final double x, final double y, final double z,
-            final double vx, final double vy, final double vz,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
-            final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,
-                fx, fy, fz, convertAngle(previousLatitude), config, result);
+            final double x, final double y, final double z, final double vx, final double vy, final double vz,
+            final Time propagationInterval, final INSLooselyCoupledKalmanState previousState,
+            final double fx, final double fy, final double fz, final Angle previousLatitude,
+            final INSLooselyCoupledKalmanConfig config, final INSLooselyCoupledKalmanState result)
+            throws AlgebraException {
+        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState, fx, fy, fz, convertAngle(previousLatitude),
+                config, result);
     }
 
     /**
@@ -3056,16 +2719,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition, userVelocity, propagationInterval,
-                previousState, bodyKinematics, convertAngle(previousLatitude),
-                config);
+            final Point3D userPosition, final ECEFVelocity userVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(userPosition, userVelocity, propagationInterval, previousState, bodyKinematics,
+                convertAngle(previousLatitude), config);
     }
 
     /**
@@ -3084,16 +2742,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final Point3D userPosition, final ECEFVelocity userVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition, userVelocity, propagationInterval, previousState,
-                bodyKinematics, convertAngle(previousLatitude), config, result);
+        estimate(userPosition, userVelocity, propagationInterval, previousState, bodyKinematics,
+                convertAngle(previousLatitude), config, result);
     }
 
     /**
@@ -3118,16 +2772,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition, userVelocity, propagationInterval,
-                previousState, fx, fy, fz, convertAngle(previousLatitude),
-                config);
+            final Point3D userPosition, final ECEFVelocity userVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(userPosition, userVelocity, propagationInterval, previousState, fx, fy, fz,
+                convertAngle(previousLatitude), config);
     }
 
     /**
@@ -3153,16 +2802,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final Point3D userPosition, final ECEFVelocity userVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition, userVelocity, propagationInterval, previousState,
-                fx, fy, fz, convertAngle(previousLatitude), config, result);
+        estimate(userPosition, userVelocity, propagationInterval, previousState, fx, fy, fz,
+                convertAngle(previousLatitude), config, result);
     }
 
     /**
@@ -3180,16 +2825,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition, userVelocity, propagationInterval,
-                previousState, bodyKinematics, convertAngle(previousLatitude),
-                config);
+            final Point3D userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(userPosition, userVelocity, propagationInterval, previousState, bodyKinematics,
+                convertAngle(previousLatitude), config);
     }
 
     /**
@@ -3208,16 +2848,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final Point3D userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition, userVelocity, propagationInterval, previousState,
-                bodyKinematics, convertAngle(previousLatitude), config, result);
+        estimate(userPosition, userVelocity, propagationInterval, previousState, bodyKinematics,
+                convertAngle(previousLatitude), config, result);
     }
 
     /**
@@ -3242,16 +2878,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final Point3D userPosition,
-            final com.irurueta.navigation.frames.ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(userPosition, userVelocity, propagationInterval,
-                previousState, fx, fy, fz, convertAngle(previousLatitude),
-                config);
+            final Point3D userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(userPosition, userVelocity, propagationInterval, previousState, fx, fy, fz,
+                convertAngle(previousLatitude), config);
     }
 
     /**
@@ -3277,16 +2908,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final Point3D userPosition,
-            final ECEFVelocity userVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final Point3D userPosition, final ECEFVelocity userVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(userPosition, userVelocity, propagationInterval, previousState,
-                fx, fy, fz, convertAngle(previousLatitude), config, result);
+        estimate(userPosition, userVelocity, propagationInterval, previousState, fx, fy, fz,
+                convertAngle(previousLatitude), config, result);
     }
 
     /**
@@ -3303,14 +2930,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(positionAndVelocity, propagationInterval, previousState,
-                bodyKinematics, convertAngle(previousLatitude), config);
+            final ECEFPositionAndVelocity positionAndVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(positionAndVelocity, propagationInterval, previousState, bodyKinematics,
+                convertAngle(previousLatitude), config);
     }
 
     /**
@@ -3328,16 +2952,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final ECEFPositionAndVelocity positionAndVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(positionAndVelocity, propagationInterval, previousState,
-                bodyKinematics, convertAngle(previousLatitude), config,
-                result);
+        estimate(positionAndVelocity, propagationInterval, previousState, bodyKinematics,
+                convertAngle(previousLatitude), config, result);
     }
 
     /**
@@ -3361,14 +2981,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(positionAndVelocity, propagationInterval, previousState,
-                fx, fy, fz, convertAngle(previousLatitude), config);
+            final ECEFPositionAndVelocity positionAndVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(positionAndVelocity, propagationInterval, previousState, fx, fy, fz,
+                convertAngle(previousLatitude), config);
     }
 
     /**
@@ -3393,15 +3010,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final double propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final ECEFPositionAndVelocity positionAndVelocity, final double propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(positionAndVelocity, propagationInterval, previousState,
-                fx, fy, fz, convertAngle(previousLatitude), config, result);
+        estimate(positionAndVelocity, propagationInterval, previousState, fx, fy, fz, convertAngle(previousLatitude),
+                config, result);
     }
 
     /**
@@ -3418,14 +3032,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(positionAndVelocity, propagationInterval, previousState,
-                bodyKinematics, convertAngle(previousLatitude), config);
+            final ECEFPositionAndVelocity positionAndVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(positionAndVelocity, propagationInterval, previousState, bodyKinematics,
+                convertAngle(previousLatitude), config);
     }
 
     /**
@@ -3443,15 +3054,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final BodyKinematics bodyKinematics,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final ECEFPositionAndVelocity positionAndVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final BodyKinematics bodyKinematics,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(positionAndVelocity, propagationInterval, previousState,
-                bodyKinematics, convertAngle(previousLatitude), config, result);
+        estimate(positionAndVelocity, propagationInterval, previousState, bodyKinematics,
+                convertAngle(previousLatitude), config, result);
     }
 
     /**
@@ -3475,14 +3083,11 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static INSLooselyCoupledKalmanState estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-        return estimate(positionAndVelocity, propagationInterval, previousState,
-                fx, fy, fz, convertAngle(previousLatitude), config);
+            final ECEFPositionAndVelocity positionAndVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
+        return estimate(positionAndVelocity, propagationInterval, previousState, fx, fy, fz,
+                convertAngle(previousLatitude), config);
     }
 
     /**
@@ -3507,15 +3112,12 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
-            final ECEFPositionAndVelocity positionAndVelocity,
-            final Time propagationInterval,
-            final INSLooselyCoupledKalmanState previousState,
-            final double fx, final double fy, final double fz,
-            final Angle previousLatitude,
-            final INSLooselyCoupledKalmanConfig config,
+            final ECEFPositionAndVelocity positionAndVelocity, final Time propagationInterval,
+            final INSLooselyCoupledKalmanState previousState, final double fx, final double fy, final double fz,
+            final Angle previousLatitude, final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-        estimate(positionAndVelocity, propagationInterval, previousState,
-                fx, fy, fz, convertAngle(previousLatitude), config, result);
+        estimate(positionAndVelocity, propagationInterval, previousState, fx, fy, fz, convertAngle(previousLatitude),
+                config, result);
     }
 
     /**
@@ -3525,8 +3127,7 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @return time value expressed in seconds.
      */
     private static double convertTime(final Time time) {
-        return TimeConverter.convert(time.getValue().doubleValue(),
-                time.getUnit(), TimeUnit.SECOND);
+        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);
     }
 
     /**
@@ -3536,7 +3137,6 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @return angle value expressed in radians.
      */
     private static double convertAngle(final Angle angle) {
-        return AngleConverter.convert(angle.getValue().doubleValue(),
-                angle.getUnit(), AngleUnit.RADIANS);
+        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(), AngleUnit.RADIANS);
     }
 }

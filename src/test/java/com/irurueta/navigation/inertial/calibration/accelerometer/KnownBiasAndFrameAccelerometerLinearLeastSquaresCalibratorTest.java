@@ -84,46 +84,35 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
 
         // check default values
         assertNull(calibrator.getMeasurements());
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertEquals(calibrator.isCommonAxisUsed(),
-                KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator
-                        .DEFAULT_USE_COMMON_Z_AXIS);
+        assertEquals(KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator.DEFAULT_USE_COMMON_Z_AXIS,
+                calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getBiasX(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasY(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasZ(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        Acceleration acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, calibrator.getBiasX(), 0.0);
+        assertEquals(0.0, calibrator.getBiasY(), 0.0);
+        assertEquals(0.0, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        Acceleration acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         AccelerationTriad biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(biasTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(biasTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, biasTriad1.getValueX(), 0.0);
+        assertEquals(0.0, biasTriad1.getValueY(), 0.0);
+        assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         AccelerationTriad biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
@@ -133,7 +122,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         Matrix biasMatrix1 = new Matrix(3, 1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -153,51 +142,39 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
 
         // test constructor with listener
-        calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
-                this);
+        calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(this);
 
         // check default values
         assertNull(calibrator.getMeasurements());
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertEquals(calibrator.isCommonAxisUsed(),
-                KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator
-                        .DEFAULT_USE_COMMON_Z_AXIS);
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getBiasX(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasY(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasZ(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator.DEFAULT_USE_COMMON_Z_AXIS,
+                calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+        assertEquals(0.0, calibrator.getBiasX(), 0.0);
+        assertEquals(0.0, calibrator.getBiasY(), 0.0);
+        assertEquals(0.0, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(acceleration, new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND));
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(biasTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(biasTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, biasTriad1.getValueX(), 0.0);
+        assertEquals(0.0, biasTriad1.getValueY(), 0.0);
+        assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
@@ -207,7 +184,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = new Matrix(3, 1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -229,51 +206,39 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         // test constructor with measurements
         final Collection<FrameBodyKinematics> measurements = Collections.emptyList();
 
-        calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
-                measurements);
+        calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertEquals(calibrator.isCommonAxisUsed(),
-                KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator
-                        .DEFAULT_USE_COMMON_Z_AXIS);
+        assertEquals(KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator.DEFAULT_USE_COMMON_Z_AXIS,
+                calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getBiasX(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasY(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasZ(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, calibrator.getBiasX(), 0.0);
+        assertEquals(0.0, calibrator.getBiasY(), 0.0);
+        assertEquals(0.0, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(acceleration, new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND));
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(biasTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(biasTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, biasTriad1.getValueX(), 0.0);
+        assertEquals(0.0, biasTriad1.getValueY(), 0.0);
+        assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
@@ -283,7 +248,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = new Matrix(3, 1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -303,61 +268,49 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
 
         // test constructor with measurements and listener
-        calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
-                measurements, this);
+        calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements, this);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertEquals(calibrator.isCommonAxisUsed(),
-                KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator
-                        .DEFAULT_USE_COMMON_Z_AXIS);
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getBiasX(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasY(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasZ(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator.DEFAULT_USE_COMMON_Z_AXIS,
+                calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+        assertEquals(0.0, calibrator.getBiasX(), 0.0);
+        assertEquals(0.0, calibrator.getBiasY(), 0.0);
+        assertEquals(0.0, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(biasTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(biasTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, biasTriad1.getValueX(), 0.0);
+        assertEquals(0.0, biasTriad1.getValueY(), 0.0);
+        assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         bias1 = new double[3];
-        assertArrayEquals(calibrator.getBias(), bias1, 0.0);
+        assertArrayEquals(bias1, calibrator.getBias(), 0.0);
         bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = new Matrix(3, 1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -377,49 +330,38 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
 
         // test constructor with common axis used flag
-        calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
-                true);
+        calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(true);
 
         // check default values
         assertNull(calibrator.getMeasurements());
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getBiasX(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasY(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasZ(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, calibrator.getBiasX(), 0.0);
+        assertEquals(0.0, calibrator.getBiasY(), 0.0);
+        assertEquals(0.0, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(acceleration, new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(biasTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(biasTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, biasTriad1.getValueX(), 0.0);
+        assertEquals(0.0, biasTriad1.getValueY(), 0.0);
+        assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
@@ -429,7 +371,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = new Matrix(3, 1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -449,49 +391,38 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
 
         // test constructor with common axis used flag and listener
-        calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
-                true, this);
+        calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(true, this);
 
         // check default values
         assertNull(calibrator.getMeasurements());
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getBiasX(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasY(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasZ(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertSame(this, calibrator.getListener());
+        assertEquals(0.0, calibrator.getBiasX(), 0.0);
+        assertEquals(0.0, calibrator.getBiasY(), 0.0);
+        assertEquals(0.0, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(biasTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(biasTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, biasTriad1.getValueX(), 0.0);
+        assertEquals(0.0, biasTriad1.getValueY(), 0.0);
+        assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
@@ -501,7 +432,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = new Matrix(3, 1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -521,49 +452,38 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
 
         // test constructor with measurements and common axis flag
-        calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
-                measurements, true);
+        calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements, true);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getBiasX(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasY(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasZ(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, calibrator.getBiasX(), 0.0);
+        assertEquals(0.0, calibrator.getBiasY(), 0.0);
+        assertEquals(0.0, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(biasTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(biasTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, biasTriad1.getValueX(), 0.0);
+        assertEquals(0.0, biasTriad1.getValueY(), 0.0);
+        assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
@@ -573,7 +493,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = new Matrix(3, 1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -597,55 +517,45 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
                 measurements, true, this);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getBiasX(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasY(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasZ(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertSame(this, calibrator.getListener());
+        assertEquals(0.0, calibrator.getBiasX(), 0.0);
+        assertEquals(0.0, calibrator.getBiasY(), 0.0);
+        assertEquals(0.0, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(0.0,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(biasTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(biasTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, biasTriad1.getValueX(), 0.0);
+        assertEquals(0.0, biasTriad1.getValueY(), 0.0);
+        assertEquals(0.0, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         bias1 = new double[3];
-        assertArrayEquals(calibrator.getBias(), bias1, 0.0);
+        assertArrayEquals(bias1, calibrator.getBias(), 0.0);
         bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = new Matrix(3, 1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -670,61 +580,49 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         final double biasY = ba.getElementAtIndex(1);
         final double biasZ = ba.getElementAtIndex(2);
 
-        calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
-                biasX, biasY, biasZ);
+        calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(biasX, biasY, biasZ);
 
         // check default values
         assertNull(calibrator.getMeasurements());
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertEquals(calibrator.isCommonAxisUsed(),
-                KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator
-                        .DEFAULT_USE_COMMON_Z_AXIS);
+        assertEquals(KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator.DEFAULT_USE_COMMON_Z_AXIS,
+                calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(biasX,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(biasY,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(biasZ,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), biasX, 0.0);
-        assertEquals(biasTriad1.getValueY(), biasY, 0.0);
-        assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, biasTriad1.getValueX(), 0.0);
+        assertEquals(biasY, biasTriad1.getValueY(), 0.0);
+        assertEquals(biasZ, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         bias1 = new double[]{biasX, biasY, biasZ};
-        assertArrayEquals(calibrator.getBias(), bias1, 0.0);
+        assertArrayEquals(bias1, calibrator.getBias(), 0.0);
         bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = Matrix.newFromArray(bias1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -744,61 +642,49 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
 
         // test constructor with bias and listener
-        calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
-                biasX, biasY, biasZ, this);
+        calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(biasX, biasY, biasZ, this);
 
         // check default values
         assertNull(calibrator.getMeasurements());
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertEquals(calibrator.isCommonAxisUsed(),
-                KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator
-                        .DEFAULT_USE_COMMON_Z_AXIS);
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(biasX,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator.DEFAULT_USE_COMMON_Z_AXIS,
+                calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(biasY,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(biasZ,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(acceleration, new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND));
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), biasX, 0.0);
-        assertEquals(biasTriad1.getValueY(), biasY, 0.0);
-        assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, biasTriad1.getValueX(), 0.0);
+        assertEquals(biasY, biasTriad1.getValueY(), 0.0);
+        assertEquals(biasZ, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         bias1 = new double[]{biasX, biasY, biasZ};
-        assertArrayEquals(calibrator.getBias(), bias1, 0.0);
+        assertArrayEquals(bias1, calibrator.getBias(), 0.0);
         bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = Matrix.newFromArray(bias1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -818,61 +704,49 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
 
         // test constructor with measurements and bias
-        calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
-                measurements, biasX, biasY, biasZ);
+        calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertEquals(calibrator.isCommonAxisUsed(),
-                KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator
-                        .DEFAULT_USE_COMMON_Z_AXIS);
+        assertEquals(KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator.DEFAULT_USE_COMMON_Z_AXIS,
+                calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(biasX,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(biasY,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(biasZ,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(acceleration, new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), biasX, 0.0);
-        assertEquals(biasTriad1.getValueY(), biasY, 0.0);
-        assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, biasTriad1.getValueX(), 0.0);
+        assertEquals(biasY, biasTriad1.getValueY(), 0.0);
+        assertEquals(biasZ, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         bias1 = new double[]{biasX, biasY, biasZ};
-        assertArrayEquals(calibrator.getBias(), bias1, 0.0);
+        assertArrayEquals(bias1, calibrator.getBias(), 0.0);
         bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = Matrix.newFromArray(bias1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -896,57 +770,46 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
                 measurements, biasX, biasY, biasZ, this);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertEquals(calibrator.isCommonAxisUsed(),
-                KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator
-                        .DEFAULT_USE_COMMON_Z_AXIS);
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(biasX,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator.DEFAULT_USE_COMMON_Z_AXIS,
+                calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(biasY,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(biasZ,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), biasX, 0.0);
-        assertEquals(biasTriad1.getValueY(), biasY, 0.0);
-        assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, biasTriad1.getValueX(), 0.0);
+        assertEquals(biasY, biasTriad1.getValueY(), 0.0);
+        assertEquals(biasZ, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         bias1 = new double[]{biasX, biasY, biasZ};
-        assertArrayEquals(calibrator.getBias(), bias1, 0.0);
+        assertArrayEquals(bias1, calibrator.getBias(), 0.0);
         bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = Matrix.newFromArray(bias1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -971,54 +834,44 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
 
         // check default values
         assertNull(calibrator.getMeasurements());
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(biasX,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(biasY,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(biasZ,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), biasX, 0.0);
-        assertEquals(biasTriad1.getValueY(), biasY, 0.0);
-        assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, biasTriad1.getValueX(), 0.0);
+        assertEquals(biasY, biasTriad1.getValueY(), 0.0);
+        assertEquals(biasZ, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         bias1 = new double[]{biasX, biasY, biasZ};
-        assertArrayEquals(calibrator.getBias(), bias1, 0.0);
+        assertArrayEquals(bias1, calibrator.getBias(), 0.0);
         bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = Matrix.newFromArray(bias1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -1043,54 +896,44 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
 
         // check default values
         assertNull(calibrator.getMeasurements());
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(biasX,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertSame(this, calibrator.getListener());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(biasY,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(biasZ,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), biasX, 0.0);
-        assertEquals(biasTriad1.getValueY(), biasY, 0.0);
-        assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, biasTriad1.getValueX(), 0.0);
+        assertEquals(biasY, biasTriad1.getValueY(), 0.0);
+        assertEquals(biasZ, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         bias1 = new double[]{biasX, biasY, biasZ};
-        assertArrayEquals(calibrator.getBias(), bias1, 0.0);
+        assertArrayEquals(bias1, calibrator.getBias(), 0.0);
         bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = Matrix.newFromArray(bias1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -1115,54 +958,44 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
 
         // check default values
         assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(biasX,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+                new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(biasY,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(biasZ,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(acceleration, new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND));
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), biasX, 0.0);
-        assertEquals(biasTriad1.getValueY(), biasY, 0.0);
-        assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, biasTriad1.getValueX(), 0.0);
+        assertEquals(biasY, biasTriad1.getValueY(), 0.0);
+        assertEquals(biasZ, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         bias1 = new double[]{biasX, biasY, biasZ};
-        assertArrayEquals(calibrator.getBias(), bias1, 0.0);
+        assertArrayEquals(bias1, calibrator.getBias(), 0.0);
         bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = Matrix.newFromArray(bias1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -1186,55 +1019,45 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
                 measurements, biasX, biasY, biasZ, true, this);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(biasX,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertSame(this, calibrator.getListener());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(biasY,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(biasZ,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(acceleration, new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND));
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), biasX, 0.0);
-        assertEquals(biasTriad1.getValueY(), biasY, 0.0);
-        assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, biasTriad1.getValueX(), 0.0);
+        assertEquals(biasY, biasTriad1.getValueY(), 0.0);
+        assertEquals(biasZ, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         bias1 = new double[]{biasX, biasY, biasZ};
-        assertArrayEquals(calibrator.getBias(), bias1, 0.0);
+        assertArrayEquals(bias1, calibrator.getBias(), 0.0);
         bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = Matrix.newFromArray(bias1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -1254,68 +1077,54 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
 
         // test constructor with bias as acceleration
-        final Acceleration biasXAcceleration = new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration biasYAcceleration = new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration biasZAcceleration = new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration biasXAcceleration = new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration biasYAcceleration = new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration biasZAcceleration = new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
                 biasXAcceleration, biasYAcceleration, biasZAcceleration);
 
         // check default values
         assertNull(calibrator.getMeasurements());
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertEquals(calibrator.isCommonAxisUsed(),
-                KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator
-                        .DEFAULT_USE_COMMON_Z_AXIS);
+        assertEquals(KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator.DEFAULT_USE_COMMON_Z_AXIS,
+                calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(biasX,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(biasY,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(biasZ,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), biasX, 0.0);
-        assertEquals(biasTriad1.getValueY(), biasY, 0.0);
-        assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, biasTriad1.getValueX(), 0.0);
+        assertEquals(biasY, biasTriad1.getValueY(), 0.0);
+        assertEquals(biasZ, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         bias1 = new double[]{biasX, biasY, biasZ};
-        assertArrayEquals(calibrator.getBias(), bias1, 0.0);
+        assertArrayEquals(bias1, calibrator.getBias(), 0.0);
         bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = Matrix.newFromArray(bias1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -1340,56 +1149,45 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
 
         // check default values
         assertNull(calibrator.getMeasurements());
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertEquals(calibrator.isCommonAxisUsed(),
-                KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator
-                        .DEFAULT_USE_COMMON_Z_AXIS);
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(biasX,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator.DEFAULT_USE_COMMON_Z_AXIS,
+                calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(biasY,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(biasZ,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), biasX, 0.0);
-        assertEquals(biasTriad1.getValueY(), biasY, 0.0);
-        assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, biasTriad1.getValueX(), 0.0);
+        assertEquals(biasY, biasTriad1.getValueY(), 0.0);
+        assertEquals(biasZ, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         bias1 = new double[]{biasX, biasY, biasZ};
-        assertArrayEquals(calibrator.getBias(), bias1, 0.0);
+        assertArrayEquals(bias1, calibrator.getBias(), 0.0);
         bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = Matrix.newFromArray(bias1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -1413,57 +1211,46 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
                 measurements, biasXAcceleration, biasYAcceleration, biasZAcceleration);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertEquals(calibrator.isCommonAxisUsed(),
-                KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator
-                        .DEFAULT_USE_COMMON_Z_AXIS);
+        assertEquals(KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator.DEFAULT_USE_COMMON_Z_AXIS,
+                calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(biasX,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(biasY,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(biasZ,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), biasX, 0.0);
-        assertEquals(biasTriad1.getValueY(), biasY, 0.0);
-        assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, biasTriad1.getValueX(), 0.0);
+        assertEquals(biasY, biasTriad1.getValueY(), 0.0);
+        assertEquals(biasZ, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         bias1 = new double[]{biasX, biasY, biasZ};
-        assertArrayEquals(calibrator.getBias(), bias1, 0.0);
+        assertArrayEquals(bias1, calibrator.getBias(), 0.0);
         bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = Matrix.newFromArray(bias1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -1484,61 +1271,49 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
 
         // test constructor with measurements, bias as acceleration and listener
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
-                measurements, biasXAcceleration, biasYAcceleration, biasZAcceleration,
-                this);
+                measurements, biasXAcceleration, biasYAcceleration, biasZAcceleration, this);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertEquals(calibrator.isCommonAxisUsed(),
-                KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator
-                        .DEFAULT_USE_COMMON_Z_AXIS);
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(biasX,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator.DEFAULT_USE_COMMON_Z_AXIS,
+                calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(biasY,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(biasZ,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), biasX, 0.0);
-        assertEquals(biasTriad1.getValueY(), biasY, 0.0);
-        assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, biasTriad1.getValueX(), 0.0);
+        assertEquals(biasY, biasTriad1.getValueY(), 0.0);
+        assertEquals(biasZ, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         bias1 = new double[]{biasX, biasY, biasZ};
-        assertArrayEquals(calibrator.getBias(), bias1, 0.0);
+        assertArrayEquals(bias1, calibrator.getBias(), 0.0);
         bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = Matrix.newFromArray(bias1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -1559,59 +1334,48 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
 
         // test constructor with bias as acceleration and common axis used flag
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
-                biasXAcceleration, biasYAcceleration, biasZAcceleration,
-                true);
+                biasXAcceleration, biasYAcceleration, biasZAcceleration, true);
 
         // check default values
         assertNull(calibrator.getMeasurements());
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(biasX,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(biasY,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(biasZ,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), biasX, 0.0);
-        assertEquals(biasTriad1.getValueY(), biasY, 0.0);
-        assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, biasTriad1.getValueX(), 0.0);
+        assertEquals(biasY, biasTriad1.getValueY(), 0.0);
+        assertEquals(biasZ, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         bias1 = new double[]{biasX, biasY, biasZ};
-        assertArrayEquals(calibrator.getBias(), bias1, 0.0);
+        assertArrayEquals(bias1, calibrator.getBias(), 0.0);
         bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = Matrix.newFromArray(bias1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -1633,59 +1397,48 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         // test constructor with bias as acceleration and common axis used flag and
         // listener
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
-                biasXAcceleration, biasYAcceleration, biasZAcceleration,
-                true, this);
+                biasXAcceleration, biasYAcceleration, biasZAcceleration, true, this);
 
         // check default values
         assertNull(calibrator.getMeasurements());
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(biasX,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertSame(this, calibrator.getListener());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(biasY,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(biasZ,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), biasX, 0.0);
-        assertEquals(biasTriad1.getValueY(), biasY, 0.0);
-        assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, biasTriad1.getValueX(), 0.0);
+        assertEquals(biasY, biasTriad1.getValueY(), 0.0);
+        assertEquals(biasZ, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         bias1 = new double[]{biasX, biasY, biasZ};
-        assertArrayEquals(calibrator.getBias(), bias1, 0.0);
+        assertArrayEquals(bias1, calibrator.getBias(), 0.0);
         bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = Matrix.newFromArray(bias1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -1707,59 +1460,48 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         // test constructor with measurements, bias as acceleration and common axis
         // flag
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
-                measurements, biasXAcceleration, biasYAcceleration, biasZAcceleration,
-                true);
+                measurements, biasXAcceleration, biasYAcceleration, biasZAcceleration, true);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(biasX,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(biasY,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(biasZ,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), biasX, 0.0);
-        assertEquals(biasTriad1.getValueY(), biasY, 0.0);
-        assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, biasTriad1.getValueX(), 0.0);
+        assertEquals(biasY, biasTriad1.getValueY(), 0.0);
+        assertEquals(biasZ, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         bias1 = new double[]{biasX, biasY, biasZ};
-        assertArrayEquals(calibrator.getBias(), bias1, 0.0);
+        assertArrayEquals(bias1, calibrator.getBias(), 0.0);
         bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = Matrix.newFromArray(bias1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -1781,59 +1523,49 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         // test constructor with measurements, bias as acceleration, common axis
         // flag and listener
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
-                measurements, biasXAcceleration, biasYAcceleration, biasZAcceleration,
-                true, this);
+                measurements, biasXAcceleration, biasYAcceleration, biasZAcceleration, true,
+                this);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS,
-                calibrator.getMeasurementType());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(AccelerometerCalibratorMeasurementType.FRAME_BODY_KINEMATICS, calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertEquals(calibrator.getBiasXAsAcceleration(),
-                new Acceleration(biasX,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertSame(this, calibrator.getListener());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasXAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasYAsAcceleration(),
-                new Acceleration(biasY,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasYAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        assertEquals(calibrator.getBiasZAsAcceleration(),
-                new Acceleration(biasZ,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        acceleration = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND),
+                calibrator.getBiasZAsAcceleration());
+        acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(acceleration);
-        assertEquals(acceleration, new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND));
+        assertEquals(new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND), acceleration);
         biasTriad1 = calibrator.getBiasAsTriad();
-        assertEquals(biasTriad1.getValueX(), biasX, 0.0);
-        assertEquals(biasTriad1.getValueY(), biasY, 0.0);
-        assertEquals(biasTriad1.getValueZ(), biasZ, 0.0);
-        assertEquals(biasTriad1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(biasX, biasTriad1.getValueX(), 0.0);
+        assertEquals(biasY, biasTriad1.getValueY(), 0.0);
+        assertEquals(biasZ, biasTriad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasTriad1.getUnit());
         biasTriad2 = new AccelerationTriad();
         calibrator.getBiasAsTriad(biasTriad2);
         assertEquals(biasTriad1, biasTriad2);
         bias1 = new double[]{biasX, biasY, biasZ};
-        assertArrayEquals(calibrator.getBias(), bias1, 0.0);
+        assertArrayEquals(bias1, calibrator.getBias(), 0.0);
         bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
         biasMatrix1 = Matrix.newFromArray(bias1);
-        assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
+        assertEquals(biasMatrix1, calibrator.getBiasAsMatrix());
         biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
@@ -1866,7 +1598,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         calibrator.setMeasurements(measurements);
 
         // check
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
     }
 
     @Test
@@ -1896,7 +1628,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         calibrator.setListener(this);
 
         // check
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -1905,7 +1637,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
                 new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator();
 
         // check default value
-        assertEquals(calibrator.getBiasX(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getBiasX(), 0.0);
 
         // set new value
         final Random random = new Random();
@@ -1914,7 +1646,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         calibrator.setBiasX(biasX);
 
         // check
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
     }
 
     @Test
@@ -1923,7 +1655,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
                 new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator();
 
         // check default value
-        assertEquals(calibrator.getBiasY(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getBiasY(), 0.0);
 
         // set new value
         final Random random = new Random();
@@ -1932,7 +1664,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         calibrator.setBiasY(biasY);
 
         // check
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
     }
 
     @Test
@@ -1941,7 +1673,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
                 new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator();
 
         // check default value
-        assertEquals(calibrator.getBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getBiasZ(), 0.0);
 
         // set new value
         final Random random = new Random();
@@ -1950,7 +1682,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         calibrator.setBiasZ(biasZ);
 
         // check
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
     }
 
     @Test
@@ -1961,19 +1693,17 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         // check default value
         final Acceleration biasX1 = calibrator.getBiasYAsAcceleration();
 
-        assertEquals(biasX1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(biasX1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, biasX1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasX1.getUnit());
 
         // set new value
         final Random random = new Random();
-        final Acceleration biasX2 = new Acceleration(random.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration biasX2 = new Acceleration(random.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.setBiasX(biasX2);
 
         // check
         final Acceleration biasX3 = calibrator.getBiasXAsAcceleration();
-        final Acceleration biasX4 = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration biasX4 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasXAsAcceleration(biasX4);
 
         assertEquals(biasX2, biasX3);
@@ -1988,19 +1718,17 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         // check default value
         final Acceleration biasY1 = calibrator.getBiasYAsAcceleration();
 
-        assertEquals(biasY1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(biasY1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, biasY1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasY1.getUnit());
 
         // set new value
         final Random random = new Random();
-        final Acceleration biasY2 = new Acceleration(random.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration biasY2 = new Acceleration(random.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.setBiasY(biasY2);
 
         // check
         final Acceleration biasY3 = calibrator.getBiasYAsAcceleration();
-        final Acceleration biasY4 = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration biasY4 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasYAsAcceleration(biasY4);
 
         assertEquals(biasY2, biasY3);
@@ -2015,19 +1743,17 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         // check default value
         final Acceleration biasZ1 = calibrator.getBiasZAsAcceleration();
 
-        assertEquals(biasZ1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(biasZ1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, biasZ1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, biasZ1.getUnit());
 
         // set new value
         final Random random = new Random();
-        final Acceleration biasZ2 = new Acceleration(random.nextDouble(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration biasZ2 = new Acceleration(random.nextDouble(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.setBiasZ(biasZ2);
 
         // check
         final Acceleration biasZ3 = calibrator.getBiasZAsAcceleration();
-        final Acceleration biasZ4 = new Acceleration(0.0,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration biasZ4 = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         calibrator.getBiasZAsAcceleration(biasZ4);
 
         assertEquals(biasZ2, biasZ3);
@@ -2040,9 +1766,9 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
                 new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator();
 
         // check default values
-        assertEquals(calibrator.getBiasX(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasY(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getBiasX(), 0.0);
+        assertEquals(0.0, calibrator.getBiasY(), 0.0);
+        assertEquals(0.0, calibrator.getBiasZ(), 0.0);
 
         // set new values
         final Random random = new Random();
@@ -2064,9 +1790,9 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
                 new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator();
 
         // check default values
-        assertEquals(calibrator.getBiasX(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasY(), 0.0, 0.0);
-        assertEquals(calibrator.getBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, calibrator.getBiasX(), 0.0);
+        assertEquals(0.0, calibrator.getBiasY(), 0.0);
+        assertEquals(0.0, calibrator.getBiasZ(), 0.0);
 
         // set new values
         final Random random = new Random();
@@ -2074,12 +1800,9 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         final double biasY = random.nextDouble();
         final double biasZ = random.nextDouble();
 
-        final Acceleration bx = new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration by = new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration bz = new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration bx = new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration by = new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration bz = new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         calibrator.setBiasCoordinates(bx, by, bz);
 
@@ -2096,11 +1819,10 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
 
         // check default values
         final AccelerationTriad triad1 = calibrator.getBiasAsTriad();
-        assertEquals(triad1.getValueX(), 0.0, 0.0);
-        assertEquals(triad1.getValueY(), 0.0, 0.0);
-        assertEquals(triad1.getValueZ(), 0.0, 0.0);
-        assertEquals(triad1.getUnit(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, triad1.getValueX(), 0.0);
+        assertEquals(0.0, triad1.getValueY(), 0.0);
+        assertEquals(0.0, triad1.getValueZ(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, triad1.getUnit());
 
         // set new values
         final Matrix ba = generateBa();
@@ -2108,8 +1830,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         final double biasY = ba.getElementAtIndex(1);
         final double biasZ = ba.getElementAtIndex(2);
 
-        final AccelerationTriad triad2 = new AccelerationTriad(
-                AccelerationUnit.METERS_PER_SQUARED_SECOND,
+        final AccelerationTriad triad2 = new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,
                 biasX, biasY, biasZ);
         calibrator.setBias(triad2);
 
@@ -2149,16 +1870,8 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertArrayEquals(bias3, bias5, 0.0);
 
         // Force IllegalArgumentException
-        try {
-            calibrator.getBias(new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator.setBias(new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> calibrator.getBias(new double[1]));
+        assertThrows(IllegalArgumentException.class, () -> calibrator.setBias(new double[1]));
     }
 
     @Test
@@ -2170,9 +1883,9 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         final Matrix bias2 = new Matrix(BodyKinematics.COMPONENTS, 1);
         calibrator.getBiasAsMatrix(bias2);
 
-        assertEquals(bias1.getElementAtIndex(0), 0.0, 0.0);
-        assertEquals(bias1.getElementAtIndex(1), 0.0, 0.0);
-        assertEquals(bias1.getElementAtIndex(2), 0.0, 0.0);
+        assertEquals(0.0, bias1.getElementAtIndex(0), 0.0);
+        assertEquals(0.0, bias1.getElementAtIndex(1), 0.0);
+        assertEquals(0.0, bias1.getElementAtIndex(2), 0.0);
         assertEquals(bias1, bias2);
 
         // set new value
@@ -2188,32 +1901,20 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertEquals(bias3, bias5);
 
         // Force IllegalArgumentException
-        try {
-            calibrator.getBiasAsMatrix(new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator.getBiasAsMatrix(new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator.setBias(new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator.setBias(new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> calibrator.getBiasAsMatrix(m1));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> calibrator.getBiasAsMatrix(m2));
+        final var m3 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> calibrator.setBias(m3));
+        final var m4 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> calibrator.setBias(m4));
     }
 
     @Test
     public void testCalibrateMultipleOrientationsForGeneralCaseWithMinimumMeasuresAndNoNoise()
-            throws WrongSizeException, LockedException, NotReadyException,
-            CalibrationException, InvalidSourceAndDestinationFrameTypeException {
+            throws WrongSizeException, LockedException, NotReadyException, CalibrationException,
+            InvalidSourceAndDestinationFrameTypeException {
 
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
@@ -2227,48 +1928,40 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
         final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
         final List<FrameBodyKinematics> measurements = new ArrayList<>();
         for (int i = 0; i < KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS; i++) {
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation nedC = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
-                    FrameType.LOCAL_NAVIGATION_FRAME);
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
+                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
             final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                    .convertNEDtoECEFAndReturnNew(nedFrame);
+            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame,
-                            ecefFrame);
+            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
             // apply known calibration parameters to distort ground-truth and generate a
             // measured kinematics sample
-            final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                    .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random);
+            final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                    trueKinematics, errors, random);
 
-            final FrameBodyKinematics measurement = new FrameBodyKinematics(
-                    measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS);
+            final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame, ecefFrame,
+                    TIME_INTERVAL_SECONDS);
             measurements.add(measurement);
         }
 
@@ -2277,23 +1970,23 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         final double biasZ = ba.getElementAtIndex(2);
 
         final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements,
-                        biasX, biasY, biasZ, false, this);
+                new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ,
+                        false, this);
 
         // estimate
         reset();
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 0);
-        assertEquals(mCalibrateEnd, 0);
+        assertEquals(0, mCalibrateStart);
+        assertEquals(0, mCalibrateEnd);
 
         calibrator.calibrate();
 
         // check
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 1);
-        assertEquals(mCalibrateEnd, 1);
+        assertEquals(1, mCalibrateStart);
+        assertEquals(1, mCalibrateEnd);
 
         final Matrix estimatedMa = calibrator.getEstimatedMa();
 
@@ -2304,8 +1997,8 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
 
     @Test
     public void testCalibrateMultipleOrientationsForGeneralCaseWithNoiseLargeNumberOfMeasurements()
-            throws WrongSizeException, LockedException, NotReadyException,
-            CalibrationException, InvalidSourceAndDestinationFrameTypeException {
+            throws WrongSizeException, LockedException, NotReadyException, CalibrationException,
+            InvalidSourceAndDestinationFrameTypeException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -2321,48 +2014,40 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
             final double accelQuantLevel = 0.0;
             final double gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                    gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                    accelQuantLevel, gyroQuantLevel);
 
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
             final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
             final List<FrameBodyKinematics> measurements = new ArrayList<>();
             for (int i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
 
-                final double roll = Math.toRadians(
-                        randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(
-                        randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(
-                        randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(
-                        roll, pitch, yaw, FrameType.BODY_FRAME,
-                        FrameType.LOCAL_NAVIGATION_FRAME);
+                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
+                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
                 final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                        .convertNEDtoECEFAndReturnNew(nedFrame);
+                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame,
-                                ecefFrame);
+                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                        .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random);
+                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueKinematics, errors, random);
 
-                final FrameBodyKinematics measurement = new FrameBodyKinematics(
-                        measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS);
+                final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame,
+                        ecefFrame, TIME_INTERVAL_SECONDS);
                 measurements.add(measurement);
             }
 
@@ -2371,23 +2056,23 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
             final double biasZ = ba.getElementAtIndex(2);
 
             final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator calibrator =
-                    new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements,
-                            biasX, biasY, biasZ, false, this);
+                    new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ,
+                            false, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
 
             final Matrix estimatedMa = calibrator.getEstimatedMa();
 
@@ -2407,8 +2092,8 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
 
     @Test
     public void testCalibrateMultipleOrientationsForGeneralCaseWithNoiseSmallNumberOfMeasurements()
-            throws WrongSizeException, LockedException, NotReadyException,
-            CalibrationException, InvalidSourceAndDestinationFrameTypeException {
+            throws WrongSizeException, LockedException, NotReadyException, CalibrationException,
+            InvalidSourceAndDestinationFrameTypeException {
 
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
@@ -2422,48 +2107,40 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
         final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
         final List<FrameBodyKinematics> measurements = new ArrayList<>();
         for (int i = 0; i < SMALL_MEASUREMENT_NUMBER; i++) {
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation nedC = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
-                    FrameType.LOCAL_NAVIGATION_FRAME);
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
+                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
             final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                    .convertNEDtoECEFAndReturnNew(nedFrame);
+            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame,
-                            ecefFrame);
+            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
             // apply known calibration parameters to distort ground-truth and generate a
             // measured kinematics sample
-            final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                    .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random);
+            final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                    trueKinematics, errors, random);
 
-            final FrameBodyKinematics measurement = new FrameBodyKinematics(
-                    measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS);
+            final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame, ecefFrame,
+                    TIME_INTERVAL_SECONDS);
             measurements.add(measurement);
         }
 
@@ -2472,23 +2149,23 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         final double biasZ = ba.getElementAtIndex(2);
 
         final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements,
-                        biasX, biasY, biasZ, false, this);
+                new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ,
+                        false, this);
 
         // estimate
         reset();
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 0);
-        assertEquals(mCalibrateEnd, 0);
+        assertEquals(0, mCalibrateStart);
+        assertEquals(0, mCalibrateEnd);
 
         calibrator.calibrate();
 
         // check
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 1);
-        assertEquals(mCalibrateEnd, 1);
+        assertEquals(1, mCalibrateStart);
+        assertEquals(1, mCalibrateEnd);
 
         final Matrix estimatedMa = calibrator.getEstimatedMa();
 
@@ -2499,8 +2176,8 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
 
     @Test
     public void testCalibrateMultiplePositionsForGeneralCaseWithMinimumMeasuresAndNoNoise()
-            throws WrongSizeException, LockedException, NotReadyException,
-            CalibrationException, InvalidSourceAndDestinationFrameTypeException {
+            throws WrongSizeException, LockedException, NotReadyException, CalibrationException,
+            InvalidSourceAndDestinationFrameTypeException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -2516,16 +2193,15 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
             final double accelQuantLevel = 0.0;
             final double gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                    gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                    accelQuantLevel, gyroQuantLevel);
 
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double roll = 0.0;
             final double pitch = 0.0;
             final double yaw = 0.0;
-            final CoordinateTransformation nedC = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
             final List<FrameBodyKinematics> measurements = new ArrayList<>();
@@ -2539,22 +2215,20 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
                 final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
                 final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                        .convertNEDtoECEFAndReturnNew(nedFrame);
+                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame,
-                                ecefFrame);
+                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                        .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random);
+                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueKinematics, errors, random);
 
-                final FrameBodyKinematics measurement = new FrameBodyKinematics(
-                        measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS);
+                final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame,
+                        ecefFrame, TIME_INTERVAL_SECONDS);
                 measurements.add(measurement);
             }
 
@@ -2563,23 +2237,23 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
             final double biasZ = ba.getElementAtIndex(2);
 
             final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator calibrator =
-                    new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements,
-                            biasX, biasY, biasZ, false, this);
+                    new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ,
+                            false, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
 
             final Matrix estimatedMa = calibrator.getEstimatedMa();
 
@@ -2599,8 +2273,8 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
 
     @Test
     public void testCalibrateMultipleOrientationsForCommonAxisCaseWithMinimumMeasuresAndNoNoise()
-            throws WrongSizeException, LockedException, NotReadyException,
-            CalibrationException, InvalidSourceAndDestinationFrameTypeException {
+            throws WrongSizeException, LockedException, NotReadyException, CalibrationException,
+            InvalidSourceAndDestinationFrameTypeException {
 
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
@@ -2614,48 +2288,40 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
         final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
         final List<FrameBodyKinematics> measurements = new ArrayList<>();
         for (int i = 0; i < KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS; i++) {
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
             final CoordinateTransformation nedC = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
-                    FrameType.LOCAL_NAVIGATION_FRAME);
+                    roll, pitch, yaw, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
             final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                    .convertNEDtoECEFAndReturnNew(nedFrame);
+            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame,
-                            ecefFrame);
+            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
             // apply known calibration parameters to distort ground-truth and generate a
             // measured kinematics sample
-            final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                    .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random);
+            final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                    trueKinematics, errors, random);
 
-            final FrameBodyKinematics measurement = new FrameBodyKinematics(
-                    measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS);
+            final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame, ecefFrame,
+                    TIME_INTERVAL_SECONDS);
             measurements.add(measurement);
         }
 
@@ -2664,23 +2330,23 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         final double biasZ = ba.getElementAtIndex(2);
 
         final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements,
-                        biasX, biasY, biasZ, true, this);
+                new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ,
+                        true, this);
 
         // estimate
         reset();
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 0);
-        assertEquals(mCalibrateEnd, 0);
+        assertEquals(0, mCalibrateStart);
+        assertEquals(0, mCalibrateEnd);
 
         calibrator.calibrate();
 
         // check
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 1);
-        assertEquals(mCalibrateEnd, 1);
+        assertEquals(1, mCalibrateStart);
+        assertEquals(1, mCalibrateEnd);
 
         final Matrix estimatedMa = calibrator.getEstimatedMa();
 
@@ -2691,8 +2357,8 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
 
     @Test
     public void testCalibrateMultipleOrientationsForCommonAxisCaseWithNoiseLargeNumberOfMeasurements()
-            throws WrongSizeException, LockedException, NotReadyException,
-            CalibrationException, InvalidSourceAndDestinationFrameTypeException {
+            throws WrongSizeException, LockedException, NotReadyException, CalibrationException,
+            InvalidSourceAndDestinationFrameTypeException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -2708,13 +2374,12 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
             final double accelQuantLevel = 0.0;
             final double gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                    gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                    accelQuantLevel, gyroQuantLevel);
 
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
             final double longitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -2723,33 +2388,27 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
             final List<FrameBodyKinematics> measurements = new ArrayList<>();
             for (int i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
 
-                final double roll = Math.toRadians(
-                        randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(
-                        randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(
-                        randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(
-                        roll, pitch, yaw, FrameType.BODY_FRAME,
-                        FrameType.LOCAL_NAVIGATION_FRAME);
+                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
+                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
                 final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                        .convertNEDtoECEFAndReturnNew(nedFrame);
+                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame,
-                                ecefFrame);
+                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                        .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random);
+                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueKinematics, errors, random);
 
-                final FrameBodyKinematics measurement = new FrameBodyKinematics(
-                        measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS);
+                final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame,
+                        ecefFrame, TIME_INTERVAL_SECONDS);
                 measurements.add(measurement);
             }
 
@@ -2758,23 +2417,23 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
             final double biasZ = ba.getElementAtIndex(2);
 
             final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator calibrator =
-                    new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements,
-                            biasX, biasY, biasZ, true, this);
+                    new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ,
+                            true, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
 
             final Matrix estimatedMa = calibrator.getEstimatedMa();
 
@@ -2794,8 +2453,8 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
 
     @Test
     public void testCalibrateMultipleOrientationsForCommonAxisCaseWithNoiseSmallNumberOfMeasurements()
-            throws WrongSizeException, LockedException, NotReadyException,
-            CalibrationException, InvalidSourceAndDestinationFrameTypeException {
+            throws WrongSizeException, LockedException, NotReadyException, CalibrationException,
+            InvalidSourceAndDestinationFrameTypeException {
 
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
@@ -2809,48 +2468,40 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
         final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
         final List<FrameBodyKinematics> measurements = new ArrayList<>();
         for (int i = 0; i < SMALL_MEASUREMENT_NUMBER; i++) {
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation nedC = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
-                    FrameType.LOCAL_NAVIGATION_FRAME);
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
+                    FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
             final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                    .convertNEDtoECEFAndReturnNew(nedFrame);
+            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame,
-                            ecefFrame);
+            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
             // apply known calibration parameters to distort ground-truth and generate a
             // measured kinematics sample
-            final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                    .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random);
+            final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                    trueKinematics, errors, random);
 
-            final FrameBodyKinematics measurement = new FrameBodyKinematics(
-                    measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS);
+            final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame, ecefFrame,
+                    TIME_INTERVAL_SECONDS);
             measurements.add(measurement);
         }
 
@@ -2859,23 +2510,23 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         final double biasZ = ba.getElementAtIndex(2);
 
         final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator calibrator =
-                new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements,
-                        biasX, biasY, biasZ, false, this);
+                new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ,
+                        false, this);
 
         // estimate
         reset();
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 0);
-        assertEquals(mCalibrateEnd, 0);
+        assertEquals(0, mCalibrateStart);
+        assertEquals(0, mCalibrateEnd);
 
         calibrator.calibrate();
 
         // check
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 1);
-        assertEquals(mCalibrateEnd, 1);
+        assertEquals(1, mCalibrateStart);
+        assertEquals(1, mCalibrateEnd);
 
         final Matrix estimatedMa = calibrator.getEstimatedMa();
 
@@ -2886,8 +2537,8 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
 
     @Test
     public void testCalibrateMultiplePositionsForCommonAxisCaseWithMinimumMeasuresAndNoNoise()
-            throws WrongSizeException, LockedException, NotReadyException,
-            CalibrationException, InvalidSourceAndDestinationFrameTypeException {
+            throws WrongSizeException, LockedException, NotReadyException, CalibrationException,
+            InvalidSourceAndDestinationFrameTypeException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -2903,16 +2554,15 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
             final double accelQuantLevel = 0.0;
             final double gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                    gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                    accelQuantLevel, gyroQuantLevel);
 
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double roll = 0.0;
             final double pitch = 0.0;
             final double yaw = 0.0;
-            final CoordinateTransformation nedC = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
             final List<FrameBodyKinematics> measurements = new ArrayList<>();
@@ -2926,22 +2576,20 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
                 final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
                 final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                        .convertNEDtoECEFAndReturnNew(nedFrame);
+                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame,
-                                ecefFrame);
+                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                        .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random);
+                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueKinematics, errors, random);
 
-                final FrameBodyKinematics measurement = new FrameBodyKinematics(
-                        measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS);
+                final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame,
+                        ecefFrame, TIME_INTERVAL_SECONDS);
                 measurements.add(measurement);
             }
 
@@ -2950,23 +2598,23 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
             final double biasZ = ba.getElementAtIndex(2);
 
             final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator calibrator =
-                    new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements,
-                            biasX, biasY, biasZ, true, this);
+                    new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(measurements, biasX, biasY, biasZ,
+                            true, this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
 
             final Matrix estimatedMa = calibrator.getEstimatedMa();
 
@@ -3001,129 +2649,57 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         mCalibrateEnd = 0;
     }
 
-    private void checkLocked(
-            final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator calibrator) {
+    private void checkLocked(final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator calibrator) {
         assertTrue(calibrator.isRunning());
-        try {
-            calibrator.setMeasurements(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setCommonAxisUsed(true);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setListener(this);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setBiasX(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setBiasY(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setBiasZ(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        final Acceleration acceleration = new Acceleration(
-                0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        try {
-            calibrator.setBiasX(acceleration);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setBiasY(acceleration);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setBiasZ(acceleration);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setBiasCoordinates(0.0, 0.0, 0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setBiasCoordinates(acceleration, acceleration, acceleration);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setBias((AccelerationTriad) null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setBias((double[]) null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setBias((Matrix) null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.calibrate();
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
+        assertThrows(LockedException.class, () -> calibrator.setMeasurements(null));
+        assertThrows(LockedException.class, () -> calibrator.setCommonAxisUsed(true));
+        assertThrows(LockedException.class, () -> calibrator.setListener(this));
+        assertThrows(LockedException.class, () -> calibrator.setBiasX(0.0));
+        assertThrows(LockedException.class, () -> calibrator.setBiasY(0.0));
+        assertThrows(LockedException.class, () -> calibrator.setBiasZ(0.0));
+
+        final Acceleration acceleration = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertThrows(LockedException.class, () -> calibrator.setBiasX(acceleration));
+        assertThrows(LockedException.class, () -> calibrator.setBiasY(acceleration));
+        assertThrows(LockedException.class, () -> calibrator.setBiasZ(acceleration));
+        assertThrows(LockedException.class, () -> calibrator.setBiasCoordinates(0.0, 0.0, 0.0));
+        assertThrows(LockedException.class, () -> calibrator.setBiasCoordinates(
+                acceleration, acceleration, acceleration));
+        assertThrows(LockedException.class, () -> calibrator.setBias((AccelerationTriad) null));
+        assertThrows(LockedException.class, () -> calibrator.setBias((double[]) null));
+        assertThrows(LockedException.class, () -> calibrator.setBias((Matrix) null));
+        assertThrows(LockedException.class, calibrator::calibrate);
     }
 
-    private void assertEstimatedResult(
-            final Matrix ma,
-            final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator calibrator) {
+    private static void assertEstimatedResult(
+            final Matrix ma, final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator calibrator) {
 
-        assertEquals(ma.getElementAt(0, 0), calibrator.getEstimatedSx(),
-                0.0);
-        assertEquals(ma.getElementAt(1, 1), calibrator.getEstimatedSy(),
-                0.0);
-        assertEquals(ma.getElementAt(2, 2), calibrator.getEstimatedSz(),
-                0.0);
-        assertEquals(ma.getElementAt(0, 1), calibrator.getEstimatedMxy(),
-                0.0);
-        assertEquals(ma.getElementAt(0, 2), calibrator.getEstimatedMxz(),
-                0.0);
-        assertEquals(ma.getElementAt(1, 0), calibrator.getEstimatedMyx(),
-                0.0);
-        assertEquals(ma.getElementAt(1, 2), calibrator.getEstimatedMyz(),
-                0.0);
-        assertEquals(ma.getElementAt(2, 0), calibrator.getEstimatedMzx(),
-                0.0);
-        assertEquals(ma.getElementAt(2, 1), calibrator.getEstimatedMzy(),
-                0.0);
+        assertEquals(ma.getElementAt(0, 0), calibrator.getEstimatedSx(), 0.0);
+        assertEquals(ma.getElementAt(1, 1), calibrator.getEstimatedSy(), 0.0);
+        assertEquals(ma.getElementAt(2, 2), calibrator.getEstimatedSz(), 0.0);
+        assertEquals(ma.getElementAt(0, 1), calibrator.getEstimatedMxy(), 0.0);
+        assertEquals(ma.getElementAt(0, 2), calibrator.getEstimatedMxz(), 0.0);
+        assertEquals(ma.getElementAt(1, 0), calibrator.getEstimatedMyx(), 0.0);
+        assertEquals(ma.getElementAt(1, 2), calibrator.getEstimatedMyz(), 0.0);
+        assertEquals(ma.getElementAt(2, 0), calibrator.getEstimatedMzx(), 0.0);
+        assertEquals(ma.getElementAt(2, 1), calibrator.getEstimatedMzy(), 0.0);
     }
 
-    private Matrix generateBa() {
+    private static Matrix generateBa() {
         return Matrix.newFromArray(new double[]{
                 900 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 -1300 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 800 * MICRO_G_TO_METERS_PER_SECOND_SQUARED});
     }
 
-    private Matrix generateBg() {
+    private static Matrix generateBg() {
         return Matrix.newFromArray(new double[]{
                 -9 * DEG_TO_RAD / 3600.0,
                 13 * DEG_TO_RAD / 3600.0,
                 -8 * DEG_TO_RAD / 3600.0});
     }
 
-    private Matrix generateMaGeneral() throws WrongSizeException {
+    private static Matrix generateMaGeneral() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
@@ -3134,7 +2710,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         return result;
     }
 
-    private Matrix generateMaCommonAxis() throws WrongSizeException {
+    private static Matrix generateMaCommonAxis() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
@@ -3145,7 +2721,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         return result;
     }
 
-    private Matrix generateMg() throws WrongSizeException {
+    private static Matrix generateMg() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
@@ -3156,7 +2732,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         return result;
     }
 
-    private Matrix generateGg() throws WrongSizeException {
+    private static Matrix generateGg() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         final double tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
@@ -3168,11 +2744,11 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         return result;
     }
 
-    private double getAccelNoiseRootPSD() {
+    private static double getAccelNoiseRootPSD() {
         return 100.0 * MICRO_G_TO_METERS_PER_SECOND_SQUARED;
     }
 
-    private double getGyroNoiseRootPSD() {
+    private static double getGyroNoiseRootPSD() {
         return 0.01 * DEG_TO_RAD / 60.0;
     }
 }

@@ -88,10 +88,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
     private static final long END_TIMESTAMP_MILLIS;
 
     static {
-        START_CALENDAR.set(2020, Calendar.JANUARY, 1,
-                0, 0, 0);
-        END_CALENDAR.set(2025, Calendar.DECEMBER, 31,
-                23, 59, 59);
+        START_CALENDAR.set(2020, Calendar.JANUARY, 1, 0, 0, 0);
+        END_CALENDAR.set(2025, Calendar.DECEMBER, 31, 23, 59, 59);
 
         START_TIMESTAMP_MILLIS = START_CALENDAR.getTimeInMillis();
         END_TIMESTAMP_MILLIS = END_CALENDAR.getTimeInMillis();
@@ -148,8 +146,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
     @Test
     public void testConstructor2() throws WrongSizeException {
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        this);
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(this);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -193,14 +190,12 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testConstructor3() throws WrongSizeException {
-        final List<FrameBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<FrameBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        measurements);
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(measurements);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.FRAME_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
@@ -241,20 +236,18 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testConstructor4() throws WrongSizeException {
-        final List<FrameBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<FrameBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        measurements, this);
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(measurements, this);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.FRAME_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
         assertEquals(KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
@@ -290,8 +283,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
     @Test
     public void testConstructor5() throws WrongSizeException {
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        true);
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(true);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -336,8 +328,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
     @Test
     public void testConstructor6() throws WrongSizeException {
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        true, this);
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(true, this);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -381,14 +372,12 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testConstructor7() throws WrongSizeException {
-        final List<FrameBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<FrameBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        measurements, true);
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(measurements, true);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.FRAME_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
@@ -429,11 +418,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testConstructor8() throws WrongSizeException {
-        final List<FrameBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<FrameBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        measurements, true, this);
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(measurements, true, this);
 
         // check default values
         assertSame(calibrator.getMeasurements(), measurements);
@@ -442,7 +429,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
         assertEquals(KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
@@ -479,8 +466,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
     public void testConstructor9() throws WrongSizeException {
         final WorldMagneticModel model = new WorldMagneticModel();
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        model);
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(model);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -526,8 +512,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
     public void testConstructor10() throws WrongSizeException {
         final WorldMagneticModel model = new WorldMagneticModel();
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        model, this);
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(model, this);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -571,15 +556,13 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testConstructor11() throws WrongSizeException {
-        final List<FrameBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<FrameBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final WorldMagneticModel model = new WorldMagneticModel();
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        measurements, model);
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(measurements, model);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.FRAME_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
@@ -590,7 +573,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertSame(calibrator.getMagneticModel(), model);
+        assertSame(model, calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedHardIron());
         assertFalse(calibrator.getEstimatedHardIron(null));
         assertNull(calibrator.getEstimatedHardIronAsMatrix());
@@ -620,26 +603,24 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testConstructor12() throws WrongSizeException {
-        final List<FrameBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<FrameBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final WorldMagneticModel model = new WorldMagneticModel();
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        measurements, model, this);
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(measurements, model, this);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.FRAME_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
         assertEquals(KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertSame(calibrator.getMagneticModel(), model);
+        assertSame(model, calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedHardIron());
         assertFalse(calibrator.getEstimatedHardIron(null));
         assertNull(calibrator.getEstimatedHardIronAsMatrix());
@@ -671,8 +652,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
     public void testConstructor13() throws WrongSizeException {
         final WorldMagneticModel model = new WorldMagneticModel();
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        true, model);
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(true, model);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -686,7 +666,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertSame(calibrator.getMagneticModel(), model);
+        assertSame(model, calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedHardIron());
         assertFalse(calibrator.getEstimatedHardIron(null));
         assertNull(calibrator.getEstimatedHardIronAsMatrix());
@@ -718,8 +698,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
     public void testConstructor14() throws WrongSizeException {
         final WorldMagneticModel model = new WorldMagneticModel();
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        true, model, this);
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(true, model, this);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -728,12 +707,12 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
         assertEquals(KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertSame(calibrator.getMagneticModel(), model);
+        assertSame(model, calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedHardIron());
         assertFalse(calibrator.getEstimatedHardIron(null));
         assertNull(calibrator.getEstimatedHardIronAsMatrix());
@@ -763,15 +742,13 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testConstructor15() throws WrongSizeException {
-        final List<FrameBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<FrameBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final WorldMagneticModel model = new WorldMagneticModel();
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        measurements, true, model);
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(measurements, true, model);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.FRAME_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
@@ -782,7 +759,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertSame(calibrator.getMagneticModel(), model);
+        assertSame(model, calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedHardIron());
         assertFalse(calibrator.getEstimatedHardIron(null));
         assertNull(calibrator.getEstimatedHardIronAsMatrix());
@@ -812,27 +789,25 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testConstructor16() throws WrongSizeException {
-        final List<FrameBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<FrameBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final WorldMagneticModel model = new WorldMagneticModel();
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        measurements, true, model,
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(measurements, true, model,
                         this);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.FRAME_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
         assertEquals(KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                 calibrator.getMinimumRequiredMeasurements());
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertSame(calibrator.getMagneticModel(), model);
+        assertSame(model, calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedHardIron());
         assertFalse(calibrator.getEstimatedHardIron(null));
         assertNull(calibrator.getEstimatedHardIronAsMatrix());
@@ -869,12 +844,11 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getMeasurements());
 
         // set new value
-        final List<FrameBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<FrameBodyMagneticFluxDensity> measurements = Collections.emptyList();
         calibrator.setMeasurements(measurements);
 
         // check
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
     }
 
     @Test
@@ -904,7 +878,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
         calibrator.setListener(this);
 
         // check
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -916,24 +890,20 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
         assertFalse(calibrator.isReady());
 
         // set not enough measurements
-        calibrator.setMeasurements(Collections
-                .<FrameBodyMagneticFluxDensity>emptyList());
+        calibrator.setMeasurements(Collections.emptyList());
 
         // check
         assertFalse(calibrator.isReady());
 
         // set enough measurements
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix softIron = generateSoftIronGeneral();
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final List<FrameBodyMagneticFluxDensity> measurements =
-                generateMeasurementsMultipleOrientationsWithSamePosition(
-                        hardIron, softIron,
-                        KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
-                        wmmEstimator, randomizer, null);
+                generateMeasurementsMultipleOrientationsWithSamePosition(hardIron, softIron,
+                        KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS, wmmEstimator,
+                        randomizer, null);
 
         calibrator.setMeasurements(measurements);
 
@@ -954,53 +924,49 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
         calibrator.setMagneticModel(model);
 
         // check
-        assertSame(calibrator.getMagneticModel(), model);
+        assertSame(model, calibrator.getMagneticModel());
     }
 
     @Test
     public void testCalibrateMultipleOrientationsForGeneralCaseWithMinimumMeasuresNoNoiseAndNoMagneticModel()
-            throws IOException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException, CalibrationException,
-            WrongSizeException {
+            throws IOException, InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException,
+            CalibrationException, WrongSizeException {
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
         final List<FrameBodyMagneticFluxDensity> measurements =
-                generateMeasurementsMultipleOrientationsWithSamePosition(
-                        hardIron, mm,
-                        KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
-                        wmmEstimator, randomizer, null);
+                generateMeasurementsMultipleOrientationsWithSamePosition(hardIron, mm,
+                        KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS, wmmEstimator,
+                        randomizer, null);
 
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        measurements, false, this);
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(measurements, false,
+                        this);
 
         // estimate
         reset();
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 0);
-        assertEquals(mCalibrateEnd, 0);
+        assertEquals(0, mCalibrateStart);
+        assertEquals(0, mCalibrateEnd);
 
         calibrator.calibrate();
 
         // check
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 1);
-        assertEquals(mCalibrateEnd, 1);
+        assertEquals(1, mCalibrateStart);
+        assertEquals(1, mCalibrateEnd);
 
-        final Matrix estimatedHardIron = calibrator
-                .getEstimatedHardIronAsMatrix();
+        final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
         final Matrix estimatedMm = calibrator.getEstimatedMm();
 
-        assertArrayEquals(estimatedHardIron.getBuffer(), hardIron, ABSOLUTE_ERROR);
+        assertArrayEquals(hardIron, estimatedHardIron.getBuffer(), ABSOLUTE_ERROR);
         assertTrue(mm.equals(estimatedMm, ABSOLUTE_ERROR));
 
         assertEstimatedResult(estimatedHardIron, estimatedMm, calibrator);
@@ -1008,13 +974,11 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testCalibrateMultipleOrientationsForGeneralCaseWithMinimumMeasuresNoNoiseAndMagneticModel()
-            throws IOException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException, CalibrationException,
-            WrongSizeException {
+            throws IOException, InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException,
+            CalibrationException, WrongSizeException {
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final WorldMagneticModel model = wmmEstimator.getModel();
 
         final double[] hardIron = generateHardIron(randomizer);
@@ -1022,35 +986,33 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
         assertNotNull(mm);
 
         final List<FrameBodyMagneticFluxDensity> measurements =
-                generateMeasurementsMultipleOrientationsWithSamePosition(
-                        hardIron, mm,
-                        KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
-                        wmmEstimator, randomizer, null);
+                generateMeasurementsMultipleOrientationsWithSamePosition(hardIron, mm,
+                        KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS, wmmEstimator,
+                        randomizer, null);
 
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        measurements, false, model, this);
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(measurements, false, model,
+                        this);
 
         // estimate
         reset();
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 0);
-        assertEquals(mCalibrateEnd, 0);
+        assertEquals(0, mCalibrateStart);
+        assertEquals(0, mCalibrateEnd);
 
         calibrator.calibrate();
 
         // check
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 1);
-        assertEquals(mCalibrateEnd, 1);
+        assertEquals(1, mCalibrateStart);
+        assertEquals(1, mCalibrateEnd);
 
-        final Matrix estimatedHardIron = calibrator
-                .getEstimatedHardIronAsMatrix();
+        final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
         final Matrix estimatedMm = calibrator.getEstimatedMm();
 
-        assertArrayEquals(estimatedHardIron.getBuffer(), hardIron, ABSOLUTE_ERROR);
+        assertArrayEquals(hardIron, estimatedHardIron.getBuffer(), ABSOLUTE_ERROR);
         assertTrue(mm.equals(estimatedMm, ABSOLUTE_ERROR));
 
         assertEstimatedResult(estimatedHardIron, estimatedMm, calibrator);
@@ -1059,61 +1021,55 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testCalibrateMultipleOrientationsForGeneralCaseWithNoiseLargeNumberOfMeasurements()
-            throws IOException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException, CalibrationException,
-            WrongSizeException {
+            throws IOException, InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException,
+            CalibrationException, WrongSizeException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                    new WMMEarthMagneticFluxDensityEstimator();
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
             final double[] hardIron = generateHardIron(randomizer);
             final Matrix mm = generateSoftIronGeneral();
             assertNotNull(mm);
 
-            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
-                    new Random(), 0.0, MAGNETOMETER_NOISE_STD);
+            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+                    MAGNETOMETER_NOISE_STD);
 
             final List<FrameBodyMagneticFluxDensity> measurements =
-                    generateMeasurementsMultipleOrientationsWithSamePosition(
-                            hardIron, mm, LARGE_MEASUREMENT_NUMBER,
+                    generateMeasurementsMultipleOrientationsWithSamePosition(hardIron, mm, LARGE_MEASUREMENT_NUMBER,
                             wmmEstimator, randomizer, noiseRandomizer);
 
             final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                    new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                            measurements, false, this);
+                    new KnownFrameMagnetometerLinearLeastSquaresCalibrator(measurements, false,
+                            this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
 
-            final Matrix estimatedHardIron = calibrator
-                    .getEstimatedHardIronAsMatrix();
+            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
             final Matrix estimatedMm = calibrator.getEstimatedMm();
 
             final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
-            if (!hardIronMatrix.equals(estimatedHardIron,
-                    LARGE_ABSOLUTE_ERROR)) {
+            if (!hardIronMatrix.equals(estimatedHardIron, LARGE_ABSOLUTE_ERROR)) {
                 continue;
             }
             if (!mm.equals(estimatedMm, VERY_LARGE_ABSOLUTE_ERROR)) {
                 continue;
             }
-            assertArrayEquals(estimatedHardIron.getBuffer(), hardIron,
-                    LARGE_ABSOLUTE_ERROR);
+            assertArrayEquals(hardIron, estimatedHardIron.getBuffer(), LARGE_ABSOLUTE_ERROR);
             assertTrue(mm.equals(estimatedMm, VERY_LARGE_ABSOLUTE_ERROR));
 
             assertEstimatedResult(estimatedHardIron, estimatedMm, calibrator);
@@ -1127,61 +1083,55 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testCalibrateMultipleOrientationsForGeneralCaseWithNoiseSmallNumberOfMeasurements()
-            throws IOException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException, CalibrationException,
-            WrongSizeException {
+            throws IOException, InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException,
+            CalibrationException, WrongSizeException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                    new WMMEarthMagneticFluxDensityEstimator();
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
             final double[] hardIron = generateHardIron(randomizer);
             final Matrix mm = generateSoftIronGeneral();
             assertNotNull(mm);
 
-            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
-                    new Random(), 0.0, MAGNETOMETER_NOISE_STD);
+            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+                    MAGNETOMETER_NOISE_STD);
 
             final List<FrameBodyMagneticFluxDensity> measurements =
-                    generateMeasurementsMultipleOrientationsWithSamePosition(
-                            hardIron, mm, SMALL_MEASUREMENT_NUMBER,
+                    generateMeasurementsMultipleOrientationsWithSamePosition(hardIron, mm, SMALL_MEASUREMENT_NUMBER,
                             wmmEstimator, randomizer, noiseRandomizer);
 
             final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                    new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                            measurements, false, this);
+                    new KnownFrameMagnetometerLinearLeastSquaresCalibrator(measurements, false,
+                            this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
 
-            final Matrix estimatedHardIron = calibrator
-                    .getEstimatedHardIronAsMatrix();
+            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
             final Matrix estimatedMm = calibrator.getEstimatedMm();
 
             final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
-            if (!hardIronMatrix.equals(estimatedHardIron,
-                    VERY_LARGE_ABSOLUTE_ERROR)) {
+            if (!hardIronMatrix.equals(estimatedHardIron, VERY_LARGE_ABSOLUTE_ERROR)) {
                 continue;
             }
             if (!mm.equals(estimatedMm, VERY_LARGE_ABSOLUTE_ERROR)) {
                 continue;
             }
-            assertArrayEquals(estimatedHardIron.getBuffer(), hardIron,
-                    VERY_LARGE_ABSOLUTE_ERROR);
+            assertArrayEquals(hardIron, estimatedHardIron.getBuffer(), VERY_LARGE_ABSOLUTE_ERROR);
             assertTrue(mm.equals(estimatedMm, VERY_LARGE_ABSOLUTE_ERROR));
 
             assertEstimatedResult(estimatedHardIron, estimatedMm, calibrator);
@@ -1195,46 +1145,41 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testCalibrateMultiplePositionsForGeneralCaseWithMinimumMeasuresAndNoNoise()
-            throws IOException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException, CalibrationException,
-            WrongSizeException {
+            throws IOException, InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException,
+            CalibrationException, WrongSizeException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                    new WMMEarthMagneticFluxDensityEstimator();
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
             final double[] hardIron = generateHardIron(randomizer);
             final Matrix mm = generateSoftIronGeneral();
             assertNotNull(mm);
 
             final List<FrameBodyMagneticFluxDensity> measurements =
-                    generateMeasurementsMultiplePositionsWithSameOrientation(
-                            hardIron, mm,
-                            wmmEstimator, randomizer);
+                    generateMeasurementsMultiplePositionsWithSameOrientation(hardIron, mm, wmmEstimator, randomizer);
 
             final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                    new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                            measurements, false, this);
+                    new KnownFrameMagnetometerLinearLeastSquaresCalibrator(measurements, false,
+                            this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
 
-            final Matrix estimatedHardIron = calibrator
-                    .getEstimatedHardIronAsMatrix();
+            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
             final Matrix estimatedMm = calibrator.getEstimatedMm();
 
             final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
@@ -1258,48 +1203,43 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testCalibrateMultipleOrientationsForCommonAxisCaseWithMinimumMeasuresNoNoiseAndNoMagneticModel()
-            throws IOException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException, CalibrationException,
-            WrongSizeException {
+            throws IOException, InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException,
+            CalibrationException, WrongSizeException {
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix mm = generateSoftIronCommonAxis();
         assertNotNull(mm);
 
         final List<FrameBodyMagneticFluxDensity> measurements =
-                generateMeasurementsMultipleOrientationsWithSamePosition(
-                        hardIron, mm,
-                        KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
-                        wmmEstimator, randomizer, null);
+                generateMeasurementsMultipleOrientationsWithSamePosition(hardIron, mm,
+                        KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS, wmmEstimator,
+                        randomizer, null);
 
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        measurements, true, this);
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(measurements, true, this);
 
         // estimate
         reset();
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 0);
-        assertEquals(mCalibrateEnd, 0);
+        assertEquals(0, mCalibrateStart);
+        assertEquals(0, mCalibrateEnd);
 
         calibrator.calibrate();
 
         // check
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 1);
-        assertEquals(mCalibrateEnd, 1);
+        assertEquals(1, mCalibrateStart);
+        assertEquals(1, mCalibrateEnd);
 
-        final Matrix estimatedHardIron = calibrator
-                .getEstimatedHardIronAsMatrix();
+        final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
         final Matrix estimatedMm = calibrator.getEstimatedMm();
 
-        assertArrayEquals(estimatedHardIron.getBuffer(), hardIron, ABSOLUTE_ERROR);
+        assertArrayEquals(hardIron, estimatedHardIron.getBuffer(), ABSOLUTE_ERROR);
         assertTrue(mm.equals(estimatedMm, ABSOLUTE_ERROR));
 
         assertEstimatedResult(estimatedHardIron, estimatedMm, calibrator);
@@ -1307,13 +1247,11 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testCalibrateMultipleOrientationsForCommonAxisCaseWithMinimumMeasuresNoNoiseAndMagneticModel()
-            throws IOException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException, CalibrationException,
-            WrongSizeException {
+            throws IOException, InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException,
+            CalibrationException, WrongSizeException {
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
         final WorldMagneticModel model = wmmEstimator.getModel();
 
         final double[] hardIron = generateHardIron(randomizer);
@@ -1321,35 +1259,33 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
         assertNotNull(mm);
 
         final List<FrameBodyMagneticFluxDensity> measurements =
-                generateMeasurementsMultipleOrientationsWithSamePosition(
-                        hardIron, mm,
-                        KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
-                        wmmEstimator, randomizer, null);
+                generateMeasurementsMultipleOrientationsWithSamePosition(hardIron, mm,
+                        KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS, wmmEstimator,
+                        randomizer, null);
 
         final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                        measurements, true, model, this);
+                new KnownFrameMagnetometerLinearLeastSquaresCalibrator(measurements, true, model,
+                        this);
 
         // estimate
         reset();
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 0);
-        assertEquals(mCalibrateEnd, 0);
+        assertEquals(0, mCalibrateStart);
+        assertEquals(0, mCalibrateEnd);
 
         calibrator.calibrate();
 
         // check
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 1);
-        assertEquals(mCalibrateEnd, 1);
+        assertEquals(1, mCalibrateStart);
+        assertEquals(1, mCalibrateEnd);
 
-        final Matrix estimatedHardIron = calibrator
-                .getEstimatedHardIronAsMatrix();
+        final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
         final Matrix estimatedMm = calibrator.getEstimatedMm();
 
-        assertArrayEquals(estimatedHardIron.getBuffer(), hardIron, ABSOLUTE_ERROR);
+        assertArrayEquals(hardIron, estimatedHardIron.getBuffer(), ABSOLUTE_ERROR);
         assertTrue(mm.equals(estimatedMm, ABSOLUTE_ERROR));
 
         assertEstimatedResult(estimatedHardIron, estimatedMm, calibrator);
@@ -1357,49 +1293,45 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testCalibrateMultipleOrientationsForCommonAxisCaseWithNoiseLargeNumberOfMeasurements()
-            throws IOException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException, CalibrationException,
-            WrongSizeException {
+            throws IOException, InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException,
+            CalibrationException, WrongSizeException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                    new WMMEarthMagneticFluxDensityEstimator();
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
             final double[] hardIron = generateHardIron(randomizer);
             final Matrix mm = generateSoftIronCommonAxis();
             assertNotNull(mm);
 
-            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
-                    new Random(), 0.0, MAGNETOMETER_NOISE_STD);
+            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+                    MAGNETOMETER_NOISE_STD);
 
             final List<FrameBodyMagneticFluxDensity> measurements =
-                    generateMeasurementsMultipleOrientationsWithSamePosition(
-                            hardIron, mm, LARGE_MEASUREMENT_NUMBER,
+                    generateMeasurementsMultipleOrientationsWithSamePosition(hardIron, mm, LARGE_MEASUREMENT_NUMBER,
                             wmmEstimator, randomizer, noiseRandomizer);
 
             final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                    new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                            measurements, true, this);
+                    new KnownFrameMagnetometerLinearLeastSquaresCalibrator(measurements, true,
+                            this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
 
-            final Matrix estimatedHardIron = calibrator
-                    .getEstimatedHardIronAsMatrix();
+            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
             final Matrix estimatedMm = calibrator.getEstimatedMm();
 
             final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
@@ -1409,10 +1341,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
             if (!mm.equals(estimatedMm, VERY_LARGE_ABSOLUTE_ERROR)) {
                 continue;
             }
-            assertArrayEquals(estimatedHardIron.getBuffer(), hardIron,
-                    LARGE_ABSOLUTE_ERROR);
-            assertTrue(mm.equals(estimatedMm,
-                    VERY_LARGE_ABSOLUTE_ERROR));
+            assertArrayEquals(estimatedHardIron.getBuffer(), hardIron, LARGE_ABSOLUTE_ERROR);
+            assertTrue(mm.equals(estimatedMm, VERY_LARGE_ABSOLUTE_ERROR));
 
             assertEstimatedResult(estimatedHardIron, estimatedMm, calibrator);
 
@@ -1425,61 +1355,55 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testCalibrateMultipleOrientationsForCommonAxisCaseWithNoiseSmallNumberOfMeasurements()
-            throws IOException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException, CalibrationException,
-            WrongSizeException {
+            throws IOException, InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException,
+            CalibrationException, WrongSizeException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                    new WMMEarthMagneticFluxDensityEstimator();
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
             final double[] hardIron = generateHardIron(randomizer);
             final Matrix mm = generateSoftIronCommonAxis();
             assertNotNull(mm);
 
-            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
-                    new Random(), 0.0, MAGNETOMETER_NOISE_STD);
+            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+                    MAGNETOMETER_NOISE_STD);
 
             final List<FrameBodyMagneticFluxDensity> measurements =
-                    generateMeasurementsMultipleOrientationsWithSamePosition(
-                            hardIron, mm, SMALL_MEASUREMENT_NUMBER,
+                    generateMeasurementsMultipleOrientationsWithSamePosition(hardIron, mm, SMALL_MEASUREMENT_NUMBER,
                             wmmEstimator, randomizer, noiseRandomizer);
 
             final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                    new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                            measurements, true, this);
+                    new KnownFrameMagnetometerLinearLeastSquaresCalibrator(measurements, true,
+                            this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
 
-            final Matrix estimatedHardIron = calibrator
-                    .getEstimatedHardIronAsMatrix();
+            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
             final Matrix estimatedMm = calibrator.getEstimatedMm();
 
             final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
-            if (!hardIronMatrix.equals(estimatedHardIron,
-                    VERY_LARGE_ABSOLUTE_ERROR)) {
+            if (!hardIronMatrix.equals(estimatedHardIron, VERY_LARGE_ABSOLUTE_ERROR)) {
                 continue;
             }
             if (!mm.equals(estimatedMm, VERY_LARGE_ABSOLUTE_ERROR)) {
                 continue;
             }
-            assertArrayEquals(estimatedHardIron.getBuffer(), hardIron,
-                    VERY_LARGE_ABSOLUTE_ERROR);
+            assertArrayEquals(estimatedHardIron.getBuffer(), hardIron, VERY_LARGE_ABSOLUTE_ERROR);
             assertTrue(mm.equals(estimatedMm, VERY_LARGE_ABSOLUTE_ERROR));
 
             assertEstimatedResult(estimatedHardIron, estimatedMm, calibrator);
@@ -1493,46 +1417,41 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testCalibrateMultiplePositionsForCommonAxisCaseWithMinimumMeasuresAndNoNoise()
-            throws IOException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException, CalibrationException,
-            WrongSizeException {
+            throws IOException, InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException,
+            CalibrationException, WrongSizeException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                    new WMMEarthMagneticFluxDensityEstimator();
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
             final double[] hardIron = generateHardIron(randomizer);
             final Matrix mm = generateSoftIronCommonAxis();
             assertNotNull(mm);
 
             final List<FrameBodyMagneticFluxDensity> measurements =
-                    generateMeasurementsMultiplePositionsWithSameOrientation(
-                            hardIron, mm,
-                            wmmEstimator, randomizer);
+                    generateMeasurementsMultiplePositionsWithSameOrientation(hardIron, mm, wmmEstimator, randomizer);
 
             final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator =
-                    new KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-                            measurements, true, this);
+                    new KnownFrameMagnetometerLinearLeastSquaresCalibrator(measurements, true,
+                            this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
 
-            final Matrix estimatedHardIron = calibrator
-                    .getEstimatedHardIronAsMatrix();
+            final Matrix estimatedHardIron = calibrator.getEstimatedHardIronAsMatrix();
             final Matrix estimatedMm = calibrator.getEstimatedMm();
 
             final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
@@ -1555,15 +1474,13 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
     }
 
     @Override
-    public void onCalibrateStart(
-            final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator) {
+    public void onCalibrateStart(final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator) {
         checkLocked(calibrator);
         mCalibrateStart++;
     }
 
     @Override
-    public void onCalibrateEnd(
-            final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator) {
+    public void onCalibrateEnd(final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator) {
         checkLocked(calibrator);
         mCalibrateEnd++;
     }
@@ -1573,41 +1490,17 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
         mCalibrateEnd = 0;
     }
 
-    private void checkLocked(
-            final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator) {
+    private void checkLocked(final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator) {
         assertTrue(calibrator.isRunning());
-        try {
-            calibrator.setMeasurements(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setCommonAxisUsed(true);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setListener(this);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setMagneticModel(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.calibrate();
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
+        assertThrows(LockedException.class, () -> calibrator.setMeasurements(null));
+        assertThrows(LockedException.class, () -> calibrator.setCommonAxisUsed(true));
+        assertThrows(LockedException.class, () -> calibrator.setListener(this));
+        assertThrows(LockedException.class, () -> calibrator.setMagneticModel(null));
+        assertThrows(LockedException.class, calibrator::calibrate);
     }
 
-    private void assertEstimatedResult(
-            final Matrix hardIron, final Matrix mm,
-            final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator)
+    private static void assertEstimatedResult(
+            final Matrix hardIron, final Matrix mm, final KnownFrameMagnetometerLinearLeastSquaresCalibrator calibrator)
             throws WrongSizeException {
 
         final double[] estimatedHardIron = calibrator.getEstimatedHardIron();
@@ -1622,12 +1515,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
         assertEquals(hardIron, hardIron2);
 
-        assertEquals(hardIron.getElementAtIndex(0),
-                calibrator.getEstimatedHardIronX(), 0.0);
-        assertEquals(hardIron.getElementAtIndex(1),
-                calibrator.getEstimatedHardIronY(), 0.0);
-        assertEquals(hardIron.getElementAtIndex(2),
-                calibrator.getEstimatedHardIronZ(), 0.0);
+        assertEquals(hardIron.getElementAtIndex(0), calibrator.getEstimatedHardIronX(), 0.0);
+        assertEquals(hardIron.getElementAtIndex(1), calibrator.getEstimatedHardIronY(), 0.0);
+        assertEquals(hardIron.getElementAtIndex(2), calibrator.getEstimatedHardIronZ(), 0.0);
 
         final MagneticFluxDensity bx1 = calibrator.getEstimatedHardIronXAsMagneticFluxDensity();
         assertEquals(calibrator.getEstimatedHardIronX(), bx1.getValue().doubleValue(), 0.0);
@@ -1649,154 +1539,105 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
         assertEquals(bz1, bz2);
 
         final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getEstimatedHardIronAsTriad();
-        assertEquals(calibrator.getEstimatedHardIronX(), hardIronTriad1.getValueX(), 0.0);
-        assertEquals(calibrator.getEstimatedHardIronY(), hardIronTriad1.getValueY(), 0.0);
-        assertEquals(calibrator.getEstimatedHardIronZ(), hardIronTriad1.getValueZ(), 0.0);
+        assertEquals(hardIronTriad1.getValueX(), calibrator.getEstimatedHardIronX(), 0.0);
+        assertEquals(hardIronTriad1.getValueY(), calibrator.getEstimatedHardIronY(), 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), calibrator.getEstimatedHardIronZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, hardIronTriad1.getUnit());
         final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
         calibrator.getEstimatedHardIronAsTriad(hardIronTriad2);
         assertEquals(hardIronTriad1, hardIronTriad2);
 
-        assertEquals(mm.getElementAt(0, 0), calibrator.getEstimatedSx(),
-                0.0);
-        assertEquals(mm.getElementAt(1, 1), calibrator.getEstimatedSy(),
-                0.0);
-        assertEquals(mm.getElementAt(2, 2), calibrator.getEstimatedSz(),
-                0.0);
-        assertEquals(mm.getElementAt(0, 1), calibrator.getEstimatedMxy(),
-                0.0);
-        assertEquals(mm.getElementAt(0, 2), calibrator.getEstimatedMxz(),
-                0.0);
-        assertEquals(mm.getElementAt(1, 0), calibrator.getEstimatedMyx(),
-                0.0);
-        assertEquals(mm.getElementAt(1, 2), calibrator.getEstimatedMyz(),
-                0.0);
-        assertEquals(mm.getElementAt(2, 0), calibrator.getEstimatedMzx(),
-                0.0);
-        assertEquals(mm.getElementAt(2, 1), calibrator.getEstimatedMzy(),
-                0.0);
+        assertEquals(mm.getElementAt(0, 0), calibrator.getEstimatedSx(), 0.0);
+        assertEquals(mm.getElementAt(1, 1), calibrator.getEstimatedSy(), 0.0);
+        assertEquals(mm.getElementAt(2, 2), calibrator.getEstimatedSz(), 0.0);
+        assertEquals(mm.getElementAt(0, 1), calibrator.getEstimatedMxy(), 0.0);
+        assertEquals(mm.getElementAt(0, 2), calibrator.getEstimatedMxz(), 0.0);
+        assertEquals(mm.getElementAt(1, 0), calibrator.getEstimatedMyx(), 0.0);
+        assertEquals(mm.getElementAt(1, 2), calibrator.getEstimatedMyz(), 0.0);
+        assertEquals(mm.getElementAt(2, 0), calibrator.getEstimatedMzx(), 0.0);
+        assertEquals(mm.getElementAt(2, 1), calibrator.getEstimatedMzy(), 0.0);
     }
 
     private static List<FrameBodyMagneticFluxDensity> generateMeasurementsMultipleOrientationsWithSamePosition(
-            final double[] hardIron, final Matrix softIron,
-            final int numberOfMeasurements,
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-            final UniformRandomizer randomizer,
-            final GaussianRandomizer noiseRandomizer)
-            throws InvalidSourceAndDestinationFrameTypeException {
+            final double[] hardIron, final Matrix softIron, final int numberOfMeasurements,
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator, final UniformRandomizer randomizer,
+            final GaussianRandomizer noiseRandomizer) throws InvalidSourceAndDestinationFrameTypeException {
         final NEDPosition position = createPosition(randomizer);
-        final List<FrameBodyMagneticFluxDensity> result =
-                new ArrayList<>();
+        final List<FrameBodyMagneticFluxDensity> result = new ArrayList<>();
         for (int i = 0; i < numberOfMeasurements; i++) {
-            result.add(generateMeasureAtPosition(hardIron, softIron,
-                    wmmEstimator, randomizer, noiseRandomizer, position));
+            result.add(generateMeasureAtPosition(hardIron, softIron, wmmEstimator, randomizer, noiseRandomizer,
+                    position));
         }
         return result;
     }
 
-    private static List<FrameBodyMagneticFluxDensity>
-    generateMeasurementsMultiplePositionsWithSameOrientation(
-            final double[] hardIron, final Matrix softIron,
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-            final UniformRandomizer randomizer)
-            throws InvalidSourceAndDestinationFrameTypeException {
-        final CoordinateTransformation cnb = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
+    private static List<FrameBodyMagneticFluxDensity> generateMeasurementsMultiplePositionsWithSameOrientation(
+            final double[] hardIron, final Matrix softIron, final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
+            final UniformRandomizer randomizer) throws InvalidSourceAndDestinationFrameTypeException {
+        final CoordinateTransformation cnb = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
                 FrameType.BODY_FRAME);
-        final List<FrameBodyMagneticFluxDensity> result =
-                new ArrayList<>();
+        final List<FrameBodyMagneticFluxDensity> result = new ArrayList<>();
         for (int i = 0; i < KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS; i++) {
-            result.add(generateMeasureAtOrientation(hardIron, softIron,
-                    wmmEstimator, randomizer, cnb));
+            result.add(generateMeasureAtOrientation(hardIron, softIron, wmmEstimator, randomizer, cnb));
         }
         return result;
     }
 
     private static FrameBodyMagneticFluxDensity generateMeasureAtOrientation(
-            final double[] hardIron, final Matrix softIron,
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-            final UniformRandomizer randomizer,
-            final CoordinateTransformation cnb)
+            final double[] hardIron, final Matrix softIron, final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
+            final UniformRandomizer randomizer, final CoordinateTransformation cnb)
             throws InvalidSourceAndDestinationFrameTypeException {
         final NEDPosition position = createPosition(randomizer);
-        return generateMeasure(hardIron, softIron, wmmEstimator,
-                randomizer, null, position, cnb);
+        return generateMeasure(hardIron, softIron, wmmEstimator, randomizer, null, position, cnb);
     }
 
     private static FrameBodyMagneticFluxDensity generateMeasureAtPosition(
-            final double[] hardIron, final Matrix softIron,
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-            final UniformRandomizer randomizer,
-            final GaussianRandomizer noiseRandomizer,
-            final NEDPosition position)
+            final double[] hardIron, final Matrix softIron, final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
+            final UniformRandomizer randomizer, final GaussianRandomizer noiseRandomizer, final NEDPosition position)
             throws InvalidSourceAndDestinationFrameTypeException {
         final CoordinateTransformation cnb = generateBodyC(randomizer);
-        return generateMeasure(hardIron, softIron, wmmEstimator,
-                randomizer, noiseRandomizer, position, cnb);
+        return generateMeasure(hardIron, softIron, wmmEstimator, randomizer, noiseRandomizer, position, cnb);
     }
 
     private static FrameBodyMagneticFluxDensity generateMeasure(
-            final double[] hardIron, final Matrix softIron,
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-            final UniformRandomizer randomizer,
-            final GaussianRandomizer noiseRandomizer,
-            final NEDPosition position,
-            final CoordinateTransformation cnb)
-            throws InvalidSourceAndDestinationFrameTypeException {
+            final double[] hardIron, final Matrix softIron, final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
+            final UniformRandomizer randomizer, final GaussianRandomizer noiseRandomizer, final NEDPosition position,
+            final CoordinateTransformation cnb) throws InvalidSourceAndDestinationFrameTypeException {
 
         final Date timestamp = new Date(createTimestamp(randomizer));
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity truthMagnetic =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
-        final BodyMagneticFluxDensity measuredMagnetic =
-                generateMeasuredMagneticFluxDensity(truthMagnetic,
-                        hardIron, softIron);
+        final BodyMagneticFluxDensity truthMagnetic = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity measuredMagnetic = generateMeasuredMagneticFluxDensity(truthMagnetic, hardIron,
+                softIron);
 
         if (noiseRandomizer != null) {
-            measuredMagnetic.setBx(measuredMagnetic.getBx()
-                    + noiseRandomizer.nextDouble());
-            measuredMagnetic.setBy(measuredMagnetic.getBy()
-                    + noiseRandomizer.nextDouble());
-            measuredMagnetic.setBz(measuredMagnetic.getBz()
-                    + noiseRandomizer.nextDouble());
+            measuredMagnetic.setBx(measuredMagnetic.getBx() + noiseRandomizer.nextDouble());
+            measuredMagnetic.setBy(measuredMagnetic.getBy() + noiseRandomizer.nextDouble());
+            measuredMagnetic.setBz(measuredMagnetic.getBz() + noiseRandomizer.nextDouble());
         }
 
         final CoordinateTransformation cbn = cnb.inverseAndReturnNew();
         final NEDFrame frame = new NEDFrame(position, cbn);
 
-        return new FrameBodyMagneticFluxDensity(measuredMagnetic, frame,
-                timestamp);
+        return new FrameBodyMagneticFluxDensity(measuredMagnetic, frame, timestamp);
     }
 
-    private static CoordinateTransformation generateBodyC(
-            final UniformRandomizer randomizer) {
+    private static CoordinateTransformation generateBodyC(final UniformRandomizer randomizer) {
 
-        final double roll = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        return new CoordinateTransformation(
-                roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        return new CoordinateTransformation(roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
     }
 
     private static BodyMagneticFluxDensity generateMeasuredMagneticFluxDensity(
-            final BodyMagneticFluxDensity input, final double[] hardIron,
-            final Matrix softIron) {
-        return BodyMagneticFluxDensityGenerator.generate(input, hardIron,
-                softIron);
+            final BodyMagneticFluxDensity input, final double[] hardIron, final Matrix softIron) {
+        return BodyMagneticFluxDensityGenerator.generate(input, hardIron, softIron);
     }
 
-    private static double[] generateHardIron(
-            final UniformRandomizer randomizer) {
+    private static double[] generateHardIron(final UniformRandomizer randomizer) {
         final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
         randomizer.fill(result, MIN_HARD_IRON, MAX_HARD_IRON);
         return result;
@@ -1804,8 +1645,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
 
     private static Matrix generateSoftIronGeneral() {
         try {
-            return Matrix.createWithUniformRandomValues(
-                    BodyMagneticFluxDensity.COMPONENTS,
+            return Matrix.createWithUniformRandomValues(BodyMagneticFluxDensity.COMPONENTS,
                     BodyMagneticFluxDensity.COMPONENTS, MIN_SOFT_IRON, MAX_SOFT_IRON);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -1827,20 +1667,15 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
         return mm;
     }
 
-    private static NEDPosition createPosition(
-            final UniformRandomizer randomizer) {
-        final double latitude = Math.toRadians(randomizer.nextDouble(
-                MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(
-                MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(
-                MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
+    private static NEDPosition createPosition(final UniformRandomizer randomizer) {
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double height = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
 
         return new NEDPosition(latitude, longitude, height);
     }
 
     private static long createTimestamp(final UniformRandomizer randomizer) {
-        return randomizer.nextLong(
-                START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS);
+        return randomizer.nextLong(START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS);
     }
 }

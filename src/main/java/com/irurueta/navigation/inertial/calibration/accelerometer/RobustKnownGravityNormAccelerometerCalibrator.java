@@ -77,19 +77,18 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * Required minimum number of measurements when common z-axis is assumed.
      */
     public static final int MINIMUM_MEASUREMENTS_COMMON_Z_AXIS =
-            KnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS;
+            BaseGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS;
 
     /**
      * Required minimum number of measurements for the general case.
      */
     public static final int MINIMUM_MEASUREMENTS_GENERAL =
-            KnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
+            BaseGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL;
 
     /**
      * Default robust estimator method when none is provided.
      */
-    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD =
-            RobustEstimatorMethod.LMedS;
+    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD = RobustEstimatorMethod.LMEDS;
 
     /**
      * Indicates that result is refined by default.
@@ -400,8 +399,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                     deviations taken at the same position with zero velocity
      *                     and unknown different orientations.
      */
-    protected RobustKnownGravityNormAccelerometerCalibrator(
-            final List<StandardDeviationBodyKinematics> measurements) {
+    protected RobustKnownGravityNormAccelerometerCalibrator(final List<StandardDeviationBodyKinematics> measurements) {
         mMeasurements = measurements;
     }
 
@@ -412,8 +410,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    protected RobustKnownGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed) {
+    protected RobustKnownGravityNormAccelerometerCalibrator(final boolean commonAxisUsed) {
         mCommonAxisUsed = commonAxisUsed;
     }
 
@@ -425,8 +422,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                    squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    protected RobustKnownGravityNormAccelerometerCalibrator(
-            final double[] initialBias) {
+    protected RobustKnownGravityNormAccelerometerCalibrator(final double[] initialBias) {
         try {
             setInitialBias(initialBias);
         } catch (final LockedException ignore) {
@@ -440,8 +436,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @param initialBias initial bias to find a solution.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Matrix initialBias) {
+    protected RobustKnownGravityNormAccelerometerCalibrator(final Matrix initialBias) {
         try {
             setInitialBias(initialBias);
         } catch (final LockedException ignore) {
@@ -457,8 +452,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Matrix initialBias, final Matrix initialMa) {
+    protected RobustKnownGravityNormAccelerometerCalibrator(final Matrix initialBias, final Matrix initialMa) {
         this(initialBias);
         try {
             setInitialMa(initialMa);
@@ -474,8 +468,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                               squared second (m/s^2).
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm) {
+    protected RobustKnownGravityNormAccelerometerCalibrator(final Double groundTruthGravityNorm) {
         internalSetGroundTruthGravityNorm(groundTruthGravityNorm);
     }
 
@@ -490,8 +483,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements) {
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements) {
         this(measurements);
         internalSetGroundTruthGravityNorm(groundTruthGravityNorm);
     }
@@ -509,8 +501,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
         this(measurements);
         internalSetGroundTruthGravityNorm(groundTruthGravityNorm);
@@ -530,8 +521,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         this(measurements);
         internalSetGroundTruthGravityNorm(groundTruthGravityNorm);
@@ -553,10 +543,8 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
         this(groundTruthGravityNorm, measurements, commonAxisUsed);
         mListener = listener;
     }
@@ -576,8 +564,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final double[] initialBias) {
         this(initialBias);
         internalSetGroundTruthGravityNorm(groundTruthGravityNorm);
@@ -600,10 +587,8 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
         this(groundTruthGravityNorm, measurements, initialBias);
         mListener = listener;
     }
@@ -625,8 +610,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
         this(groundTruthGravityNorm, measurements, initialBias);
         mCommonAxisUsed = commonAxisUsed;
@@ -650,12 +634,10 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        this(groundTruthGravityNorm, measurements, commonAxisUsed,
-                initialBias);
+        this(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
         mListener = listener;
     }
 
@@ -672,8 +654,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias) {
         this(initialBias);
         internalSetGroundTruthGravityNorm(groundTruthGravityNorm);
@@ -694,10 +675,8 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
         this(groundTruthGravityNorm, measurements, initialBias);
         mListener = listener;
     }
@@ -717,8 +696,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
         this(groundTruthGravityNorm, measurements, initialBias);
         mCommonAxisUsed = commonAxisUsed;
@@ -740,12 +718,10 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        this(groundTruthGravityNorm, measurements, commonAxisUsed,
-                initialBias);
+        this(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
         mListener = listener;
     }
 
@@ -764,8 +740,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa) {
         this(initialBias, initialMa);
         internalSetGroundTruthGravityNorm(groundTruthGravityNorm);
@@ -788,8 +763,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
         this(groundTruthGravityNorm, measurements, initialBias, initialMa);
@@ -813,10 +787,8 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa) {
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa) {
         this(groundTruthGravityNorm, measurements, initialBias, initialMa);
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -839,13 +811,10 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        this(groundTruthGravityNorm, measurements, commonAxisUsed,
-                initialBias, initialMa);
+        this(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
         mListener = listener;
     }
 
@@ -855,8 +824,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @param groundTruthGravityNorm ground truth gravity norm.
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm) {
+    protected RobustKnownGravityNormAccelerometerCalibrator(final Acceleration groundTruthGravityNorm) {
         this(convertAcceleration(groundTruthGravityNorm));
     }
 
@@ -870,8 +838,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements) {
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements) {
         this(convertAcceleration(groundTruthGravityNorm), measurements);
     }
 
@@ -887,11 +854,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                listener);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, listener);
     }
 
     /**
@@ -906,11 +871,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                commonAxisUsed);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed);
     }
 
     /**
@@ -927,12 +890,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                commonAxisUsed, listener);
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, listener);
     }
 
     /**
@@ -949,11 +909,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final double[] initialBias) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                initialBias);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, initialBias);
     }
 
     /**
@@ -971,12 +929,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                initialBias, listener);
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, initialBias, listener);
     }
 
     /**
@@ -995,11 +950,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                commonAxisUsed, initialBias);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, initialBias);
     }
 
     /**
@@ -1019,12 +972,10 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                commonAxisUsed, initialBias, listener);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, initialBias, listener);
     }
 
     /**
@@ -1039,11 +990,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                initialBias);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, initialBias);
     }
 
     /**
@@ -1059,12 +1008,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                initialBias, listener);
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, initialBias, listener);
     }
 
     /**
@@ -1081,11 +1027,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                commonAxisUsed, initialBias);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, initialBias);
     }
 
     /**
@@ -1103,12 +1047,10 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                commonAxisUsed, initialBias, listener);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, initialBias, listener);
     }
 
     /**
@@ -1125,11 +1067,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                initialBias, initialMa);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, initialBias, initialMa);
     }
 
     /**
@@ -1147,12 +1087,10 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                initialBias, initialMa, listener);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, initialBias, initialMa, listener);
     }
 
     /**
@@ -1171,12 +1109,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                commonAxisUsed, initialBias, initialMa);
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, initialBias, initialMa);
     }
 
     /**
@@ -1196,13 +1131,11 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     protected RobustKnownGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                commonAxisUsed, initialBias, initialMa, listener);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, initialBias, initialMa,
+                listener);
     }
 
     /**
@@ -1297,8 +1230,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public Acceleration getInitialBiasXAsAcceleration() {
-        return new Acceleration(mInitialBiasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mInitialBiasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1321,8 +1253,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBiasX(final Acceleration initialBiasX)
-            throws LockedException {
+    public void setInitialBiasX(final Acceleration initialBiasX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1337,8 +1268,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public Acceleration getInitialBiasYAsAcceleration() {
-        return new Acceleration(mInitialBiasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mInitialBiasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1361,8 +1291,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBiasY(final Acceleration initialBiasY)
-            throws LockedException {
+    public void setInitialBiasY(final Acceleration initialBiasY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1377,8 +1306,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public Acceleration getInitialBiasZAsAcceleration() {
-        return new Acceleration(mInitialBiasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mInitialBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1401,8 +1329,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBiasZ(final Acceleration initialBiasZ)
-            throws LockedException {
+    public void setInitialBiasZ(final Acceleration initialBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1420,8 +1347,8 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBias(final double initialBiasX, final double initialBiasY,
-                               final double initialBiasZ) throws LockedException {
+    public void setInitialBias(final double initialBiasX, final double initialBiasY, final double initialBiasZ)
+            throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1440,9 +1367,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBias(final Acceleration initialBiasX,
-                               final Acceleration initialBiasY,
-                               final Acceleration initialBiasZ) throws LockedException {
+    public void setInitialBias(
+            final Acceleration initialBiasX, final Acceleration initialBiasY, final Acceleration initialBiasZ)
+            throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1458,8 +1385,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public AccelerationTriad getInitialBiasAsTriad() {
-        return new AccelerationTriad(
-                AccelerationUnit.METERS_PER_SQUARED_SECOND,
+        return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,
                 mInitialBiasX, mInitialBiasY, mInitialBiasZ);
     }
 
@@ -1470,8 +1396,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public void getInitialBiasAsTriad(final AccelerationTriad result) {
-        result.setValueCoordinatesAndUnit(
-                mInitialBiasX, mInitialBiasY, mInitialBiasZ,
+        result.setValueCoordinatesAndUnit(mInitialBiasX, mInitialBiasY, mInitialBiasZ,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -1482,12 +1407,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public void setInitialBias(final AccelerationTriad initialBias) {
-        mInitialBiasX = convertAcceleration(
-                initialBias.getValueX(), initialBias.getUnit());
-        mInitialBiasY = convertAcceleration(
-                initialBias.getValueY(), initialBias.getUnit());
-        mInitialBiasZ = convertAcceleration(
-                initialBias.getValueZ(), initialBias.getUnit());
+        mInitialBiasX = convertAcceleration(initialBias.getValueX(), initialBias.getUnit());
+        mInitialBiasY = convertAcceleration(initialBias.getValueY(), initialBias.getUnit());
+        mInitialBiasZ = convertAcceleration(initialBias.getValueZ(), initialBias.getUnit());
     }
 
     /**
@@ -1760,8 +1682,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
     @Override
     public void setInitialCrossCouplingErrors(
             final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy)
-            throws LockedException {
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1792,14 +1713,12 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
     public void setInitialScalingFactorsAndCrossCouplingErrors(
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy)
-            throws LockedException {
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
+        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
     }
 
     /**
@@ -1887,8 +1806,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public void getInitialBiasAsMatrix(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mInitialBiasX);
@@ -1910,8 +1828,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
         if (mRunning) {
             throw new LockedException();
         }
-        if (initialBias.getRows() != BodyKinematics.COMPONENTS
-                || initialBias.getColumns() != 1) {
+        if (initialBias.getRows() != BodyKinematics.COMPONENTS || initialBias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -1949,8 +1866,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public void getInitialMa(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS ||
-                result.getColumns() != BodyKinematics.COMPONENTS) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mInitialSx);
@@ -1979,8 +1895,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
         if (mRunning) {
             throw new LockedException();
         }
-        if (initialMa.getRows() != BodyKinematics.COMPONENTS ||
-                initialMa.getColumns() != BodyKinematics.COMPONENTS) {
+        if (initialMa.getRows() != BodyKinematics.COMPONENTS || initialMa.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -2089,8 +2004,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public void setMeasurements(
-            final List<StandardDeviationBodyKinematics> measurements)
-            throws LockedException {
+            final List<StandardDeviationBodyKinematics> measurements) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2165,8 +2079,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     public void setListener(
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener)
-            throws LockedException {
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2181,8 +2094,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public int getMinimumRequiredMeasurements() {
-        return mCommonAxisUsed ? MINIMUM_MEASUREMENTS_COMMON_Z_AXIS :
-                MINIMUM_MEASUREMENTS_GENERAL;
+        return mCommonAxisUsed ? MINIMUM_MEASUREMENTS_COMMON_Z_AXIS : MINIMUM_MEASUREMENTS_GENERAL;
     }
 
     /**
@@ -2192,8 +2104,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public boolean isReady() {
-        return mMeasurements != null
-                && mMeasurements.size() >= getMinimumRequiredMeasurements()
+        return mMeasurements != null && mMeasurements.size() >= getMinimumRequiredMeasurements()
                 && mGroundTruthGravityNorm != null;
     }
 
@@ -2231,8 +2142,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
         if (mRunning) {
             throw new LockedException();
         }
-        if (progressDelta < MIN_PROGRESS_DELTA ||
-                progressDelta > MAX_PROGRESS_DELTA) {
+        if (progressDelta < MIN_PROGRESS_DELTA || progressDelta > MAX_PROGRESS_DELTA) {
             throw new IllegalArgumentException();
         }
         mProgressDelta = progressDelta;
@@ -2384,8 +2294,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setQualityScores(final double[] qualityScores)
-            throws LockedException {
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
     }
 
     /**
@@ -2439,8 +2348,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws WrongSizeException if provided result instance has invalid size.
      */
     @Override
-    public boolean getEstimatedBiasesAsMatrix(final Matrix result)
-            throws WrongSizeException {
+    public boolean getEstimatedBiasesAsMatrix(final Matrix result) throws WrongSizeException {
         if (mEstimatedBiases != null) {
             result.fromArray(mEstimatedBiases);
             return true;
@@ -2490,8 +2398,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
     @Override
     public Acceleration getEstimatedBiasFxAsAcceleration() {
         return mEstimatedBiases != null ?
-                new Acceleration(mEstimatedBiases[0],
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
+                new Acceleration(mEstimatedBiases[0], AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
     }
 
     /**
@@ -2519,8 +2426,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
     @Override
     public Acceleration getEstimatedBiasFyAsAcceleration() {
         return mEstimatedBiases != null ?
-                new Acceleration(mEstimatedBiases[1],
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
+                new Acceleration(mEstimatedBiases[1], AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
     }
 
     /**
@@ -2548,8 +2454,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
     @Override
     public Acceleration getEstimatedBiasFzAsAcceleration() {
         return mEstimatedBiases != null ?
-                new Acceleration(mEstimatedBiases[2],
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
+                new Acceleration(mEstimatedBiases[2], AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;
     }
 
     /**
@@ -2654,8 +2559,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMa != null ?
-                mEstimatedMa.getElementAt(0, 0) : null;
+        return mEstimatedMa != null ? mEstimatedMa.getElementAt(0, 0) : null;
     }
 
     /**
@@ -2665,8 +2569,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMa != null ?
-                mEstimatedMa.getElementAt(1, 1) : null;
+        return mEstimatedMa != null ? mEstimatedMa.getElementAt(1, 1) : null;
     }
 
     /**
@@ -2676,8 +2579,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMa != null ?
-                mEstimatedMa.getElementAt(2, 2) : null;
+        return mEstimatedMa != null ? mEstimatedMa.getElementAt(2, 2) : null;
     }
 
     /**
@@ -2687,8 +2589,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMa != null ?
-                mEstimatedMa.getElementAt(0, 1) : null;
+        return mEstimatedMa != null ? mEstimatedMa.getElementAt(0, 1) : null;
     }
 
     /**
@@ -2698,8 +2599,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMa != null ?
-                mEstimatedMa.getElementAt(0, 2) : null;
+        return mEstimatedMa != null ? mEstimatedMa.getElementAt(0, 2) : null;
     }
 
     /**
@@ -2709,8 +2609,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMa != null ?
-                mEstimatedMa.getElementAt(1, 0) : null;
+        return mEstimatedMa != null ? mEstimatedMa.getElementAt(1, 0) : null;
     }
 
     /**
@@ -2720,8 +2619,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMa != null ?
-                mEstimatedMa.getElementAt(1, 2) : null;
+        return mEstimatedMa != null ? mEstimatedMa.getElementAt(1, 2) : null;
     }
 
     /**
@@ -2731,8 +2629,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMa != null ?
-                mEstimatedMa.getElementAt(2, 0) : null;
+        return mEstimatedMa != null ? mEstimatedMa.getElementAt(2, 0) : null;
     }
 
     /**
@@ -2742,8 +2639,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMa != null ?
-                mEstimatedMa.getElementAt(2, 1) : null;
+        return mEstimatedMa != null ? mEstimatedMa.getElementAt(2, 1) : null;
     }
 
     /**
@@ -2973,8 +2869,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     public Double getEstimatedBiasStandardDeviationAverage() {
         return mEstimatedCovariance != null ?
-                (getEstimatedBiasFxStandardDeviation() +
-                        getEstimatedBiasFyStandardDeviation() +
+                (getEstimatedBiasFxStandardDeviation() + getEstimatedBiasFyStandardDeviation() +
                         getEstimatedBiasFzStandardDeviation()) / 3.0 : null;
     }
 
@@ -3086,18 +2981,6 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
     }
 
     /**
-     * Estimates accelerometer calibration parameters containing bias, scale factors
-     * and cross-coupling errors.
-     *
-     * @throws LockedException      if calibrator is currently running.
-     * @throws NotReadyException    if calibrator is not ready.
-     * @throws CalibrationException if estimation fails for numerical reasons.
-     */
-    @Override
-    public abstract void calibrate() throws LockedException, NotReadyException,
-            CalibrationException;
-
-    /**
      * Returns method being used for robust estimation.
      *
      * @return method being used for robust estimation.
@@ -3112,19 +2995,13 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator();
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator();
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator();
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator();
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator();
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator();
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator();
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator();
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator();
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator();
+        };
     }
 
     /**
@@ -3136,26 +3013,14 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        listener);
-        }
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(listener);
+        };
     }
 
     /**
@@ -3168,26 +3033,14 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final List<StandardDeviationBodyKinematics> measurements,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        measurements);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        measurements);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        measurements);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        measurements);
-        }
+            final List<StandardDeviationBodyKinematics> measurements, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(measurements);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(measurements);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(measurements);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(measurements);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(measurements);
+        };
     }
 
 
@@ -3200,26 +3053,14 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final boolean commonAxisUsed,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        commonAxisUsed);
-        }
+            final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(commonAxisUsed);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(commonAxisUsed);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(commonAxisUsed);
+        };
     }
 
     /**
@@ -3233,26 +3074,14 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] initialBias,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        initialBias);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        initialBias);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        initialBias);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        initialBias);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        initialBias);
-        }
+            final double[] initialBias, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(initialBias);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(initialBias);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(initialBias);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(initialBias);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(initialBias);
+        };
     }
 
     /**
@@ -3264,26 +3093,14 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Matrix initialBias,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        initialBias);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        initialBias);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        initialBias);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        initialBias);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        initialBias);
-        }
+            final Matrix initialBias, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(initialBias);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(initialBias);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(initialBias);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(initialBias);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(initialBias);
+        };
     }
 
     /**
@@ -3297,26 +3114,14 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Matrix initialBias, final Matrix initialMa,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        initialBias, initialMa);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        initialBias, initialMa);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        initialBias, initialMa);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        initialBias, initialMa);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        initialBias, initialMa);
-        }
+            final Matrix initialBias, final Matrix initialMa, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(initialBias, initialMa);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(initialBias, initialMa);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(initialBias, initialMa);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(initialBias, initialMa);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(initialBias, initialMa);
+        };
     }
 
     /**
@@ -3329,26 +3134,14 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm);
-        }
+            final Double groundTruthGravityNorm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(groundTruthGravityNorm);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(groundTruthGravityNorm);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(groundTruthGravityNorm);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(groundTruthGravityNorm);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(groundTruthGravityNorm);
+        };
     }
 
     /**
@@ -3364,27 +3157,20 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements);
+        };
     }
 
     /**
@@ -3402,28 +3188,20 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, listener);
-        }
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, listener);
+        };
     }
 
     /**
@@ -3441,28 +3219,20 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed);
-        }
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed);
+        };
     }
 
     /**
@@ -3482,29 +3252,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownGravityNormAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -3524,28 +3286,20 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-        }
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] initialBias, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+        };
     }
 
     /**
@@ -3566,29 +3320,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+        };
     }
 
     /**
@@ -3610,33 +3356,20 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double[] initialBias,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-        }
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final double[] initialBias, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+        };
     }
 
     /**
@@ -3659,34 +3392,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-        }
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+        };
     }
 
     /**
@@ -3704,27 +3424,20 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+        };
     }
 
     /**
@@ -3743,34 +3456,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+        };
     }
 
     /**
@@ -3790,33 +3490,20 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-        }
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+        };
     }
 
     /**
@@ -3837,34 +3524,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-        }
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+        };
     }
 
     /**
@@ -3884,81 +3558,55 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix initialBias, final Matrix initialMa, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa);
+        };
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial bias to find a solution.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @param method                 robust estimator method.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa);
-        }
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param initialBias            initial bias to find a solution.
-     * @param initialMa              initial scale factors and cross coupling errors matrix.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @param method                 robust estimator method.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
-     *                                  scaling and coupling error matrix is not 3x3 or
-     *                                  if provided gravity norm value is negative.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias, final Matrix initialMa,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa, listener);
-        }
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+        };
     }
 
     /**
@@ -3980,33 +3628,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa);
-        }
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+        };
     }
 
     /**
@@ -4029,35 +3665,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa, listener);
-        }
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+        };
     }
 
     /**
@@ -4069,26 +3691,14 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm);
-        }
+            final Acceleration groundTruthGravityNorm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(groundTruthGravityNorm);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(groundTruthGravityNorm);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(groundTruthGravityNorm);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(groundTruthGravityNorm);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(groundTruthGravityNorm);
+        };
     }
 
     /**
@@ -4103,27 +3713,20 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements);
+        };
     }
 
     /**
@@ -4140,28 +3743,20 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, listener);
-        }
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, listener);
+        };
     }
 
     /**
@@ -4178,28 +3773,20 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed);
-        }
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed);
+        };
     }
 
     /**
@@ -4218,34 +3805,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownGravityNormAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -4264,28 +3838,20 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-        }
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] initialBias, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+        };
     }
 
     /**
@@ -4305,34 +3871,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+        };
     }
 
     /**
@@ -4353,33 +3906,20 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double[] initialBias,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-        }
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final double[] initialBias, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+        };
     }
 
     /**
@@ -4401,34 +3941,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-        }
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+        };
     }
 
     /**
@@ -4445,804 +3972,26 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-        }
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param initialBias            initial bias to find a solution.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @param method                 robust estimator method.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
-     *                                  if provided gravity norm value is negative.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-        }
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param initialBias            initial bias to find a solution.
-     * @param method                 robust estimator method.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
-     *                                  if provided gravity norm value is negative.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-        }
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param initialBias            initial bias to find a solution.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @param method                 robust estimator method.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
-     *                                  if provided gravity norm value is negative.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-        }
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param initialBias            initial bias to find a solution.
-     * @param initialMa              initial scale factors and cross coupling errors matrix.
-     * @param method                 robust estimator method.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
-     *                                  scaling and coupling error matrix is not 3x3 or
-     *                                  if provided gravity norm value is negative.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias, final Matrix initialMa,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa);
-        }
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param initialBias            initial bias to find a solution.
-     * @param initialMa              initial scale factors and cross coupling errors matrix.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @param method                 robust estimator method.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
-     *                                  scaling and coupling error matrix is not 3x3 or
-     *                                  if provided gravity norm value is negative.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias, final Matrix initialMa,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias, initialMa,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias, initialMa,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias, initialMa,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias, initialMa,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias, initialMa,
-                        listener);
-        }
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param initialBias            initial bias to find a solution.
-     * @param initialMa              initial scale factors and cross coupling errors matrix.
-     * @param method                 robust estimator method.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
-     *                                  scaling and coupling error matrix is not 3x3 or
-     *                                  if provided gravity norm value is negative.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa);
-        }
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param initialBias            initial bias to find a solution.
-     * @param initialMa              initial scale factors and cross coupling errors matrix.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @param method                 robust estimator method.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
-     *                                  scaling and coupling error matrix is not 3x3 or
-     *                                  if provided gravity norm value is negative.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa, listener);
-        }
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator.
-     *
-     * @param qualityScores          quality scores corresponding to each provided
-     *                               measurement. The larger the score value the better
-     *                               the quality of the sample.
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           list of body kinematics measurements taken at a given position with
-     *                               different unknown orientations and containing the standard deviations
-     *                               of accelerometer and gyroscope measurements.
-     * @param method                 robust estimator method.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative or
-     *                                  if provided quality scores length is
-     *                                  smaller than 13 samples.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm, measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm, measurements);
-        }
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator.
-     *
-     * @param qualityScores          quality scores corresponding to each provided
-     *                               measurement. The larger the score value the better
-     *                               the quality of the sample.
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           list of body kinematics measurements taken at a given position with
-     *                               different unknown orientations and containing the standard deviations
-     *                               of accelerometer and gyroscope measurements.
-     * @param listener               listener to be notified of events such as when estimation
-     *                               starts, ends or its progress significantly changes.
-     * @param method                 robust estimator method.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative or
-     *                                  if provided quality scores length is
-     *                                  smaller than 13 samples.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, listener);
-        }
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator.
-     *
-     * @param qualityScores          quality scores corresponding to each provided
-     *                               measurement. The larger the score value the better
-     *                               the quality of the sample.
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           list of body kinematics measurements taken at a given position with
-     *                               different unknown orientations and containing the standard deviations
-     *                               of accelerometer and gyroscope measurements.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param method                 robust estimator method.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative or
-     *                                  if provided quality scores length is
-     *                                  smaller than 10 or 13 samples.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed);
-        }
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator.
-     *
-     * @param qualityScores          quality scores corresponding to each provided
-     *                               measurement. The larger the score value the better
-     *                               the quality of the sample.
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           list of body kinematics measurements taken at a given position with
-     *                               different unknown orientations and containing the standard deviations
-     *                               of accelerometer and gyroscope measurements.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param listener               listener to be notified of events such as when estimation
-     *                               starts, ends or its progress significantly changes.
-     * @param method                 robust estimator method.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative or
-     *                                  if provided quality scores length is
-     *                                  smaller than 10 or 13 samples.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, listener);
-        }
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator.
-     *
-     * @param qualityScores          quality scores corresponding to each provided
-     *                               measurement. The larger the score value the better
-     *                               the quality of the sample.
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param initialBias            initial accelerometer bias to be used to find a solution.
-     *                               This must have length 3 and is expressed in meters per
-     *                               squared second (m/s^2).
-     * @param method                 robust estimator method.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if provided bias array does not have length 3 or
-     *                                  if provided gravity norm value is negative or
-     *                                  if provided quality scores length is
-     *                                  smaller than 13 samples.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias);
-        }
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator.
-     *
-     * @param qualityScores          quality scores corresponding to each provided
-     *                               measurement. The larger the score value the better
-     *                               the quality of the sample.
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param initialBias            initial accelerometer bias to be used to find a solution.
-     *                               This must have length 3 and is expressed in meters per
-     *                               squared second (m/s^2).
-     * @param listener               listener to handle events raised by this calibrator.
-     * @param method                 robust estimator method.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if provided bias array does not have length 3 or
-     *                                  if provided gravity norm value is negative or
-     *                                  if provided quality scores length is
-     *                                  smaller than 13 samples.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias, listener);
-        }
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator.
-     *
-     * @param qualityScores          quality scores corresponding to each provided
-     *                               measurement. The larger the score value the better
-     *                               the quality of the sample.
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param initialBias            initial accelerometer bias to be used to find a solution.
-     *                               This must have length 3 and is expressed in meters per
-     *                               squared second (m/s^2).
-     * @param method                 robust estimator method.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if provided bias array does not have length 3 or
-     *                                  if provided gravity norm value is negative or
-     *                                  if provided quality scores length is
-     *                                  smaller than 10 or 13 samples.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double[] initialBias,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias);
-        }
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator.
-     *
-     * @param qualityScores          quality scores corresponding to each provided
-     *                               measurement. The larger the score value the better
-     *                               the quality of the sample.
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param initialBias            initial accelerometer bias to be used to find a solution.
-     *                               This must have length 3 and is expressed in meters per
-     *                               squared second (m/s^2).
-     * @param listener               listener to handle events raised by this calibrator.
-     * @param method                 robust estimator method.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if provided bias array does not have length 3 or
-     *                                  if provided gravity norm value is negative or
-     *                                  if provided quality scores length is
-     *                                  smaller than 10 or 13 samples.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double[] initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm, measurements,
-                        commonAxisUsed, initialBias, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm, measurements,
-                        commonAxisUsed, initialBias, listener);
-        }
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator.
-     *
-     * @param qualityScores          quality scores corresponding to each provided
-     *                               measurement. The larger the score value the better
-     *                               the quality of the sample.
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param initialBias            initial bias to find a solution.
-     * @param method                 robust estimator method.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if provided bias array does not have length 3 or
-     *                                  if provided gravity norm value is negative or
-     *                                  if provided quality scores length is
-     *                                  smaller than 13 samples.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+        };
     }
 
     /**
      * Creates a robust accelerometer calibrator.
      *
-     * @param qualityScores          quality scores corresponding to each provided
-     *                               measurement. The larger the score value the better
-     *                               the quality of the sample.
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
+     * @param groundTruthGravityNorm ground truth gravity norm.
      * @param measurements           collection of body kinematics measurements with standard
      *                               deviations taken at the same position with zero velocity
      *                               and unknown different orientations.
@@ -5251,50 +4000,30 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @param method                 robust estimator method.
      * @return a robust accelerometer calibrator.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
-     *                                  if provided gravity norm value is negative or
-     *                                  if provided quality scores length is
-     *                                  smaller than 13 samples.
+     *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+        };
     }
 
     /**
      * Creates a robust accelerometer calibrator.
      *
-     * @param qualityScores          quality scores corresponding to each provided
-     *                               measurement. The larger the score value the better
-     *                               the quality of the sample.
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
+     * @param groundTruthGravityNorm ground truth gravity norm.
      * @param measurements           collection of body kinematics measurements with standard
      *                               deviations taken at the same position with zero velocity
      *                               and unknown different orientations.
@@ -5304,49 +4033,29 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @param method                 robust estimator method.
      * @return a robust accelerometer calibrator.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
-     *                                  if provided gravity norm value is negative or
-     *                                  if provided quality scores length is
-     *                                  smaller than 10 or 13 samples.
+     *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias);
-        }
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+        };
     }
 
     /**
      * Creates a robust accelerometer calibrator.
      *
-     * @param qualityScores          quality scores corresponding to each provided
-     *                               measurement. The larger the score value the better
-     *                               the quality of the sample.
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
+     * @param groundTruthGravityNorm ground truth gravity norm.
      * @param measurements           collection of body kinematics measurements with standard
      *                               deviations taken at the same position with zero velocity
      *                               and unknown different orientations.
@@ -5357,52 +4066,30 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @param method                 robust estimator method.
      * @return a robust accelerometer calibrator.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
-     *                                  if provided gravity norm value is negative or
-     *                                  if provided quality scores length is
-     *                                  smaller than 10 or 13 samples.
+     *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias,
-                        listener);
-        }
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+        };
     }
 
     /**
      * Creates a robust accelerometer calibrator.
      *
-     * @param qualityScores          quality scores corresponding to each provided
-     *                               measurement. The larger the score value the better
-     *                               the quality of the sample.
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
+     * @param groundTruthGravityNorm ground truth gravity norm.
      * @param measurements           collection of body kinematics measurements with standard
      *                               deviations taken at the same position with zero velocity
      *                               and unknown different orientations.
@@ -5412,39 +4099,633 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3 or
-     *                                  if provided gravity norm value is negative or
-     *                                  if provided quality scores length is
-     *                                  smaller than 13 samples.
+     *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix initialBias, final Matrix initialMa, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa);
+        };
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial bias to find a solution.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @param method                 robust estimator method.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+        };
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial bias to find a solution.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @param method                 robust estimator method.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias, initialMa);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias, initialMa);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+        };
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial bias to find a solution.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @param method                 robust estimator method.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+        };
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param method                 robust estimator method.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 13 samples.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements);
+        };
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param listener               listener to be notified of events such as when estimation
+     *                               starts, ends or its progress significantly changes.
+     * @param method                 robust estimator method.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 13 samples.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, listener);
+        };
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param method                 robust estimator method.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 10 or 13 samples.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed);
+        };
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param listener               listener to be notified of events such as when estimation
+     *                               starts, ends or its progress significantly changes.
+     * @param method                 robust estimator method.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 10 or 13 samples.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+        };
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial accelerometer bias to be used to find a solution.
+     *                               This must have length 3 and is expressed in meters per
+     *                               squared second (m/s^2).
+     * @param method                 robust estimator method.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 13 samples.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias);
+        };
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial accelerometer bias to be used to find a solution.
+     *                               This must have length 3 and is expressed in meters per
+     *                               squared second (m/s^2).
+     * @param listener               listener to handle events raised by this calibrator.
+     * @param method                 robust estimator method.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 13 samples.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias, listener);
+        };
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial accelerometer bias to be used to find a solution.
+     *                               This must have length 3 and is expressed in meters per
+     *                               squared second (m/s^2).
+     * @param method                 robust estimator method.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 10 or 13 samples.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final double[] initialBias, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+        };
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial accelerometer bias to be used to find a solution.
+     *                               This must have length 3 and is expressed in meters per
+     *                               squared second (m/s^2).
+     * @param listener               listener to handle events raised by this calibrator.
+     * @param method                 robust estimator method.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 10 or 13 samples.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final double[] initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+        };
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial bias to find a solution.
+     * @param method                 robust estimator method.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 13 samples.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias);
+        };
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial bias to find a solution.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @param method                 robust estimator method.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 13 samples.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias, listener);
+        };
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial bias to find a solution.
+     * @param method                 robust estimator method.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 10 or 13 samples.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Matrix initialBias, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+        };
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial bias to find a solution.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @param method                 robust estimator method.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 10 or 13 samples.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Matrix initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+        };
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial bias to find a solution.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @param method                 robust estimator method.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 13 samples.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias, final Matrix initialMa,
+            final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias, initialMa);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias, initialMa);
+        };
     }
 
     /**
@@ -5470,35 +4751,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  smaller than 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias, final Matrix initialMa,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias, initialMa, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias, initialMa, listener);
-        }
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias, final Matrix initialMa,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+        };
     }
 
     /**
@@ -5525,36 +4792,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  smaller than 10 or 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias,
-                        initialMa);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias,
-                        initialMa);
-        }
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Matrix initialBias, final Matrix initialMa, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+        };
     }
 
     /**
@@ -5582,38 +4834,22 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  smaller than 10 or 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias,
-                        initialMa, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias,
-                        initialMa, listener);
-        }
+            final double[] qualityScores, final Double groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Matrix initialBias, final Matrix initialMa,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores,
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(qualityScores,
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+        };
     }
 
     /**
@@ -5630,27 +4866,17 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  than 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(groundTruthGravityNorm);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(groundTruthGravityNorm);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(groundTruthGravityNorm);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores,
+                    groundTruthGravityNorm);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(qualityScores,
+                    groundTruthGravityNorm);
+        };
     }
 
     /**
@@ -5670,30 +4896,20 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  than 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements);
-        }
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements);
+        };
     }
 
     /**
@@ -5715,31 +4931,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  than 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, listener);
-        }
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, listener);
+        };
     }
 
     /**
@@ -5761,31 +4967,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  than 10 or 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed);
+        };
     }
 
     /**
@@ -5809,35 +5005,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  than 10 or 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, listener);
-        }
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, listener);
+        };
     }
 
     /**
@@ -5861,31 +5043,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  than 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias);
+        };
     }
 
     /**
@@ -5910,35 +5082,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  than 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias, listener);
-        }
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias, listener);
+        };
     }
 
     /**
@@ -5964,34 +5122,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  than 10 or 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double[] initialBias,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias);
-        }
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final double[] initialBias, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+        };
     }
 
     /**
@@ -6018,37 +5163,22 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  than 10 or 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double[] initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final double[] initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+        };
     }
 
     /**
@@ -6070,31 +5200,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  than 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm, measurements,
-                        initialBias);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm, measurements,
-                        initialBias);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias);
+        };
     }
 
     /**
@@ -6117,35 +5237,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  than 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias, listener);
-        }
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias, listener);
+        };
     }
 
     /**
@@ -6169,34 +5275,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  than 10 or 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias);
-        }
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Matrix initialBias, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias);
+        };
     }
 
     /**
@@ -6221,37 +5314,22 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  than 10 or 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Matrix initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener);
+        };
     }
 
     /**
@@ -6275,34 +5353,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  than 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias, final Matrix initialMa,
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias, final Matrix initialMa,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias,
-                        initialMa);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias, initialMa);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias, initialMa);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias, initialMa);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias, initialMa);
+        };
     }
 
     /**
@@ -6327,37 +5392,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  than 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias, final Matrix initialMa,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias, initialMa,
-                        listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias, initialMa,
-                        listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, initialBias, initialMa,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias, initialMa,
-                        listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, initialBias, initialMa,
-                        listener);
-        }
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final Matrix initialBias, final Matrix initialMa,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, initialBias, initialMa, listener);
+        };
     }
 
     /**
@@ -6381,36 +5430,21 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias,
-                        initialMa);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias,
-                        initialMa);
-        }
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Matrix initialBias, final Matrix initialMa, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    qualityScores, groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa);
+        };
     }
 
     /**
@@ -6437,38 +5471,22 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  than 10 or 13 samples.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] qualityScores,
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa, listener);
-            case LMedS:
-                return new LMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa, listener);
-            case MSAC:
-                return new MSACRobustKnownGravityNormAccelerometerCalibrator(
-                        groundTruthGravityNorm, measurements, commonAxisUsed,
-                        initialBias, initialMa, listener);
-            case PROSAC:
-                return new PROSACRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias,
-                        initialMa, listener);
-            case PROMedS:
-            default:
-                return new PROMedSRobustKnownGravityNormAccelerometerCalibrator(
-                        qualityScores, groundTruthGravityNorm,
-                        measurements, commonAxisUsed, initialBias,
-                        initialMa, listener);
-        }
+            final double[] qualityScores, final Acceleration groundTruthGravityNorm,
+            final List<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Matrix initialBias, final Matrix initialMa,
+            final RobustKnownGravityNormAccelerometerCalibratorListener listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+            case LMEDS -> new LMedSRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+            case MSAC -> new MSACRobustKnownGravityNormAccelerometerCalibrator(
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+            case PROSAC -> new PROSACRobustKnownGravityNormAccelerometerCalibrator(qualityScores,
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+            default -> new PROMedSRobustKnownGravityNormAccelerometerCalibrator(qualityScores,
+                    groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener);
+        };
     }
 
     /**
@@ -6513,8 +5531,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                       accelerometer and gyroscope.
      * @return a robust accelerometer calibrator.
      */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final boolean commonAxisUsed) {
+    public static RobustKnownGravityNormAccelerometerCalibrator create(final boolean commonAxisUsed) {
         return create(commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6527,8 +5544,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final double[] initialBias) {
+    public static RobustKnownGravityNormAccelerometerCalibrator create(final double[] initialBias) {
         return create(initialBias, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6539,8 +5555,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Matrix initialBias) {
+    public static RobustKnownGravityNormAccelerometerCalibrator create(final Matrix initialBias) {
         return create(initialBias, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6566,8 +5581,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm) {
+    public static RobustKnownGravityNormAccelerometerCalibrator create(final Double groundTruthGravityNorm) {
         return create(groundTruthGravityNorm, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6583,10 +5597,8 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements) {
-        return create(groundTruthGravityNorm, measurements,
-                DEFAULT_ROBUST_METHOD);
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements) {
+        return create(groundTruthGravityNorm, measurements, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6603,11 +5615,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        return create(groundTruthGravityNorm, measurements, listener,
-                DEFAULT_ROBUST_METHOD);
+        return create(groundTruthGravityNorm, measurements, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6624,11 +5634,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
-        return create(groundTruthGravityNorm, measurements,
-                commonAxisUsed, DEFAULT_ROBUST_METHOD);
+        return create(groundTruthGravityNorm, measurements, commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6647,12 +5655,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        return create(groundTruthGravityNorm, measurements, commonAxisUsed,
-                listener, DEFAULT_ROBUST_METHOD);
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+        return create(groundTruthGravityNorm, measurements, commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6671,11 +5676,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final double[] initialBias) {
-        return create(groundTruthGravityNorm, measurements, initialBias,
-                DEFAULT_ROBUST_METHOD);
+        return create(groundTruthGravityNorm, measurements, initialBias, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6695,12 +5698,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        return create(groundTruthGravityNorm, measurements, initialBias,
-                listener, DEFAULT_ROBUST_METHOD);
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+        return create(groundTruthGravityNorm, measurements, initialBias, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6721,11 +5721,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
-        return create(groundTruthGravityNorm, measurements,
-                commonAxisUsed, initialBias, DEFAULT_ROBUST_METHOD);
+        return create(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6747,32 +5745,10 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        return create(groundTruthGravityNorm, measurements, commonAxisUsed,
-                initialBias, listener, DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator using default robust method.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param initialBias            initial bias to find a solution.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
-     *                                  if provided gravity norm value is negative.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias) {
-        return create(groundTruthGravityNorm, measurements, initialBias,
+        return create(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener,
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -6785,18 +5761,34 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                               deviations taken at the same position with zero velocity
      *                               and unknown different orientations.
      * @param initialBias            initial bias to find a solution.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix initialBias) {
+        return create(groundTruthGravityNorm, measurements, initialBias, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator using default robust method.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial bias to find a solution.
      * @param listener               listener to handle events raised by this calibrator.
      * @return a robust accelerometer calibrator.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        return create(groundTruthGravityNorm, measurements, initialBias,
-                listener, DEFAULT_ROBUST_METHOD);
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+        return create(groundTruthGravityNorm, measurements, initialBias, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6815,11 +5807,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
-        return create(groundTruthGravityNorm, measurements, commonAxisUsed,
-                initialBias, DEFAULT_ROBUST_METHOD);
+        return create(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6839,12 +5829,11 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        return create(groundTruthGravityNorm, measurements, commonAxisUsed,
-                initialBias, listener, DEFAULT_ROBUST_METHOD);
+        return create(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener,
+                DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6863,11 +5852,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa) {
-        return create(groundTruthGravityNorm, measurements, initialBias,
-                initialMa, DEFAULT_ROBUST_METHOD);
+        return create(groundTruthGravityNorm, measurements, initialBias, initialMa, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6887,12 +5874,10 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        return create(groundTruthGravityNorm, measurements, initialBias,
-                initialMa, listener, DEFAULT_ROBUST_METHOD);
+        return create(groundTruthGravityNorm, measurements, initialBias, initialMa, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6913,12 +5898,10 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa) {
-        return create(groundTruthGravityNorm, measurements, commonAxisUsed,
-                initialBias, initialMa, DEFAULT_ROBUST_METHOD);
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa) {
+        return create(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa,
+                DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6940,13 +5923,11 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        return create(groundTruthGravityNorm, measurements, commonAxisUsed,
-                initialBias, initialMa, listener, DEFAULT_ROBUST_METHOD);
+        return create(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener,
+                DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6956,8 +5937,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm) {
+    public static RobustKnownGravityNormAccelerometerCalibrator create(final Acceleration groundTruthGravityNorm) {
         return create(groundTruthGravityNorm, DEFAULT_ROBUST_METHOD);
     }
 
@@ -6972,10 +5952,8 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements) {
-        return create(groundTruthGravityNorm, measurements,
-                DEFAULT_ROBUST_METHOD);
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements) {
+        return create(groundTruthGravityNorm, measurements, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -6991,11 +5969,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        return create(groundTruthGravityNorm, measurements, listener,
-                DEFAULT_ROBUST_METHOD);
+        return create(groundTruthGravityNorm, measurements, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7011,11 +5987,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
-        return create(groundTruthGravityNorm, measurements,
-                commonAxisUsed, DEFAULT_ROBUST_METHOD);
+        return create(groundTruthGravityNorm, measurements, commonAxisUsed, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7033,12 +6007,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        return create(groundTruthGravityNorm, measurements,
-                commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+        return create(groundTruthGravityNorm, measurements, commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7056,11 +6027,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final double[] initialBias) {
-        return create(groundTruthGravityNorm, measurements, initialBias,
-                DEFAULT_ROBUST_METHOD);
+        return create(groundTruthGravityNorm, measurements, initialBias, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7079,12 +6048,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        return create(groundTruthGravityNorm, measurements,
-                initialBias, listener, DEFAULT_ROBUST_METHOD);
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+        return create(groundTruthGravityNorm, measurements, initialBias, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7104,11 +6070,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
-        return create(groundTruthGravityNorm, measurements,
-                commonAxisUsed, initialBias, DEFAULT_ROBUST_METHOD);
+        return create(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7129,31 +6093,10 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        return create(groundTruthGravityNorm, measurements, commonAxisUsed,
-                initialBias, listener, DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust accelerometer calibrator using default robust method.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param initialBias            initial bias to find a solution.
-     * @return a robust accelerometer calibrator.
-     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
-     *                                  if provided gravity norm value is negative.
-     */
-    public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias) {
-        return create(groundTruthGravityNorm, measurements, initialBias,
+        return create(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener,
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -7165,18 +6108,33 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                               deviations taken at the same position with zero velocity
      *                               and unknown different orientations.
      * @param initialBias            initial bias to find a solution.
+     * @return a robust accelerometer calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public static RobustKnownGravityNormAccelerometerCalibrator create(
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix initialBias) {
+        return create(groundTruthGravityNorm, measurements, initialBias, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust accelerometer calibrator using default robust method.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial bias to find a solution.
      * @param listener               listener to handle events raised by this calibrator.
      * @return a robust accelerometer calibrator.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        return create(groundTruthGravityNorm, measurements, initialBias,
-                listener, DEFAULT_ROBUST_METHOD);
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix initialBias, final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
+        return create(groundTruthGravityNorm, measurements, initialBias, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7194,11 +6152,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
-        return create(groundTruthGravityNorm, measurements, commonAxisUsed,
-                initialBias, DEFAULT_ROBUST_METHOD);
+        return create(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7217,12 +6173,11 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        return create(groundTruthGravityNorm, measurements, commonAxisUsed,
-                initialBias, listener, DEFAULT_ROBUST_METHOD);
+        return create(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, listener,
+                DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7240,11 +6195,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa) {
-        return create(groundTruthGravityNorm, measurements,
-                initialBias, initialMa, DEFAULT_ROBUST_METHOD);
+        return create(groundTruthGravityNorm, measurements, initialBias, initialMa, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7263,12 +6216,10 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        return create(groundTruthGravityNorm, measurements, initialBias,
-                initialMa, listener, DEFAULT_ROBUST_METHOD);
+        return create(groundTruthGravityNorm, measurements, initialBias, initialMa, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7288,12 +6239,9 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa) {
-        return create(groundTruthGravityNorm, measurements,
-                commonAxisUsed, initialBias, initialMa,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa) {
+        return create(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa,
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -7315,13 +6263,11 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      *                                  if provided gravity norm value is negative.
      */
     public static RobustKnownGravityNormAccelerometerCalibrator create(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-        return create(groundTruthGravityNorm, measurements, commonAxisUsed,
-                initialBias, initialMa, listener, DEFAULT_ROBUST_METHOD);
+        return create(groundTruthGravityNorm, measurements, commonAxisUsed, initialBias, initialMa, listener,
+                DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -7331,8 +6277,8 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @param preliminaryResult a preliminary result.
      * @return computed error.
      */
-    protected double computeError(final StandardDeviationBodyKinematics measurement,
-                                  final PreliminaryResult preliminaryResult) {
+    protected double computeError(
+            final StandardDeviationBodyKinematics measurement, final PreliminaryResult preliminaryResult) {
 
         try {
             // We know that measured specific force is:
@@ -7404,8 +6350,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
      * @param samplesIndices indices of samples picked by the robust estimator.
      * @param solutions      list where estimated preliminary solution will be stored.
      */
-    protected void computePreliminarySolutions(final int[] samplesIndices,
-                                               final List<PreliminaryResult> solutions) {
+    protected void computePreliminarySolutions(final int[] samplesIndices, final List<PreliminaryResult> solutions) {
 
         final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
 
@@ -7459,8 +6404,7 @@ public abstract class RobustKnownGravityNormAccelerometerCalibrator implements
             final BitSet inliers = mInliersData.getInliers();
             final int nSamples = mMeasurements.size();
 
-            final List<StandardDeviationBodyKinematics> inlierMeasurements =
-                    new ArrayList<>();
+            final List<StandardDeviationBodyKinematics> inlierMeasurements = new ArrayList<>();
             for (int i = 0; i < nSamples; i++) {
                 if (inliers.get(i)) {
                     // sample is inlier

@@ -36,5 +36,24 @@ public enum QuaternionStepIntegratorType {
      * Performs quaternion integration using Runge-Kutta of 4th order (aka RK4) algorithm, which
      * offers high accuracy at the expense of higher computational complexity.
      */
-    RUNGE_KUTTA
+    RUNGE_KUTTA,
+
+    /**
+     * Performs quaternion integration Based on Young Soo Suh. "Orientation estimation using a quaternion-based
+     * indirect Kalman filter with adaptive estimation of external acceleration". 2010.
+     * This method can achieve higher accuracy than Runge-Kutta
+     */
+    SUH,
+
+    /**
+     * Performs quaternion integration based on Trawny, N. "Indirect Kalman Filter for 3D Attitude Estimation". 2005,
+     * which offers a medium accuracy and computational complexity.
+     */
+    TRAWNY,
+
+    /**
+     * Performs quaternion integration based on Yuan, S. "Quaternion-based Unscented Kalman Filter for Real-time". 2015,
+     * which offers a medium accuracy and computational complexity.
+     */
+    YUAN
 }

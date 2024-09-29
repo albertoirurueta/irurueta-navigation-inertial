@@ -102,8 +102,8 @@ public class IMUErrorsCreator {
             final GyroscopeNoiseRootPsdSource gyroscopeNoiseRootPsdSource,
             final double accelerometerQuantizationLevel,
             final double gyroQuantizationLevel) {
-        this(accelerometerCalibrationSource, gyroscopeCalibrationSource,
-                accelerometerNoiseRootPsdSource, gyroscopeNoiseRootPsdSource);
+        this(accelerometerCalibrationSource, gyroscopeCalibrationSource, accelerometerNoiseRootPsdSource,
+                gyroscopeNoiseRootPsdSource);
         mAccelerometerQuantizationLevel = accelerometerQuantizationLevel;
         mGyroQuantizationLevel = gyroQuantizationLevel;
     }
@@ -123,8 +123,7 @@ public class IMUErrorsCreator {
      * @param accelerometerCalibrationSource source of estimated accelerometer
      *                                       parameters.
      */
-    public void setAccelerometerCalibrationSource(
-            final AccelerometerCalibrationSource accelerometerCalibrationSource) {
+    public void setAccelerometerCalibrationSource(final AccelerometerCalibrationSource accelerometerCalibrationSource) {
         mAccelerometerCalibrationSource = accelerometerCalibrationSource;
     }
 
@@ -143,8 +142,7 @@ public class IMUErrorsCreator {
      * @param gyroscopeCalibrationSource source of estimated gyroscope calibration
      *                                   parameters.
      */
-    public void setGyroscopeCalibrationSource(
-            final GyroscopeCalibrationSource gyroscopeCalibrationSource) {
+    public void setGyroscopeCalibrationSource(final GyroscopeCalibrationSource gyroscopeCalibrationSource) {
         mGyroscopeCalibrationSource = gyroscopeCalibrationSource;
     }
 
@@ -183,8 +181,7 @@ public class IMUErrorsCreator {
      * @param gyroscopeNoiseRootPsdSource source of estimated gyroscope noise
      *                                    root PSD.
      */
-    public void sstGyroscopeNoiseRootPsdSource(
-            final GyroscopeNoiseRootPsdSource gyroscopeNoiseRootPsdSource) {
+    public void sstGyroscopeNoiseRootPsdSource(final GyroscopeNoiseRootPsdSource gyroscopeNoiseRootPsdSource) {
         mGyroscopeNoiseRootPsdSource = gyroscopeNoiseRootPsdSource;
     }
 
@@ -266,8 +263,7 @@ public class IMUErrorsCreator {
 
         final double accelerometerNoiseRootPsd = mAccelerometerNoiseRootPsdSource
                 .getAccelerometerBaseNoiseLevelRootPsd();
-        final double gyroscopeNoiseRootPsd = mGyroscopeNoiseRootPsdSource
-                .getGyroscopeBaseNoiseLevelRootPsd();
+        final double gyroscopeNoiseRootPsd = mGyroscopeNoiseRootPsdSource.getGyroscopeBaseNoiseLevelRootPsd();
 
         return new IMUErrors(ba, bg, ma, mg, gg, accelerometerNoiseRootPsd, gyroscopeNoiseRootPsd,
                 mAccelerometerQuantizationLevel, mGyroQuantizationLevel);

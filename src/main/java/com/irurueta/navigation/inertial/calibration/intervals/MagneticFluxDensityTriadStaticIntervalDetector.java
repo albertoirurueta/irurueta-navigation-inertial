@@ -29,8 +29,8 @@ import com.irurueta.units.MagneticFluxDensityUnit;
  * to remain static (no movement applied to it).
  */
 public class MagneticFluxDensityTriadStaticIntervalDetector extends
-        TriadStaticIntervalDetector<MagneticFluxDensityUnit, MagneticFluxDensity,
-                MagneticFluxDensityTriad, MagneticFluxDensityTriadStaticIntervalDetector,
+        TriadStaticIntervalDetector<MagneticFluxDensityUnit, MagneticFluxDensity, MagneticFluxDensityTriad,
+                MagneticFluxDensityTriadStaticIntervalDetector,
                 MagneticFluxDensityTriadStaticIntervalDetectorListener> {
 
     /**
@@ -61,10 +61,8 @@ public class MagneticFluxDensityTriadStaticIntervalDetector extends
      * @return converted value.
      */
     @Override
-    protected double convertMeasurement(
-            final double value, final MagneticFluxDensityUnit unit) {
-        return MagneticFluxDensityConverter.convert(value, unit,
-                MagneticFluxDensityUnit.TESLA);
+    protected double convertMeasurement(final double value, final MagneticFluxDensityUnit unit) {
+        return MagneticFluxDensityConverter.convert(value, unit, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -75,8 +73,7 @@ public class MagneticFluxDensityTriadStaticIntervalDetector extends
      * @return created magnetic flux density.
      */
     @Override
-    protected MagneticFluxDensity createMeasurement(
-            final double value, final MagneticFluxDensityUnit unit) {
+    protected MagneticFluxDensity createMeasurement(final double value, final MagneticFluxDensityUnit unit) {
         return new MagneticFluxDensity(value, unit);
     }
 
@@ -101,8 +98,7 @@ public class MagneticFluxDensityTriadStaticIntervalDetector extends
      */
     @Override
     protected MagneticFluxDensityTriad createTriad(
-            final double valueX, final double valueY, final double valueZ,
-            final MagneticFluxDensityUnit unit) {
+            final double valueX, final double valueY, final double valueZ, final MagneticFluxDensityUnit unit) {
         return new MagneticFluxDensityTriad(unit, valueX, valueY, valueZ);
     }
 }

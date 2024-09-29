@@ -60,61 +60,56 @@ public class AngularRateFixerTest {
         assertArrayEquals(b2, new double[3], 0.0);
 
         final AngularSpeedTriad triad1 = fixer.getBiasAsTriad();
-        assertEquals(triad1.getValueX(), 0.0, 0.0);
-        assertEquals(triad1.getValueY(), 0.0, 0.0);
-        assertEquals(triad1.getValueZ(), 0.0, 0.0);
+        assertEquals(0.0, triad1.getValueX(), 0.0);
+        assertEquals(0.0, triad1.getValueY(), 0.0);
+        assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, triad1.getUnit());
         final AngularSpeedTriad triad2 = new AngularSpeedTriad();
         fixer.getBiasAsTriad(triad2);
         assertEquals(triad1, triad2);
 
-        assertEquals(fixer.getBiasX(), 0.0, 0.0);
-        assertEquals(fixer.getBiasY(), 0.0, 0.0);
-        assertEquals(fixer.getBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getBiasX(), 0.0);
+        assertEquals(0.0, fixer.getBiasY(), 0.0);
+        assertEquals(0.0, fixer.getBiasZ(), 0.0);
 
         final AngularSpeed bx1 = fixer.getBiasXAsAngularSpeed();
-        assertEquals(bx1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
-        final AngularSpeed bx2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed bx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         fixer.getBiasXAsAngularSpeed(bx2);
         assertEquals(bx1, bx2);
         final AngularSpeed by1 = fixer.getBiasYAsAngularSpeed();
-        assertEquals(by1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
-        final AngularSpeed by2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed by2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         fixer.getBiasYAsAngularSpeed(by2);
         assertEquals(by1, by2);
         final AngularSpeed bz1 = fixer.getBiasZAsAngularSpeed();
-        assertEquals(bz1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
-        final AngularSpeed bz2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed bz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         fixer.getBiasZAsAngularSpeed(bz2);
         assertEquals(bz1, bz2);
 
-        assertEquals(fixer.getCrossCouplingErrors(),
-                new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), fixer.getCrossCouplingErrors());
         final Matrix m = new Matrix(3, 3);
         fixer.getCrossCouplingErrors(m);
         assertEquals(m, new Matrix(3, 3));
 
-        assertEquals(fixer.getSx(), 0.0, 0.0);
-        assertEquals(fixer.getSy(), 0.0, 0.0);
-        assertEquals(fixer.getSz(), 0.0, 0.0);
-        assertEquals(fixer.getMxy(), 0.0, 0.0);
-        assertEquals(fixer.getMxz(), 0.0, 0.0);
-        assertEquals(fixer.getMyx(), 0.0, 0.0);
-        assertEquals(fixer.getMyz(), 0.0, 0.0);
-        assertEquals(fixer.getMzx(), 0.0, 0.0);
-        assertEquals(fixer.getMzy(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getSx(), 0.0);
+        assertEquals(0.0, fixer.getSy(), 0.0);
+        assertEquals(0.0, fixer.getSz(), 0.0);
+        assertEquals(0.0, fixer.getMxy(), 0.0);
+        assertEquals(0.0, fixer.getMxz(), 0.0);
+        assertEquals(0.0, fixer.getMyx(), 0.0);
+        assertEquals(0.0, fixer.getMyz(), 0.0);
+        assertEquals(0.0, fixer.getMzx(), 0.0);
+        assertEquals(0.0, fixer.getMzy(), 0.0);
 
-        assertEquals(fixer.getGDependantCrossBias(),
-                new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), fixer.getGDependantCrossBias());
         final Matrix g = new Matrix(3, 3);
         fixer.getGDependantCrossBias(g);
-        assertEquals(g, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), g);
     }
 
     @Test
@@ -142,16 +137,10 @@ public class AngularRateFixerTest {
         assertEquals(b3, b5);
 
         // Force IllegalArgumentException
-        try {
-            fixer.setBias(new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.setBias(new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.setBias(m1));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.setBias(m2));
     }
 
     @Test
@@ -179,16 +168,8 @@ public class AngularRateFixerTest {
         assertArrayEquals(b3, b5, 0.0);
 
         // Force IllegalArgumentException
-        try {
-            fixer.getBiasArray(new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.setBias(new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> fixer.getBiasArray(new double[1]));
+        assertThrows(IllegalArgumentException.class, () -> fixer.setBias(new double[1]));
     }
 
     @Test
@@ -197,9 +178,9 @@ public class AngularRateFixerTest {
 
         // check default value
         final AngularSpeedTriad triad1 = fixer.getBiasAsTriad();
-        assertEquals(triad1.getValueX(), 0.0, 0.0);
-        assertEquals(triad1.getValueY(), 0.0, 0.0);
-        assertEquals(triad1.getValueZ(), 0.0, 0.0);
+        assertEquals(0.0, triad1.getValueX(), 0.0);
+        assertEquals(0.0, triad1.getValueY(), 0.0);
+        assertEquals(0.0, triad1.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, triad1.getUnit());
 
         // set new value
@@ -221,7 +202,7 @@ public class AngularRateFixerTest {
         final AngularRateFixer fixer = new AngularRateFixer();
 
         // check default value
-        assertEquals(fixer.getBiasX(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getBiasX(), 0.0);
 
         // set new value
         final Matrix b = generateBg();
@@ -237,7 +218,7 @@ public class AngularRateFixerTest {
         final AngularRateFixer fixer = new AngularRateFixer();
 
         // check default value
-        assertEquals(fixer.getBiasY(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getBiasY(), 0.0);
 
         // set new value
         final Matrix b = generateBg();
@@ -253,7 +234,7 @@ public class AngularRateFixerTest {
         final AngularRateFixer fixer = new AngularRateFixer();
 
         // check default value
-        assertEquals(fixer.getBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getBiasZ(), 0.0);
 
         // set new value
         final Matrix b = generateBg();
@@ -269,9 +250,9 @@ public class AngularRateFixerTest {
         final AngularRateFixer fixer = new AngularRateFixer();
 
         // check default values
-        assertEquals(fixer.getBiasX(), 0.0, 0.0);
-        assertEquals(fixer.getBiasY(), 0.0, 0.0);
-        assertEquals(fixer.getBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getBiasX(), 0.0);
+        assertEquals(0.0, fixer.getBiasY(), 0.0);
+        assertEquals(0.0, fixer.getBiasZ(), 0.0);
 
         // set new values
         final Matrix b = generateBg();
@@ -292,20 +273,18 @@ public class AngularRateFixerTest {
 
         // check default value
         final AngularSpeed bx1 = fixer.getBiasXAsAngularSpeed();
-        assertEquals(bx1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
 
         // set new value
         final Matrix b = generateBg();
         final double bx = b.getElementAtIndex(0);
-        final AngularSpeed bx2 = new AngularSpeed(
-                bx, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed bx2 = new AngularSpeed(bx, AngularSpeedUnit.RADIANS_PER_SECOND);
         fixer.setBiasX(bx2);
 
         // check
         final AngularSpeed bx3 = fixer.getBiasXAsAngularSpeed();
-        final AngularSpeed bx4 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed bx4 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         fixer.getBiasXAsAngularSpeed(bx4);
 
         assertEquals(bx2, bx3);
@@ -318,20 +297,18 @@ public class AngularRateFixerTest {
 
         // check default value
         final AngularSpeed by1 = fixer.getBiasYAsAngularSpeed();
-        assertEquals(by1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
 
         // set new value
         final Matrix b = generateBg();
         final double by = b.getElementAtIndex(1);
-        final AngularSpeed by2 = new AngularSpeed(
-                by, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed by2 = new AngularSpeed(by, AngularSpeedUnit.RADIANS_PER_SECOND);
         fixer.setBiasY(by2);
 
         // check
         final AngularSpeed by3 = fixer.getBiasYAsAngularSpeed();
-        final AngularSpeed by4 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed by4 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         fixer.getBiasYAsAngularSpeed(by4);
 
         assertEquals(by2, by3);
@@ -344,20 +321,18 @@ public class AngularRateFixerTest {
 
         // check default value
         final AngularSpeed bz1 = fixer.getBiasZAsAngularSpeed();
-        assertEquals(bz1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
 
         // set new value
         final Matrix b = generateBg();
         final double bz = b.getElementAtIndex(2);
-        final AngularSpeed bz2 = new AngularSpeed(
-                bz, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed bz2 = new AngularSpeed(bz, AngularSpeedUnit.RADIANS_PER_SECOND);
         fixer.setBiasZ(bz2);
 
         // check
         final AngularSpeed bz3 = fixer.getBiasZAsAngularSpeed();
-        final AngularSpeed bz4 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed bz4 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         fixer.getBiasZAsAngularSpeed(bz4);
 
         assertEquals(bz2, bz3);
@@ -370,15 +345,15 @@ public class AngularRateFixerTest {
 
         // check default values
         final AngularSpeed bx1 = fixer.getBiasXAsAngularSpeed();
-        assertEquals(bx1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bx1.getUnit());
 
         final AngularSpeed by1 = fixer.getBiasYAsAngularSpeed();
-        assertEquals(by1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, by1.getUnit());
 
         final AngularSpeed bz1 = fixer.getBiasZAsAngularSpeed();
-        assertEquals(bz1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bz1.getUnit());
 
         // set new values
@@ -386,12 +361,9 @@ public class AngularRateFixerTest {
         final double bx = b.getElementAtIndex(0);
         final double by = b.getElementAtIndex(1);
         final double bz = b.getElementAtIndex(2);
-        final AngularSpeed bx2 = new AngularSpeed(
-                bx, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed by2 = new AngularSpeed(
-                by, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed bz2 = new AngularSpeed(
-                bz, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed bx2 = new AngularSpeed(bx, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed by2 = new AngularSpeed(by, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed bz2 = new AngularSpeed(bz, AngularSpeedUnit.RADIANS_PER_SECOND);
         fixer.setBias(bx2, by2, bz2);
 
         // check
@@ -449,25 +421,15 @@ public class AngularRateFixerTest {
         assertEquals(mzy, fixer.getMzy(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            fixer.setCrossCouplingErrors(new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.setCrossCouplingErrors(new Matrix(3, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m6 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.setCrossCouplingErrors(m6));
+        final var m7 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.setCrossCouplingErrors(m7));
 
         // Force AlgebraException
-        try {
-            final Matrix wrong = Matrix.identity(3, 3);
-            wrong.multiplyByScalar(-1.0);
-            fixer.setCrossCouplingErrors(wrong);
-            fail("AlgebraException expected but not thrown");
-        } catch (final AlgebraException ignore) {
-        }
+        final Matrix wrong = Matrix.identity(3, 3);
+        wrong.multiplyByScalar(-1.0);
+        assertThrows(AlgebraException.class, () -> fixer.setCrossCouplingErrors(wrong));
     }
 
     @Test
@@ -475,7 +437,7 @@ public class AngularRateFixerTest {
         final AngularRateFixer fixer = new AngularRateFixer();
 
         // check default value
-        assertEquals(fixer.getSx(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getSx(), 0.0);
 
         // set new value
         final Matrix m = generateMg();
@@ -492,7 +454,7 @@ public class AngularRateFixerTest {
         final AngularRateFixer fixer = new AngularRateFixer();
 
         // check default value
-        assertEquals(fixer.getSy(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getSy(), 0.0);
 
         // set new value
         final Matrix m = generateMg();
@@ -509,7 +471,7 @@ public class AngularRateFixerTest {
         final AngularRateFixer fixer = new AngularRateFixer();
 
         // check default value
-        assertEquals(fixer.getSz(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getSz(), 0.0);
 
         // set new value
         final Matrix m = generateMg();
@@ -526,7 +488,7 @@ public class AngularRateFixerTest {
         final AngularRateFixer fixer = new AngularRateFixer();
 
         // check default value
-        assertEquals(fixer.getMxy(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getMxy(), 0.0);
 
         // set new value
         final Matrix m = generateMg();
@@ -543,7 +505,7 @@ public class AngularRateFixerTest {
         final AngularRateFixer fixer = new AngularRateFixer();
 
         // check default value
-        assertEquals(fixer.getMxz(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getMxz(), 0.0);
 
         // set new value
         final Matrix m = generateMg();
@@ -560,7 +522,7 @@ public class AngularRateFixerTest {
         final AngularRateFixer fixer = new AngularRateFixer();
 
         // check default value
-        assertEquals(fixer.getMyx(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getMyx(), 0.0);
 
         // set new value
         final Matrix m = generateMg();
@@ -577,7 +539,7 @@ public class AngularRateFixerTest {
         final AngularRateFixer fixer = new AngularRateFixer();
 
         // check default value
-        assertEquals(fixer.getMyz(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getMyz(), 0.0);
 
         // set new value
         final Matrix m = generateMg();
@@ -594,7 +556,7 @@ public class AngularRateFixerTest {
         final AngularRateFixer fixer = new AngularRateFixer();
 
         // check default value
-        assertEquals(fixer.getMzx(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getMzx(), 0.0);
 
         // set new value
         final Matrix m = generateMg();
@@ -611,7 +573,7 @@ public class AngularRateFixerTest {
         final AngularRateFixer fixer = new AngularRateFixer();
 
         // check default value
-        assertEquals(fixer.getMzy(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getMzy(), 0.0);
 
         // set new value
         final Matrix m = generateMg();
@@ -628,9 +590,9 @@ public class AngularRateFixerTest {
         final AngularRateFixer fixer = new AngularRateFixer();
 
         // check default values
-        assertEquals(fixer.getSx(), 0.0, 0.0);
-        assertEquals(fixer.getSy(), 0.0, 0.0);
-        assertEquals(fixer.getSz(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getSx(), 0.0);
+        assertEquals(0.0, fixer.getSy(), 0.0);
+        assertEquals(0.0, fixer.getSz(), 0.0);
 
         // set new values
         final Matrix m = generateMg();
@@ -641,9 +603,9 @@ public class AngularRateFixerTest {
         fixer.setScalingFactors(sx, sy, sz);
 
         // check
-        assertEquals(fixer.getSx(), sx, 0.0);
-        assertEquals(fixer.getSy(), sy, 0.0);
-        assertEquals(fixer.getSz(), sz, 0.0);
+        assertEquals(sx, fixer.getSx(), 0.0);
+        assertEquals(sy, fixer.getSy(), 0.0);
+        assertEquals(sz, fixer.getSz(), 0.0);
     }
 
     @Test
@@ -651,12 +613,12 @@ public class AngularRateFixerTest {
         final AngularRateFixer fixer = new AngularRateFixer();
 
         // check default values
-        assertEquals(fixer.getMxy(), 0.0, 0.0);
-        assertEquals(fixer.getMxz(), 0.0, 0.0);
-        assertEquals(fixer.getMyx(), 0.0, 0.0);
-        assertEquals(fixer.getMyz(), 0.0, 0.0);
-        assertEquals(fixer.getMzx(), 0.0, 0.0);
-        assertEquals(fixer.getMzy(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getMxy(), 0.0);
+        assertEquals(0.0, fixer.getMxz(), 0.0);
+        assertEquals(0.0, fixer.getMyx(), 0.0);
+        assertEquals(0.0, fixer.getMyz(), 0.0);
+        assertEquals(0.0, fixer.getMzx(), 0.0);
+        assertEquals(0.0, fixer.getMzy(), 0.0);
 
         // set new values
         final Matrix m = generateMg();
@@ -679,20 +641,19 @@ public class AngularRateFixerTest {
     }
 
     @Test
-    public void testSetScalingFactorsAndCrossCouplingErrors()
-            throws AlgebraException {
+    public void testSetScalingFactorsAndCrossCouplingErrors() throws AlgebraException {
         final AngularRateFixer fixer = new AngularRateFixer();
 
         // check default values
-        assertEquals(fixer.getSx(), 0.0, 0.0);
-        assertEquals(fixer.getSy(), 0.0, 0.0);
-        assertEquals(fixer.getSz(), 0.0, 0.0);
-        assertEquals(fixer.getMxy(), 0.0, 0.0);
-        assertEquals(fixer.getMxz(), 0.0, 0.0);
-        assertEquals(fixer.getMyx(), 0.0, 0.0);
-        assertEquals(fixer.getMyz(), 0.0, 0.0);
-        assertEquals(fixer.getMzx(), 0.0, 0.0);
-        assertEquals(fixer.getMzy(), 0.0, 0.0);
+        assertEquals(0.0, fixer.getSx(), 0.0);
+        assertEquals(0.0, fixer.getSy(), 0.0);
+        assertEquals(0.0, fixer.getSz(), 0.0);
+        assertEquals(0.0, fixer.getMxy(), 0.0);
+        assertEquals(0.0, fixer.getMxz(), 0.0);
+        assertEquals(0.0, fixer.getMyx(), 0.0);
+        assertEquals(0.0, fixer.getMyz(), 0.0);
+        assertEquals(0.0, fixer.getMzx(), 0.0);
+        assertEquals(0.0, fixer.getMzy(), 0.0);
 
         // set new values
         final Matrix m = generateMg();
@@ -706,13 +667,12 @@ public class AngularRateFixerTest {
         final double mzx = m.getElementAt(2, 0);
         final double mzy = m.getElementAt(2, 1);
 
-        fixer.setScalingFactorsAndCrossCouplingErrors(sx, sy, sz,
-                mxy, mxz, myx, myz, mzx, mzy);
+        fixer.setScalingFactorsAndCrossCouplingErrors(sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
 
         // check
-        assertEquals(fixer.getSx(), sx, 0.0);
-        assertEquals(fixer.getSy(), sy, 0.0);
-        assertEquals(fixer.getSz(), sz, 0.0);
+        assertEquals(sx, fixer.getSx(), 0.0);
+        assertEquals(sy, fixer.getSy(), 0.0);
+        assertEquals(sz, fixer.getSz(), 0.0);
         assertEquals(mxy, fixer.getMxy(), 0.0);
         assertEquals(mxz, fixer.getMxz(), 0.0);
         assertEquals(myx, fixer.getMyx(), 0.0);
@@ -730,7 +690,7 @@ public class AngularRateFixerTest {
         final Matrix g2 = new Matrix(1, 1);
         fixer.getGDependantCrossBias(g2);
 
-        assertEquals(g1, new Matrix(3, 3));
+        assertEquals(new Matrix(3, 3), g1);
         assertEquals(g1, g2);
 
         // set new values
@@ -747,16 +707,10 @@ public class AngularRateFixerTest {
         assertEquals(g3, g5);
 
         // Force IllegalArgumentException
-        try {
-            fixer.setGDependantCrossBias(new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.setGDependantCrossBias(new Matrix(3, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.setGDependantCrossBias(m1));
+        final var m2 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.setGDependantCrossBias(m2));
     }
 
     @Test
@@ -777,30 +731,24 @@ public class AngularRateFixerTest {
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
-        final AngularSpeedTriad measuredAngularRate = measuredKinematics
-                .getAngularRateTriad();
+        final AngularSpeedTriad measuredAngularRate = measuredKinematics.getAngularRateTriad();
         final AccelerationTriad trueF = trueKinematics.getSpecificForceTriad();
 
         final double[] result = new double[AngularSpeedTriad.COMPONENTS];
@@ -812,11 +760,7 @@ public class AngularRateFixerTest {
         assertEquals(result[2], omegaZ, ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(measuredAngularRate, trueF, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, new double[1]));
     }
 
     @Test
@@ -837,51 +781,39 @@ public class AngularRateFixerTest {
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
-        final AngularSpeedTriad measuredAngularRate = measuredKinematics
-                .getAngularRateTriad();
+        final AngularSpeedTriad measuredAngularRate = measuredKinematics.getAngularRateTriad();
         final AccelerationTriad trueF = trueKinematics.getSpecificForceTriad();
 
         final Matrix result = new Matrix(AngularSpeedTriad.COMPONENTS, 1);
         fixer.fix(measuredAngularRate, trueF, result);
 
         // check
-        assertEquals(result.getElementAtIndex(0), omegaX, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(1), omegaY, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(2), omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result.getElementAtIndex(0), ABSOLUTE_ERROR);
+        assertEquals(omegaY, result.getElementAtIndex(1), ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result.getElementAtIndex(2), ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(measuredAngularRate, trueF, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF, new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, m1));
+        final var m2 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, m2));
     }
 
     @Test
@@ -902,40 +834,34 @@ public class AngularRateFixerTest {
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
-        final AngularSpeedTriad measuredAngularRate = measuredKinematics
-                .getAngularRateTriad();
+        final AngularSpeedTriad measuredAngularRate = measuredKinematics.getAngularRateTriad();
         final AccelerationTriad trueF = trueKinematics.getSpecificForceTriad();
 
         final AngularSpeedTriad result = new AngularSpeedTriad();
         fixer.fix(measuredAngularRate, trueF, result);
 
         // check
-        assertEquals(result.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        assertEquals(result.getValueX(), omegaX, ABSOLUTE_ERROR);
-        assertEquals(result.getValueY(), omegaY, ABSOLUTE_ERROR);
-        assertEquals(result.getValueZ(), omegaZ, ABSOLUTE_ERROR);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, result.getUnit());
+        assertEquals(omegaX, result.getValueX(), ABSOLUTE_ERROR);
+        assertEquals(omegaY, result.getValueY(), ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result.getValueZ(), ABSOLUTE_ERROR);
     }
 
     @Test
@@ -956,47 +882,38 @@ public class AngularRateFixerTest {
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
-        final AngularSpeed measuredAngularRateX = measuredKinematics
-                .getAngularSpeedX();
-        final AngularSpeed measuredAngularSpeedY = measuredKinematics
-                .getAngularSpeedY();
-        final AngularSpeed measuredAngularSpeedZ = measuredKinematics
-                .getAngularSpeedZ();
+        final AngularSpeed measuredAngularRateX = measuredKinematics.getAngularSpeedX();
+        final AngularSpeed measuredAngularSpeedY = measuredKinematics.getAngularSpeedY();
+        final AngularSpeed measuredAngularSpeedZ = measuredKinematics.getAngularSpeedZ();
         final Acceleration trueFx = trueKinematics.getSpecificForceX();
         final Acceleration trueFy = trueKinematics.getSpecificForceY();
         final Acceleration trueFz = trueKinematics.getSpecificForceZ();
 
         final AngularSpeedTriad result = new AngularSpeedTriad();
-        fixer.fix(measuredAngularRateX, measuredAngularSpeedY, measuredAngularSpeedZ,
-                trueFx, trueFy, trueFz, result);
+        fixer.fix(measuredAngularRateX, measuredAngularSpeedY, measuredAngularSpeedZ, trueFx, trueFy, trueFz, result);
 
         // check
-        assertEquals(result.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        assertEquals(result.getValueX(), omegaX, ABSOLUTE_ERROR);
-        assertEquals(result.getValueY(), omegaY, ABSOLUTE_ERROR);
-        assertEquals(result.getValueZ(), omegaZ, ABSOLUTE_ERROR);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, result.getUnit());
+        assertEquals(omegaX, result.getValueX(), ABSOLUTE_ERROR);
+        assertEquals(omegaY, result.getValueY(), ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result.getValueZ(), ABSOLUTE_ERROR);
     }
 
     @Test
@@ -1017,30 +934,24 @@ public class AngularRateFixerTest {
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
-        final double[] measuredAngularRate = measuredKinematics
-                .asAngularRateArray();
+        final double[] measuredAngularRate = measuredKinematics.asAngularRateArray();
         final double[] trueF = trueKinematics.asSpecificForceArray();
 
         final double[] result1 = new double[BodyKinematics.COMPONENTS];
@@ -1055,21 +966,9 @@ public class AngularRateFixerTest {
         assertEquals(result1[2], omegaZ, ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(new double[1], trueF, result1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, new double[1], result1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(new double[1], trueF, result1));
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, new double[1], result1));
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, new double[1]));
     }
 
     @Test
@@ -1090,30 +989,24 @@ public class AngularRateFixerTest {
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
-        final Matrix measuredAngularRate = measuredKinematics
-                .asAngularRateMatrix();
+        final Matrix measuredAngularRate = measuredKinematics.asAngularRateMatrix();
         final Matrix trueF = trueKinematics.asSpecificForceMatrix();
 
         final double[] result1 = new double[BodyKinematics.COMPONENTS];
@@ -1123,38 +1016,20 @@ public class AngularRateFixerTest {
 
         // check
         assertArrayEquals(result1, result2, 0.0);
-        assertEquals(result1[0], omegaX, ABSOLUTE_ERROR);
-        assertEquals(result1[1], omegaY, ABSOLUTE_ERROR);
-        assertEquals(result1[2], omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result1[0], ABSOLUTE_ERROR);
+        assertEquals(omegaY, result1[1], ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result1[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(new Matrix(1, 1), trueF, result1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(new Matrix(3, 3), trueF, result1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate,
-                    new Matrix(1, 1), result1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate,
-                    new Matrix(3, 3), result1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(m1, trueF, result1));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(m2, trueF, result1));
+        final var m3 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, m3, result1));
+        final var m4 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, m4, result1));
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, new double[1]));
     }
 
     @Test
@@ -1175,30 +1050,24 @@ public class AngularRateFixerTest {
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
-        final Matrix measuredAngularRate = measuredKinematics
-                .asAngularRateMatrix();
+        final Matrix measuredAngularRate = measuredKinematics.asAngularRateMatrix();
         final Matrix trueF = trueKinematics.asSpecificForceMatrix();
 
         final Matrix result1 = new Matrix(BodyKinematics.COMPONENTS, 1);
@@ -1208,45 +1077,23 @@ public class AngularRateFixerTest {
 
         // check
         assertEquals(result1, result2);
-        assertEquals(result1.getElementAtIndex(0), omegaX, ABSOLUTE_ERROR);
-        assertEquals(result1.getElementAtIndex(1), omegaY, ABSOLUTE_ERROR);
-        assertEquals(result1.getElementAtIndex(2), omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result1.getElementAtIndex(0), ABSOLUTE_ERROR);
+        assertEquals(omegaY, result1.getElementAtIndex(1), ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result1.getElementAtIndex(2), ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(new Matrix(1, 1), trueF, result1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(new Matrix(3, 3), trueF, result1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate,
-                    new Matrix(1, 1), result1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate,
-                    new Matrix(3, 3), result1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(m1, trueF, result1));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(m2, trueF, result1));
+        final var m3 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, m3, result1));
+        final var m4 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, m4, result1));
+        final var m5 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, m5));
+        final var m6 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, m6));
     }
 
     @Test
@@ -1267,27 +1114,22 @@ public class AngularRateFixerTest {
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
         final double measuredAngularRateX = measuredKinematics.getAngularRateX();
         final double measuredAngularRateY = measuredKinematics.getAngularRateY();
@@ -1302,28 +1144,19 @@ public class AngularRateFixerTest {
 
         final double[] result1 = new double[BodyKinematics.COMPONENTS];
         final double[] result2 = new double[BodyKinematics.COMPONENTS];
-        fixer.fix(
-                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                mg, gg, result1);
-        fixer.fix(
-                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, result2);
+        fixer.fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz,
+                bgx, bgy, bgz, mg, gg, result1);
+        fixer.fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, result2);
 
         // check
         assertArrayEquals(result1, result2, 0.0);
-        assertEquals(result1[0], omegaX, ABSOLUTE_ERROR);
-        assertEquals(result1[1], omegaY, ABSOLUTE_ERROR);
-        assertEquals(result1[2], omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result1[0], ABSOLUTE_ERROR);
+        assertEquals(omegaY, result1[1], ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result1[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRateX, measuredAngularRateY,
+                measuredAngularRateZ, trueFx, trueFy, trueFz, new double[1]));
     }
 
     @Test
@@ -1344,27 +1177,22 @@ public class AngularRateFixerTest {
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
         final double measuredAngularRateX = measuredKinematics.getAngularRateX();
         final double measuredAngularRateY = measuredKinematics.getAngularRateY();
@@ -1379,35 +1207,23 @@ public class AngularRateFixerTest {
 
         final Matrix result1 = new Matrix(BodyKinematics.COMPONENTS, 1);
         final Matrix result2 = new Matrix(BodyKinematics.COMPONENTS, 1);
-        fixer.fix(
-                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, result1);
-        fixer.fix(
-                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                mg, gg, result2);
+        fixer.fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, result1);
+        fixer.fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz,
+                bgx, bgy, bgz, mg, gg, result2);
 
         // check
         assertEquals(result1, result2);
-        assertEquals(result1.getElementAtIndex(0), omegaX, ABSOLUTE_ERROR);
-        assertEquals(result1.getElementAtIndex(1), omegaY, ABSOLUTE_ERROR);
-        assertEquals(result1.getElementAtIndex(2), omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result1.getElementAtIndex(0), ABSOLUTE_ERROR);
+        assertEquals(omegaY, result1.getElementAtIndex(1), ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result1.getElementAtIndex(2), ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRateX, measuredAngularRateY,
+                measuredAngularRateZ, trueFx, trueFy, trueFz, m1));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRateX, measuredAngularRateY,
+                measuredAngularRateZ, trueFx, trueFy, trueFz, m2));
     }
 
     @Test
@@ -1424,94 +1240,51 @@ public class AngularRateFixerTest {
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
-        final double[] measuredAngularRate = measuredKinematics
-                .asAngularRateArray();
+        final double[] measuredAngularRate = measuredKinematics.asAngularRateArray();
         final double[] trueF = trueKinematics.asSpecificForceArray();
 
         final double[] result = new double[BodyKinematics.COMPONENTS];
         fixer.fix(measuredAngularRate, trueF, bg, mg, gg, result);
 
         // check
-        assertEquals(result[0], omegaX, ABSOLUTE_ERROR);
-        assertEquals(result[1], omegaY, ABSOLUTE_ERROR);
-        assertEquals(result[2], omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result[0], ABSOLUTE_ERROR);
+        assertEquals(omegaY, result[1], ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(new double[1], trueF, bg, mg, gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, new double[1], bg, mg, gg,
-                    result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    new Matrix(1, 1), mg, gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    new Matrix(3, 3), mg, gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    bg, new Matrix(1, 3), gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    bg, new Matrix(3, 1), gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    bg, mg, new Matrix(1, 3), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    bg, mg, new Matrix(3, 1), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    bg, mg, gg, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(new double[1], trueF, bg, mg, gg, result));
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, new double[1], bg, mg, gg,
+                result));
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, m1, mg, gg, result));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, m2, mg, gg, result));
+        final var m3 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, bg, m3, gg, result));
+        final var m4 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, bg, m4, gg, result));
+        final var m5 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, bg, mg, m5, result));
+        final var m6 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, bg, mg, m6, result));
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, bg, mg, gg,
+                new double[1]));
     }
 
     @Test
@@ -1528,107 +1301,57 @@ public class AngularRateFixerTest {
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
-        final Matrix measuredAngularRate = measuredKinematics
-                .asAngularRateMatrix();
+        final Matrix measuredAngularRate = measuredKinematics.asAngularRateMatrix();
         final Matrix trueF = trueKinematics.asSpecificForceMatrix();
 
         final double[] result = new double[BodyKinematics.COMPONENTS];
         fixer.fix(measuredAngularRate, trueF, bg, mg, gg, result);
 
         // check
-        assertEquals(result[0], omegaX, ABSOLUTE_ERROR);
-        assertEquals(result[1], omegaY, ABSOLUTE_ERROR);
-        assertEquals(result[2], omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result[0], ABSOLUTE_ERROR);
+        assertEquals(omegaY, result[1], ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(new Matrix(1, 1), trueF,
-                    bg, mg, gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(new Matrix(3, 3), trueF,
-                    bg, mg, gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate,
-                    new Matrix(1, 1), bg, mg, gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate,
-                    new Matrix(3, 3), bg, mg, gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    new Matrix(1, 1), mg, gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    new Matrix(3, 3), mg, gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    bg, new Matrix(1, 3), gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    bg, new Matrix(3, 1), gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    bg, mg, new Matrix(1, 3), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    bg, mg, new Matrix(3, 1), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    bg, mg, gg, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(m1, trueF, bg, mg, gg, result));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(m2, trueF, bg, mg, gg, result));
+        final var m3 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, m3, bg, mg, gg, result));
+        final var m4 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, m4, bg, mg, gg, result));
+        final var m5 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, m5, mg, gg, result));
+        final var m6 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, m6, mg, gg, result));
+        final var m7 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, bg, m7, gg, result));
+        final var m8 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, bg, m8, gg, result));
+        final var m9 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, bg, mg, m9, result));
+        final var m10 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, bg, mg, m10, result));
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF,
+                bg, mg, gg, new double[1]));
     }
 
     @Test
@@ -1645,113 +1368,59 @@ public class AngularRateFixerTest {
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
-        final Matrix measuredAngularRate = measuredKinematics
-                .asAngularRateMatrix();
+        final Matrix measuredAngularRate = measuredKinematics.asAngularRateMatrix();
         final Matrix trueF = trueKinematics.asSpecificForceMatrix();
 
         final Matrix result = new Matrix(BodyKinematics.COMPONENTS, 1);
         fixer.fix(measuredAngularRate, trueF, bg, mg, gg, result);
 
         // check
-        assertEquals(result.getElementAtIndex(0), omegaX, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(1), omegaY, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(2), omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result.getElementAtIndex(0), ABSOLUTE_ERROR);
+        assertEquals(omegaY, result.getElementAtIndex(1), ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result.getElementAtIndex(2), ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(new Matrix(1, 1), trueF,
-                    bg, mg, gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(new Matrix(3, 3), trueF,
-                    bg, mg, gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate,
-                    new Matrix(1, 1), bg, mg, gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate,
-                    new Matrix(3, 3), bg, mg, gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    new Matrix(1, 1), mg, gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    new Matrix(3, 3), mg, gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    bg, new Matrix(1, 3), gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    bg, new Matrix(3, 1), gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    bg, mg, new Matrix(1, 3), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    bg, mg, new Matrix(3, 1), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    bg, mg, gg, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(measuredAngularRate, trueF,
-                    bg, mg, gg, new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(m1, trueF, bg, mg, gg, result));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(m2, trueF, bg, mg, gg, result));
+        final var m3 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, m3, bg, mg, gg, result));
+        final var m4 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, m4, bg, mg, gg, result));
+        final var m5 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, m5, mg, gg, result));
+        final var m6 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, m6, mg, gg, result));
+        final var m7 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, bg, m7, gg, result));
+        final var m8 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, bg, m8, gg, result));
+        final var m9 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, bg, mg, m9, result));
+        final var m10 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, bg, mg, m10, result));
+        final var m11 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, bg, mg, gg, m11));
+        final var m12 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(measuredAngularRate, trueF, bg, mg, gg, m12));
     }
 
     @Test
@@ -1768,27 +1437,22 @@ public class AngularRateFixerTest {
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
         final double measuredAngularRateX = measuredKinematics.getAngularRateX();
         final double measuredAngularRateY = measuredKinematics.getAngularRateY();
@@ -1802,57 +1466,34 @@ public class AngularRateFixerTest {
         final double bgz = bg.getElementAtIndex(2);
 
         final double[] result = new double[BodyKinematics.COMPONENTS];
-        fixer.fix(
-                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                mg, gg, result);
+        fixer.fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz,
+                bgx, bgy, bgz, mg, gg, result);
 
         // check
-        assertEquals(result[0], omegaX, ABSOLUTE_ERROR);
-        assertEquals(result[1], omegaY, ABSOLUTE_ERROR);
-        assertEquals(result[2], omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result[0], ABSOLUTE_ERROR);
+        assertEquals(omegaY, result[1], ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    new Matrix(1, 3), gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    new Matrix(3, 1), gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    mg, new Matrix(1, 3), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    mg, new Matrix(3, 1), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    mg, gg, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                m1, gg, result));
+        final var m2 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                m2, gg, result));
+        final var m3 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                mg, m3, result));
+        final var m4 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                mg, m4, result));
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                mg, gg, new double[1]));
     }
 
     @Test
@@ -1869,27 +1510,22 @@ public class AngularRateFixerTest {
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
         final double measuredAngularRateX = measuredKinematics.getAngularRateX();
         final double measuredAngularRateY = measuredKinematics.getAngularRateY();
@@ -1903,65 +1539,39 @@ public class AngularRateFixerTest {
         final double bgz = bg.getElementAtIndex(2);
 
         final Matrix result = new Matrix(BodyKinematics.COMPONENTS, 1);
-        fixer.fix(
-                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                mg, gg, result);
+        fixer.fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz,
+                bgx, bgy, bgz, mg, gg, result);
 
         // check
-        assertEquals(result.getElementAtIndex(0), omegaX, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(1), omegaY, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(2), omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result.getElementAtIndex(0), ABSOLUTE_ERROR);
+        assertEquals(omegaY, result.getElementAtIndex(1), ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result.getElementAtIndex(2), ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    new Matrix(1, 3), gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    new Matrix(3, 1), gg, result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    mg, new Matrix(1, 3), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    mg, new Matrix(3, 1), result);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    mg, gg, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    mg, gg, new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                m1, gg, result));
+        final var m2 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                m2, gg, result));
+        final var m3 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                mg, m3, result));
+        final var m4 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                mg, m4, result));
+        final var m5 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                mg, gg, m5));
+        final var m6 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                mg, gg, m6));
     }
 
     @Test
@@ -1978,27 +1588,22 @@ public class AngularRateFixerTest {
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
         final double measuredAngularRateX = measuredKinematics.getAngularRateX();
         final double measuredAngularRateY = measuredKinematics.getAngularRateY();
@@ -2032,28 +1637,20 @@ public class AngularRateFixerTest {
         final double g33 = gg.getElementAt(2, 2);
 
         final double[] result = new double[BodyKinematics.COMPONENTS];
-        fixer.fix(
-                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
-                g11, g21, g31, g12, g22, g32, g13, g23, g33, result);
+        fixer.fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz,
+                bgx, bgy, bgz, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, g11, g21, g31, g12, g22, g32, g13, g23, g33,
+                result);
 
         // check
-        assertEquals(result[0], omegaX, ABSOLUTE_ERROR);
-        assertEquals(result[1], omegaY, ABSOLUTE_ERROR);
-        assertEquals(result[2], omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result[0], ABSOLUTE_ERROR);
+        assertEquals(omegaY, result[1], ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
-                    g11, g21, g31, g12, g22, g32, g13, g23, g33,
-                    new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz,
+                bgx, bgy, bgz, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, g11, g21, g31, g12, g22, g32, g13, g23, g33,
+                new double[1]));
     }
 
     @Test
@@ -2070,27 +1667,22 @@ public class AngularRateFixerTest {
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
         final double measuredAngularRateX = measuredKinematics.getAngularRateX();
         final double measuredAngularRateY = measuredKinematics.getAngularRateY();
@@ -2123,40 +1715,25 @@ public class AngularRateFixerTest {
         final double g23 = gg.getElementAt(1, 2);
         final double g33 = gg.getElementAt(2, 2);
 
-        final Matrix result = new Matrix(BodyKinematics.COMPONENTS,
-                1);
-        fixer.fix(
-                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
-                g11, g21, g31, g12, g22, g32, g13, g23, g33, result);
+        final Matrix result = new Matrix(BodyKinematics.COMPONENTS, 1);
+        fixer.fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz,
+                bgx, bgy, bgz, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, g11, g21, g31, g12, g22, g32, g13, g23, g33,
+                result);
 
         // check
-        assertEquals(result.getElementAtIndex(0), omegaX, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(1), omegaY, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(2), omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result.getElementAtIndex(0), ABSOLUTE_ERROR);
+        assertEquals(omegaY, result.getElementAtIndex(1), ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result.getElementAtIndex(2), ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
-                    g11, g21, g31, g12, g22, g32, g13, g23, g33,
-                    new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
-                    g11, g21, g31, g12, g22, g32, g13, g23, g33,
-                    new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, g11, g21, g31, g12, g22, g32, g13, g23, g33, m1));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fix(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, g11, g21, g31, g12, g22, g32, g13, g23, g33, m2));
     }
 
     @Test
@@ -2177,40 +1754,33 @@ public class AngularRateFixerTest {
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
-        final AngularSpeedTriad measuredAngularRate = measuredKinematics
-                .getAngularRateTriad();
+        final AngularSpeedTriad measuredAngularRate = measuredKinematics.getAngularRateTriad();
         final AccelerationTriad trueF = trueKinematics.getSpecificForceTriad();
 
-        final AngularSpeedTriad result = fixer.fixAndReturnNew(
-                measuredAngularRate, trueF);
+        final AngularSpeedTriad result = fixer.fixAndReturnNew(measuredAngularRate, trueF);
 
         // check
-        assertEquals(result.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        assertEquals(result.getValueX(), omegaX, ABSOLUTE_ERROR);
-        assertEquals(result.getValueY(), omegaY, ABSOLUTE_ERROR);
-        assertEquals(result.getValueZ(), omegaZ, ABSOLUTE_ERROR);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, result.getUnit());
+        assertEquals(omegaX, result.getValueX(), ABSOLUTE_ERROR);
+        assertEquals(omegaY, result.getValueY(), ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result.getValueZ(), ABSOLUTE_ERROR);
     }
 
     @Test
@@ -2231,47 +1801,38 @@ public class AngularRateFixerTest {
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
-        final AngularSpeed measuredAngularRateX = measuredKinematics
-                .getAngularSpeedX();
-        final AngularSpeed measuredAngularSpeedY = measuredKinematics
-                .getAngularSpeedY();
-        final AngularSpeed measuredAngularSpeedZ = measuredKinematics
-                .getAngularSpeedZ();
+        final AngularSpeed measuredAngularRateX = measuredKinematics.getAngularSpeedX();
+        final AngularSpeed measuredAngularSpeedY = measuredKinematics.getAngularSpeedY();
+        final AngularSpeed measuredAngularSpeedZ = measuredKinematics.getAngularSpeedZ();
         final Acceleration trueFx = trueKinematics.getSpecificForceX();
         final Acceleration trueFy = trueKinematics.getSpecificForceY();
         final Acceleration trueFz = trueKinematics.getSpecificForceZ();
 
         final AngularSpeedTriad result = fixer.fixAndReturnNew(
-                measuredAngularRateX, measuredAngularSpeedY, measuredAngularSpeedZ,
-                trueFx, trueFy, trueFz);
+                measuredAngularRateX, measuredAngularSpeedY, measuredAngularSpeedZ, trueFx, trueFy, trueFz);
 
         // check
-        assertEquals(result.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-        assertEquals(result.getValueX(), omegaX, ABSOLUTE_ERROR);
-        assertEquals(result.getValueY(), omegaY, ABSOLUTE_ERROR);
-        assertEquals(result.getValueZ(), omegaZ, ABSOLUTE_ERROR);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, result.getUnit());
+        assertEquals(omegaX, result.getValueX(), ABSOLUTE_ERROR);
+        assertEquals(omegaY, result.getValueY(), ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result.getValueZ(), ABSOLUTE_ERROR);
     }
 
     @Test
@@ -2292,55 +1853,38 @@ public class AngularRateFixerTest {
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
-        final double[] measuredAngularRate = measuredKinematics
-                .asAngularRateArray();
+        final double[] measuredAngularRate = measuredKinematics.asAngularRateArray();
         final double[] trueF = trueKinematics.asSpecificForceArray();
 
-        final double[] result1 = fixer.fixAndReturnNew(
-                measuredAngularRate, trueF);
-        final double[] result2 = fixer.fixAndReturnNew(
-                measuredAngularRate, trueF, bg, mg, gg);
+        final double[] result1 = fixer.fixAndReturnNew(measuredAngularRate, trueF);
+        final double[] result2 = fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, mg, gg);
 
         // check
         assertArrayEquals(result1, result2, 0.0);
-        assertEquals(result1[0], omegaX, ABSOLUTE_ERROR);
-        assertEquals(result1[1], omegaY, ABSOLUTE_ERROR);
-        assertEquals(result1[2], omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result1[0], ABSOLUTE_ERROR);
+        assertEquals(omegaY, result1[1], ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result1[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fixAndReturnNew(new double[1], trueF);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(measuredAngularRate,
-                    new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(new double[1], trueF));
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(measuredAngularRate, new double[1]));
     }
 
     @Test
@@ -2361,68 +1905,44 @@ public class AngularRateFixerTest {
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
-        final Matrix measuredAngularRate = measuredKinematics
-                .asAngularRateMatrix();
+        final Matrix measuredAngularRate = measuredKinematics.asAngularRateMatrix();
         final Matrix trueF = trueKinematics.asSpecificForceMatrix();
 
-        final double[] result1 = fixer.fixAndReturnNew(
-                measuredAngularRate, trueF);
-        final double[] result2 = fixer.fixAndReturnNew(
-                measuredAngularRate, trueF, bg, mg, gg);
+        final double[] result1 = fixer.fixAndReturnNew(measuredAngularRate, trueF);
+        final double[] result2 = fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, mg, gg);
 
         // check
         assertArrayEquals(result1, result2, 0.0);
-        assertEquals(result1[0], omegaX, ABSOLUTE_ERROR);
-        assertEquals(result1[1], omegaY, ABSOLUTE_ERROR);
-        assertEquals(result1[2], omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result1[0], ABSOLUTE_ERROR);
+        assertEquals(omegaY, result1[1], ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result1[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fixAndReturnNew(
-                    new Matrix(1, 1), trueF);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(
-                    new Matrix(3, 3), trueF);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(measuredAngularRate,
-                    new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(measuredAngularRate,
-                    new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(m1, trueF));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(m2, trueF));
+        final var m3 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(measuredAngularRate, m3));
+        final var m4 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(measuredAngularRate, m4));
     }
 
     @Test
@@ -2443,68 +1963,44 @@ public class AngularRateFixerTest {
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
-        final Matrix measuredAngularRate = measuredKinematics
-                .asAngularRateMatrix();
+        final Matrix measuredAngularRate = measuredKinematics.asAngularRateMatrix();
         final Matrix trueF = trueKinematics.asSpecificForceMatrix();
 
-        final Matrix result1 = fixer.fixAndReturnNewMatrix(
-                measuredAngularRate, trueF);
-        final Matrix result2 = fixer.fixAndReturnNewMatrix(
-                measuredAngularRate, trueF, bg, mg, gg);
+        final Matrix result1 = fixer.fixAndReturnNewMatrix(measuredAngularRate, trueF);
+        final Matrix result2 = fixer.fixAndReturnNewMatrix(measuredAngularRate, trueF, bg, mg, gg);
 
         // check
         assertEquals(result1, result2);
-        assertEquals(result1.getElementAtIndex(0), omegaX, ABSOLUTE_ERROR);
-        assertEquals(result1.getElementAtIndex(1), omegaY, ABSOLUTE_ERROR);
-        assertEquals(result1.getElementAtIndex(2), omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result1.getElementAtIndex(0), ABSOLUTE_ERROR);
+        assertEquals(omegaY, result1.getElementAtIndex(1), ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result1.getElementAtIndex(2), ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fixAndReturnNewMatrix(
-                    new Matrix(1, 1), trueF);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNewMatrix(
-                    new Matrix(3, 3), trueF);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNewMatrix(
-                    measuredAngularRate, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNewMatrix(measuredAngularRate,
-                    new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(m1, trueF));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(m2, trueF));
+        final var m3 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(measuredAngularRate, m3));
+        final var m4 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(measuredAngularRate, m4));
     }
 
     @Test
@@ -2525,27 +2021,22 @@ public class AngularRateFixerTest {
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
         final double measuredAngularRateX = measuredKinematics.getAngularRateX();
         final double measuredAngularRateY = measuredKinematics.getAngularRateY();
@@ -2558,19 +2049,16 @@ public class AngularRateFixerTest {
         final double bgy = bg.getElementAtIndex(1);
         final double bgz = bg.getElementAtIndex(2);
 
-        final double[] result1 = fixer.fixAndReturnNew(
-                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
+        final double[] result1 = fixer.fixAndReturnNew(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
                 trueFx, trueFy, trueFz);
-        final double[] result2 = fixer.fixAndReturnNew(
-                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                mg, gg);
+        final double[] result2 = fixer.fixAndReturnNew(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
+                trueFx, trueFy, trueFz, bgx, bgy, bgz, mg, gg);
 
         // check
         assertArrayEquals(result1, result2, 0.0);
-        assertEquals(result1[0], omegaX, ABSOLUTE_ERROR);
-        assertEquals(result1[1], omegaY, ABSOLUTE_ERROR);
-        assertEquals(result1[2], omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result1[0], ABSOLUTE_ERROR);
+        assertEquals(omegaY, result1[1], ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result1[2], ABSOLUTE_ERROR);
     }
 
     @Test
@@ -2591,27 +2079,22 @@ public class AngularRateFixerTest {
         fixer.setCrossCouplingErrors(mg);
         fixer.setGDependantCrossBias(gg);
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
         final double measuredAngularRateX = measuredKinematics.getAngularRateX();
         final double measuredAngularRateY = measuredKinematics.getAngularRateY();
@@ -2624,19 +2107,16 @@ public class AngularRateFixerTest {
         final double bgy = bg.getElementAtIndex(1);
         final double bgz = bg.getElementAtIndex(2);
 
-        final Matrix result1 = fixer.fixAndReturnNewMatrix(
-                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz);
-        final Matrix result2 = fixer.fixAndReturnNewMatrix(
-                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                mg, gg);
+        final Matrix result1 = fixer.fixAndReturnNewMatrix(measuredAngularRateX, measuredAngularRateY,
+                measuredAngularRateZ, trueFx, trueFy, trueFz);
+        final Matrix result2 = fixer.fixAndReturnNewMatrix(measuredAngularRateX, measuredAngularRateY,
+                measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz, mg, gg);
 
         // check
         assertEquals(result1, result2);
-        assertEquals(result1.getElementAtIndex(0), omegaX, ABSOLUTE_ERROR);
-        assertEquals(result1.getElementAtIndex(1), omegaY, ABSOLUTE_ERROR);
-        assertEquals(result1.getElementAtIndex(2), omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result1.getElementAtIndex(0), ABSOLUTE_ERROR);
+        assertEquals(omegaY, result1.getElementAtIndex(1), ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result1.getElementAtIndex(2), ABSOLUTE_ERROR);
     }
 
     @Test
@@ -2653,89 +2133,55 @@ public class AngularRateFixerTest {
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
-        final double[] measuredAngularRate = measuredKinematics
-                .asAngularRateArray();
+        final double[] measuredAngularRate = measuredKinematics.asAngularRateArray();
         final double[] trueF = trueKinematics.asSpecificForceArray();
 
-        final double[] result = fixer.fixAndReturnNew(
-                measuredAngularRate, trueF, bg, mg, gg);
+        final double[] result = fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, mg, gg);
 
         // check
-        assertEquals(result[0], omegaX, ABSOLUTE_ERROR);
-        assertEquals(result[1], omegaY, ABSOLUTE_ERROR);
-        assertEquals(result[2], omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result[0], ABSOLUTE_ERROR);
+        assertEquals(omegaY, result[1], ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fixAndReturnNew(new double[1], trueF,
-                    bg, mg, gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(measuredAngularRate,
-                    new double[1], bg, mg, gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(measuredAngularRate,
-                    trueF, new Matrix(1, 1), mg, gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(measuredAngularRate,
-                    trueF, new Matrix(3, 3), mg, gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(measuredAngularRate,
-                    trueF, bg, new Matrix(1, 3), gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(measuredAngularRate,
-                    trueF, bg, new Matrix(3, 1), gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(measuredAngularRate,
-                    trueF, bg, mg, new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(measuredAngularRate,
-                    trueF, bg, mg, new Matrix(3, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(new double[1], trueF, bg, mg, gg));
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(measuredAngularRate, new double[1],
+                bg, mg, gg));
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(measuredAngularRate, trueF, m1, mg,
+                gg));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(measuredAngularRate, trueF, m2, mg,
+                gg));
+        final var m3 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, m3,
+                gg));
+        final var m4 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, m4,
+                gg));
+        final var m5 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, mg,
+                m5));
+        final var m6 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, mg,
+                m6));
     }
 
     @Test
@@ -2752,101 +2198,60 @@ public class AngularRateFixerTest {
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
-        final Matrix measuredAngularRate = measuredKinematics
-                .asAngularRateMatrix();
+        final Matrix measuredAngularRate = measuredKinematics.asAngularRateMatrix();
         final Matrix trueF = trueKinematics.asSpecificForceMatrix();
 
-        final double[] result = fixer.fixAndReturnNew(
-                measuredAngularRate, trueF, bg, mg, gg);
+        final double[] result = fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, mg, gg);
 
         // check
-        assertEquals(result[0], omegaX, ABSOLUTE_ERROR);
-        assertEquals(result[1], omegaY, ABSOLUTE_ERROR);
-        assertEquals(result[2], omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result[0], ABSOLUTE_ERROR);
+        assertEquals(omegaY, result[1], ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fixAndReturnNew(
-                    new Matrix(1, 1), trueF, bg, mg, gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(
-                    new Matrix(3, 3), trueF, bg, mg, gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(measuredAngularRate,
-                    new Matrix(1, 1), bg, mg, gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(measuredAngularRate,
-                    new Matrix(3, 3), bg, mg, gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(measuredAngularRate,
-                    trueF, new Matrix(1, 1), mg, gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(measuredAngularRate,
-                    trueF, new Matrix(3, 3), mg, gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(measuredAngularRate,
-                    trueF, bg, new Matrix(1, 3), gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(measuredAngularRate,
-                    trueF, bg, new Matrix(3, 1), gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(measuredAngularRate,
-                    trueF, bg, mg, new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(measuredAngularRate,
-                    trueF, bg, mg, new Matrix(3, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(m1, trueF, bg, mg, gg));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(m2, trueF, bg, mg, gg));
+        final var m3 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(measuredAngularRate, m3, bg, mg, gg));
+        final var m4 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(measuredAngularRate, m4, bg, mg, gg));
+        final var m5 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(measuredAngularRate, trueF, m5, mg,
+                gg));
+        final var m6 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(measuredAngularRate, trueF, m6, mg,
+                gg));
+        final var m7 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, m7,
+                gg));
+        final var m8 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, m8,
+                gg));
+        final var m9 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, mg,
+                m9));
+        final var m10 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(measuredAngularRate, trueF, bg, mg,
+                m10));
     }
 
     @Test
@@ -2863,104 +2268,62 @@ public class AngularRateFixerTest {
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
-        final Matrix measuredAngularRate = measuredKinematics
-                .asAngularRateMatrix();
+        final Matrix measuredAngularRate = measuredKinematics.asAngularRateMatrix();
         final Matrix trueF = trueKinematics.asSpecificForceMatrix();
 
-        final Matrix result = fixer.fixAndReturnNewMatrix(
-                measuredAngularRate, trueF, bg, mg, gg);
+        final Matrix result = fixer.fixAndReturnNewMatrix(measuredAngularRate, trueF, bg, mg, gg);
 
         // check
-        assertEquals(result.getElementAtIndex(0), omegaX, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(1), omegaY, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(2), omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result.getElementAtIndex(0), ABSOLUTE_ERROR);
+        assertEquals(omegaY, result.getElementAtIndex(1), ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result.getElementAtIndex(2), ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fixAndReturnNewMatrix(
-                    new Matrix(1, 1), trueF,
-                    bg, mg, gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNewMatrix(
-                    new Matrix(3, 3), trueF,
-                    bg, mg, gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNewMatrix(
-                    measuredAngularRate, new Matrix(1, 1),
-                    bg, mg, gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNewMatrix(measuredAngularRate,
-                    new Matrix(3, 3), bg, mg, gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNewMatrix(measuredAngularRate,
-                    trueF, new Matrix(1, 1), mg, gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNewMatrix(measuredAngularRate,
-                    trueF, new Matrix(3, 3), mg, gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNewMatrix(measuredAngularRate,
-                    trueF, bg, new Matrix(1, 3), gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNewMatrix(measuredAngularRate,
-                    trueF, bg, new Matrix(3, 1), gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNewMatrix(measuredAngularRate,
-                    trueF, bg, mg, new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNewMatrix(measuredAngularRate,
-                    trueF, bg, mg, new Matrix(3, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(m1, trueF, bg, mg, gg));
+        final var m2 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(m2, trueF, bg, mg, gg));
+        final var m3 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(measuredAngularRate, m3, bg, mg,
+                gg));
+        final var m4 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(measuredAngularRate, m4, bg, mg,
+                gg));
+        final var m5 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(measuredAngularRate, trueF, m5,
+                mg, gg));
+        final var m6 = new Matrix(3, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(measuredAngularRate, trueF, m6,
+                mg, gg));
+        final var m7 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(measuredAngularRate, trueF, bg,
+                m7, gg));
+        final var m8 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(measuredAngularRate, trueF, bg,
+                m8, gg));
+        final var m9 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(measuredAngularRate, trueF, bg,
+                mg, m9));
+        final var m10 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(measuredAngularRate, trueF, bg,
+                mg, m10));
     }
 
     @Test
@@ -2977,27 +2340,22 @@ public class AngularRateFixerTest {
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
         final double measuredAngularRateX = measuredKinematics.getAngularRateX();
         final double measuredAngularRateY = measuredKinematics.getAngularRateY();
@@ -3010,49 +2368,31 @@ public class AngularRateFixerTest {
         final double bgy = bg.getElementAtIndex(1);
         final double bgz = bg.getElementAtIndex(2);
 
-        final double[] result = fixer.fixAndReturnNew(
-                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                mg, gg);
+        final double[] result = fixer.fixAndReturnNew(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
+                trueFx, trueFy, trueFz, bgx, bgy, bgz, mg, gg);
 
         // check
-        assertEquals(result[0], omegaX, ABSOLUTE_ERROR);
-        assertEquals(result[1], omegaY, ABSOLUTE_ERROR);
-        assertEquals(result[2], omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result[0], ABSOLUTE_ERROR);
+        assertEquals(omegaY, result[1], ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result[2], ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fixAndReturnNew(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    new Matrix(1, 3), gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    new Matrix(3, 1), gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    mg, new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNew(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    mg, new Matrix(3, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                m1, gg));
+        final var m2 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                m2, gg));
+        final var m3 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                mg, m3));
+        final var m4 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNew(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                mg, m4));
     }
 
     @Test
@@ -3069,27 +2409,22 @@ public class AngularRateFixerTest {
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
         final double measuredAngularRateX = measuredKinematics.getAngularRateX();
         final double measuredAngularRateY = measuredKinematics.getAngularRateY();
@@ -3103,48 +2438,31 @@ public class AngularRateFixerTest {
         final double bgz = bg.getElementAtIndex(2);
 
         final Matrix result = fixer.fixAndReturnNewMatrix(
-                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                mg, gg);
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz,
+                bgx, bgy, bgz, mg, gg);
 
         // check
-        assertEquals(result.getElementAtIndex(0), omegaX, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(1), omegaY, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(2), omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result.getElementAtIndex(0), ABSOLUTE_ERROR);
+        assertEquals(omegaY, result.getElementAtIndex(1), ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result.getElementAtIndex(2), ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            fixer.fixAndReturnNewMatrix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    new Matrix(1, 3), gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNewMatrix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    new Matrix(3, 1), gg);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNewMatrix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    mg, new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fixer.fixAndReturnNewMatrix(
-                    measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                    trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                    mg, new Matrix(3, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                m1, gg));
+        final var m2 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                m2, gg));
+        final var m3 = new Matrix(1, 3);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                mg, m3));
+        final var m4 = new Matrix(3, 1);
+        assertThrows(IllegalArgumentException.class, () -> fixer.fixAndReturnNewMatrix(
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                mg, m4));
     }
 
     @Test
@@ -3161,27 +2479,22 @@ public class AngularRateFixerTest {
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
         final double measuredAngularRateX = measuredKinematics.getAngularRateX();
         final double measuredAngularRateY = measuredKinematics.getAngularRateY();
@@ -3214,16 +2527,14 @@ public class AngularRateFixerTest {
         final double g23 = gg.getElementAt(1, 2);
         final double g33 = gg.getElementAt(2, 2);
 
-        final double[] result = fixer.fixAndReturnNew(
-                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
+        final double[] result = fixer.fixAndReturnNew(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
+                trueFx, trueFy, trueFz, bgx, bgy, bgz, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
                 g11, g21, g31, g12, g22, g32, g13, g23, g33);
 
         // check
-        assertEquals(result[0], omegaX, ABSOLUTE_ERROR);
-        assertEquals(result[1], omegaY, ABSOLUTE_ERROR);
-        assertEquals(result[2], omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result[0], ABSOLUTE_ERROR);
+        assertEquals(omegaY, result[1], ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result[2], ABSOLUTE_ERROR);
     }
 
     @Test
@@ -3240,27 +2551,22 @@ public class AngularRateFixerTest {
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
 
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
-                        new Random());
+        final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, new Random());
 
         final double measuredAngularRateX = measuredKinematics.getAngularRateX();
         final double measuredAngularRateY = measuredKinematics.getAngularRateY();
@@ -3294,32 +2600,30 @@ public class AngularRateFixerTest {
         final double g33 = gg.getElementAt(2, 2);
 
         final Matrix result = fixer.fixAndReturnNewMatrix(
-                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, bgx, bgy, bgz,
-                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
-                g11, g21, g31, g12, g22, g32, g13, g23, g33);
+                measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, bgx, bgy, bgz,
+                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, g11, g21, g31, g12, g22, g32, g13, g23, g33);
 
         // check
-        assertEquals(result.getElementAtIndex(0), omegaX, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(1), omegaY, ABSOLUTE_ERROR);
-        assertEquals(result.getElementAtIndex(2), omegaZ, ABSOLUTE_ERROR);
+        assertEquals(omegaX, result.getElementAtIndex(0), ABSOLUTE_ERROR);
+        assertEquals(omegaY, result.getElementAtIndex(1), ABSOLUTE_ERROR);
+        assertEquals(omegaZ, result.getElementAtIndex(2), ABSOLUTE_ERROR);
     }
 
-    private Matrix generateBa() {
+    private static Matrix generateBa() {
         return Matrix.newFromArray(new double[]{
                 900 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 -1300 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 800 * MICRO_G_TO_METERS_PER_SECOND_SQUARED});
     }
 
-    private Matrix generateBg() {
+    private static Matrix generateBg() {
         return Matrix.newFromArray(new double[]{
                 -9 * DEG_TO_RAD / 3600.0,
                 13 * DEG_TO_RAD / 3600.0,
                 -8 * DEG_TO_RAD / 3600.0});
     }
 
-    private Matrix generateMa() throws WrongSizeException {
+    private static Matrix generateMa() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
@@ -3330,7 +2634,7 @@ public class AngularRateFixerTest {
         return result;
     }
 
-    private Matrix generateMg() throws WrongSizeException {
+    private static Matrix generateMg() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
@@ -3341,7 +2645,7 @@ public class AngularRateFixerTest {
         return result;
     }
 
-    private Matrix generateGg() throws WrongSizeException {
+    private static Matrix generateGg() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         final double tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{

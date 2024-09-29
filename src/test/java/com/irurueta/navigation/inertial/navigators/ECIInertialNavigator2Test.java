@@ -61,22 +61,17 @@ public class ECIInertialNavigator2Test {
 
     @Test(expected = InvalidSourceAndDestinationFrameTypeException.class)
     public void testNavigateECiWhenInvalidCoordinateTransformationMatrix()
-            throws InvalidSourceAndDestinationFrameTypeException,
-            InertialNavigatorException {
+            throws InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
 
-        final CoordinateTransformation c = new CoordinateTransformation(
-                FrameType.BODY_FRAME, FrameType.BODY_FRAME);
+        final CoordinateTransformation c = new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.BODY_FRAME);
         final ECIFrame result = new ECIFrame();
-        ECIInertialNavigator2.navigateECI(0.0,
-                0.0, 0.0, 0.0, c,
-                0.0, 0.0, 0.0,
-                0.0, 0.0, 0.0,
+        ECIInertialNavigator2.navigateECI(0.0, 0.0, 0.0, 0.0, c,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                 0.0, 0.0, 0.0, result);
     }
 
     @Test
-    public void testNavigateECI()
-            throws InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException,
+    public void testNavigateECI() throws InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException,
             InertialNavigatorException {
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -88,37 +83,29 @@ public class ECIInertialNavigator2Test {
             final double ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
             final double vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
             final Quaternion q = new Quaternion(roll, pitch, yaw);
 
             final Matrix m = q.asInhomogeneousMatrix();
-            final CoordinateTransformation c = new CoordinateTransformation(
-                    m, FrameType.BODY_FRAME,
+            final CoordinateTransformation c = new CoordinateTransformation(m, FrameType.BODY_FRAME,
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
             final NEDFrame oldNedFrame = new NEDFrame(latitude, longitude, HEIGHT, vn, ve, vd, c);
-            final ECEFFrame oldEcefFrame = NEDtoECEFFrameConverter
-                    .convertNEDtoECEFAndReturnNew(oldNedFrame);
-            final ECIFrame oldFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(
-                    TIME_INTERVAL_SECONDS, oldEcefFrame);
+            final ECEFFrame oldEcefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+            final ECIFrame oldFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(TIME_INTERVAL_SECONDS,
+                    oldEcefFrame);
 
             final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
             final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
             final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-            final double angularRateXDegreesPerSecond = randomizer.nextDouble(
-                    MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateYDegreesPerSecond = randomizer.nextDouble(
-                    MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateZDegreesPerSecond = randomizer.nextDouble(
-                    MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
             final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
@@ -128,18 +115,14 @@ public class ECIInertialNavigator2Test {
             final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
 
-            final double angularRateX = AngularSpeedConverter.convert(
-                    angularSpeedX.getValue().doubleValue(), angularSpeedX.getUnit(),
-                    AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateY = AngularSpeedConverter.convert(
-                    angularSpeedY.getValue().doubleValue(), angularSpeedY.getUnit(),
-                    AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateZ = AngularSpeedConverter.convert(
-                    angularSpeedZ.getValue().doubleValue(), angularSpeedZ.getUnit(),
-                    AngularSpeedUnit.RADIANS_PER_SECOND);
+            final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+                    angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+            final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+                    angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+            final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+                    angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-            final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz,
-                    angularRateX, angularRateY, angularRateZ);
+            final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
             final ECIFrame result1 = new ECIFrame();
             final ECIFrame result2 = new ECIFrame();

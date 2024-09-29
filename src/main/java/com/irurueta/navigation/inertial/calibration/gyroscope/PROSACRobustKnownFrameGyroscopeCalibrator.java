@@ -56,8 +56,7 @@ import java.util.List;
  * - ftrue is ground-truth specific force. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
-public class PROSACRobustKnownFrameGyroscopeCalibrator extends
-        RobustKnownFrameGyroscopeCalibrator {
+public class PROSACRobustKnownFrameGyroscopeCalibrator extends RobustKnownFrameGyroscopeCalibrator {
 
     /**
      * Constant defining default threshold to determine whether samples are inliers or not.
@@ -115,8 +114,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    public PROSACRobustKnownFrameGyroscopeCalibrator(
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
+    public PROSACRobustKnownFrameGyroscopeCalibrator(final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(listener);
     }
 
@@ -127,8 +125,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
      *                     deviations taken at different frames (positions, orientations
      *                     and velocities).
      */
-    public PROSACRobustKnownFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements) {
+    public PROSACRobustKnownFrameGyroscopeCalibrator(final List<StandardDeviationFrameBodyKinematics> measurements) {
         super(measurements);
     }
 
@@ -164,8 +161,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public PROSACRobustKnownFrameGyroscopeCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(commonAxisUsed, listener);
     }
 
@@ -179,8 +175,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public PROSACRobustKnownFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -195,8 +190,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public PROSACRobustKnownFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
     }
@@ -210,8 +204,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
      * @throws IllegalArgumentException if provided quality scores length
      *                                  is smaller than 7 samples.
      */
-    public PROSACRobustKnownFrameGyroscopeCalibrator(
-            final double[] qualityScores) {
+    public PROSACRobustKnownFrameGyroscopeCalibrator(final double[] qualityScores) {
         internalSetQualityScores(qualityScores);
     }
 
@@ -227,8 +220,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
      *                                  is smaller than 7 samples.
      */
     public PROSACRobustKnownFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
+            final double[] qualityScores, final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(listener);
         internalSetQualityScores(qualityScores);
     }
@@ -246,8 +238,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
      *                                  is smaller than 7 samples.
      */
     public PROSACRobustKnownFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements) {
         super(measurements);
         internalSetQualityScores(qualityScores);
     }
@@ -266,8 +257,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
      *                                  is smaller than 7 samples.
      */
     public PROSACRobustKnownFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(measurements, listener);
         internalSetQualityScores(qualityScores);
@@ -284,8 +274,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
      * @throws IllegalArgumentException if provided quality scores length
      *                                  is smaller than 7 samples.
      */
-    public PROSACRobustKnownFrameGyroscopeCalibrator(final double[] qualityScores,
-                                                     final boolean commonAxisUsed) {
+    public PROSACRobustKnownFrameGyroscopeCalibrator(final double[] qualityScores, final boolean commonAxisUsed) {
         super(commonAxisUsed);
         internalSetQualityScores(qualityScores);
     }
@@ -303,8 +292,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
      *                                  is smaller than 7 samples.
      */
     public PROSACRobustKnownFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final boolean commonAxisUsed,
             final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
@@ -325,8 +313,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
      *                                  is smaller than 7 samples.
      */
     public PROSACRobustKnownFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
         internalSetQualityScores(qualityScores);
@@ -348,10 +335,8 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
      *                                  is smaller than 7 samples.
      */
     public PROSACRobustKnownFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
     }
@@ -407,8 +392,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setQualityScores(final double[] qualityScores)
-            throws LockedException {
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -422,8 +406,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
      */
     @Override
     public boolean isReady() {
-        return super.isReady() && mQualityScores != null &&
-                mQualityScores.length == mMeasurements.size();
+        return super.isReady() && mQualityScores != null && mQualityScores.length == mMeasurements.size();
     }
 
     /**
@@ -443,9 +426,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
      *                              false if inliers only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepInliersEnabled(
-            final boolean computeAndKeepInliers)
-            throws LockedException {
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -469,9 +450,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
      *                                false if residuals only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepResidualsEnabled(
-            final boolean computeAndKeepResiduals)
-            throws LockedException {
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -488,8 +467,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
      */
     @SuppressWarnings("DuplicatedCode")
     @Override
-    public void calibrate() throws LockedException, NotReadyException,
-            CalibrationException {
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -499,7 +477,7 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
 
         final PROSACRobustEstimator<PreliminaryResult> innerEstimator =
                 new PROSACRobustEstimator<>(
-                        new PROSACRobustEstimatorListener<PreliminaryResult>() {
+                        new PROSACRobustEstimatorListener<>() {
                             @Override
                             public double[] getQualityScores() {
                                 return mQualityScores;
@@ -522,15 +500,12 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
 
                             @Override
                             public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<PreliminaryResult> solutions) {
+                                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                                 computePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override
-                            public double computeResidual(
-                                    final PreliminaryResult currentEstimation,
-                                    final int i) {
+                            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
                                 return computeError(mMeasurements.get(i), currentEstimation);
                             }
 
@@ -540,36 +515,30 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
                             }
 
                             @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
                             public void onEstimateNextIteration(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final int iteration) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                                 if (mListener != null) {
                                     mListener.onCalibrateNextIteration(
-                                            PROSACRobustKnownFrameGyroscopeCalibrator.this,
-                                            iteration);
+                                            PROSACRobustKnownFrameGyroscopeCalibrator.this, iteration);
                                 }
                             }
 
                             @Override
                             public void onEstimateProgressChange(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final float progress) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                                 if (mListener != null) {
                                     mListener.onCalibrateProgressChange(
-                                            PROSACRobustKnownFrameGyroscopeCalibrator.this,
-                                            progress);
+                                            PROSACRobustKnownFrameGyroscopeCalibrator.this, progress);
                                 }
                             }
                         });
@@ -582,10 +551,8 @@ public class PROSACRobustKnownFrameGyroscopeCalibrator extends
             }
 
             mInliersData = null;
-            innerEstimator.setComputeAndKeepInliersEnabled(
-                    mComputeAndKeepInliers || mRefineResult);
-            innerEstimator.setComputeAndKeepResidualsEnabled(
-                    mComputeAndKeepResiduals || mRefineResult);
+            innerEstimator.setComputeAndKeepInliersEnabled(mComputeAndKeepInliers || mRefineResult);
+            innerEstimator.setComputeAndKeepResidualsEnabled(mComputeAndKeepResiduals || mRefineResult);
             innerEstimator.setConfidence(mConfidence);
             innerEstimator.setMaxIterations(mMaxIterations);
             innerEstimator.setProgressDelta(mProgressDelta);

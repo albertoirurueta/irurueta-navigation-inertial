@@ -137,8 +137,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-    public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final boolean commonAxisUsed) {
+    public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(final boolean commonAxisUsed) {
         super(commonAxisUsed);
     }
 
@@ -149,8 +148,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final double[] initialHardIron) {
+    public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(final double[] initialHardIron) {
         super(initialHardIron);
     }
 
@@ -161,8 +159,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final Matrix initialHardIron) {
+    public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(final Matrix initialHardIron) {
         super(initialHardIron);
     }
 
@@ -209,8 +206,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -227,8 +223,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      * @param listener       listener to handle events raised by this calibrator.
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
     }
@@ -246,8 +241,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      *                                  not have length 3.
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] initialHardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] initialHardIron) {
         super(measurements, initialHardIron);
     }
 
@@ -265,8 +259,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      *                                  not have length 3.
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] initialHardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] initialHardIron,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(measurements, initialHardIron, listener);
     }
@@ -286,8 +279,8 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      *                                  not have length 3.
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] initialHardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] initialHardIron) {
         super(measurements, commonAxisUsed, initialHardIron);
     }
 
@@ -307,8 +300,8 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      *                                  not have length 3.
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] initialHardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] initialHardIron,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, initialHardIron, listener);
     }
@@ -326,8 +319,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      *                                  3x1.
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix initialHardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron) {
         super(measurements, initialHardIron);
     }
 
@@ -345,8 +337,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      *                                  3x1.
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix initialHardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(measurements, initialHardIron, listener);
     }
@@ -366,8 +357,8 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      *                                  3x1.
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron) {
         super(measurements, commonAxisUsed, initialHardIron);
     }
 
@@ -387,8 +378,8 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      *                                  3x1.
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, initialHardIron, listener);
     }
@@ -409,8 +400,8 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      *                                  3x3.
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix initialHardIron, final Matrix initialMm) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron,
+            final Matrix initialMm) {
         super(measurements, initialHardIron, initialMm);
     }
 
@@ -431,9 +422,8 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      *                                  3x3.
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix initialHardIron, final Matrix initialMm,
-            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron,
+            final Matrix initialMm, final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(measurements, initialHardIron, initialMm, listener);
     }
 
@@ -455,9 +445,8 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      *                                  3x3.
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron,
-            final Matrix initialMm) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron, final Matrix initialMm) {
         super(measurements, commonAxisUsed, initialHardIron, initialMm);
     }
 
@@ -480,9 +469,8 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      *                                  3x3.
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron,
-            final Matrix initialMm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron, final Matrix initialMm,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, initialHardIron, initialMm, listener);
     }
@@ -537,8 +525,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final boolean commonAxisUsed) {
+            final Double groundTruthMagneticFluxDensityNorm, final boolean commonAxisUsed) {
         super(groundTruthMagneticFluxDensityNorm, commonAxisUsed);
     }
 
@@ -552,8 +539,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      *                                  not have length 3.
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final double[] initialHardIron) {
+            final Double groundTruthMagneticFluxDensityNorm, final double[] initialHardIron) {
         super(groundTruthMagneticFluxDensityNorm, initialHardIron);
     }
 
@@ -567,8 +553,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      *                                  3x1.
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final Matrix initialHardIron) {
+            final Double groundTruthMagneticFluxDensityNorm, final Matrix initialHardIron) {
         super(groundTruthMagneticFluxDensityNorm, initialHardIron);
     }
 
@@ -585,8 +570,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      *                                  3x3.
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
-            final Double groundTruthMagneticFluxDensityNorm,
-            final Matrix initialHardIron, final Matrix initialMm) {
+            final Double groundTruthMagneticFluxDensityNorm, final Matrix initialHardIron, final Matrix initialMm) {
         super(groundTruthMagneticFluxDensityNorm, initialHardIron, initialMm);
     }
 
@@ -624,8 +608,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);
     }
 
@@ -645,8 +628,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, listener);
     }
@@ -666,8 +648,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] initialHardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] initialHardIron) {
         super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron);
     }
 
@@ -687,8 +668,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final double[] initialHardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final double[] initialHardIron,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, listener);
     }
@@ -710,8 +690,8 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] initialHardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] initialHardIron) {
         super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron);
     }
 
@@ -733,8 +713,8 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final double[] initialHardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final double[] initialHardIron,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron, listener);
     }
@@ -754,8 +734,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix initialHardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron) {
         super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron);
     }
 
@@ -775,8 +754,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix initialHardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, listener);
     }
@@ -798,8 +776,8 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron) {
         super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron);
     }
 
@@ -821,8 +799,8 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron, listener);
     }
@@ -845,8 +823,8 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix initialHardIron, final Matrix initialMm) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron,
+            final Matrix initialMm) {
         super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, initialMm);
     }
 
@@ -869,9 +847,8 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix initialHardIron, final Matrix initialMm,
-            final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final Matrix initialHardIron,
+            final Matrix initialMm, final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, initialMm, listener);
     }
 
@@ -895,9 +872,8 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron,
-            final Matrix initialMm) {
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron, final Matrix initialMm) {
         super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron, initialMm);
     }
 
@@ -922,9 +898,8 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      */
     public LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator(
             final Double groundTruthMagneticFluxDensityNorm,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix initialHardIron,
-            final Matrix initialMm,
+            final List<StandardDeviationBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
+            final Matrix initialHardIron, final Matrix initialMm,
             final RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener listener) {
         super(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron, initialMm, listener);
     }
@@ -1004,7 +979,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
 
         final LMedSRobustEstimator<PreliminaryResult> innerEstimator =
                 new LMedSRobustEstimator<>(
-                        new LMedSRobustEstimatorListener<PreliminaryResult>() {
+                        new LMedSRobustEstimatorListener<>() {
                             @Override
                             public int getTotalSamples() {
                                 return mMeasurements.size();
@@ -1017,17 +992,14 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
 
                             @Override
                             public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<PreliminaryResult> solutions) {
+                                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                                 computePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override
                             public double computeResidual(
-                                    final PreliminaryResult currentEstimation,
-                                    final int i) {
-                                return computeError(mMeasurements.get(i),
-                                        currentEstimation);
+                                    final PreliminaryResult currentEstimation, final int i) {
+                                return computeError(mMeasurements.get(i), currentEstimation);
                             }
 
                             @Override
@@ -1036,21 +1008,18 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
                             }
 
                             @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
                             public void onEstimateNextIteration(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final int iteration) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                                 if (mListener != null) {
                                     mListener.onCalibrateNextIteration(
                                             LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator.this,
@@ -1060,8 +1029,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
 
                             @Override
                             public void onEstimateProgressChange(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final float progress) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                                 if (mListener != null) {
                                     mListener.onCalibrateProgressChange(
                                             LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator.this,
@@ -1111,7 +1079,7 @@ public class LMedSRobustKnownMagneticFluxDensityNormMagnetometerCalibrator exten
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.LMedS;
+        return RobustEstimatorMethod.LMEDS;
     }
 
     /**

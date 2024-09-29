@@ -34,8 +34,7 @@ public interface BodyMagneticFluxDensityBiasEstimatorListener {
      *
      * @param estimator estimator that raised the event.
      */
-    void onBodyMagneticFluxDensityAdded(
-            final BodyMagneticFluxDensityBiasEstimator estimator);
+    void onBodyMagneticFluxDensityAdded(final BodyMagneticFluxDensityBiasEstimator estimator);
 
     /**
      * Called when estimation is reset.

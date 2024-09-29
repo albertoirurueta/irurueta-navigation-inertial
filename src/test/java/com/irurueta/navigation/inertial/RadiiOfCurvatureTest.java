@@ -39,11 +39,11 @@ public class RadiiOfCurvatureTest {
         RadiiOfCurvature radii = new RadiiOfCurvature();
 
         // check default values
-        assertEquals(radii.getRn(), 0.0, 0.0);
-        assertEquals(radii.getRe(), 0.0, 0.0);
+        assertEquals(0.0, radii.getRn(), 0.0);
+        assertEquals(0.0, radii.getRe(), 0.0);
 
-        assertEquals(radii.getRnDistance().getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(radii.getReDistance().getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, radii.getRnDistance().getValue().doubleValue(), 0.0);
+        assertEquals(0.0, radii.getReDistance().getValue().doubleValue(), 0.0);
 
         // test constructor with values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -53,11 +53,11 @@ public class RadiiOfCurvatureTest {
         radii = new RadiiOfCurvature(rn, re);
 
         // check default values
-        assertEquals(radii.getRn(), rn, 0.0);
-        assertEquals(radii.getRe(), re, 0.0);
+        assertEquals(rn, radii.getRn(), 0.0);
+        assertEquals(re, radii.getRe(), 0.0);
 
-        assertEquals(radii.getRnDistance().getValue().doubleValue(), rn, 0.0);
-        assertEquals(radii.getReDistance().getValue().doubleValue(), re, 0.0);
+        assertEquals(rn, radii.getRnDistance().getValue().doubleValue(), 0.0);
+        assertEquals(re, radii.getReDistance().getValue().doubleValue(), 0.0);
 
         // test constructor with distance values
         final Distance rnDistance = new Distance(rn, DistanceUnit.METER);
@@ -66,18 +66,18 @@ public class RadiiOfCurvatureTest {
         radii = new RadiiOfCurvature(rnDistance, reDistance);
 
         // check default values
-        assertEquals(radii.getRn(), rn, 0.0);
-        assertEquals(radii.getRe(), re, 0.0);
+        assertEquals(rn, radii.getRn(), 0.0);
+        assertEquals(re, radii.getRe(), 0.0);
 
-        assertEquals(radii.getRnDistance().getValue().doubleValue(), rn, 0.0);
-        assertEquals(radii.getReDistance().getValue().doubleValue(), re, 0.0);
+        assertEquals(rn, radii.getRnDistance().getValue().doubleValue(), 0.0);
+        assertEquals(re, radii.getReDistance().getValue().doubleValue(), 0.0);
 
         // test constructor from another instance
         final RadiiOfCurvature radii2 = new RadiiOfCurvature(radii);
 
         // check default values
-        assertEquals(radii2.getRn(), rn, 0.0);
-        assertEquals(radii2.getRe(), re, 0.0);
+        assertEquals(rn, radii2.getRn(), 0.0);
+        assertEquals(re, radii2.getRe(), 0.0);
     }
 
     @Test
@@ -88,13 +88,13 @@ public class RadiiOfCurvatureTest {
         final RadiiOfCurvature radii = new RadiiOfCurvature();
 
         // check default value
-        assertEquals(radii.getRn(), 0.0, 0.0);
+        assertEquals(0.0, radii.getRn(), 0.0);
 
         // set new value
         radii.setRn(rn);
 
         // check
-        assertEquals(radii.getRn(), rn, 0.0);
+        assertEquals(rn, radii.getRn(), 0.0);
     }
 
     @Test
@@ -105,13 +105,13 @@ public class RadiiOfCurvatureTest {
         final RadiiOfCurvature radii = new RadiiOfCurvature();
 
         // check default value
-        assertEquals(radii.getRe(), 0.0, 0.0);
+        assertEquals(0.0, radii.getRe(), 0.0);
 
         // set new value
         radii.setRe(re);
 
         // check
-        assertEquals(radii.getRe(), re, 0.0);
+        assertEquals(re, radii.getRe(), 0.0);
     }
 
     @Test
@@ -123,15 +123,15 @@ public class RadiiOfCurvatureTest {
         final RadiiOfCurvature radii = new RadiiOfCurvature();
 
         // check default values
-        assertEquals(radii.getRn(), 0.0, 0.0);
-        assertEquals(radii.getRe(), 0.0, 0.0);
+        assertEquals(0.0, radii.getRn(), 0.0);
+        assertEquals(0.0, radii.getRe(), 0.0);
 
         // set values
         radii.setValues(rn, re);
 
         // check
-        assertEquals(radii.getRn(), rn, 0.0);
-        assertEquals(radii.getRe(), re, 0.0);
+        assertEquals(rn, radii.getRn(), 0.0);
+        assertEquals(re, radii.getRe(), 0.0);
     }
 
     @Test
@@ -142,7 +142,7 @@ public class RadiiOfCurvatureTest {
         final RadiiOfCurvature radii = new RadiiOfCurvature();
 
         // check default value
-        assertEquals(radii.getRnDistance().getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, radii.getRnDistance().getValue().doubleValue(), 0.0);
 
         // set new value
         final Distance rnDistance1 = new Distance(rn, DistanceUnit.METER);
@@ -165,7 +165,7 @@ public class RadiiOfCurvatureTest {
         final RadiiOfCurvature radii = new RadiiOfCurvature();
 
         // check default value
-        assertEquals(radii.getReDistance().getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, radii.getReDistance().getValue().doubleValue(), 0.0);
 
         // set new value
         final Distance reDistance1 = new Distance(re, DistanceUnit.METER);
@@ -189,8 +189,8 @@ public class RadiiOfCurvatureTest {
         final RadiiOfCurvature radii = new RadiiOfCurvature();
 
         // check default values
-        assertEquals(radii.getRnDistance().getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(radii.getReDistance().getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(0.0, radii.getRnDistance().getValue().doubleValue(), 0.0);
+        assertEquals(0.0, radii.getReDistance().getValue().doubleValue(), 0.0);
 
         // set values
         final Distance rnDistance = new Distance(rn, DistanceUnit.METER);
@@ -198,8 +198,8 @@ public class RadiiOfCurvatureTest {
         radii.setValues(rnDistance, reDistance);
 
         // check
-        assertEquals(radii.getRn(), rn, 0.0);
-        assertEquals(radii.getRe(), re, 0.0);
+        assertEquals(rn, radii.getRn(), 0.0);
+        assertEquals(re, radii.getRe(), 0.0);
     }
 
     @Test
@@ -258,17 +258,15 @@ public class RadiiOfCurvatureTest {
         final RadiiOfCurvature radii2 = new RadiiOfCurvature(rn, re);
         final RadiiOfCurvature radii3 = new RadiiOfCurvature();
 
-        //noinspection ConstantConditions,SimplifiableJUnitAssertion
-        assertTrue(radii1.equals((Object) radii1));
+        //noinspection EqualsWithItself
+        assertEquals(radii1, radii1);
         //noinspection EqualsWithItself
         assertTrue(radii1.equals(radii1));
         assertTrue(radii1.equals(radii2));
         assertFalse(radii1.equals(radii3));
-        //noinspection ConstantConditions,SimplifiableJUnitAssertion
-        assertFalse(radii1.equals((Object) null));
+        assertNotEquals(radii1, null);
         assertFalse(radii1.equals(null));
-        //noinspection SimplifiableJUnitAssertion
-        assertFalse(radii1.equals(new Object()));
+        assertNotEquals(radii1, new Object());
     }
 
     @Test

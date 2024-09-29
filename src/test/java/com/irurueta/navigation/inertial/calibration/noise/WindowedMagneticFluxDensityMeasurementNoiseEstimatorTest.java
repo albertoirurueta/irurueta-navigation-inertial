@@ -75,10 +75,8 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
     private static final long END_TIMESTAMP_MILLIS;
 
     static {
-        START_CALENDAR.set(2020, Calendar.JANUARY, 1,
-                0, 0, 0);
-        END_CALENDAR.set(2025, Calendar.DECEMBER, 31,
-                23, 59, 59);
+        START_CALENDAR.set(2020, Calendar.JANUARY, 1, 0, 0, 0);
+        END_CALENDAR.set(2025, Calendar.DECEMBER, 31, 23, 59, 59);
 
         START_TIMESTAMP_MILLIS = START_CALENDAR.getTimeInMillis();
         END_TIMESTAMP_MILLIS = END_CALENDAR.getTimeInMillis();
@@ -117,8 +115,7 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
         final MagneticFluxDensity avg1 = estimator.getAvgAsMeasurement();
         assertEquals(0.0, avg1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, avg1.getUnit());
-        final MagneticFluxDensity avg2 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity avg2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgAsMeasurement(avg2);
         assertEquals(avg1, avg2);
         assertEquals(0.0, estimator.getVariance(), 0.0);
@@ -126,8 +123,7 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
         final MagneticFluxDensity std1 = estimator.getStandardDeviationAsMeasurement();
         assertEquals(0.0, std1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, std1.getUnit());
-        final MagneticFluxDensity std2 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity std2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationAsMeasurement(std2);
         assertEquals(std1, std2);
         assertEquals(0.0, estimator.getPsd(), 0.0);
@@ -167,8 +163,7 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
         final MagneticFluxDensity avg1 = estimator.getAvgAsMeasurement();
         assertEquals(0.0, avg1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, avg1.getUnit());
-        final MagneticFluxDensity avg2 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity avg2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgAsMeasurement(avg2);
         assertEquals(avg1, avg2);
         assertEquals(0.0, estimator.getVariance(), 0.0);
@@ -176,8 +171,7 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
         final MagneticFluxDensity std1 = estimator.getStandardDeviationAsMeasurement();
         assertEquals(0.0, std1.getValue().doubleValue(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, std1.getUnit());
-        final MagneticFluxDensity std2 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity std2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationAsMeasurement(std2);
         assertEquals(std1, std2);
         assertEquals(0.0, estimator.getPsd(), 0.0);
@@ -205,16 +199,8 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
         assertEquals(3, estimator.getWindowSize());
 
         // force IllegalArgumentException
-        try {
-            estimator.setWindowSize(1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator.setWindowSize(2);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setWindowSize(1));
+        assertThrows(IllegalArgumentException.class, () -> estimator.setWindowSize(2));
     }
 
     @Test
@@ -233,11 +219,7 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
         assertEquals(1.0, estimator.getTimeInterval(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            estimator.setTimeInterval(-1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setTimeInterval(-1.0));
     }
 
     @Test
@@ -280,18 +262,16 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
     }
 
     @Test
-    public void testAddMeasurementAndProcessAndThenReset1()
-            throws LockedException, IOException {
+    public void testAddMeasurementAndProcessAndThenReset1() throws LockedException, IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
         final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
         final Matrix mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, MAGNETOMETER_NOISE_STD);
+        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+                MAGNETOMETER_NOISE_STD);
 
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
@@ -301,14 +281,14 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
                 new WindowedMagneticFluxDensityMeasurementNoiseEstimator(this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mMeasurementAdded, 0);
-        assertEquals(mWindowFilled, 0);
-        assertEquals(mReset, 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mMeasurementAdded);
+        assertEquals(0, mWindowFilled);
+        assertEquals(0, mReset);
         assertFalse(estimator.isWindowFilled());
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
-        assertEquals(estimator.getNumberOfAddedSamples(), 0);
-        assertEquals(estimator.getNumberOfSamplesInWindow(), 0);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
+        assertEquals(0, estimator.getNumberOfAddedSamples());
+        assertEquals(0, estimator.getNumberOfSamplesInWindow());
         assertNull(estimator.getFirstWindowedMeasurementValue());
         assertNull(estimator.getFirstWindowedMeasurement());
         assertFalse(estimator.getFirstWindowedMeasurement(null));
@@ -319,48 +299,44 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
 
         final int windowSize = estimator.getWindowSize();
         final double timeInterval = estimator.getTimeInterval();
-        final MagneticFluxDensity firstMeasurement = new MagneticFluxDensity(
-                0.0, MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity firstMeasurement2 = new MagneticFluxDensity(
-                0.0, MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity lastMeasurement = new MagneticFluxDensity(
-                0.0, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity firstMeasurement = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity firstMeasurement2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity lastMeasurement = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         MagneticFluxDensity measurement = null;
         double value;
         double avg = 0.0;
         final List<MagneticFluxDensity> measurements = new ArrayList<>();
         for (int i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedMeasurement(firstMeasurement)) {
-                assertEquals(estimator.getFirstWindowedMeasurement(), firstMeasurement);
-                assertEquals(estimator.getFirstWindowedMeasurementValue(),
-                        firstMeasurement.getValue().doubleValue(), 0.0);
+                assertEquals(firstMeasurement, estimator.getFirstWindowedMeasurement());
+                assertEquals(firstMeasurement.getValue().doubleValue(), estimator.getFirstWindowedMeasurementValue(),
+                        0.0);
             }
             if (estimator.getLastWindowedMeasurement(lastMeasurement)) {
-                assertEquals(estimator.getLastWindowedMeasurement(), lastMeasurement);
-                assertEquals(estimator.getLastWindowedMeasurementValue(),
-                        lastMeasurement.getValue().doubleValue(), 0.0);
+                assertEquals(lastMeasurement, estimator.getLastWindowedMeasurement());
+                assertEquals(estimator.getLastWindowedMeasurementValue(), lastMeasurement.getValue().doubleValue(),
+                        0.0);
                 assertEquals(lastMeasurement, measurement);
             }
 
-            measurement = generateMeasurement(hardIron.getBuffer(), mm, wmmEstimator,
-                    noiseRandomizer, timestamp, position, cnb);
+            measurement = generateMeasurement(hardIron.getBuffer(), mm, wmmEstimator, noiseRandomizer, timestamp,
+                    position, cnb);
 
             if (i == 0) {
                 firstMeasurement2.setValue(measurement.getValue());
                 firstMeasurement2.setUnit(measurement.getUnit());
             }
 
-            measurements.add(new MagneticFluxDensity(
-                    measurement.getValue(), measurement.getUnit()));
+            measurements.add(new MagneticFluxDensity(measurement.getValue(), measurement.getUnit()));
             value = measurement.getValue().doubleValue();
 
             estimator.addMeasurementAndProcess(value);
 
             assertTrue(estimator.getLastWindowedMeasurement(lastMeasurement));
             assertEquals(lastMeasurement, measurement);
-            assertEquals(estimator.getNumberOfProcessedSamples(), i + 1);
-            assertEquals(estimator.getNumberOfAddedSamples(), i + 1);
-            assertEquals(estimator.getNumberOfSamplesInWindow(), i + 1);
+            assertEquals(i + 1, estimator.getNumberOfProcessedSamples());
+            assertEquals(i + 1, estimator.getNumberOfAddedSamples());
+            assertEquals(i + 1, estimator.getNumberOfSamplesInWindow());
             assertFalse(estimator.isRunning());
 
             avg += value;
@@ -368,7 +344,7 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
 
         avg /= windowSize;
 
-        double var = 0.0;
+        double v = 0.0;
         for (int i = 0; i < windowSize; i++) {
             measurement.setValue(measurements.get(i).getValue());
             measurement.setUnit(measurements.get(i).getUnit());
@@ -377,35 +353,33 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
 
             final double diff = value - avg;
 
-            var += diff * diff;
+            v += diff * diff;
         }
 
-        var /= (windowSize - 1);
+        v /= (windowSize - 1);
 
-        final double std = Math.sqrt(var);
+        final double std = Math.sqrt(v);
 
         assertEquals(avg, estimator.getAvg(), ABSOLUTE_ERROR);
 
         final MagneticFluxDensity a1 = estimator.getAvgAsMeasurement();
         assertEquals(avg, a1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, a1.getUnit());
-        final MagneticFluxDensity a2 = new MagneticFluxDensity(
-                0.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity a2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgAsMeasurement(a2);
         assertEquals(a1, a2);
 
-        assertEquals(var, estimator.getVariance(), ABSOLUTE_ERROR);
+        assertEquals(v, estimator.getVariance(), ABSOLUTE_ERROR);
         assertEquals(std, estimator.getStandardDeviation(), ABSOLUTE_ERROR);
 
         final MagneticFluxDensity std1 = estimator.getStandardDeviationAsMeasurement();
         assertEquals(std, std1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, std1.getUnit());
-        final MagneticFluxDensity std2 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity std2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationAsMeasurement(std2);
         assertEquals(std1, std2);
 
-        final double psd = var * timeInterval;
+        final double psd = v * timeInterval;
         assertEquals(psd, estimator.getPsd(), ABSOLUTE_ERROR);
 
         final double rootPsd = Math.sqrt(psd);
@@ -417,14 +391,14 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(mStart, 1);
-        assertEquals(mMeasurementAdded, windowSize);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize, mMeasurementAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
         // if we add more measurements, window filled is not called again
-        measurement = generateMeasurement(hardIron.getBuffer(), mm, wmmEstimator,
-                noiseRandomizer, timestamp, position, cnb);
+        measurement = generateMeasurement(hardIron.getBuffer(), mm, wmmEstimator, noiseRandomizer, timestamp, position,
+                cnb);
 
         measurements.add(new MagneticFluxDensity(measurement.getValue(), measurement.getUnit()));
 
@@ -436,19 +410,19 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
         assertEquals(windowSize, estimator.getNumberOfSamplesInWindow());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(measurements.size(), windowSize + 1);
+        assertEquals(windowSize + 1, measurements.size());
         assertEquals(measurements.get(1), estimator.getFirstWindowedMeasurement());
         assertEquals(measurements.get(windowSize), estimator.getLastWindowedMeasurement());
 
-        assertEquals(mStart, 1);
-        assertEquals(mMeasurementAdded, windowSize + 1);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize + 1, mMeasurementAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(mReset, 1);
+        assertEquals(1, mReset);
 
         assertNull(estimator.getFirstWindowedMeasurementValue());
         assertNull(estimator.getFirstWindowedMeasurement());
@@ -469,18 +443,16 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
     }
 
     @Test
-    public void testAddMeasurementAndProcessAndThenReset2()
-            throws LockedException, IOException {
+    public void testAddMeasurementAndProcessAndThenReset2() throws LockedException, IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
         final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
         final Matrix mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, MAGNETOMETER_NOISE_STD);
+        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+                MAGNETOMETER_NOISE_STD);
 
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
@@ -490,14 +462,14 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
                 new WindowedMagneticFluxDensityMeasurementNoiseEstimator(this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mMeasurementAdded, 0);
-        assertEquals(mWindowFilled, 0);
-        assertEquals(mReset, 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mMeasurementAdded);
+        assertEquals(0, mWindowFilled);
+        assertEquals(0, mReset);
         assertFalse(estimator.isWindowFilled());
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
-        assertEquals(estimator.getNumberOfAddedSamples(), 0);
-        assertEquals(estimator.getNumberOfSamplesInWindow(), 0);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
+        assertEquals(0, estimator.getNumberOfAddedSamples());
+        assertEquals(0, estimator.getNumberOfSamplesInWindow());
         assertNull(estimator.getFirstWindowedMeasurementValue());
         assertNull(estimator.getFirstWindowedMeasurement());
         assertFalse(estimator.getFirstWindowedMeasurement(null));
@@ -508,48 +480,44 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
 
         final int windowSize = estimator.getWindowSize();
         final double timeInterval = estimator.getTimeInterval();
-        final MagneticFluxDensity firstMeasurement = new MagneticFluxDensity(
-                0.0, MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity firstMeasurement2 = new MagneticFluxDensity(
-                0.0, MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity lastMeasurement = new MagneticFluxDensity(
-                0.0, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity firstMeasurement = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity firstMeasurement2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity lastMeasurement = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         MagneticFluxDensity measurement = null;
         double value;
         double avg = 0.0;
         final List<MagneticFluxDensity> measurements = new ArrayList<>();
         for (int i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedMeasurement(firstMeasurement)) {
-                assertEquals(estimator.getFirstWindowedMeasurement(), firstMeasurement);
-                assertEquals(estimator.getFirstWindowedMeasurementValue(),
-                        firstMeasurement.getValue().doubleValue(), 0.0);
+                assertEquals(firstMeasurement, estimator.getFirstWindowedMeasurement());
+                assertEquals(firstMeasurement.getValue().doubleValue(), estimator.getFirstWindowedMeasurementValue(),
+                        0.0);
             }
             if (estimator.getLastWindowedMeasurement(lastMeasurement)) {
-                assertEquals(estimator.getLastWindowedMeasurement(), lastMeasurement);
-                assertEquals(estimator.getLastWindowedMeasurementValue(),
-                        lastMeasurement.getValue().doubleValue(), 0.0);
+                assertEquals(lastMeasurement, estimator.getLastWindowedMeasurement());
+                assertEquals(lastMeasurement.getValue().doubleValue(), estimator.getLastWindowedMeasurementValue(),
+                        0.0);
                 assertEquals(lastMeasurement, measurement);
             }
 
-            measurement = generateMeasurement(hardIron.getBuffer(), mm, wmmEstimator,
-                    noiseRandomizer, timestamp, position, cnb);
+            measurement = generateMeasurement(hardIron.getBuffer(), mm, wmmEstimator, noiseRandomizer, timestamp,
+                    position, cnb);
 
             if (i == 0) {
                 firstMeasurement2.setValue(measurement.getValue());
                 firstMeasurement2.setUnit(measurement.getUnit());
             }
 
-            measurements.add(new MagneticFluxDensity(
-                    measurement.getValue(), measurement.getUnit()));
+            measurements.add(new MagneticFluxDensity(measurement.getValue(), measurement.getUnit()));
             value = measurement.getValue().doubleValue();
 
             estimator.addMeasurementAndProcess(measurement);
 
             assertTrue(estimator.getLastWindowedMeasurement(lastMeasurement));
             assertEquals(lastMeasurement, measurement);
-            assertEquals(estimator.getNumberOfProcessedSamples(), i + 1);
-            assertEquals(estimator.getNumberOfAddedSamples(), i + 1);
-            assertEquals(estimator.getNumberOfSamplesInWindow(), i + 1);
+            assertEquals(i + 1, estimator.getNumberOfProcessedSamples());
+            assertEquals(i + 1, estimator.getNumberOfAddedSamples());
+            assertEquals(i + 1, estimator.getNumberOfSamplesInWindow());
             assertFalse(estimator.isRunning());
 
             avg += value;
@@ -557,7 +525,7 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
 
         avg /= windowSize;
 
-        double var = 0.0;
+        double v = 0.0;
         for (int i = 0; i < windowSize; i++) {
             measurement.setValue(measurements.get(i).getValue());
             measurement.setUnit(measurements.get(i).getUnit());
@@ -566,35 +534,33 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
 
             final double diff = value - avg;
 
-            var += diff * diff;
+            v += diff * diff;
         }
 
-        var /= (windowSize - 1);
+        v /= (windowSize - 1);
 
-        final double std = Math.sqrt(var);
+        final double std = Math.sqrt(v);
 
         assertEquals(avg, estimator.getAvg(), ABSOLUTE_ERROR);
 
         final MagneticFluxDensity a1 = estimator.getAvgAsMeasurement();
         assertEquals(avg, a1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, a1.getUnit());
-        final MagneticFluxDensity a2 = new MagneticFluxDensity(
-                0.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity a2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getAvgAsMeasurement(a2);
         assertEquals(a1, a2);
 
-        assertEquals(var, estimator.getVariance(), ABSOLUTE_ERROR);
+        assertEquals(v, estimator.getVariance(), ABSOLUTE_ERROR);
         assertEquals(std, estimator.getStandardDeviation(), ABSOLUTE_ERROR);
 
         final MagneticFluxDensity std1 = estimator.getStandardDeviationAsMeasurement();
         assertEquals(std, std1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(MagneticFluxDensityUnit.TESLA, std1.getUnit());
-        final MagneticFluxDensity std2 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity std2 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         estimator.getStandardDeviationAsMeasurement(std2);
         assertEquals(std1, std2);
 
-        final double psd = var * timeInterval;
+        final double psd = v * timeInterval;
         assertEquals(psd, estimator.getPsd(), ABSOLUTE_ERROR);
 
         final double rootPsd = Math.sqrt(psd);
@@ -606,14 +572,14 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(mStart, 1);
-        assertEquals(mMeasurementAdded, windowSize);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize, mMeasurementAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
         // if we add more measurements, window filled is not called again
-        measurement = generateMeasurement(hardIron.getBuffer(), mm, wmmEstimator,
-                noiseRandomizer, timestamp, position, cnb);
+        measurement = generateMeasurement(hardIron.getBuffer(), mm, wmmEstimator, noiseRandomizer, timestamp, position,
+                cnb);
 
         measurements.add(new MagneticFluxDensity(measurement.getValue(), measurement.getUnit()));
 
@@ -624,19 +590,19 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
         assertEquals(windowSize, estimator.getNumberOfSamplesInWindow());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(measurements.size(), windowSize + 1);
+        assertEquals(windowSize + 1, measurements.size());
         assertEquals(measurements.get(1), estimator.getFirstWindowedMeasurement());
         assertEquals(measurements.get(windowSize), estimator.getLastWindowedMeasurement());
 
-        assertEquals(mStart, 1);
-        assertEquals(mMeasurementAdded, windowSize + 1);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize + 1, mMeasurementAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(mReset, 1);
+        assertEquals(1, mReset);
 
         assertNull(estimator.getFirstWindowedMeasurementValue());
         assertNull(estimator.getFirstWindowedMeasurement());
@@ -659,15 +625,14 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
     @Test
     public void testAddMeasurement1() throws LockedException, IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
 
         final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
         final Matrix mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, MAGNETOMETER_NOISE_STD);
+        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(new Random(), 0.0,
+                MAGNETOMETER_NOISE_STD);
 
         final NEDPosition position = createPosition(randomizer);
         final CoordinateTransformation cnb = generateBodyC(randomizer);
@@ -677,14 +642,14 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
                 new WindowedMagneticFluxDensityMeasurementNoiseEstimator(this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mMeasurementAdded, 0);
-        assertEquals(mWindowFilled, 0);
-        assertEquals(mReset, 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mMeasurementAdded);
+        assertEquals(0, mWindowFilled);
+        assertEquals(0, mReset);
         assertFalse(estimator.isWindowFilled());
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
-        assertEquals(estimator.getNumberOfAddedSamples(), 0);
-        assertEquals(estimator.getNumberOfSamplesInWindow(), 0);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
+        assertEquals(0, estimator.getNumberOfAddedSamples());
+        assertEquals(0, estimator.getNumberOfSamplesInWindow());
         assertNull(estimator.getFirstWindowedMeasurementValue());
         assertNull(estimator.getFirstWindowedMeasurement());
         assertFalse(estimator.getFirstWindowedMeasurement(null));
@@ -694,66 +659,60 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
         assertFalse(estimator.isRunning());
 
         final int windowSize = estimator.getWindowSize();
-        final MagneticFluxDensity firstMeasurement = new MagneticFluxDensity(
-                0.0, MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity firstMeasurement2 = new MagneticFluxDensity(
-                0.0, MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity lastMeasurement = new MagneticFluxDensity(
-                0.0, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity firstMeasurement = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity firstMeasurement2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity lastMeasurement = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         MagneticFluxDensity measurement = null;
         double value;
         final List<MagneticFluxDensity> measurements = new ArrayList<>();
         for (int i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedMeasurement(firstMeasurement)) {
-                assertEquals(estimator.getFirstWindowedMeasurement(), firstMeasurement);
-                assertEquals(estimator.getFirstWindowedMeasurementValue(),
-                        firstMeasurement.getValue().doubleValue(), 0.0);
+                assertEquals(firstMeasurement, estimator.getFirstWindowedMeasurement());
+                assertEquals(firstMeasurement.getValue().doubleValue(), estimator.getFirstWindowedMeasurementValue(),
+                        0.0);
             }
             if (estimator.getLastWindowedMeasurement(lastMeasurement)) {
-                assertEquals(estimator.getLastWindowedMeasurement(), lastMeasurement);
-                assertEquals(estimator.getLastWindowedMeasurementValue(),
-                        lastMeasurement.getValue().doubleValue(), 0.0);
+                assertEquals(lastMeasurement, estimator.getLastWindowedMeasurement());
+                assertEquals(lastMeasurement.getValue().doubleValue(), estimator.getLastWindowedMeasurementValue(),
+                        0.0);
                 assertEquals(lastMeasurement, measurement);
             }
 
-            measurement = generateMeasurement(hardIron.getBuffer(), mm, wmmEstimator,
-                    noiseRandomizer, timestamp, position, cnb);
+            measurement = generateMeasurement(hardIron.getBuffer(), mm, wmmEstimator, noiseRandomizer, timestamp,
+                    position, cnb);
 
             if (i == 0) {
                 firstMeasurement2.setValue(measurement.getValue());
                 firstMeasurement2.setUnit(measurement.getUnit());
             }
 
-            measurements.add(new MagneticFluxDensity(
-                    measurement.getValue(), measurement.getUnit()));
+            measurements.add(new MagneticFluxDensity(measurement.getValue(), measurement.getUnit()));
             value = measurement.getValue().doubleValue();
 
             estimator.addMeasurement(value);
 
             assertTrue(estimator.getLastWindowedMeasurement(lastMeasurement));
             assertEquals(lastMeasurement, measurement);
-            assertEquals(estimator.getNumberOfProcessedSamples(), 0);
-            assertEquals(estimator.getNumberOfAddedSamples(), i + 1);
-            assertEquals(estimator.getNumberOfSamplesInWindow(), i + 1);
+            assertEquals(0, estimator.getNumberOfProcessedSamples());
+            assertEquals(i + 1, estimator.getNumberOfAddedSamples());
+            assertEquals(i + 1, estimator.getNumberOfSamplesInWindow());
             assertFalse(estimator.isRunning());
         }
 
-        assertEquals(mStart, 1);
-        assertEquals(mMeasurementAdded, windowSize);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize, mMeasurementAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
-        assertEquals(measurements.size(), windowSize);
+        assertEquals(windowSize, measurements.size());
         assertEquals(measurements.get(0), estimator.getFirstWindowedMeasurement());
         assertTrue(estimator.getFirstWindowedMeasurement(firstMeasurement));
-        assertEquals(measurements.get(0), firstMeasurement);
-        assertEquals(firstMeasurement.getValue().doubleValue(),
-                estimator.getFirstWindowedMeasurementValue(), 0.0);
+        assertEquals(firstMeasurement, measurements.get(0));
+        assertEquals(firstMeasurement.getValue().doubleValue(), estimator.getFirstWindowedMeasurementValue(), 0.0);
         assertEquals(measurements.get(windowSize - 1), estimator.getLastWindowedMeasurement());
         assertTrue(estimator.getLastWindowedMeasurement(lastMeasurement));
-        assertEquals(measurements.get(windowSize - 1), lastMeasurement);
-        assertEquals(lastMeasurement.getValue().doubleValue(),
-                estimator.getLastWindowedMeasurementValue(), 0.0);
+        assertEquals(lastMeasurement, measurements.get(windowSize - 1));
+        assertEquals(lastMeasurement.getValue().doubleValue(), estimator.getLastWindowedMeasurementValue(), 0.0);
         assertEquals(0.0, estimator.getAvg(), 0.0);
         assertEquals(0.0, estimator.getVariance(), 0.0);
         assertEquals(0.0, estimator.getStandardDeviation(), 0.0);
@@ -773,14 +732,12 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
     }
 
     @Override
-    public void onMeasurementAdded(
-            final WindowedMagneticFluxDensityMeasurementNoiseEstimator estimator) {
+    public void onMeasurementAdded(final WindowedMagneticFluxDensityMeasurementNoiseEstimator estimator) {
         mMeasurementAdded++;
     }
 
     @Override
-    public void onWindowFilled(
-            final WindowedMagneticFluxDensityMeasurementNoiseEstimator estimator) {
+    public void onWindowFilled(final WindowedMagneticFluxDensityMeasurementNoiseEstimator estimator) {
         mWindowFilled++;
     }
 
@@ -798,111 +755,53 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
 
     private void checkLocked(final WindowedMagneticFluxDensityMeasurementNoiseEstimator estimator) {
         assertTrue(estimator.isRunning());
-        try {
-            estimator.setWindowSize(3);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setTimeInterval(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setTimeInterval(new Time(0.0, TimeUnit.SECOND));
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setListener(this);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.addMeasurementAndProcess(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        final MagneticFluxDensity b = new MagneticFluxDensity(
-                0.0, MagneticFluxDensityUnit.TESLA);
-        try {
-            estimator.addMeasurementAndProcess(b);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.addMeasurement(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.addMeasurement(b);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.reset();
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
+        assertThrows(LockedException.class, () -> estimator.setWindowSize(3));
+        assertThrows(LockedException.class, () -> estimator.setTimeInterval(0.0));
+        assertThrows(LockedException.class, () -> estimator.setTimeInterval(new Time(0.0, TimeUnit.SECOND)));
+        assertThrows(LockedException.class, () -> estimator.setListener(this));
+        assertThrows(LockedException.class, () -> estimator.addMeasurementAndProcess(0.0));
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertThrows(LockedException.class, () -> estimator.addMeasurementAndProcess(b));
+        assertThrows(LockedException.class, () -> estimator.addMeasurement(0.0));
+        assertThrows(LockedException.class, () -> estimator.addMeasurement(b));
+        assertThrows(LockedException.class, estimator::reset);
     }
 
     private static MagneticFluxDensity generateMeasurement(
-            final double[] hardIron, final Matrix softIron,
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-            final GaussianRandomizer noiseRandomizer,
-            final Date timestamp,
-            final NEDPosition position,
+            final double[] hardIron, final Matrix softIron, final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
+            final GaussianRandomizer noiseRandomizer, final Date timestamp, final NEDPosition position,
             final CoordinateTransformation cnb) {
 
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, timestamp);
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, timestamp);
 
-        final BodyMagneticFluxDensity truthMagnetic =
-                BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
-        final BodyMagneticFluxDensity measuredMagnetic =
-                generateMeasuredMagneticFluxDensity(truthMagnetic,
-                        hardIron, softIron);
+        final BodyMagneticFluxDensity truthMagnetic = BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+        final BodyMagneticFluxDensity measuredMagnetic = generateMeasuredMagneticFluxDensity(truthMagnetic, hardIron,
+                softIron);
 
         if (noiseRandomizer != null) {
-            measuredMagnetic.setBx(measuredMagnetic.getBx()
-                    + noiseRandomizer.nextDouble());
-            measuredMagnetic.setBy(measuredMagnetic.getBy()
-                    + noiseRandomizer.nextDouble());
-            measuredMagnetic.setBz(measuredMagnetic.getBz()
-                    + noiseRandomizer.nextDouble());
+            measuredMagnetic.setBx(measuredMagnetic.getBx() + noiseRandomizer.nextDouble());
+            measuredMagnetic.setBy(measuredMagnetic.getBy() + noiseRandomizer.nextDouble());
+            measuredMagnetic.setBz(measuredMagnetic.getBz() + noiseRandomizer.nextDouble());
         }
 
         return measuredMagnetic.getNormAsMagneticFluxDensity();
     }
 
-    private static CoordinateTransformation generateBodyC(
-            final UniformRandomizer randomizer) {
+    private static CoordinateTransformation generateBodyC(final UniformRandomizer randomizer) {
 
-        final double roll = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        return new CoordinateTransformation(
-                roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        return new CoordinateTransformation(roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
     }
 
     private static BodyMagneticFluxDensity generateMeasuredMagneticFluxDensity(
-            final BodyMagneticFluxDensity input, final double[] hardIron,
-            final Matrix softIron) {
-        return BodyMagneticFluxDensityGenerator.generate(input, hardIron,
-                softIron);
+            final BodyMagneticFluxDensity input, final double[] hardIron, final Matrix softIron) {
+        return BodyMagneticFluxDensityGenerator.generate(input, hardIron, softIron);
     }
 
-    private static double[] generateHardIron(
-            final UniformRandomizer randomizer) {
+    private static double[] generateHardIron(final UniformRandomizer randomizer) {
         final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
         randomizer.fill(result, MIN_HARD_IRON, MAX_HARD_IRON);
         return result;
@@ -910,8 +809,7 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
 
     private static Matrix generateSoftIronGeneral() {
         try {
-            return Matrix.createWithUniformRandomValues(
-                    BodyMagneticFluxDensity.COMPONENTS,
+            return Matrix.createWithUniformRandomValues(BodyMagneticFluxDensity.COMPONENTS,
                     BodyMagneticFluxDensity.COMPONENTS, MIN_SOFT_IRON, MAX_SOFT_IRON);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -919,20 +817,15 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimatorTest implements
         }
     }
 
-    private static NEDPosition createPosition(
-            final UniformRandomizer randomizer) {
-        final double latitude = Math.toRadians(randomizer.nextDouble(
-                MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(
-                MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(
-                MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
+    private static NEDPosition createPosition(final UniformRandomizer randomizer) {
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double height = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
 
         return new NEDPosition(latitude, longitude, height);
     }
 
     private static long createTimestamp(final UniformRandomizer randomizer) {
-        return randomizer.nextLong(
-                START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS);
+        return randomizer.nextLong(START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS);
     }
 }

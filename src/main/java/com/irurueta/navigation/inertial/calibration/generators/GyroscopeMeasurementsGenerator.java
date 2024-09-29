@@ -48,18 +48,15 @@ import java.util.List;
  * implementations.
  */
 public class GyroscopeMeasurementsGenerator extends
-        MeasurementsGenerator<
-                BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>,
-                GyroscopeMeasurementsGenerator,
-                GyroscopeMeasurementsGeneratorListener, TimedBodyKinematics>
+        MeasurementsGenerator<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>,
+                GyroscopeMeasurementsGenerator, GyroscopeMeasurementsGeneratorListener, TimedBodyKinematics>
         implements GyroscopeNoiseRootPsdSource {
 
     /**
      * An angular speed triad.
      * This is reused for memory efficiency.
      */
-    protected final AngularSpeedTriad mAngularSpeedTriad =
-            new AngularSpeedTriad();
+    protected final AngularSpeedTriad mAngularSpeedTriad = new AngularSpeedTriad();
 
     /**
      * Items to be added to a generated sequence when next static period occurs.
@@ -143,8 +140,7 @@ public class GyroscopeMeasurementsGenerator extends
      *
      * @param listener listener to handle events raised by this generator.
      */
-    public GyroscopeMeasurementsGenerator(
-            final GyroscopeMeasurementsGeneratorListener listener) {
+    public GyroscopeMeasurementsGenerator(final GyroscopeMeasurementsGeneratorListener listener) {
         super(listener);
     }
 
@@ -245,8 +241,7 @@ public class GyroscopeMeasurementsGenerator extends
      * @return gyroscope base noise level.
      */
     public AngularSpeed getGyroscopeBaseNoiseLevelAsMeasurement() {
-        return new AngularSpeed(mAngularSpeedStandardDeviation,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mAngularSpeedStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -257,8 +252,7 @@ public class GyroscopeMeasurementsGenerator extends
      *
      * @param result instance where result will be stored.
      */
-    public void getGyroscopeBaseNoiseLevelAsMeasurement(
-            final AngularSpeed result) {
+    public void getGyroscopeBaseNoiseLevelAsMeasurement(final AngularSpeed result) {
         result.setValue(mAngularSpeedStandardDeviation);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
@@ -291,10 +285,8 @@ public class GyroscopeMeasurementsGenerator extends
      * @throws LockedException if generator is busy.
      */
     @Override
-    protected void postProcess(final TimedBodyKinematics sample)
-            throws LockedException {
-        final TriadStaticIntervalDetector.Status status =
-                mStaticIntervalDetector.getStatus();
+    protected void postProcess(final TimedBodyKinematics sample) throws LockedException {
+        final TriadStaticIntervalDetector.Status status = mStaticIntervalDetector.getStatus();
 
         if (status == TriadStaticIntervalDetector.Status.INITIALIZING) {
             sample.getKinematics().getAngularRateTriad(mAngularSpeedTriad);
@@ -329,11 +321,9 @@ public class GyroscopeMeasurementsGenerator extends
             BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence = null;
             if (mListener != null) {
                 sequence = new BodyKinematicsSequence<>();
-                sequence.setBeforeMeanSpecificForceCoordinates(
-                        mPreviousAvgX, mPreviousAvgY, mPreviousAvgZ);
+                sequence.setBeforeMeanSpecificForceCoordinates(mPreviousAvgX, mPreviousAvgY, mPreviousAvgZ);
                 sequence.setItems(mCurrentSequenceItems);
-                sequence.setAfterMeanSpecificForceCoordinates(
-                        mCurrentAvgX, mCurrentAvgY, mCurrentAvgZ);
+                sequence.setAfterMeanSpecificForceCoordinates(mCurrentAvgX, mCurrentAvgY, mCurrentAvgZ);
             }
 
             mCurrentSequenceItems = null;
@@ -351,8 +341,7 @@ public class GyroscopeMeasurementsGenerator extends
      * @param sample input sample.
      */
     @Override
-    protected void getAccelerationTriadFromInputSample(
-            final TimedBodyKinematics sample) {
+    protected void getAccelerationTriadFromInputSample(final TimedBodyKinematics sample) {
         sample.getKinematics().getSpecificForceTriad(mTriad);
     }
 
@@ -380,12 +369,8 @@ public class GyroscopeMeasurementsGenerator extends
      */
     @Override
     protected void handleStaticToDynamicChange(
-            final double accumulatedAvgX,
-            final double accumulatedAvgY,
-            final double accumulatedAvgZ,
-            final double accumulatedStdX,
-            final double accumulatedStdY,
-            final double accumulatedStdZ) {
+            final double accumulatedAvgX, final double accumulatedAvgY, final double accumulatedAvgZ,
+            final double accumulatedStdX, final double accumulatedStdY, final double accumulatedStdZ) {
         mPreviousStatus = TriadStaticIntervalDetector.Status.STATIC_INTERVAL;
     }
 
@@ -433,12 +418,10 @@ public class GyroscopeMeasurementsGenerator extends
             mCurrentSequenceItems = new ArrayList<>();
         }
 
-        final BodyKinematics kinematics = new BodyKinematics(
-                sample.getKinematics());
+        final BodyKinematics kinematics = new BodyKinematics(sample.getKinematics());
         final double timestampSeconds = sample.getTimestampSeconds();
         final StandardDeviationTimedBodyKinematics stdTimedKinematics =
-                new StandardDeviationTimedBodyKinematics(kinematics,
-                        timestampSeconds, mAccelerationStandardDeviation,
+                new StandardDeviationTimedBodyKinematics(kinematics, timestampSeconds, mAccelerationStandardDeviation,
                         mAngularSpeedStandardDeviation);
         mCurrentSequenceItems.add(stdTimedKinematics);
     }

@@ -45,64 +45,59 @@ public class BodyMagneticFluxDensityTest {
         BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
 
         // check default values
-        assertEquals(b.getBx(), 0.0, 0.0);
-        assertEquals(b.getBy(), 0.0, 0.0);
-        assertEquals(b.getBz(), 0.0, 0.0);
-        assertEquals(b.getNorm(), 0.0, 0.0);
+        assertEquals(0.0, b.getBx(), 0.0);
+        assertEquals(0.0, b.getBy(), 0.0);
+        assertEquals(0.0, b.getBz(), 0.0);
+        assertEquals(0.0, b.getNorm(), 0.0);
         MagneticFluxDensity bx1 = b.getBxAsMagneticFluxDensity();
-        assertEquals(bx1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(bx1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bx1.getUnit());
         MagneticFluxDensity by1 = b.getByAsMagneticFluxDensity();
-        assertEquals(by1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(by1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, by1.getUnit());
         MagneticFluxDensity bz1 = b.getBzAsMagneticFluxDensity();
-        assertEquals(bz1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(bz1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        MagneticFluxDensity bx2 = new MagneticFluxDensity(
-                0.0, MagneticFluxDensityUnit.NANOTESLA);
+        assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bz1.getUnit());
+        MagneticFluxDensity bx2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.NANOTESLA);
         b.getBxAsMagneticFluxDensity(bx2);
         assertEquals(bx1, bx2);
-        MagneticFluxDensity by2 = new MagneticFluxDensity(
-                0.0, MagneticFluxDensityUnit.NANOTESLA);
+        MagneticFluxDensity by2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.NANOTESLA);
         b.getByAsMagneticFluxDensity(by2);
         assertEquals(by1, by2);
-        MagneticFluxDensity bz2 = new MagneticFluxDensity(
-                0.0, MagneticFluxDensityUnit.NANOTESLA);
+        MagneticFluxDensity bz2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.NANOTESLA);
         b.getBzAsMagneticFluxDensity(bz2);
         assertEquals(bz1, bz2);
         MagneticFluxDensityTriad triad1 = b.getCoordinatesAsTriad();
-        assertEquals(triad1.getValueX(), 0.0, 0.0);
-        assertEquals(triad1.getValueY(), 0.0, 0.0);
-        assertEquals(triad1.getValueZ(), 0.0, 0.0);
-        assertEquals(triad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, triad1.getValueX(), 0.0);
+        assertEquals(0.0, triad1.getValueY(), 0.0);
+        assertEquals(0.0, triad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, triad1.getUnit());
         MagneticFluxDensityTriad triad2 = new MagneticFluxDensityTriad();
         b.getCoordinatesAsTriad(triad2);
         assertEquals(triad1, triad2);
 
         // test constructor with values
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double by = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double bz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         b = new BodyMagneticFluxDensity(bx, by, bz);
 
         // check default values
-        assertEquals(b.getBx(), bx, 0.0);
-        assertEquals(b.getBy(), by, 0.0);
-        assertEquals(b.getBz(), bz, 0.0);
+        assertEquals(bx, b.getBx(), 0.0);
+        assertEquals(by, b.getBy(), 0.0);
+        assertEquals(bz, b.getBz(), 0.0);
         final double bNorm = Math.sqrt(bx * bx + by * by + bz * bz);
-        assertEquals(b.getNorm(), bNorm,
-                0.0);
+        assertEquals(bNorm, b.getNorm(), 0.0);
         bx1 = b.getBxAsMagneticFluxDensity();
-        assertEquals(bx1.getValue().doubleValue(), bx, 0.0);
-        assertEquals(bx1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bx, bx1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bx1.getUnit());
         by1 = b.getByAsMagneticFluxDensity();
-        assertEquals(by1.getValue().doubleValue(), by, 0.0);
-        assertEquals(by1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(by, by1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, by1.getUnit());
         bz1 = b.getBzAsMagneticFluxDensity();
-        assertEquals(bz1.getValue().doubleValue(), bz, 0.0);
-        assertEquals(bz1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bz, bz1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bz1.getUnit());
         bx2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.NANOTESLA);
         b.getBxAsMagneticFluxDensity(bx2);
         assertEquals(bx1, bx2);
@@ -113,10 +108,10 @@ public class BodyMagneticFluxDensityTest {
         b.getBzAsMagneticFluxDensity(bz2);
         assertEquals(bz1, bz2);
         triad1 = b.getCoordinatesAsTriad();
-        assertEquals(triad1.getValueX(), bx, 0.0);
-        assertEquals(triad1.getValueY(), by, 0.0);
-        assertEquals(triad1.getValueZ(), bz, 0.0);
-        assertEquals(triad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bx, triad1.getValueX(), 0.0);
+        assertEquals(by, triad1.getValueY(), 0.0);
+        assertEquals(bz, triad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, triad1.getUnit());
         triad2 = new MagneticFluxDensityTriad();
         b.getCoordinatesAsTriad(triad2);
         assertEquals(triad1, triad2);
@@ -128,20 +123,19 @@ public class BodyMagneticFluxDensityTest {
         b = new BodyMagneticFluxDensity(bx1, by1, bz1);
 
         // check default values
-        assertEquals(b.getBx(), bx, 0.0);
-        assertEquals(b.getBy(), by, 0.0);
-        assertEquals(b.getBz(), bz, 0.0);
-        assertEquals(b.getNorm(), bNorm,
-                0.0);
+        assertEquals(bx, b.getBx(), 0.0);
+        assertEquals(by, b.getBy(), 0.0);
+        assertEquals(bz, b.getBz(), 0.0);
+        assertEquals(bNorm, b.getNorm(), 0.0);
         bx1 = b.getBxAsMagneticFluxDensity();
-        assertEquals(bx1.getValue().doubleValue(), bx, 0.0);
-        assertEquals(bx1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bx, bx1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bx1.getUnit());
         by1 = b.getByAsMagneticFluxDensity();
-        assertEquals(by1.getValue().doubleValue(), by, 0.0);
-        assertEquals(by1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(by, by1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, by1.getUnit());
         bz1 = b.getBzAsMagneticFluxDensity();
-        assertEquals(bz1.getValue().doubleValue(), bz, 0.0);
-        assertEquals(bz1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bz, bz1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bz1.getUnit());
         bx2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.NANOTESLA);
         b.getBxAsMagneticFluxDensity(bx2);
         assertEquals(bx1, bx2);
@@ -152,34 +146,32 @@ public class BodyMagneticFluxDensityTest {
         b.getBzAsMagneticFluxDensity(bz2);
         assertEquals(bz1, bz2);
         triad1 = b.getCoordinatesAsTriad();
-        assertEquals(triad1.getValueX(), bx, 0.0);
-        assertEquals(triad1.getValueY(), by, 0.0);
-        assertEquals(triad1.getValueZ(), bz, 0.0);
-        assertEquals(triad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bx, triad1.getValueX(), 0.0);
+        assertEquals(by, triad1.getValueY(), 0.0);
+        assertEquals(bz, triad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, triad1.getUnit());
         triad2 = new MagneticFluxDensityTriad();
         b.getCoordinatesAsTriad(triad2);
         assertEquals(triad1, triad2);
 
         // test constructor with magnetic flux density triad
-        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad(
-                MagneticFluxDensityUnit.TESLA, bx, by, bz);
+        final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, bx, by, bz);
         b = new BodyMagneticFluxDensity(triad);
 
         // check default values
-        assertEquals(b.getBx(), bx, 0.0);
-        assertEquals(b.getBy(), by, 0.0);
-        assertEquals(b.getBz(), bz, 0.0);
-        assertEquals(b.getNorm(), bNorm,
-                0.0);
+        assertEquals(bx, b.getBx(), 0.0);
+        assertEquals(by, b.getBy(), 0.0);
+        assertEquals(bz, b.getBz(), 0.0);
+        assertEquals(bNorm, b.getNorm(), 0.0);
         bx1 = b.getBxAsMagneticFluxDensity();
-        assertEquals(bx1.getValue().doubleValue(), bx, 0.0);
-        assertEquals(bx1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bx, bx1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bx1.getUnit());
         by1 = b.getByAsMagneticFluxDensity();
-        assertEquals(by1.getValue().doubleValue(), by, 0.0);
-        assertEquals(by1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(by, by1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, by1.getUnit());
         bz1 = b.getBzAsMagneticFluxDensity();
-        assertEquals(bz1.getValue().doubleValue(), bz, 0.0);
-        assertEquals(bz1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bz, bz1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bz1.getUnit());
         bx2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.NANOTESLA);
         b.getBxAsMagneticFluxDensity(bx2);
         assertEquals(bx1, bx2);
@@ -190,10 +182,10 @@ public class BodyMagneticFluxDensityTest {
         b.getBzAsMagneticFluxDensity(bz2);
         assertEquals(bz1, bz2);
         triad1 = b.getCoordinatesAsTriad();
-        assertEquals(triad1.getValueX(), bx, 0.0);
-        assertEquals(triad1.getValueY(), by, 0.0);
-        assertEquals(triad1.getValueZ(), bz, 0.0);
-        assertEquals(triad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bx, triad1.getValueX(), 0.0);
+        assertEquals(by, triad1.getValueY(), 0.0);
+        assertEquals(bz, triad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, triad1.getUnit());
         triad2 = new MagneticFluxDensityTriad();
         b.getCoordinatesAsTriad(triad2);
         assertEquals(triad1, triad2);
@@ -201,19 +193,19 @@ public class BodyMagneticFluxDensityTest {
         // test copy constructor
         final BodyMagneticFluxDensity b2 = new BodyMagneticFluxDensity(b);
 
-        assertEquals(b2.getBx(), bx, 0.0);
-        assertEquals(b2.getBy(), by, 0.0);
-        assertEquals(b2.getBz(), bz, 0.0);
+        assertEquals(bx, b2.getBx(), 0.0);
+        assertEquals(by, b2.getBy(), 0.0);
+        assertEquals(bz, b2.getBz(), 0.0);
         assertEquals(b2.getNorm(), b.getNorm(), 0.0);
         bx1 = b.getBxAsMagneticFluxDensity();
-        assertEquals(bx1.getValue().doubleValue(), bx, 0.0);
-        assertEquals(bx1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bx, bx1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bx1.getUnit());
         by1 = b.getByAsMagneticFluxDensity();
-        assertEquals(by1.getValue().doubleValue(), by, 0.0);
-        assertEquals(by1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(by, by1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, by1.getUnit());
         bz1 = b.getBzAsMagneticFluxDensity();
-        assertEquals(bz1.getValue().doubleValue(), bz, 0.0);
-        assertEquals(bz1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bz, bz1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bz1.getUnit());
         bx2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.NANOTESLA);
         b.getBxAsMagneticFluxDensity(bx2);
         assertEquals(bx1, bx2);
@@ -224,10 +216,10 @@ public class BodyMagneticFluxDensityTest {
         b.getBzAsMagneticFluxDensity(bz2);
         assertEquals(bz1, bz2);
         triad1 = b.getCoordinatesAsTriad();
-        assertEquals(triad1.getValueX(), bx, 0.0);
-        assertEquals(triad1.getValueY(), by, 0.0);
-        assertEquals(triad1.getValueZ(), bz, 0.0);
-        assertEquals(triad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(bx, triad1.getValueX(), 0.0);
+        assertEquals(by, triad1.getValueY(), 0.0);
+        assertEquals(bz, triad1.getValueZ(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, triad1.getUnit());
         triad2 = new MagneticFluxDensityTriad();
         b.getCoordinatesAsTriad(triad2);
         assertEquals(triad1, triad2);
@@ -238,17 +230,16 @@ public class BodyMagneticFluxDensityTest {
         final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
 
         // check default value
-        assertEquals(b.getBx(), 0.0, 0.0);
+        assertEquals(0.0, b.getBx(), 0.0);
 
         // set value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         b.setBx(bx);
 
         // check
-        assertEquals(b.getBx(), bx, 0.0);
+        assertEquals(bx, b.getBx(), 0.0);
     }
 
     @Test
@@ -257,21 +248,19 @@ public class BodyMagneticFluxDensityTest {
 
         // check default value
         final MagneticFluxDensity bx1 = b.getBxAsMagneticFluxDensity();
-        assertEquals(bx1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(bx1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, bx1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bx1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final MagneticFluxDensity bx2 = new MagneticFluxDensity(
-                bx, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity bx2 = new MagneticFluxDensity(bx, MagneticFluxDensityUnit.TESLA);
         b.setBx(bx2);
 
         // check
         final MagneticFluxDensity bx3 = b.getBxAsMagneticFluxDensity();
-        final MagneticFluxDensity bx4 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity bx4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         b.getBxAsMagneticFluxDensity(bx4);
 
         assertEquals(bx2, bx3);
@@ -283,17 +272,16 @@ public class BodyMagneticFluxDensityTest {
         final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
 
         // check default value
-        assertEquals(b.getBy(), 0.0, 0.0);
+        assertEquals(0.0, b.getBy(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double by = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         b.setBy(by);
 
         // check
-        assertEquals(b.getBy(), by, 0.0);
+        assertEquals(by, b.getBy(), 0.0);
     }
 
     @Test
@@ -302,21 +290,19 @@ public class BodyMagneticFluxDensityTest {
 
         // check default value
         final MagneticFluxDensity by1 = b.getByAsMagneticFluxDensity();
-        assertEquals(by1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(by1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, by1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, by1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double by = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final MagneticFluxDensity by2 = new MagneticFluxDensity(
-                by, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity by2 = new MagneticFluxDensity(by, MagneticFluxDensityUnit.TESLA);
         b.setBy(by2);
 
         // check
         final MagneticFluxDensity by3 = b.getByAsMagneticFluxDensity();
-        final MagneticFluxDensity by4 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity by4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         b.getByAsMagneticFluxDensity(by4);
 
         assertEquals(by2, by3);
@@ -328,17 +314,16 @@ public class BodyMagneticFluxDensityTest {
         final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
 
         // check default value
-        assertEquals(b.getBz(), 0.0, 0.0);
+        assertEquals(0.0, b.getBz(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         b.setBz(bz);
 
         // check
-        assertEquals(b.getBz(), bz, 0.0);
+        assertEquals(bz, b.getBz(), 0.0);
     }
 
     @Test
@@ -347,21 +332,19 @@ public class BodyMagneticFluxDensityTest {
 
         // check default value
         final MagneticFluxDensity bz1 = b.getBzAsMagneticFluxDensity();
-        assertEquals(bz1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(bz1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, bz1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, bz1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final MagneticFluxDensity bz2 = new MagneticFluxDensity(
-                bz, MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity bz2 = new MagneticFluxDensity(bz, MagneticFluxDensityUnit.TESLA);
         b.setBz(bz2);
 
         // check
         final MagneticFluxDensity bz3 = b.getBzAsMagneticFluxDensity();
-        final MagneticFluxDensity bz4 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        final MagneticFluxDensity bz4 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         b.getBzAsMagneticFluxDensity(bz4);
 
         assertEquals(bz2, bz3);
@@ -373,13 +356,12 @@ public class BodyMagneticFluxDensityTest {
         final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
 
         // check default values
-        assertEquals(b.getBx(), 0.0, 0.0);
-        assertEquals(b.getBy(), 0.0, 0.0);
-        assertEquals(b.getBz(), 0.0, 0.0);
+        assertEquals(0.0, b.getBx(), 0.0);
+        assertEquals(0.0, b.getBy(), 0.0);
+        assertEquals(0.0, b.getBz(), 0.0);
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double by = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double bz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -387,9 +369,9 @@ public class BodyMagneticFluxDensityTest {
         b.setCoordinates(bx, by, bz);
 
         // check default values
-        assertEquals(b.getBx(), bx, 0.0);
-        assertEquals(b.getBy(), by, 0.0);
-        assertEquals(b.getBz(), bz, 0.0);
+        assertEquals(bx, b.getBx(), 0.0);
+        assertEquals(by, b.getBy(), 0.0);
+        assertEquals(bz, b.getBz(), 0.0);
     }
 
     @Test
@@ -397,13 +379,12 @@ public class BodyMagneticFluxDensityTest {
         final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
 
         // check default values
-        assertEquals(b.getBx(), 0.0, 0.0);
-        assertEquals(b.getBy(), 0.0, 0.0);
-        assertEquals(b.getBz(), 0.0, 0.0);
+        assertEquals(0.0, b.getBx(), 0.0);
+        assertEquals(0.0, b.getBy(), 0.0);
+        assertEquals(0.0, b.getBz(), 0.0);
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double by = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double bz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -413,9 +394,9 @@ public class BodyMagneticFluxDensityTest {
                 new MagneticFluxDensity(bz, MagneticFluxDensityUnit.TESLA));
 
         // check default values
-        assertEquals(b.getBx(), bx, 0.0);
-        assertEquals(b.getBy(), by, 0.0);
-        assertEquals(b.getBz(), bz, 0.0);
+        assertEquals(bx, b.getBx(), 0.0);
+        assertEquals(by, b.getBy(), 0.0);
+        assertEquals(bz, b.getBz(), 0.0);
     }
 
     @Test
@@ -423,25 +404,23 @@ public class BodyMagneticFluxDensityTest {
         final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
 
         // check default values
-        assertEquals(b.getBx(), 0.0, 0.0);
-        assertEquals(b.getBy(), 0.0, 0.0);
-        assertEquals(b.getBz(), 0.0, 0.0);
+        assertEquals(0.0, b.getBx(), 0.0);
+        assertEquals(0.0, b.getBy(), 0.0);
+        assertEquals(0.0, b.getBz(), 0.0);
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double by = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double bz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final MagneticFluxDensityTriad triad1 = new MagneticFluxDensityTriad(
-                MagneticFluxDensityUnit.TESLA, bx, by, bz);
+        final MagneticFluxDensityTriad triad1 = new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, bx, by, bz);
         b.setCoordinates(triad1);
 
         // check default values
-        assertEquals(b.getBx(), bx, 0.0);
-        assertEquals(b.getBy(), by, 0.0);
-        assertEquals(b.getBz(), bz, 0.0);
+        assertEquals(bx, b.getBx(), 0.0);
+        assertEquals(by, b.getBy(), 0.0);
+        assertEquals(bz, b.getBz(), 0.0);
         final MagneticFluxDensityTriad triad2 = b.getCoordinatesAsTriad();
         final MagneticFluxDensityTriad triad3 = new MagneticFluxDensityTriad();
         b.getCoordinatesAsTriad(triad3);
@@ -454,11 +433,10 @@ public class BodyMagneticFluxDensityTest {
         final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity();
 
         // check default value
-        assertEquals(b.getNorm(), 0.0, 0.0);
+        assertEquals(0.0, b.getNorm(), 0.0);
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double by = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double bz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -466,8 +444,7 @@ public class BodyMagneticFluxDensityTest {
         b.setCoordinates(bx, by, bz);
 
         // check
-        assertEquals(b.getNorm(), Math.sqrt(bx * bx + by * by + bz * bz),
-                0.0);
+        assertEquals(Math.sqrt(bx * bx + by * by + bz * bz), b.getNorm(), 0.0);
     }
 
     @Test
@@ -476,12 +453,11 @@ public class BodyMagneticFluxDensityTest {
 
         // check default value
         final MagneticFluxDensity norm1 = b.getNormAsMagneticFluxDensity();
-        assertEquals(norm1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(norm1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        assertEquals(0.0, norm1.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, norm1.getUnit());
 
         // set new values
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double by = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double bz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -491,24 +467,21 @@ public class BodyMagneticFluxDensityTest {
         // check
         final double norm = Math.sqrt(bx * bx + by * by + bz * bz);
         final MagneticFluxDensity norm2 = b.getNormAsMagneticFluxDensity();
-        assertEquals(norm2.getValue().doubleValue(), norm, 0.0);
-        assertEquals(norm2.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity norm3 = new MagneticFluxDensity(
-                1.0, MagneticFluxDensityUnit.NANOTESLA);
+        assertEquals(norm, norm2.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, norm2.getUnit());
+        final MagneticFluxDensity norm3 = new MagneticFluxDensity(1.0, MagneticFluxDensityUnit.NANOTESLA);
         b.getNormAsMagneticFluxDensity(norm3);
         assertEquals(norm2, norm3);
     }
 
     @Test
     public void testCopyTo() {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double by = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double bz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final BodyMagneticFluxDensity b1 = new BodyMagneticFluxDensity(
-                bx, by, bz);
+        final BodyMagneticFluxDensity b1 = new BodyMagneticFluxDensity(bx, by, bz);
         final BodyMagneticFluxDensity b2 = new BodyMagneticFluxDensity();
 
         b1.copyTo(b2);
@@ -521,14 +494,12 @@ public class BodyMagneticFluxDensityTest {
 
     @Test
     public void testCopyFrom() {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double by = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double bz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final BodyMagneticFluxDensity b1 = new BodyMagneticFluxDensity(
-                bx, by, bz);
+        final BodyMagneticFluxDensity b1 = new BodyMagneticFluxDensity(bx, by, bz);
         final BodyMagneticFluxDensity b2 = new BodyMagneticFluxDensity();
 
         b2.copyFrom(b1);
@@ -541,72 +512,59 @@ public class BodyMagneticFluxDensityTest {
 
     @Test
     public void testAsArray() {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double by = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double bz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity(
-                bx, by, bz);
+        final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity(bx, by, bz);
 
         final double[] array1 = b.asArray();
-        final double[] array2 = new double[
-                BodyMagneticFluxDensity.COMPONENTS];
+        final double[] array2 = new double[BodyMagneticFluxDensity.COMPONENTS];
         b.asArray(array2);
 
         // check
-        assertEquals(array1[0], bx, 0.0);
-        assertEquals(array1[1], by, 0.0);
-        assertEquals(array1[2], bz, 0.0);
+        assertEquals(bx, array1[0], 0.0);
+        assertEquals(by, array1[1], 0.0);
+        assertEquals(bz, array1[2], 0.0);
         assertArrayEquals(array1, array2, 0.0);
 
         // Force IllegalArgumentException
-        try {
-            b.asArray(new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> b.asArray(new double[1]));
     }
 
     @Test
     public void testAsMatrix() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double by = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double bz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity(
-                bx, by, bz);
+        final BodyMagneticFluxDensity b = new BodyMagneticFluxDensity(bx, by, bz);
 
         final Matrix m1 = b.asMatrix();
         final Matrix m2 = new Matrix(1, 1);
         b.asMatrix(m2);
-        final Matrix m3 = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                1);
+        final Matrix m3 = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
         b.asMatrix(m3);
 
         // check
-        assertEquals(m1.getElementAtIndex(0), bx, 0.0);
-        assertEquals(m1.getElementAtIndex(1), by, 0.0);
-        assertEquals(m1.getElementAtIndex(2), bz, 0.0);
+        assertEquals(bx, m1.getElementAtIndex(0), 0.0);
+        assertEquals(by, m1.getElementAtIndex(1), 0.0);
+        assertEquals(bz, m1.getElementAtIndex(2), 0.0);
         assertEquals(m1, m2);
         assertEquals(m1, m3);
     }
 
     @Test
     public void testHashCode() {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double by = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double bz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final BodyMagneticFluxDensity b1 = new BodyMagneticFluxDensity(
-                bx, by, bz);
-        final BodyMagneticFluxDensity b2 = new BodyMagneticFluxDensity(
-                bx, by, bz);
+        final BodyMagneticFluxDensity b1 = new BodyMagneticFluxDensity(bx, by, bz);
+        final BodyMagneticFluxDensity b2 = new BodyMagneticFluxDensity(bx, by, bz);
         final BodyMagneticFluxDensity b3 = new BodyMagneticFluxDensity();
 
         assertEquals(b1.hashCode(), b2.hashCode());
@@ -615,43 +573,35 @@ public class BodyMagneticFluxDensityTest {
 
     @Test
     public void testEquals() {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double by = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double bz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final BodyMagneticFluxDensity b1 = new BodyMagneticFluxDensity(
-                bx, by, bz);
-        final BodyMagneticFluxDensity b2 = new BodyMagneticFluxDensity(
-                bx, by, bz);
+        final BodyMagneticFluxDensity b1 = new BodyMagneticFluxDensity(bx, by, bz);
+        final BodyMagneticFluxDensity b2 = new BodyMagneticFluxDensity(bx, by, bz);
         final BodyMagneticFluxDensity b3 = new BodyMagneticFluxDensity();
 
-        //noinspection ConstantConditions,SimplifiableJUnitAssertion
-        assertTrue(b1.equals((Object) b1));
+        //noinspection EqualsWithItself
+        assertEquals(b1, b1);
         //noinspection EqualsWithItself
         assertTrue(b1.equals(b1));
         assertTrue(b1.equals(b2));
         assertFalse(b1.equals(b3));
-        //noinspection SimplifiableJUnitAssertion,ConstantConditions
-        assertFalse(b1.equals((Object) null));
+        assertNotEquals(b1, null);
         assertFalse(b1.equals(null));
-        //noinspection SimplifiableJUnitAssertion
-        assertFalse(b1.equals(new Object()));
+        assertNotEquals(b1, new Object());
     }
 
     @Test
     public void testEqualsWithThreshold() {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double by = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double bz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final BodyMagneticFluxDensity b1 = new BodyMagneticFluxDensity(
-                bx, by, bz);
-        final BodyMagneticFluxDensity b2 = new BodyMagneticFluxDensity(
-                bx, by, bz);
+        final BodyMagneticFluxDensity b1 = new BodyMagneticFluxDensity(bx, by, bz);
+        final BodyMagneticFluxDensity b2 = new BodyMagneticFluxDensity(bx, by, bz);
         final BodyMagneticFluxDensity b3 = new BodyMagneticFluxDensity();
 
         assertTrue(b1.equals(b1, THRESHOLD));
@@ -662,14 +612,12 @@ public class BodyMagneticFluxDensityTest {
 
     @Test
     public void testClone() throws CloneNotSupportedException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double by = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double bz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final BodyMagneticFluxDensity b1 = new BodyMagneticFluxDensity(
-                bx, by, bz);
+        final BodyMagneticFluxDensity b1 = new BodyMagneticFluxDensity(bx, by, bz);
 
         final Object b2 = b1.clone();
 
@@ -679,14 +627,12 @@ public class BodyMagneticFluxDensityTest {
 
     @Test
     public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double bx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double by = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double bz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final BodyMagneticFluxDensity b1 = new BodyMagneticFluxDensity(
-                bx, by, bz);
+        final BodyMagneticFluxDensity b1 = new BodyMagneticFluxDensity(bx, by, bz);
 
         final byte[] bytes = SerializationHelper.serialize(b1);
 

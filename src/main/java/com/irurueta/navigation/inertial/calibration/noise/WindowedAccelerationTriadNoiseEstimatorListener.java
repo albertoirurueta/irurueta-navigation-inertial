@@ -23,6 +23,6 @@ import com.irurueta.units.AccelerationUnit;
  * Listener for {@link WindowedAccelerationTriadNoiseEstimator} to handle generated events.
  */
 public interface WindowedAccelerationTriadNoiseEstimatorListener extends
-        WindowedTriadNoiseEstimatorListener<AccelerationUnit, Acceleration,
-                AccelerationTriad, WindowedAccelerationTriadNoiseEstimator> {
+        WindowedTriadNoiseEstimatorListener<AccelerationUnit, Acceleration, AccelerationTriad,
+                WindowedAccelerationTriadNoiseEstimator> {
 }

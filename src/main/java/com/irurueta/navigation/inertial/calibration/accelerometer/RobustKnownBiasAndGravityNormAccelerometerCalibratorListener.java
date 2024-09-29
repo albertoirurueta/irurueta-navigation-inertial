@@ -43,8 +43,7 @@ public interface RobustKnownBiasAndGravityNormAccelerometerCalibratorListener {
      * @param iteration  current iteration.
      */
     void onCalibrateNextIteration(
-            final RobustKnownBiasAndGravityNormAccelerometerCalibrator calibrator,
-            final int iteration);
+            final RobustKnownBiasAndGravityNormAccelerometerCalibrator calibrator, final int iteration);
 
     /**
      * Called when calibration progress changes significantly.
@@ -53,6 +52,5 @@ public interface RobustKnownBiasAndGravityNormAccelerometerCalibratorListener {
      * @param progress   progress of calibration expressed as a value between 0.0 and 1.0.
      */
     void onCalibrateProgressChange(
-            final RobustKnownBiasAndGravityNormAccelerometerCalibrator calibrator,
-            final float progress);
+            final RobustKnownBiasAndGravityNormAccelerometerCalibrator calibrator, final float progress);
 }

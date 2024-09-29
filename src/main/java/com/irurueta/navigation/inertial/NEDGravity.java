@@ -21,6 +21,7 @@ import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -43,6 +44,7 @@ public class NEDGravity implements Serializable, Cloneable {
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -178,8 +180,7 @@ public class NEDGravity implements Serializable, Cloneable {
      * @param gravityN acceleration due to gravity through NED north-axis.
      */
     public void setGn(final Acceleration gravityN) {
-        mGn = AccelerationConverter.convert(gravityN.getValue().doubleValue(),
-                gravityN.getUnit(),
+        mGn = AccelerationConverter.convert(gravityN.getValue().doubleValue(), gravityN.getUnit(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -227,8 +228,7 @@ public class NEDGravity implements Serializable, Cloneable {
      * @param gravityD acceleration due to gravity through NED down-axis.
      */
     public void setGd(final Acceleration gravityD) {
-        mGd = AccelerationConverter.convert(gravityD.getValue().doubleValue(),
-                gravityD.getUnit(),
+        mGd = AccelerationConverter.convert(gravityD.getValue().doubleValue(), gravityD.getUnit(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -388,6 +388,7 @@ public class NEDGravity implements Serializable, Cloneable {
             return false;
         }
 
+        //noinspection PatternVariableCanBeUsed
         final NEDGravity other = (NEDGravity) obj;
         return equals(other);
     }

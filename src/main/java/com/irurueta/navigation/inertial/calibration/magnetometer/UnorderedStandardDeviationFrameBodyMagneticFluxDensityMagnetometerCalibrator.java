@@ -63,8 +63,7 @@ public interface UnorderedStandardDeviationFrameBodyMagneticFluxDensityMagnetome
      *                     and velocities).
      * @throws LockedException if estimator is currently running.
      */
-    void setMeasurements(
-            final Collection<? extends StandardDeviationFrameBodyMagneticFluxDensity> measurements)
+    void setMeasurements(final Collection<? extends StandardDeviationFrameBodyMagneticFluxDensity> measurements)
             throws LockedException;
 
 }

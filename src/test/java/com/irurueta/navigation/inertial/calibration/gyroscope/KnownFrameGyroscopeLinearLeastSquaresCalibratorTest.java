@@ -87,9 +87,8 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
                 calibrator.getMeasurementOrSequenceType());
         assertFalse(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertEquals(calibrator.isCommonAxisUsed(),
-                KnownFrameGyroscopeLinearLeastSquaresCalibrator
-                        .DEFAULT_USE_COMMON_Z_AXIS);
+        assertEquals(KnownFrameGyroscopeLinearLeastSquaresCalibrator.DEFAULT_USE_COMMON_Z_AXIS,
+                calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(KnownFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                 calibrator.getMinimumRequiredMeasurementsOrSequences());
@@ -123,8 +122,7 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedGg());
 
         // test constructor with listener
-        calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(
-                this);
+        calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(this);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -132,10 +130,9 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
                 calibrator.getMeasurementOrSequenceType());
         assertFalse(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertEquals(calibrator.isCommonAxisUsed(),
-                KnownFrameGyroscopeLinearLeastSquaresCalibrator
-                        .DEFAULT_USE_COMMON_Z_AXIS);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(KnownFrameGyroscopeLinearLeastSquaresCalibrator.DEFAULT_USE_COMMON_Z_AXIS,
+                calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
         assertEquals(KnownFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                 calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
@@ -170,18 +167,16 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         // test constructor with measurements
         final Collection<FrameBodyKinematics> measurements = Collections.emptyList();
 
-        calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(
-                measurements);
+        calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(measurements);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.FRAME_BODY_KINEMATICS_MEASUREMENT,
                 calibrator.getMeasurementOrSequenceType());
         assertFalse(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertEquals(calibrator.isCommonAxisUsed(),
-                KnownFrameGyroscopeLinearLeastSquaresCalibrator
-                        .DEFAULT_USE_COMMON_Z_AXIS);
+        assertEquals(KnownFrameGyroscopeLinearLeastSquaresCalibrator.DEFAULT_USE_COMMON_Z_AXIS,
+                calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(KnownFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                 calibrator.getMinimumRequiredMeasurementsOrSequences());
@@ -215,19 +210,17 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedGg());
 
         // test constructor with measurements and listener
-        calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(
-                measurements, this);
+        calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(measurements, this);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.FRAME_BODY_KINEMATICS_MEASUREMENT,
                 calibrator.getMeasurementOrSequenceType());
         assertFalse(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertEquals(calibrator.isCommonAxisUsed(),
-                KnownFrameGyroscopeLinearLeastSquaresCalibrator
-                        .DEFAULT_USE_COMMON_Z_AXIS);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(KnownFrameGyroscopeLinearLeastSquaresCalibrator.DEFAULT_USE_COMMON_Z_AXIS,
+                calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
         assertEquals(KnownFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                 calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
@@ -260,8 +253,7 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedGg());
 
         // test constructor with common axis used
-        calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(
-                true);
+        calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(true);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -303,8 +295,7 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedGg());
 
         // test constructor with common axis used and listener
-        calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(
-                true, this);
+        calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(true, this);
 
         // check default values
         assertNull(calibrator.getMeasurements());
@@ -313,7 +304,7 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         assertFalse(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
         assertEquals(KnownFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                 calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
@@ -346,11 +337,10 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedGg());
 
         // test constructor with measurements and common axis used
-        calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(
-                measurements, true);
+        calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(measurements, true);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.FRAME_BODY_KINEMATICS_MEASUREMENT,
                 calibrator.getMeasurementOrSequenceType());
         assertFalse(calibrator.isOrderedMeasurementsOrSequencesRequired());
@@ -389,17 +379,17 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedGg());
 
         // test constructor with measurements, common axis used and listener
-        calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(
-                measurements, true, this);
+        calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(measurements, true,
+                this);
 
         // check default values
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(GyroscopeCalibratorMeasurementOrSequenceType.FRAME_BODY_KINEMATICS_MEASUREMENT,
                 calibrator.getMeasurementOrSequenceType());
         assertFalse(calibrator.isOrderedMeasurementsOrSequencesRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
         assertEquals(KnownFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                 calibrator.getMinimumRequiredMeasurementsOrSequences());
         assertFalse(calibrator.isReady());
@@ -445,7 +435,7 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         calibrator.setMeasurements(measurements);
 
         // check
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
     }
 
     @Test
@@ -475,13 +465,13 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         calibrator.setListener(this);
 
         // check
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
     public void testCalibrateMultipleOrientationsForGeneralCaseWithMinimumMeasuresAndNoNoise()
-            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException, CalibrationException {
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
+            NotReadyException, CalibrationException {
 
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
@@ -495,69 +485,60 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                accelQuantLevel, gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
         final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
         final List<FrameBodyKinematics> measurements = new ArrayList<>();
         for (int i = 0; i < KnownFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS; i++) {
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation nedC = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
             final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                    .convertNEDtoECEFAndReturnNew(nedFrame);
+            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame,
-                            ecefFrame);
+            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
             // apply known calibration parameters to distort ground-truth and generate a
             // measured kinematics sample
-            final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                    .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random);
+            final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                    trueKinematics, errors, random);
 
-            final FrameBodyKinematics measurement = new FrameBodyKinematics(
-                    measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS);
+            final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame, ecefFrame,
+                    TIME_INTERVAL_SECONDS);
             measurements.add(measurement);
         }
 
         final KnownFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameGyroscopeLinearLeastSquaresCalibrator(measurements,
-                        false, this);
+                new KnownFrameGyroscopeLinearLeastSquaresCalibrator(measurements, false, this);
 
         // estimate
         reset();
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 0);
-        assertEquals(mCalibrateEnd, 0);
+        assertEquals(0, mCalibrateStart);
+        assertEquals(0, mCalibrateEnd);
 
         calibrator.calibrate();
 
         // check
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 1);
-        assertEquals(mCalibrateEnd, 1);
+        assertEquals(1, mCalibrateStart);
+        assertEquals(1, mCalibrateEnd);
 
         final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
         final Matrix estimatedMg = calibrator.getEstimatedMg();
@@ -572,8 +553,8 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testCalibrateMultipleOrientationsForGeneralCaseWithNoiseLargeNumberOfMeasurements()
-            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException, CalibrationException {
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
+            NotReadyException, CalibrationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -589,13 +570,12 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
             final double accelQuantLevel = 0.0;
             final double gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                    gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                    accelQuantLevel, gyroQuantLevel);
 
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
             final double longitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -604,54 +584,48 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
             final List<FrameBodyKinematics> measurements = new ArrayList<>();
             for (int i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
 
-                final double roll = Math.toRadians(
-                        randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(
-                        randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(
-                        randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(
-                        roll, pitch, yaw, FrameType.BODY_FRAME,
-                        FrameType.LOCAL_NAVIGATION_FRAME);
+                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
+                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
                 final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                        .convertNEDtoECEFAndReturnNew(nedFrame);
+                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame,
-                                ecefFrame);
+                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                        .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random);
+                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueKinematics, errors, random);
 
-                final FrameBodyKinematics measurement = new FrameBodyKinematics(
-                        measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS);
+                final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame,
+                        ecefFrame, TIME_INTERVAL_SECONDS);
                 measurements.add(measurement);
             }
 
             final KnownFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                    new KnownFrameGyroscopeLinearLeastSquaresCalibrator(measurements,
-                            false, this);
+                    new KnownFrameGyroscopeLinearLeastSquaresCalibrator(measurements, false,
+                            this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
 
             final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
             final Matrix estimatedMg = calibrator.getEstimatedMg();
@@ -682,9 +656,8 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
     }
 
     @Test
-    public void testCalibrateMultiplePositionsForGeneralCaseWithMinimumMeasuresAndNoNoise()
-            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException {
+    public void testCalibrateMultiplePositionsForGeneralCaseWithMinimumMeasuresAndNoNoise() throws WrongSizeException,
+            InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -700,58 +673,53 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
             final double accelQuantLevel = 0.0;
             final double gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                    gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                    accelQuantLevel, gyroQuantLevel);
 
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double roll = 0.0;
             final double pitch = 0.0;
             final double yaw = 0.0;
-            final CoordinateTransformation nedC = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
             final List<FrameBodyKinematics> measurements = new ArrayList<>();
             for (int i = 0; i < KnownFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS; i++) {
 
-                final double latitude = Math.toRadians(
-                        randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-                final double longitude = Math.toRadians(
-                        randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+                final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+                final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
                 final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
                 final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
                 final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                        .convertNEDtoECEFAndReturnNew(nedFrame);
+                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame,
-                                ecefFrame);
+                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                        .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random);
+                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueKinematics, errors, random);
 
-                final FrameBodyKinematics measurement = new FrameBodyKinematics(
-                        measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS);
+                final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame,
+                        ecefFrame, TIME_INTERVAL_SECONDS);
                 measurements.add(measurement);
             }
 
             final KnownFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                    new KnownFrameGyroscopeLinearLeastSquaresCalibrator(measurements,
-                            false, this);
+                    new KnownFrameGyroscopeLinearLeastSquaresCalibrator(measurements, false,
+                            this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
 
             try {
                 calibrator.calibrate();
@@ -762,8 +730,8 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
 
             final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
             final Matrix estimatedMg = calibrator.getEstimatedMg();
@@ -795,8 +763,8 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testCalibrateMultipleOrientationsForCommonAxisCaseWithMinimumMeasuresAndNoNoise()
-            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException, CalibrationException {
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
+            NotReadyException, CalibrationException {
 
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
@@ -810,69 +778,60 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                accelQuantLevel, gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
         final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
         final List<FrameBodyKinematics> measurements = new ArrayList<>();
         for (int i = 0; i < KnownFrameGyroscopeLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS; i++) {
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final CoordinateTransformation nedC = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
             final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                    .convertNEDtoECEFAndReturnNew(nedFrame);
+            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
             // compute ground-truth kinematics that should be generated at provided
             // position, velocity and orientation
-            final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame,
-                            ecefFrame);
+            final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
             // apply known calibration parameters to distort ground-truth and generate a
             // measured kinematics sample
-            final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                    .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random);
+            final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                    trueKinematics, errors, random);
 
-            final FrameBodyKinematics measurement = new FrameBodyKinematics(
-                    measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS);
+            final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame, ecefFrame,
+                    TIME_INTERVAL_SECONDS);
             measurements.add(measurement);
         }
 
         final KnownFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                new KnownFrameGyroscopeLinearLeastSquaresCalibrator(measurements,
-                        true, this);
+                new KnownFrameGyroscopeLinearLeastSquaresCalibrator(measurements, true, this);
 
         // estimate
         reset();
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 0);
-        assertEquals(mCalibrateEnd, 0);
+        assertEquals(0, mCalibrateStart);
+        assertEquals(0, mCalibrateEnd);
 
         calibrator.calibrate();
 
         // check
         assertTrue(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 1);
-        assertEquals(mCalibrateEnd, 1);
+        assertEquals(1, mCalibrateStart);
+        assertEquals(1, mCalibrateEnd);
 
         final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
         final Matrix estimatedMg = calibrator.getEstimatedMg();
@@ -887,8 +846,8 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testCalibrateMultipleOrientationsForCommonAxisCaseWithNoiseLargeNumberOfMeasurements()
-            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException, CalibrationException {
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
+            NotReadyException, CalibrationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -904,13 +863,12 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
             final double accelQuantLevel = 0.0;
             final double gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                    gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                    accelQuantLevel, gyroQuantLevel);
 
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double latitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
             final double longitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -919,54 +877,48 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
             final List<FrameBodyKinematics> measurements = new ArrayList<>();
             for (int i = 0; i < LARGE_MEASUREMENT_NUMBER; i++) {
 
-                final double roll = Math.toRadians(
-                        randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double pitch = Math.toRadians(
-                        randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final double yaw = Math.toRadians(
-                        randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-                final CoordinateTransformation nedC = new CoordinateTransformation(
-                        roll, pitch, yaw, FrameType.BODY_FRAME,
-                        FrameType.LOCAL_NAVIGATION_FRAME);
+                final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+                final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw,
+                        FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
                 final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                        .convertNEDtoECEFAndReturnNew(nedFrame);
+                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame,
-                                ecefFrame);
+                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                        .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random);
+                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueKinematics, errors, random);
 
-                final FrameBodyKinematics measurement = new FrameBodyKinematics(
-                        measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS);
+                final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame,
+                        ecefFrame, TIME_INTERVAL_SECONDS);
                 measurements.add(measurement);
             }
 
             final KnownFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                    new KnownFrameGyroscopeLinearLeastSquaresCalibrator(measurements,
-                            true, this);
+                    new KnownFrameGyroscopeLinearLeastSquaresCalibrator(measurements, true,
+                            this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
 
             final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
             final Matrix estimatedMg = calibrator.getEstimatedMg();
@@ -998,8 +950,8 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
 
     @Test
     public void testCalibrateMultiplePositionsForCommonAxisCaseWithMinimumMeasuresAndNoNoise()
-            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException, CalibrationException {
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
+            NotReadyException, CalibrationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -1015,16 +967,15 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
             final double accelQuantLevel = 0.0;
             final double gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                    gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                    accelQuantLevel, gyroQuantLevel);
 
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double roll = 0.0;
             final double pitch = 0.0;
             final double yaw = 0.0;
-            final CoordinateTransformation nedC = new CoordinateTransformation(
-                    roll, pitch, yaw, FrameType.BODY_FRAME,
+            final CoordinateTransformation nedC = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.LOCAL_NAVIGATION_FRAME);
 
             final List<FrameBodyKinematics> measurements = new ArrayList<>();
@@ -1038,43 +989,41 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
                 final NEDPosition nedPosition = new NEDPosition(latitude, longitude, height);
 
                 final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                        .convertNEDtoECEFAndReturnNew(nedFrame);
+                final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
                 // compute ground-truth kinematics that should be generated at provided
                 // position, velocity and orientation
-                final BodyKinematics trueKinematics = ECEFKinematicsEstimator
-                        .estimateKinematicsAndReturnNew(TIME_INTERVAL_SECONDS, ecefFrame,
-                                ecefFrame);
+                final BodyKinematics trueKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                        TIME_INTERVAL_SECONDS, ecefFrame, ecefFrame);
 
                 // apply known calibration parameters to distort ground-truth and generate a
                 // measured kinematics sample
-                final BodyKinematics measuredKinematics = BodyKinematicsGenerator
-                        .generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random);
+                final BodyKinematics measuredKinematics = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                        trueKinematics, errors, random);
 
-                final FrameBodyKinematics measurement = new FrameBodyKinematics(
-                        measuredKinematics, ecefFrame, ecefFrame, TIME_INTERVAL_SECONDS);
+                final FrameBodyKinematics measurement = new FrameBodyKinematics(measuredKinematics, ecefFrame,
+                        ecefFrame, TIME_INTERVAL_SECONDS);
                 measurements.add(measurement);
             }
 
             final KnownFrameGyroscopeLinearLeastSquaresCalibrator calibrator =
-                    new KnownFrameGyroscopeLinearLeastSquaresCalibrator(measurements,
-                            true, this);
+                    new KnownFrameGyroscopeLinearLeastSquaresCalibrator(measurements, true,
+                            this);
 
             // estimate
             reset();
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 0);
-            assertEquals(mCalibrateEnd, 0);
+            assertEquals(0, mCalibrateStart);
+            assertEquals(0, mCalibrateEnd);
 
             calibrator.calibrate();
 
             // check
             assertTrue(calibrator.isReady());
             assertFalse(calibrator.isRunning());
-            assertEquals(mCalibrateStart, 1);
-            assertEquals(mCalibrateEnd, 1);
+            assertEquals(1, mCalibrateStart);
+            assertEquals(1, mCalibrateEnd);
 
             final Matrix estimatedBg = calibrator.getEstimatedBiasesAsMatrix();
             final Matrix estimatedMg = calibrator.getEstimatedMg();
@@ -1105,15 +1054,13 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
     }
 
     @Override
-    public void onCalibrateStart(
-            final KnownFrameGyroscopeLinearLeastSquaresCalibrator calibrator) {
+    public void onCalibrateStart(final KnownFrameGyroscopeLinearLeastSquaresCalibrator calibrator) {
         checkLocked(calibrator);
         mCalibrateStart++;
     }
 
     @Override
-    public void onCalibrateEnd(
-            final KnownFrameGyroscopeLinearLeastSquaresCalibrator calibrator) {
+    public void onCalibrateEnd(final KnownFrameGyroscopeLinearLeastSquaresCalibrator calibrator) {
         checkLocked(calibrator);
         mCalibrateEnd++;
     }
@@ -1123,37 +1070,17 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         mCalibrateEnd = 0;
     }
 
-    private void checkLocked(
-            final KnownFrameGyroscopeLinearLeastSquaresCalibrator calibrator) {
+    private void checkLocked(final KnownFrameGyroscopeLinearLeastSquaresCalibrator calibrator) {
         assertTrue(calibrator.isRunning());
-        try {
-            calibrator.setMeasurements(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setCommonAxisUsed(true);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setListener(this);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.calibrate();
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
+        assertThrows(LockedException.class, () -> calibrator.setMeasurements(null));
+        assertThrows(LockedException.class, () -> calibrator.setCommonAxisUsed(true));
+        assertThrows(LockedException.class, () -> calibrator.setListener(this));
+        assertThrows(LockedException.class, calibrator::calibrate);
     }
 
-    private boolean assertEstimatedResult(
+    private static boolean assertEstimatedResult(
             final Matrix bg, final Matrix mg, final Matrix gg,
-            final KnownFrameGyroscopeLinearLeastSquaresCalibrator calibrator)
-            throws WrongSizeException {
+            final KnownFrameGyroscopeLinearLeastSquaresCalibrator calibrator) throws WrongSizeException {
 
         final double[] estimatedBiases = calibrator.getEstimatedBiases();
         assertArrayEquals(bg.getBuffer(), estimatedBiases, 0.0);
@@ -1167,38 +1094,29 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
 
         assertEquals(bg, bg2);
 
-        assertEquals(bg.getElementAtIndex(0), calibrator.getEstimatedBiasX(),
-                0.0);
-        assertEquals(bg.getElementAtIndex(1), calibrator.getEstimatedBiasY(),
-                0.0);
-        assertEquals(bg.getElementAtIndex(2), calibrator.getEstimatedBiasZ(),
-                0.0);
+        assertEquals(bg.getElementAtIndex(0), calibrator.getEstimatedBiasX(), 0.0);
+        assertEquals(bg.getElementAtIndex(1), calibrator.getEstimatedBiasY(), 0.0);
+        assertEquals(bg.getElementAtIndex(2), calibrator.getEstimatedBiasZ(), 0.0);
 
         final AngularSpeed bgx1 = calibrator.getEstimatedBiasAngularSpeedX();
-        final AngularSpeed bgx2 = new AngularSpeed(0.0,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed bgx2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getEstimatedBiasAngularSpeedX(bgx2);
         assertEquals(bgx1, bgx2);
-        assertEquals(calibrator.getEstimatedBiasX(),
-                bgx1.getValue().doubleValue(), 0.0);
+        assertEquals(calibrator.getEstimatedBiasX(), bgx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgx1.getUnit());
 
         final AngularSpeed bgy1 = calibrator.getEstimatedBiasAngularSpeedY();
-        final AngularSpeed bgy2 = new AngularSpeed(0.0,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed bgy2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getEstimatedBiasAngularSpeedY(bgy2);
         assertEquals(bgy1, bgy2);
-        assertEquals(calibrator.getEstimatedBiasY(),
-                bgy1.getValue().doubleValue(), 0.0);
+        assertEquals(calibrator.getEstimatedBiasY(), bgy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgy1.getUnit());
 
         final AngularSpeed bgz1 = calibrator.getEstimatedBiasAngularSpeedZ();
-        final AngularSpeed bgz2 = new AngularSpeed(0.0,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed bgz2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         calibrator.getEstimatedBiasAngularSpeedZ(bgz2);
         assertEquals(bgz1, bgz2);
-        assertEquals(calibrator.getEstimatedBiasZ(),
-                bgz1.getValue().doubleValue(), 0.0);
+        assertEquals(calibrator.getEstimatedBiasZ(), bgz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, bgz1.getUnit());
 
         final AngularSpeedTriad bTriad1 = calibrator.getEstimatedBiasAsTriad();
@@ -1213,45 +1131,36 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         }
         assertTrue(bTriad1.equals(bTriad2, ABSOLUTE_ERROR));
 
-        assertEquals(mg.getElementAt(0, 0), calibrator.getEstimatedSx(),
-                0.0);
-        assertEquals(mg.getElementAt(1, 1), calibrator.getEstimatedSy(),
-                0.0);
-        assertEquals(mg.getElementAt(2, 2), calibrator.getEstimatedSz(),
-                0.0);
-        assertEquals(mg.getElementAt(0, 1), calibrator.getEstimatedMxy(),
-                0.0);
-        assertEquals(mg.getElementAt(0, 2), calibrator.getEstimatedMxz(),
-                0.0);
-        assertEquals(mg.getElementAt(1, 0), calibrator.getEstimatedMyx(),
-                0.0);
-        assertEquals(mg.getElementAt(1, 2), calibrator.getEstimatedMyz(),
-                0.0);
-        assertEquals(mg.getElementAt(2, 0), calibrator.getEstimatedMzx(),
-                0.0);
-        assertEquals(mg.getElementAt(2, 1), calibrator.getEstimatedMzy(),
-                0.0);
+        assertEquals(mg.getElementAt(0, 0), calibrator.getEstimatedSx(), 0.0);
+        assertEquals(mg.getElementAt(1, 1), calibrator.getEstimatedSy(), 0.0);
+        assertEquals(mg.getElementAt(2, 2), calibrator.getEstimatedSz(), 0.0);
+        assertEquals(mg.getElementAt(0, 1), calibrator.getEstimatedMxy(), 0.0);
+        assertEquals(mg.getElementAt(0, 2), calibrator.getEstimatedMxz(), 0.0);
+        assertEquals(mg.getElementAt(1, 0), calibrator.getEstimatedMyx(), 0.0);
+        assertEquals(mg.getElementAt(1, 2), calibrator.getEstimatedMyz(), 0.0);
+        assertEquals(mg.getElementAt(2, 0), calibrator.getEstimatedMzx(), 0.0);
+        assertEquals(mg.getElementAt(2, 1), calibrator.getEstimatedMzy(), 0.0);
 
         assertEquals(gg, calibrator.getEstimatedGg());
 
         return true;
     }
 
-    private Matrix generateBa() {
+    private static Matrix generateBa() {
         return Matrix.newFromArray(new double[]{
                 900 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 -1300 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 800 * MICRO_G_TO_METERS_PER_SECOND_SQUARED});
     }
 
-    private Matrix generateBg() {
+    private static Matrix generateBg() {
         return Matrix.newFromArray(new double[]{
                 -9 * DEG_TO_RAD / 3600.0,
                 13 * DEG_TO_RAD / 3600.0,
                 -8 * DEG_TO_RAD / 3600.0});
     }
 
-    private Matrix generateMaGeneral() throws WrongSizeException {
+    private static Matrix generateMaGeneral() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
@@ -1262,7 +1171,7 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         return result;
     }
 
-    private Matrix generateMaCommonAxis() throws WrongSizeException {
+    private static Matrix generateMaCommonAxis() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
@@ -1273,7 +1182,7 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         return result;
     }
 
-    private Matrix generateMg() throws WrongSizeException {
+    private static Matrix generateMg() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
@@ -1284,7 +1193,7 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         return result;
     }
 
-    private Matrix generateGg() throws WrongSizeException {
+    private static Matrix generateGg() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         final double tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
@@ -1296,11 +1205,11 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         return result;
     }
 
-    private double getAccelNoiseRootPSD() {
+    private static double getAccelNoiseRootPSD() {
         return 100.0 * MICRO_G_TO_METERS_PER_SECOND_SQUARED;
     }
 
-    private double getGyroNoiseRootPSD() {
+    private static double getGyroNoiseRootPSD() {
         return 0.01 * DEG_TO_RAD / 60.0;
     }
 }

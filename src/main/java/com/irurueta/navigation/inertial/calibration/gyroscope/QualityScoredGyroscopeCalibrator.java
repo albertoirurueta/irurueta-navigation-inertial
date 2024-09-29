@@ -21,8 +21,7 @@ import com.irurueta.navigation.LockedException;
  * Indicates that a gyroscope calibrator can accept quality scores for each
  * measurement or sequence being provided.
  */
-public interface QualityScoredGyroscopeCalibrator extends
-        GyroscopeCalibrator {
+public interface QualityScoredGyroscopeCalibrator extends GyroscopeCalibrator {
 
     /**
      * Returns quality scores corresponding to each measurement or sequence.
@@ -45,6 +44,5 @@ public interface QualityScoredGyroscopeCalibrator extends
      *                                  is smaller than minimum required samples.
      * @throws LockedException          if calibrator is currently running.
      */
-    void setQualityScores(final double[] qualityScores)
-            throws LockedException;
+    void setQualityScores(final double[] qualityScores) throws LockedException;
 }

@@ -38,36 +38,31 @@ public class RobustKnownBiasAndFrameAccelerometerCalibratorTest implements
 
         // RANSAC
         RobustKnownBiasAndFrameAccelerometerCalibrator calibrator =
-                RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownBiasAndFrameAccelerometerCalibrator.create(RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
@@ -75,130 +70,119 @@ public class RobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         // test create with listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertSame(calibrator.getListener(), this);
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with measurements and method
-        final List<StandardDeviationFrameBodyKinematics> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationFrameBodyKinematics> measurements = Collections.emptyList();
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // test create with measurements, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
         calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, this, RobustEstimatorMethod.PROMedS);
+                measurements, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
@@ -208,40 +192,40 @@ public class RobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         // test create with common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                true, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(true,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                true, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(true,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                true, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(true,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                true, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(true,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                true, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(true,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
@@ -250,148 +234,148 @@ public class RobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         // test create with common axis used, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                true, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(true, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                true, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(true, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                true, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(true, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                true, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(true, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                true, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(true, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with measurements, common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, true, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, true,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, true, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, true,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, true, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, true,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, true, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, true,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, true, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, true,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with measurements, common axis used, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, true, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, true,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, true, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, true,
+                this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, true, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, true,
+                this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, true, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, true,
+                this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, true, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, true,
+                this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with bias coordinates and method
         final Matrix ba = generateBa();
@@ -400,54 +384,54 @@ public class RobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         final double biasZ = ba.getElementAtIndex(2);
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // test create with bias coordinates, listener and method
 
@@ -457,2975 +441,2890 @@ public class RobustKnownBiasAndFrameAccelerometerCalibratorTest implements
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // test create with measurements, bias coordinates and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // test create with measurements, bias, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // test create with bias coordinates, common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, true, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ, true,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, true, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ, true,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, true, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ, true,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, true, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ, true,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, true, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ, true,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with bias coordinates, common axis used, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, true, this,
-                RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ, true,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, true, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ, true,
+                this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, true, this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ, true,
+                this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, true, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ, true,
+                this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, true, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ, true,
+                this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with measurements, bias coordinates, common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, true,
-                RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                true, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, true,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                true, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, true,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                true, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, true,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                true, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, true,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                true, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with measurements, bias coordinates, common axis used, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, true, this,
-                RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                true, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, true, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                true, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, true, this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                true, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, true, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                true, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, true, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                true, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test constructor with bias coordinates as acceleration
-        final Acceleration bax = new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration bay = new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration baz = new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration bax = new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration bay = new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration baz = new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // test create with bias coordinates as acceleration, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // test create with measurements, bias coordinates as acceleration and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // test create with measurements, bias coordinates as acceleration, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // test create with bias coordinates as acceleration, common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, true, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, true,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, true, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, true,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, true, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, true,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, true, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, true,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, true, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, true,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with bias coordinates as acceleration, common axis used, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, true, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, true,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, true, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, true,
+                this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, true, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, true,
+                this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, true, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, true,
+                this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, true, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, true,
+                this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with measurements, bias coordinates as acceleration, common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, true, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz,
+                true, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, true, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz,
+                true, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, true, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz,
+                true, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, true, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz,
+                true, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, true, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz,
+                true, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with measurements, bias coordinates as acceleration, common axis used,
         // listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, true, this,
-                RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz,
+                true, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, true, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz,
+                true, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, true, this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz,
+                true, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, true, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz,
+                true, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, true, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz,
+                true, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with bias array and method
         final double[] bias = ba.getBuffer();
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bias, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bias, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bias, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bias, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bias, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // test create with bias array, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias,
-                this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias,
-                this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias,
-                this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias,
-                this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias,
-                this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // test create with measurements, bias array and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // test create with measurements, bias coordinates array, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // test create with bias coordinates array, common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bias, true, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, true,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bias, true, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, true,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bias, true, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, true,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bias, true, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, true,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bias, true, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, true,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with bias coordinates array, common axis used, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bias, true, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, true, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bias, true, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, true, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bias, true, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, true, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bias, true, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, true, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bias, true, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, true, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with measurements, bias coordinates array, common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, true, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias, true,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, true, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias, true,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, true, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias, true,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, true, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias, true,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, true, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias, true,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with measurements, bias, common axis used, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, true, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias, true,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, true, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias, true,
+                this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, true, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias, true,
+                this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, true, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias, true,
+                this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, true, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias, true,
+                this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with bias matrix and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // test create with bias matrix, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // test create with measurements, bias matrix and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // test create with measurements, bias matrix, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // test create with bias matrix, common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, true, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, true,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, true, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, true,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, true, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, true,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, true, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, true,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, true, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, true,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with bias matrix, common axis used, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, true, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, true, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, true, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, true, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, true, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, true, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, true, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, true, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, true, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, true, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with measurements, bias matrix, common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, true, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba, true,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, true, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba, true,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, true, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba, true,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, true, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba, true,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, true, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba, true,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with measurements, bias matrix, common axis used, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, true, this,
-                RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba, true,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, true, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba, true,
+                this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, true, this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba, true,
+                this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, true, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba, true,
+                this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, true, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba, true,
+                this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, measurements and method
 
         // RANSAC
-        final double[] qualityScores = new double[
-                RobustKnownBiasAndFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS];
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, RobustEstimatorMethod.RANSAC);
+        final double[] qualityScores = new double[RobustKnownBiasAndFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS];
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
 
         // test create with quality scores, measurements, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, measurements, common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, true, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                true, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, true, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                true, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, true, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                true, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, true, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                true, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, true, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                true, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with quality scores, measurements, common axis used, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, true, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                true, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, true, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                true, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, true, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                true, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, true, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                true, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, true, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                true, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, bias coordinates and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // test create with quality scores, bias coordinates, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, measurements, bias coordinates and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ,
-                RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
         // test create with quality scores, measurements, bias coordinates, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ, this,
-                RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ, this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, bias coordinates, common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, true,
-                RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                true, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, true,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                true, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, true,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                true, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, true,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                true, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, true,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                true, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with quality scores, bias coordinates, common axis used, listener
         // and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, true, this,
-                RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                true, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, true, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                true, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, true, this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                true, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, true, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                true, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, biasX, biasY, biasZ, true, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, biasX, biasY, biasZ,
+                true, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, measurements, bias coordinates,
         // common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ, true,
-                RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, true, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ, true,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, true, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ, true,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, true, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ, true,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, true, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ, true,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, true, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with quality scores, measurements, bias coordinates, common axis used,
         // listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ, true, this,
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, true, this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
+        assertNull(calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, true, this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
+        assertNull(calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, true, this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
+        assertNull(calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, true, this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                biasX, biasY, biasZ, true, this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // test create with quality scores, bias coordinates as acceleration and method
+
+        // RANSAC
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz,
                 RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ, true, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ, true, this,
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz,
                 RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ, true, this,
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz,
                 RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, biasX, biasY, biasZ, true, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-
-        // test create with quality scores, bias coordinates as acceleration and method
-
-        // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-
-
-        // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, RobustEstimatorMethod.LMedS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-
-        // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-
-        // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-
-        // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, RobustEstimatorMethod.PROMedS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // test create with quality scores, bias coordinates as acceleration, listener
         // and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, measurements, bias coordinates as acceleration
         // and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
         // test create with quality scores, measurements, bias coordinates as acceleration,
         // listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, bias coordinates as acceleration, common axis used
         // and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, true, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz,
+                true, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, true, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz,
+                true, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, true, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz,
+                true, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, true, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz,
+                true, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, true, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz,
+                true, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with quality scores, bias coordinates as acceleration,
         // common axis used, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, true, this,
-                RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz,
+                true, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, true, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz,
+                true, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, true, this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz,
+                true, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, true, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz,
+                true, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bax, bay, baz, true, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bax, bay, baz,
+                true, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, measurements, bias coordinates as acceleration,
         // common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, true,
-                RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                true, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, true,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                true, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, true,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                true, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, true,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                true, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, true,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                true, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with quality scores, measurements, bias coordinates as acceleration,
         // common axis used, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, true, this,
-                RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                true, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, true, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                true, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
         calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
@@ -3436,856 +3335,832 @@ public class RobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
         assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, true, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                true, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bax, bay, baz, true, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bax, bay, baz,
+                true, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, bias array and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // test create with quality scores, bias array, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertSame(calibrator.getListener(), this);
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, measurements, bias array and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
         // test create with quality scores, measurements, bias array,
         // listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, this,
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
+        assertNull(calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
+        assertNull(calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(calibrator.getListener(), this);
+
+        // MSAC
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
+        assertNull(calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        // test create with quality scores, bias array, common axis used and method
+
+        // RANSAC
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias, true,
                 RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias, true,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, this,
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias, true,
                 RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, this,
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias, true,
                 RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
-
-        // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, this,
-                RobustEstimatorMethod.PROMedS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
-
-        // test create with quality scores, bias array, common axis used and method
-
-        // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, true, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertNull(calibrator.getQualityScores());
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertTrue(calibrator.isCommonAxisUsed());
-
-        // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, true, RobustEstimatorMethod.LMedS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertNull(calibrator.getQualityScores());
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertTrue(calibrator.isCommonAxisUsed());
-
-        // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, true, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertNull(calibrator.getQualityScores());
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertTrue(calibrator.isCommonAxisUsed());
-
-        // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, true, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, true, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias, true,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with quality scores, bias, common axis used, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, true, this,
-                RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias, true,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, true, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias, true,
+                this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, true, this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias, true,
+                this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, true, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias, true,
+                this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, bias, true, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, bias, true,
+                this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, measurements, bias array,
         // common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, true,
-                RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                true, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, true,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                true, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, true,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                true, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, true,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                true, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, true,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                true, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with quality scores, measurements, bias array, common axis used
         // listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, true, this,
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                true, this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
+        assertNull(calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                true, this, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
+        assertNull(calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                true, this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
+        assertNull(calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                true, this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, bias,
+                true, this, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // test create with quality scores, bias matrix and method
+
+        // RANSAC
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba,
                 RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, true, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, true, this,
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba,
                 RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, true, this,
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba,
                 RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, bias, true, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-
-        // test create with quality scores, bias matrix and method
-
-        // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-
-        // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, RobustEstimatorMethod.LMedS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-
-        // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-
-        // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-
-        // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, RobustEstimatorMethod.PROMedS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // test create with quality scores, bias matrix, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, measurements, bias matrix and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
         // test create with quality scores, measurements, bias matrix, listener
         // and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, bias matrix, common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, true, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba, true,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, true, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba, true,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, true, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba, true,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, true, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba, true,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, true, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba, true,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with quality scores, bias matrix, common axis used, listener
         // and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, true, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba, true,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, true, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba, true,
+                this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, true, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba, true,
+                this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, true, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba, true,
+                this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, ba, true, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, ba, true,
+                this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, measurements, bias matrix, common axis used
         // and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, true,
-                RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                true, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, true,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                true, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, true, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                true, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
@@ -4294,89 +4169,84 @@ public class RobustKnownBiasAndFrameAccelerometerCalibratorTest implements
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, true, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                true, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with quality scores, measurements, bias matrix,
         // common axis used, listener and method
 
         // RANSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, true, this,
-                RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                true, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, true, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                true, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, true, this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                true, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, true, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                true, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                qualityScores, measurements, ba, true, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(qualityScores, measurements, ba,
+                true, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -4385,398 +4255,367 @@ public class RobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 RobustKnownBiasAndFrameAccelerometerCalibrator.create();
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
 
 
         calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(this, calibrator.getListener());
 
         final List<StandardDeviationFrameBodyKinematics> measurements = Collections.emptyList();
         calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements,
-                this);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(true);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.isCommonAxisUsed());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                true, this);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(true, this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, true);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, true);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, true, this);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, true,
+                this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         final Matrix ba = generateBa();
         final double biasX = ba.getElementAtIndex(0);
         final double biasY = ba.getElementAtIndex(1);
         final double biasZ = ba.getElementAtIndex(2);
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, this);
-
-        // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
-
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ, this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, this);
-
-        // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertSame(calibrator.getListener(), this);
-
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, true);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                this);
+
+        // check
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ, true);
+
+        // check
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                biasX, biasY, biasZ, true, this);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(biasX, biasY, biasZ, true,
+                this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, true);
-
-        // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertTrue(calibrator.isCommonAxisUsed());
-
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, biasX, biasY, biasZ, true, this);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                true);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasX(), biasX, 0.0);
-        assertEquals(calibrator.getBiasY(), biasY, 0.0);
-        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-
-        final Acceleration bax = new Acceleration(biasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration bay = new Acceleration(biasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration baz = new Acceleration(biasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz);
-
-        // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, this);
-
-        // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
-
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz);
-
-        // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, this);
-
-        // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertSame(calibrator.getListener(), this);
-
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, true);
-
-        // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bax, bay, baz, true, this);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, biasX, biasY, biasZ,
+                true, this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(biasX, calibrator.getBiasX(), 0.0);
+        assertEquals(biasY, calibrator.getBiasY(), 0.0);
+        assertEquals(biasZ, calibrator.getBiasZ(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, true);
+        final Acceleration bax = new Acceleration(biasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration bay = new Acceleration(biasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration baz = new Acceleration(biasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
-        assertTrue(calibrator.isCommonAxisUsed());
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bax, bay, baz, true, this);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasXAsAcceleration(), bax);
-        assertEquals(calibrator.getBiasYAsAcceleration(), bay);
-        assertEquals(calibrator.getBiasZAsAcceleration(), baz);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
+
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz);
+
+        // check
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz, this);
+
+        // check
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertSame(this, calibrator.getListener());
+
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, true);
+
+        // check
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bax, bay, baz, true,
+                this);
+
+        // check
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz,
+                true);
+
+        // check
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertTrue(calibrator.isCommonAxisUsed());
+
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bax, bay, baz,
+                true, this);
+
+        // check
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(bax, calibrator.getBiasXAsAcceleration());
+        assertEquals(bay, calibrator.getBiasYAsAcceleration());
+        assertEquals(baz, calibrator.getBiasZAsAcceleration());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
 
         final double[] bias = ba.getBuffer();
         calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bias, this);
-
-        // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
-
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, this);
-
-        // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
-        assertSame(calibrator.getListener(), this);
-
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bias, true);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias, this);
+
+        // check
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
+        assertSame(this, calibrator.getListener());
+
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, true);
+
+        // check
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                bias, true, this);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(bias, true, this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, true);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias, true);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, bias, true, this);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, bias, true,
+                this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getBias(), bias, 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(bias, calibrator.getBias(), 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, this);
-
-        // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
-
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, this);
-
-        // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
-        assertSame(calibrator.getListener(), this);
-
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, true);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba, this);
+
+        // check
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
+        assertSame(this, calibrator.getListener());
+
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, true);
+
+        // check
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                ba, true, this);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(ba, true, this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, true);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba, true);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
 
-        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(
-                measurements, ba, true, this);
+        calibrator = RobustKnownBiasAndFrameAccelerometerCalibrator.create(measurements, ba, true,
+                this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getBiasAsMatrix(), ba);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(ba, calibrator.getBiasAsMatrix());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
     }
 
     @Override
-    public void onCalibrateStart(
-            final RobustKnownBiasAndFrameAccelerometerCalibrator calibrator) {
+    public void onCalibrateStart(final RobustKnownBiasAndFrameAccelerometerCalibrator calibrator) {
     }
 
     @Override
-    public void onCalibrateEnd(
-            final RobustKnownBiasAndFrameAccelerometerCalibrator calibrator) {
+    public void onCalibrateEnd(final RobustKnownBiasAndFrameAccelerometerCalibrator calibrator) {
     }
 
     @Override
     public void onCalibrateNextIteration(
-            final RobustKnownBiasAndFrameAccelerometerCalibrator calibrator,
-            final int iteration) {
+            final RobustKnownBiasAndFrameAccelerometerCalibrator calibrator, final int iteration) {
     }
 
     @Override
     public void onCalibrateProgressChange(
-            final RobustKnownBiasAndFrameAccelerometerCalibrator calibrator,
-            final float progress) {
+            final RobustKnownBiasAndFrameAccelerometerCalibrator calibrator, final float progress) {
     }
 
-    private Matrix generateBa() {
+    private static Matrix generateBa() {
         return Matrix.newFromArray(new double[]{
                 900 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 -1300 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,

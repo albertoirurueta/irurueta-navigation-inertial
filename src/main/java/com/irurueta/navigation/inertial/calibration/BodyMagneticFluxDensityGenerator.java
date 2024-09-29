@@ -53,11 +53,10 @@ public class BodyMagneticFluxDensityGenerator {
      *                                  have proper size.
      */
     public static Collection<BodyMagneticFluxDensity> generate(
-            final Collection<BodyMagneticFluxDensity> trueMagneticFluxDensities,
-            final double[] magnetometerHardIron, final Matrix magnetometerSoftIron) {
+            final Collection<BodyMagneticFluxDensity> trueMagneticFluxDensities, final double[] magnetometerHardIron,
+            final Matrix magnetometerSoftIron) {
         final List<BodyMagneticFluxDensity> result = new ArrayList<>();
-        generate(trueMagneticFluxDensities, magnetometerHardIron,
-                magnetometerSoftIron, result);
+        generate(trueMagneticFluxDensities, magnetometerHardIron, magnetometerSoftIron, result);
         return result;
     }
 
@@ -77,25 +76,19 @@ public class BodyMagneticFluxDensityGenerator {
      *                                  have proper size.
      */
     public static void generate(
-            final Collection<BodyMagneticFluxDensity> trueMagneticFluxDensities,
-            final double[] magnetometerHardIron, final Matrix magnetometerSoftIron,
-            final Collection<BodyMagneticFluxDensity> result) {
+            final Collection<BodyMagneticFluxDensity> trueMagneticFluxDensities, final double[] magnetometerHardIron,
+            final Matrix magnetometerSoftIron, final Collection<BodyMagneticFluxDensity> result) {
         try {
-            final Matrix mBtrue = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                    1);
+            final Matrix mBtrue = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
             final Matrix identity = Matrix.identity(
-                    BodyMagneticFluxDensity.COMPONENTS,
-                    BodyMagneticFluxDensity.COMPONENTS);
-            final Matrix tmp33 = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                    BodyMagneticFluxDensity.COMPONENTS);
-            final Matrix tmp31 = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                    1);
+                    BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
+            final Matrix tmp33 = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
+            final Matrix tmp31 = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
 
             for (final BodyMagneticFluxDensity b : trueMagneticFluxDensities) {
                 final BodyMagneticFluxDensity r = new BodyMagneticFluxDensity();
 
-                internalGenerate(b, magnetometerHardIron,
-                        magnetometerSoftIron, r, mBtrue, identity, tmp33, tmp31);
+                internalGenerate(b, magnetometerHardIron, magnetometerSoftIron, r, mBtrue, identity, tmp33, tmp31);
 
                 result.add(r);
             }
@@ -118,12 +111,10 @@ public class BodyMagneticFluxDensityGenerator {
      *                                  have proper size.
      */
     public static BodyMagneticFluxDensity generate(
-            final BodyMagneticFluxDensity trueMagneticFluxDensity,
-            final double[] magnetometerHardIron,
+            final BodyMagneticFluxDensity trueMagneticFluxDensity, final double[] magnetometerHardIron,
             final Matrix magnetometerSoftIron) {
         final BodyMagneticFluxDensity result = new BodyMagneticFluxDensity();
-        generate(trueMagneticFluxDensity, magnetometerHardIron,
-                magnetometerSoftIron, result);
+        generate(trueMagneticFluxDensity, magnetometerHardIron, magnetometerSoftIron, result);
         return result;
     }
 
@@ -142,22 +133,16 @@ public class BodyMagneticFluxDensityGenerator {
      *                                  have proper size.
      */
     public static void generate(
-            final BodyMagneticFluxDensity trueMagneticFluxDensity,
-            final double[] magnetometerHardIron,
-            final Matrix magnetometerSoftIron,
-            final BodyMagneticFluxDensity result) {
+            final BodyMagneticFluxDensity trueMagneticFluxDensity, final double[] magnetometerHardIron,
+            final Matrix magnetometerSoftIron, final BodyMagneticFluxDensity result) {
         try {
-            final Matrix mBtrue = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                    1);
+            final Matrix mBtrue = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
             final Matrix identity = Matrix.identity(
-                    BodyMagneticFluxDensity.COMPONENTS,
-                    BodyMagneticFluxDensity.COMPONENTS);
-            final Matrix tmp33 = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                    BodyMagneticFluxDensity.COMPONENTS);
-            final Matrix tmp31 = new Matrix(BodyMagneticFluxDensity.COMPONENTS,
-                    1);
-            internalGenerate(trueMagneticFluxDensity, magnetometerHardIron,
-                    magnetometerSoftIron, result, mBtrue, identity, tmp33, tmp31);
+                    BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
+            final Matrix tmp33 = new Matrix(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
+            final Matrix tmp31 = new Matrix(BodyMagneticFluxDensity.COMPONENTS, 1);
+            internalGenerate(trueMagneticFluxDensity, magnetometerHardIron, magnetometerSoftIron, result, mBtrue,
+                    identity, tmp33, tmp31);
         } catch (final WrongSizeException ignore) {
             // never happens
         }
@@ -183,14 +168,9 @@ public class BodyMagneticFluxDensityGenerator {
      * @throws WrongSizeException if any of provided matrices has invalid size.
      */
     private static void internalGenerate(
-            final BodyMagneticFluxDensity trueMagneticFluxDensity,
-            final double[] magnetometerHardIron,
-            final Matrix magnetometerSoftIron,
-            final BodyMagneticFluxDensity result,
-            final Matrix mBtrue,
-            final Matrix identity,
-            final Matrix tmp33,
-            final Matrix tmp31) throws WrongSizeException {
+            final BodyMagneticFluxDensity trueMagneticFluxDensity, final double[] magnetometerHardIron,
+            final Matrix magnetometerSoftIron, final BodyMagneticFluxDensity result, final Matrix mBtrue,
+            final Matrix identity, final Matrix tmp33, final Matrix tmp31) throws WrongSizeException {
         if (magnetometerHardIron.length != BodyMagneticFluxDensity.COMPONENTS) {
             throw new IllegalArgumentException();
         }
@@ -208,13 +188,9 @@ public class BodyMagneticFluxDensityGenerator {
 
         tmp33.multiply(mBtrue, tmp31);
         for (int i = 0; i < BodyMagneticFluxDensity.COMPONENTS; i++) {
-            tmp31.setElementAtIndex(i,
-                    tmp31.getElementAtIndex(i) + magnetometerHardIron[i]);
+            tmp31.setElementAtIndex(i, tmp31.getElementAtIndex(i) + magnetometerHardIron[i]);
         }
 
-        result.setCoordinates(
-                tmp31.getElementAtIndex(0),
-                tmp31.getElementAtIndex(1),
-                tmp31.getElementAtIndex(2));
+        result.setCoordinates(tmp31.getElementAtIndex(0), tmp31.getElementAtIndex(1), tmp31.getElementAtIndex(2));
     }
 }

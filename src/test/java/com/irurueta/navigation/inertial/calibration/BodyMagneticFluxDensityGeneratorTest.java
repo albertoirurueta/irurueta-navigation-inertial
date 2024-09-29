@@ -43,107 +43,87 @@ public class BodyMagneticFluxDensityGeneratorTest {
 
     @Test
     public void testGenerate1() {
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix softIron = generateSoftIron();
 
-        final List<BodyMagneticFluxDensity> trueMagneticFluxDensities =
-                new ArrayList<>();
-        final List<BodyMagneticFluxDensity> expectedMagneticFluxDensities =
-                new ArrayList<>();
+        final List<BodyMagneticFluxDensity> trueMagneticFluxDensities = new ArrayList<>();
+        final List<BodyMagneticFluxDensity> expectedMagneticFluxDensities = new ArrayList<>();
         for (int i = 0; i < N; i++) {
-            final BodyMagneticFluxDensity trueMagneticFluxDensity =
-                    generateTruth(randomizer);
-            final BodyMagneticFluxDensity expectedMagneticFluxDensity =
-                    generateExpected(trueMagneticFluxDensity, hardIron,
-                            softIron);
+            final BodyMagneticFluxDensity trueMagneticFluxDensity = generateTruth(randomizer);
+            final BodyMagneticFluxDensity expectedMagneticFluxDensity = generateExpected(trueMagneticFluxDensity,
+                    hardIron, softIron);
 
             trueMagneticFluxDensities.add(trueMagneticFluxDensity);
             expectedMagneticFluxDensities.add(expectedMagneticFluxDensity);
         }
 
-        final Collection<BodyMagneticFluxDensity> result =
-                BodyMagneticFluxDensityGenerator.generate(
-                        trueMagneticFluxDensities, hardIron, softIron);
+        final Collection<BodyMagneticFluxDensity> result = BodyMagneticFluxDensityGenerator.generate(
+                trueMagneticFluxDensities, hardIron, softIron);
 
         assertEquals(expectedMagneticFluxDensities, result);
     }
 
     @Test
     public void testGenerate2() {
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix softIron = generateSoftIron();
 
-        final List<BodyMagneticFluxDensity> trueMagneticFluxDensities =
-                new ArrayList<>();
-        final List<BodyMagneticFluxDensity> expectedMagneticFluxDensities =
-                new ArrayList<>();
+        final List<BodyMagneticFluxDensity> trueMagneticFluxDensities = new ArrayList<>();
+        final List<BodyMagneticFluxDensity> expectedMagneticFluxDensities = new ArrayList<>();
         for (int i = 0; i < N; i++) {
-            final BodyMagneticFluxDensity trueMagneticFluxDensity =
-                    generateTruth(randomizer);
-            final BodyMagneticFluxDensity expectedMagneticFluxDensity =
-                    generateExpected(trueMagneticFluxDensity, hardIron,
-                            softIron);
+            final BodyMagneticFluxDensity trueMagneticFluxDensity = generateTruth(randomizer);
+            final BodyMagneticFluxDensity expectedMagneticFluxDensity = generateExpected(trueMagneticFluxDensity,
+                    hardIron, softIron);
 
             trueMagneticFluxDensities.add(trueMagneticFluxDensity);
             expectedMagneticFluxDensities.add(expectedMagneticFluxDensity);
         }
 
         final List<BodyMagneticFluxDensity> result = new ArrayList<>();
-        BodyMagneticFluxDensityGenerator.generate(trueMagneticFluxDensities,
-                hardIron, softIron, result);
+        BodyMagneticFluxDensityGenerator.generate(trueMagneticFluxDensities, hardIron, softIron, result);
 
         assertEquals(expectedMagneticFluxDensities, result);
     }
 
     @Test
     public void testGenerate3() {
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix softIron = generateSoftIron();
 
-        final BodyMagneticFluxDensity trueMagneticFluxDensity =
-                generateTruth(randomizer);
-        final BodyMagneticFluxDensity expectedMagneticFluxDensity =
-                generateExpected(trueMagneticFluxDensity, hardIron,
-                        softIron);
+        final BodyMagneticFluxDensity trueMagneticFluxDensity = generateTruth(randomizer);
+        final BodyMagneticFluxDensity expectedMagneticFluxDensity = generateExpected(trueMagneticFluxDensity, hardIron,
+                softIron);
 
-        final BodyMagneticFluxDensity result = BodyMagneticFluxDensityGenerator
-                .generate(trueMagneticFluxDensity, hardIron, softIron);
+        final BodyMagneticFluxDensity result = BodyMagneticFluxDensityGenerator.generate(trueMagneticFluxDensity,
+                hardIron, softIron);
 
         assertEquals(expectedMagneticFluxDensity, result);
     }
 
     @Test
     public void testGenerate4() {
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix softIron = generateSoftIron();
 
-        final BodyMagneticFluxDensity trueMagneticFluxDensity =
-                generateTruth(randomizer);
-        final BodyMagneticFluxDensity expectedMagneticFluxDensity =
-                generateExpected(trueMagneticFluxDensity, hardIron,
-                        softIron);
+        final BodyMagneticFluxDensity trueMagneticFluxDensity = generateTruth(randomizer);
+        final BodyMagneticFluxDensity expectedMagneticFluxDensity = generateExpected(trueMagneticFluxDensity, hardIron,
+                softIron);
 
         final BodyMagneticFluxDensity result = new BodyMagneticFluxDensity();
-        BodyMagneticFluxDensityGenerator.generate(trueMagneticFluxDensity,
-                hardIron, softIron, result);
+        BodyMagneticFluxDensityGenerator.generate(trueMagneticFluxDensity, hardIron, softIron, result);
 
         assertEquals(expectedMagneticFluxDensity, result);
     }
 
-    private static BodyMagneticFluxDensity generateTruth(
-            final UniformRandomizer randomizer) {
+    private static BodyMagneticFluxDensity generateTruth(final UniformRandomizer randomizer) {
         final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX, MAX_MAGNETIC_FLUX);
         final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX, MAX_MAGNETIC_FLUX);
         final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX, MAX_MAGNETIC_FLUX);
@@ -151,35 +131,26 @@ public class BodyMagneticFluxDensityGeneratorTest {
     }
 
     private static BodyMagneticFluxDensity generateExpected(
-            final BodyMagneticFluxDensity input, final double[] hardIron,
-            final Matrix softIron) {
+            final BodyMagneticFluxDensity input, final double[] hardIron, final Matrix softIron) {
         try {
             final Matrix bTrue = input.asMatrix();
-            final Matrix tmp = Matrix.identity(
-                    BodyMagneticFluxDensity.COMPONENTS,
-                    BodyMagneticFluxDensity.COMPONENTS);
+            final Matrix tmp = Matrix.identity(BodyMagneticFluxDensity.COMPONENTS, BodyMagneticFluxDensity.COMPONENTS);
             tmp.add(softIron);
             tmp.multiply(bTrue);
 
-            tmp.setElementAtIndex(0,
-                    tmp.getElementAtIndex(0) + hardIron[0]);
-            tmp.setElementAtIndex(1,
-                    tmp.getElementAtIndex(1) + hardIron[1]);
-            tmp.setElementAtIndex(2,
-                    tmp.getElementAtIndex(2) + hardIron[2]);
+            tmp.setElementAtIndex(0, tmp.getElementAtIndex(0) + hardIron[0]);
+            tmp.setElementAtIndex(1, tmp.getElementAtIndex(1) + hardIron[1]);
+            tmp.setElementAtIndex(2, tmp.getElementAtIndex(2) + hardIron[2]);
 
             return new BodyMagneticFluxDensity(
-                    tmp.getElementAtIndex(0),
-                    tmp.getElementAtIndex(1),
-                    tmp.getElementAtIndex(2));
+                    tmp.getElementAtIndex(0), tmp.getElementAtIndex(1), tmp.getElementAtIndex(2));
         } catch (final WrongSizeException ignore) {
             // never happens
             return null;
         }
     }
 
-    private static double[] generateHardIron(
-            final UniformRandomizer randomizer) {
+    private static double[] generateHardIron(final UniformRandomizer randomizer) {
         final double[] result = new double[BodyMagneticFluxDensity.COMPONENTS];
         randomizer.fill(result, MIN_HARD_IRON, MAX_HARD_IRON);
         return result;
@@ -187,8 +158,7 @@ public class BodyMagneticFluxDensityGeneratorTest {
 
     private static Matrix generateSoftIron() {
         try {
-            return Matrix.createWithUniformRandomValues(
-                    BodyMagneticFluxDensity.COMPONENTS,
+            return Matrix.createWithUniformRandomValues(BodyMagneticFluxDensity.COMPONENTS,
                     BodyMagneticFluxDensity.COMPONENTS, MIN_SOFT_IRON, MAX_SOFT_IRON);
         } catch (final WrongSizeException ignore) {
             // never happens

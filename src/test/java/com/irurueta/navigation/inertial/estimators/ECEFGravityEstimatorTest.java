@@ -49,20 +49,17 @@ public class ECEFGravityEstimatorTest {
 
     @Test
     public void testConstants() {
-        assertEquals(ECEFGravityEstimator.EARTH_EQUATORIAL_RADIUS_WGS84,
-                Constants.EARTH_EQUATORIAL_RADIUS_WGS84, 0.0);
-        assertEquals(ECEFGravityEstimator.EARTH_GRAVITATIONAL_CONSTANT,
-                Constants.EARTH_GRAVITATIONAL_CONSTANT, 0.0);
+        assertEquals(ECEFGravityEstimator.EARTH_EQUATORIAL_RADIUS_WGS84, Constants.EARTH_EQUATORIAL_RADIUS_WGS84, 0.0);
+        assertEquals(ECEFGravityEstimator.EARTH_GRAVITATIONAL_CONSTANT, Constants.EARTH_GRAVITATIONAL_CONSTANT, 0.0);
         assertEquals(ECEFGravityEstimator.EARTH_SECOND_GRAVITATIONAL_CONSTANT,
                 Constants.EARTH_SECOND_GRAVITATIONAL_CONSTANT, 0.0);
-        assertEquals(ECEFGravityEstimator.EARTH_ROTATION_RATE,
-                Constants.EARTH_ROTATION_RATE, 0.0);
+        assertEquals(ECEFGravityEstimator.EARTH_ROTATION_RATE, Constants.EARTH_ROTATION_RATE, 0.0);
     }
 
     @Test
     public void testEstimateWithCoordinates() {
-        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES),
-                Math.toRadians(LONGITUDE_DEGREES), HEIGHT);
+        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES),
+                HEIGHT);
         final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
         final double x = ecefFrame.getX();
         final double y = ecefFrame.getY();
@@ -76,13 +73,13 @@ public class ECEFGravityEstimatorTest {
                 + Math.pow(gravity.getGy(), 2.0)
                 + Math.pow(gravity.getGz(), 2.0));
 
-        assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+        assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
     }
 
     @Test
     public void testEstimateAndReturnNewWithCoordinates() {
-        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES),
-                Math.toRadians(LONGITUDE_DEGREES), HEIGHT);
+        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES),
+                HEIGHT);
         final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
         final double x = ecefFrame.getX();
         final double y = ecefFrame.getY();
@@ -95,13 +92,13 @@ public class ECEFGravityEstimatorTest {
                 + Math.pow(gravity.getGy(), 2.0)
                 + Math.pow(gravity.getGz(), 2.0));
 
-        assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+        assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
     }
 
     @Test
     public void testEstimateWithECEFFrame() {
-        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES),
-                Math.toRadians(LONGITUDE_DEGREES), HEIGHT);
+        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES),
+                HEIGHT);
         final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         final ECEFGravityEstimator estimator = new ECEFGravityEstimator();
@@ -112,13 +109,13 @@ public class ECEFGravityEstimatorTest {
                 + Math.pow(gravity.getGy(), 2.0)
                 + Math.pow(gravity.getGz(), 2.0));
 
-        assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+        assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
     }
 
     @Test
     public void testEstimateAndReturnNewWithECEFFrame() {
-        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES),
-                Math.toRadians(LONGITUDE_DEGREES), HEIGHT);
+        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES),
+                HEIGHT);
         final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         final ECEFGravityEstimator estimator = new ECEFGravityEstimator();
@@ -128,13 +125,13 @@ public class ECEFGravityEstimatorTest {
                 + Math.pow(gravity.getGy(), 2.0)
                 + Math.pow(gravity.getGz(), 2.0));
 
-        assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+        assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
     }
 
     @Test
     public void testEstimateWithPosition() {
-        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES),
-                Math.toRadians(LONGITUDE_DEGREES), HEIGHT);
+        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES),
+                HEIGHT);
         final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
         final double x = ecefFrame.getX();
         final double y = ecefFrame.getY();
@@ -150,13 +147,13 @@ public class ECEFGravityEstimatorTest {
                 + Math.pow(gravity.getGy(), 2.0)
                 + Math.pow(gravity.getGz(), 2.0));
 
-        assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+        assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
     }
 
     @Test
     public void testEstimateAndReturnNewWithPosition() {
-        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES),
-                Math.toRadians(LONGITUDE_DEGREES), HEIGHT);
+        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES),
+                HEIGHT);
         final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
         final double x = ecefFrame.getX();
         final double y = ecefFrame.getY();
@@ -171,13 +168,13 @@ public class ECEFGravityEstimatorTest {
                 + Math.pow(gravity.getGy(), 2.0)
                 + Math.pow(gravity.getGz(), 2.0));
 
-        assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+        assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
     }
 
     @Test
     public void testEstimateWithDistances() {
-        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES),
-                Math.toRadians(LONGITUDE_DEGREES), HEIGHT);
+        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES),
+                HEIGHT);
         final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
         final double x = ecefFrame.getX();
         final double y = ecefFrame.getY();
@@ -195,13 +192,13 @@ public class ECEFGravityEstimatorTest {
                 + Math.pow(gravity.getGy(), 2.0)
                 + Math.pow(gravity.getGz(), 2.0));
 
-        assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+        assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
     }
 
     @Test
     public void testEstimateAndReturnNewWithDistances() {
-        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES),
-                Math.toRadians(LONGITUDE_DEGREES), HEIGHT);
+        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES),
+                HEIGHT);
         final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
         final double x = ecefFrame.getX();
         final double y = ecefFrame.getY();
@@ -218,13 +215,13 @@ public class ECEFGravityEstimatorTest {
                 + Math.pow(gravity.getGy(), 2.0)
                 + Math.pow(gravity.getGz(), 2.0));
 
-        assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+        assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
     }
 
     @Test
     public void testEstimateForAGivenLatitudeAndLongitude() {
-        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES),
-                Math.toRadians(LONGITUDE_DEGREES), HEIGHT);
+        final NEDFrame nedFrame = new NEDFrame(Math.toRadians(LATITUDE_DEGREES), Math.toRadians(LONGITUDE_DEGREES),
+                HEIGHT);
         final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
 
         final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(ecefFrame);
@@ -233,15 +230,14 @@ public class ECEFGravityEstimatorTest {
                 + Math.pow(gravity.getGy(), 2.0)
                 + Math.pow(gravity.getGz(), 2.0));
 
-        assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+        assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
     }
 
     @Test
     public void testEstimateForMultipleLatitudesAndLongitudes() {
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final double latitude = Math.toRadians(randomizer.nextDouble(
-                    MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+            final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
             final double longitude = Math.toRadians(randomizer.nextDouble(
                     MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 
@@ -254,7 +250,7 @@ public class ECEFGravityEstimatorTest {
                     + Math.pow(gravity.getGy(), 2.0)
                     + Math.pow(gravity.getGz(), 2.0));
 
-            assertEquals(g, GRAVITY, ABSOLUTE_ERROR);
+            assertEquals(GRAVITY, g, ABSOLUTE_ERROR);
         }
     }
 
@@ -264,8 +260,8 @@ public class ECEFGravityEstimatorTest {
         final ECEFGravity gravity = estimator.estimateAndReturnNew(0.0, 0.0, 0.0);
 
         // check
-        assertEquals(gravity.getGx(), 0.0, 0.0);
-        assertEquals(gravity.getGy(), 0.0, 0.0);
-        assertEquals(gravity.getGz(), 0.0, 0.0);
+        assertEquals(0.0, gravity.getGx(), 0.0);
+        assertEquals(0.0, gravity.getGy(), 0.0);
+        assertEquals(0.0, gravity.getGz(), 0.0);
     }
 }

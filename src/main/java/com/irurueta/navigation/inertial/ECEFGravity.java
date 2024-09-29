@@ -17,6 +17,8 @@ package com.irurueta.navigation.inertial;
 
 import com.irurueta.units.Acceleration;
 
+import java.io.Serial;
+
 /**
  * Contains acceleration due to gravity resolved about ECEF frame.
  */
@@ -26,6 +28,7 @@ public class ECEFGravity extends GravityOrGravitation<ECEFGravity> {
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -53,8 +56,7 @@ public class ECEFGravity extends GravityOrGravitation<ECEFGravity> {
      * @param gy acceleration due to gravity through ECEF y-axis to be set.
      * @param gz acceleration due to gravity through ECEF z-axis to be set.
      */
-    public ECEFGravity(final Acceleration gx, final Acceleration gy,
-                       final Acceleration gz) {
+    public ECEFGravity(final Acceleration gx, final Acceleration gy, final Acceleration gz) {
         super(gx, gy, gz);
     }
 
@@ -86,6 +88,7 @@ public class ECEFGravity extends GravityOrGravitation<ECEFGravity> {
             return false;
         }
 
+        //noinspection PatternVariableCanBeUsed
         final ECEFGravity other = (ECEFGravity) obj;
         return equals(other);
     }

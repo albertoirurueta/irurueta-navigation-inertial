@@ -59,14 +59,12 @@ public class MagneticFluxDensityFixer {
     /**
      * Measured specific force array to be reused.
      */
-    private final double[] mMeasuredB =
-            new double[MagneticFluxDensityTriad.COMPONENTS];
+    private final double[] mMeasuredB = new double[Triad.COMPONENTS];
 
     /**
      * Array containing result values to be reused.
      */
-    private final double[] mResult =
-            new double[MagneticFluxDensityTriad.COMPONENTS];
+    private final double[] mResult = new double[Triad.COMPONENTS];
 
     /**
      * Bias matrix to be reused.
@@ -83,18 +81,14 @@ public class MagneticFluxDensityFixer {
      */
     public MagneticFluxDensityFixer() {
         try {
-            mIdentity = Matrix.identity(MagneticFluxDensityTriad.COMPONENTS,
-                    MagneticFluxDensityTriad.COMPONENTS);
-            mTmp1 = Matrix.identity(MagneticFluxDensityTriad.COMPONENTS,
-                    MagneticFluxDensityTriad.COMPONENTS);
-            mTmp2 = Matrix.identity(MagneticFluxDensityTriad.COMPONENTS,
-                    MagneticFluxDensityTriad.COMPONENTS);
-            mDiff = new Matrix(MagneticFluxDensityTriad.COMPONENTS, 1);
-            mTmp3 = new Matrix(MagneticFluxDensityTriad.COMPONENTS, 1);
+            mIdentity = Matrix.identity(Triad.COMPONENTS, Triad.COMPONENTS);
+            mTmp1 = Matrix.identity(Triad.COMPONENTS, Triad.COMPONENTS);
+            mTmp2 = Matrix.identity(Triad.COMPONENTS, Triad.COMPONENTS);
+            mDiff = new Matrix(Triad.COMPONENTS, 1);
+            mTmp3 = new Matrix(Triad.COMPONENTS, 1);
 
-            mBias = new Matrix(MagneticFluxDensityTriad.COMPONENTS, 1);
-            mCrossCouplingErrors = new Matrix(MagneticFluxDensityTriad.COMPONENTS,
-                    MagneticFluxDensityTriad.COMPONENTS);
+            mBias = new Matrix(Triad.COMPONENTS, 1);
+            mCrossCouplingErrors = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         } catch (final WrongSizeException ignore) {
             // never happens
         }
@@ -124,8 +118,7 @@ public class MagneticFluxDensityFixer {
      * @param bias bias values expressed in Teslas. Must be 3x1.
      */
     public void setBias(final Matrix bias) {
-        if (bias.getRows() != MagneticFluxDensityTriad.COMPONENTS
-                || bias.getColumns() != 1) {
+        if (bias.getRows() != Triad.COMPONENTS || bias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
         mBias = bias;
@@ -137,7 +130,7 @@ public class MagneticFluxDensityFixer {
      * @return bias values expressed in Teslas.
      */
     public double[] getBiasArray() {
-        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];
+        final double[] result = new double[Triad.COMPONENTS];
         getBiasArray(result);
         return result;
     }
@@ -150,7 +143,7 @@ public class MagneticFluxDensityFixer {
      *                                  length 3.
      */
     public void getBiasArray(final double[] result) {
-        if (result.length != MagneticFluxDensityTriad.COMPONENTS) {
+        if (result.length != Triad.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -169,7 +162,7 @@ public class MagneticFluxDensityFixer {
      *                                  length 3.
      */
     public void setBias(final double[] bias) {
-        if (bias.length != MagneticFluxDensityTriad.COMPONENTS) {
+        if (bias.length != Triad.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -195,10 +188,8 @@ public class MagneticFluxDensityFixer {
      *
      * @param result instance where result will be stored.
      */
-    public void getBiasAsBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity result) {
-        result.setCoordinates(mBias.getElementAtIndex(0),
-                mBias.getElementAtIndex(1), mBias.getElementAtIndex(2));
+    public void getBiasAsBodyMagneticFluxDensity(final BodyMagneticFluxDensity result) {
+        result.setCoordinates(mBias.getElementAtIndex(0), mBias.getElementAtIndex(1), mBias.getElementAtIndex(2));
     }
 
     /**
@@ -218,9 +209,8 @@ public class MagneticFluxDensityFixer {
      * @return bias.
      */
     public MagneticFluxDensityTriad getBiasAsTriad() {
-        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,
-                mBias.getElementAtIndex(0), mBias.getElementAtIndex(1),
-                mBias.getElementAtIndex(2));
+        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, mBias.getElementAtIndex(0),
+                mBias.getElementAtIndex(1), mBias.getElementAtIndex(2));
     }
 
     /**
@@ -308,8 +298,7 @@ public class MagneticFluxDensityFixer {
      * @param biasY y-coordinate of bias.
      * @param biasZ z-coordinate of bias.
      */
-    public void setBias(
-            final double biasX, final double biasY, final double biasZ) {
+    public void setBias(final double biasX, final double biasY, final double biasZ) {
         setBiasX(biasX);
         setBiasY(biasY);
         setBiasZ(biasZ);
@@ -321,8 +310,7 @@ public class MagneticFluxDensityFixer {
      * @return x-coordinate of bias.
      */
     public MagneticFluxDensity getBiasXAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(getBiasX(),
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(getBiasX(), MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -350,8 +338,7 @@ public class MagneticFluxDensityFixer {
      * @return y-coordinate of bias.
      */
     public MagneticFluxDensity getBiasYAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(getBiasY(),
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(getBiasY(), MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -379,8 +366,7 @@ public class MagneticFluxDensityFixer {
      * @return z-coordinate of bias.
      */
     public MagneticFluxDensity getBiasZAsMagneticFluxDensity() {
-        return new MagneticFluxDensity(getBiasZ(),
-                MagneticFluxDensityUnit.TESLA);
+        return new MagneticFluxDensity(getBiasZ(), MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -410,9 +396,7 @@ public class MagneticFluxDensityFixer {
      * @param biasZ z-coordinate of bias.
      */
     public void setBias(
-            final MagneticFluxDensity biasX,
-            final MagneticFluxDensity biasY,
-            final MagneticFluxDensity biasZ) {
+            final MagneticFluxDensity biasX, final MagneticFluxDensity biasY, final MagneticFluxDensity biasZ) {
         setBiasX(biasX);
         setBiasY(biasY);
         setBiasZ(biasZ);
@@ -443,10 +427,8 @@ public class MagneticFluxDensityFixer {
      * @throws AlgebraException         if provided matrix cannot be inverted.
      * @throws IllegalArgumentException if provided matrix is not 3x3.
      */
-    public void setCrossCouplingErrors(final Matrix crossCouplingErrors)
-            throws AlgebraException {
-        if (crossCouplingErrors.getRows() != MagneticFluxDensityTriad.COMPONENTS
-                || crossCouplingErrors.getColumns() != MagneticFluxDensityTriad.COMPONENTS) {
+    public void setCrossCouplingErrors(final Matrix crossCouplingErrors) throws AlgebraException {
+        if (crossCouplingErrors.getRows() != Triad.COMPONENTS || crossCouplingErrors.getColumns() != Triad.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -474,9 +456,7 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setSx(final double sx) throws AlgebraException {
-        final Matrix m = new Matrix(
-                MagneticFluxDensityTriad.COMPONENTS,
-                MagneticFluxDensityTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(0, 0, sx);
         setCrossCouplingErrors(m);
@@ -499,9 +479,7 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setSy(final double sy) throws AlgebraException {
-        final Matrix m = new Matrix(
-                MagneticFluxDensityTriad.COMPONENTS,
-                MagneticFluxDensityTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(1, 1, sy);
         setCrossCouplingErrors(m);
@@ -524,9 +502,7 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setSz(final double sz) throws AlgebraException {
-        final Matrix m = new Matrix(
-                MagneticFluxDensityTriad.COMPONENTS,
-                MagneticFluxDensityTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(2, 2, sz);
         setCrossCouplingErrors(m);
@@ -549,9 +525,7 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setMxy(final double mxy) throws AlgebraException {
-        final Matrix m = new Matrix(
-                MagneticFluxDensityTriad.COMPONENTS,
-                MagneticFluxDensityTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(0, 1, mxy);
         setCrossCouplingErrors(m);
@@ -574,9 +548,7 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setMxz(final double mxz) throws AlgebraException {
-        final Matrix m = new Matrix(
-                MagneticFluxDensityTriad.COMPONENTS,
-                MagneticFluxDensityTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(0, 2, mxz);
         setCrossCouplingErrors(m);
@@ -599,9 +571,7 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setMyx(final double myx) throws AlgebraException {
-        final Matrix m = new Matrix(
-                MagneticFluxDensityTriad.COMPONENTS,
-                MagneticFluxDensityTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(1, 0, myx);
         setCrossCouplingErrors(m);
@@ -624,9 +594,7 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setMyz(final double myz) throws AlgebraException {
-        final Matrix m = new Matrix(
-                MagneticFluxDensityTriad.COMPONENTS,
-                MagneticFluxDensityTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(1, 2, myz);
         setCrossCouplingErrors(m);
@@ -649,9 +617,7 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setMzx(final double mzx) throws AlgebraException {
-        final Matrix m = new Matrix(
-                MagneticFluxDensityTriad.COMPONENTS,
-                MagneticFluxDensityTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(2, 0, mzx);
         setCrossCouplingErrors(m);
@@ -674,9 +640,7 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setMzy(final double mzy) throws AlgebraException {
-        final Matrix m = new Matrix(
-                MagneticFluxDensityTriad.COMPONENTS,
-                MagneticFluxDensityTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(2, 1, mzy);
         setCrossCouplingErrors(m);
@@ -691,11 +655,8 @@ public class MagneticFluxDensityFixer {
      * @throws AlgebraException if provided values make cross coupling matrix
      *                          non invertible.
      */
-    public void setScalingFactors(
-            final double sx, final double sy, final double sz)
-            throws AlgebraException {
-        final Matrix m = new Matrix(
-                AccelerationTriad.COMPONENTS, AccelerationTriad.COMPONENTS);
+    public void setScalingFactors(final double sx, final double sy, final double sz) throws AlgebraException {
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(0, 0, sx);
         m.setElementAt(1, 1, sy);
@@ -716,11 +677,9 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setCrossCouplingErrors(
-            final double mxy, final double mxz,
-            final double myx, final double myz,
-            final double mzx, final double mzy) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AccelerationTriad.COMPONENTS, AccelerationTriad.COMPONENTS);
+            final double mxy, final double mxz, final double myx,
+            final double myz, final double mzx, final double mzy) throws AlgebraException {
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(0, 1, mxy);
         m.setElementAt(0, 2, mxz);
@@ -748,11 +707,9 @@ public class MagneticFluxDensityFixer {
      */
     public void setScalingFactorsAndCrossCouplingErrors(
             final double sx, final double sy, final double sz,
-            final double mxy, final double mxz,
-            final double myx, final double myz,
-            final double mzx, final double mzy) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AccelerationTriad.COMPONENTS, AccelerationTriad.COMPONENTS);
+            final double mxy, final double mxz, final double myx,
+            final double myz, final double mzx, final double mzy) throws AlgebraException {
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(0, 0, sx);
         m.setElementAt(1, 1, sy);
@@ -779,8 +736,7 @@ public class MagneticFluxDensityFixer {
      * @throws IllegalArgumentException if length of provided result array is not
      *                                  3.
      */
-    public void fix(final BodyMagneticFluxDensity measuredB,
-                    final double[] result) throws AlgebraException {
+    public void fix(final BodyMagneticFluxDensity measuredB, final double[] result) throws AlgebraException {
         if (result.length != BodyMagneticFluxDensity.COMPONENTS) {
             throw new IllegalArgumentException();
         }
@@ -801,18 +757,14 @@ public class MagneticFluxDensityFixer {
      * @throws IllegalArgumentException if length of provided result array is not
      *                                  3.
      */
-    public void fix(final MagneticFluxDensityTriad measuredB,
-                    final double[] result) throws AlgebraException {
-        if (result.length != MagneticFluxDensityTriad.COMPONENTS) {
+    public void fix(final MagneticFluxDensityTriad measuredB, final double[] result) throws AlgebraException {
+        if (result.length != Triad.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
-        final double measuredBx = convertMagneticFluxDensity(measuredB.getValueX(),
-                measuredB.getUnit());
-        final double measuredBy = convertMagneticFluxDensity(measuredB.getValueY(),
-                measuredB.getUnit());
-        final double measuredBz = convertMagneticFluxDensity(measuredB.getValueZ(),
-                measuredB.getUnit());
+        final double measuredBx = convertMagneticFluxDensity(measuredB.getValueX(), measuredB.getUnit());
+        final double measuredBy = convertMagneticFluxDensity(measuredB.getValueY(), measuredB.getUnit());
+        final double measuredBz = convertMagneticFluxDensity(measuredB.getValueZ(), measuredB.getUnit());
         fix(measuredBx, measuredBy, measuredBz, result);
     }
 
@@ -828,10 +780,8 @@ public class MagneticFluxDensityFixer {
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if provided result matrix is not 3x1.
      */
-    public void fix(final BodyMagneticFluxDensity measuredB,
-                    final Matrix result) throws AlgebraException {
-        if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS
-                || result.getColumns() != 1) {
+    public void fix(final BodyMagneticFluxDensity measuredB, final Matrix result) throws AlgebraException {
+        if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -850,19 +800,14 @@ public class MagneticFluxDensityFixer {
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if provided result matrix is not 3x1.
      */
-    public void fix(final MagneticFluxDensityTriad measuredB,
-                    final Matrix result) throws AlgebraException {
-        if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS
-                || result.getColumns() != 1) {
+    public void fix(final MagneticFluxDensityTriad measuredB, final Matrix result) throws AlgebraException {
+        if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        final double measuredBx = convertMagneticFluxDensity(measuredB.getValueX(),
-                measuredB.getUnit());
-        final double measuredBy = convertMagneticFluxDensity(measuredB.getValueY(),
-                measuredB.getUnit());
-        final double measuredBz = convertMagneticFluxDensity(measuredB.getValueZ(),
-                measuredB.getUnit());
+        final double measuredBx = convertMagneticFluxDensity(measuredB.getValueX(), measuredB.getUnit());
+        final double measuredBy = convertMagneticFluxDensity(measuredB.getValueY(), measuredB.getUnit());
+        final double measuredBz = convertMagneticFluxDensity(measuredB.getValueZ(), measuredB.getUnit());
         fix(measuredBx, measuredBy, measuredBz, result);
     }
 
@@ -877,8 +822,7 @@ public class MagneticFluxDensityFixer {
      *                  stored.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    public void fix(final BodyMagneticFluxDensity measuredB,
-                    final BodyMagneticFluxDensity result)
+    public void fix(final BodyMagneticFluxDensity measuredB, final BodyMagneticFluxDensity result)
             throws AlgebraException {
         fix(measuredB, mResult);
         result.setCoordinates(mResult[0], mResult[1], mResult[2]);
@@ -895,8 +839,7 @@ public class MagneticFluxDensityFixer {
      *                  stored.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    public void fix(final MagneticFluxDensityTriad measuredB,
-                    final MagneticFluxDensityTriad result)
+    public void fix(final MagneticFluxDensityTriad measuredB, final MagneticFluxDensityTriad result)
             throws AlgebraException {
         fix(measuredB, mResult);
         result.setValueCoordinates(mResult);
@@ -916,10 +859,8 @@ public class MagneticFluxDensityFixer {
      *                   stored.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    public void fix(final MagneticFluxDensity measuredBx,
-                    final MagneticFluxDensity measuredBy,
-                    final MagneticFluxDensity measuredBz,
-                    final BodyMagneticFluxDensity result)
+    public void fix(final MagneticFluxDensity measuredBx, final MagneticFluxDensity measuredBy,
+                    final MagneticFluxDensity measuredBz, final BodyMagneticFluxDensity result)
             throws AlgebraException {
 
         final double bx = convertMagneticFluxDensity(measuredBx);
@@ -942,10 +883,8 @@ public class MagneticFluxDensityFixer {
      *                   stored.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    public void fix(final MagneticFluxDensity measuredBx,
-                    final MagneticFluxDensity measuredBy,
-                    final MagneticFluxDensity measuredBz,
-                    final MagneticFluxDensityTriad result)
+    public void fix(final MagneticFluxDensity measuredBx, final MagneticFluxDensity measuredBy,
+                    final MagneticFluxDensity measuredBz, final MagneticFluxDensityTriad result)
             throws AlgebraException {
 
         final double bx = convertMagneticFluxDensity(measuredBx);
@@ -970,12 +909,11 @@ public class MagneticFluxDensityFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(final double[] measuredB, final double[] result)
-            throws AlgebraException {
-        if (measuredB.length != MagneticFluxDensityTriad.COMPONENTS) {
+    public void fix(final double[] measuredB, final double[] result) throws AlgebraException {
+        if (measuredB.length != Triad.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        if (result.length != MagneticFluxDensityTriad.COMPONENTS) {
+        if (result.length != Triad.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -990,9 +928,8 @@ public class MagneticFluxDensityFixer {
 
         // Hence:
         // btrue = (I + Mm)^-1 * (bmeas - bm)
-        for (int i = 0; i < MagneticFluxDensityTriad.COMPONENTS; i++) {
-            mDiff.setElementAtIndex(i,
-                    measuredB[i] - mBias.getElementAtIndex(i));
+        for (int i = 0; i < Triad.COMPONENTS; i++) {
+            mDiff.setElementAtIndex(i, measuredB[i] - mBias.getElementAtIndex(i));
         }
 
         mTmp2.multiply(mDiff, mTmp3);
@@ -1014,11 +951,9 @@ public class MagneticFluxDensityFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(final Matrix measuredB, final double[] result)
-            throws AlgebraException {
+    public void fix(final Matrix measuredB, final double[] result) throws AlgebraException {
 
-        if (measuredB.getRows() != MagneticFluxDensityTriad.COMPONENTS
-                || measuredB.getColumns() != 1) {
+        if (measuredB.getRows() != Triad.COMPONENTS || measuredB.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -1039,11 +974,9 @@ public class MagneticFluxDensityFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(final Matrix measuredB, final Matrix result)
-            throws AlgebraException {
+    public void fix(final Matrix measuredB, final Matrix result) throws AlgebraException {
 
-        if (measuredB.getRows() != MagneticFluxDensityTriad.COMPONENTS
-                || measuredB.getColumns() != 1) {
+        if (measuredB.getRows() != Triad.COMPONENTS || measuredB.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -1068,9 +1001,8 @@ public class MagneticFluxDensityFixer {
      * @throws IllegalArgumentException if provided result array does not have
      *                                  length 3.
      */
-    public void fix(
-            final double measuredBx, final double measuredBy, final double measuredBz,
-            final double[] result) throws AlgebraException {
+    public void fix(final double measuredBx, final double measuredBy, final double measuredBz, final double[] result)
+            throws AlgebraException {
 
         mMeasuredB[0] = measuredBx;
         mMeasuredB[1] = measuredBy;
@@ -1096,12 +1028,10 @@ public class MagneticFluxDensityFixer {
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if provided result matrix is not 3x1.
      */
-    public void fix(
-            final double measuredBx, final double measuredBy, final double measuredBz,
-            final Matrix result) throws AlgebraException {
+    public void fix(final double measuredBx, final double measuredBy, final double measuredBz, final Matrix result)
+            throws AlgebraException {
 
-        if (result.getRows() != MagneticFluxDensityTriad.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != Triad.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -1125,22 +1055,18 @@ public class MagneticFluxDensityFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(
-            final double[] measuredB, final Matrix bias,
-            final Matrix crossCouplingErrors, final double[] result)
-            throws AlgebraException {
-        if (measuredB.length != MagneticFluxDensityTriad.COMPONENTS) {
+    public void fix(final double[] measuredB, final Matrix bias, final Matrix crossCouplingErrors,
+                    final double[] result) throws AlgebraException {
+        if (measuredB.length != Triad.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        if (bias.getRows() != MagneticFluxDensityTriad.COMPONENTS
-                || bias.getColumns() != 1) {
+        if (bias.getRows() != Triad.COMPONENTS || bias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
-        if (crossCouplingErrors.getRows() != MagneticFluxDensityTriad.COMPONENTS
-                || crossCouplingErrors.getColumns() != MagneticFluxDensityTriad.COMPONENTS) {
+        if (crossCouplingErrors.getRows() != Triad.COMPONENTS || crossCouplingErrors.getColumns() != Triad.COMPONENTS) {
             throw new IllegalArgumentException();
         }
-        if (result.length != MagneticFluxDensityTriad.COMPONENTS) {
+        if (result.length != Triad.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -1159,9 +1085,8 @@ public class MagneticFluxDensityFixer {
 
         Utils.inverse(mTmp1, mTmp2);
 
-        for (int i = 0; i < MagneticFluxDensityTriad.COMPONENTS; i++) {
-            mDiff.setElementAtIndex(i,
-                    measuredB[i] - bias.getElementAtIndex(i));
+        for (int i = 0; i < Triad.COMPONENTS; i++) {
+            mDiff.setElementAtIndex(i, measuredB[i] - bias.getElementAtIndex(i));
         }
 
         mTmp2.multiply(mDiff, mTmp3);
@@ -1186,13 +1111,10 @@ public class MagneticFluxDensityFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(
-            final Matrix measuredB, final Matrix bias,
-            final Matrix crossCouplingErrors, final double[] result)
+    public void fix(final Matrix measuredB, final Matrix bias, final Matrix crossCouplingErrors, final double[] result)
             throws AlgebraException {
 
-        if (measuredB.getRows() != MagneticFluxDensityTriad.COMPONENTS
-                || measuredB.getColumns() != 1) {
+        if (measuredB.getRows() != Triad.COMPONENTS || measuredB.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -1216,13 +1138,10 @@ public class MagneticFluxDensityFixer {
      * @throws IllegalArgumentException if any of the provided parameters does
      *                                  not have proper size.
      */
-    public void fix(
-            final Matrix measuredB, final Matrix bias,
-            final Matrix crossCouplingErrors, final Matrix result)
+    public void fix(final Matrix measuredB, final Matrix bias, final Matrix crossCouplingErrors, final Matrix result)
             throws AlgebraException {
 
-        if (result.getRows() != MagneticFluxDensityTriad.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != Triad.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -1254,8 +1173,7 @@ public class MagneticFluxDensityFixer {
     public void fix(
             final double measuredBx, final double measuredBy, final double measuredBz,
             final double biasX, final double biasY, final double biasZ,
-            final Matrix crossCouplingErrors,
-            final double[] result) throws AlgebraException {
+            final Matrix crossCouplingErrors, final double[] result) throws AlgebraException {
 
         mMeasuredB[0] = measuredBx;
         mMeasuredB[1] = measuredBy;
@@ -1292,17 +1210,14 @@ public class MagneticFluxDensityFixer {
      */
     public void fix(
             final double measuredBx, final double measuredBy, final double measuredBz,
-            final double biasX, final double biasY, final double biasZ,
-            final Matrix crossCouplingErrors, final Matrix result)
-            throws AlgebraException {
+            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrors,
+            final Matrix result) throws AlgebraException {
 
-        if (result.getRows() != MagneticFluxDensityTriad.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != Triad.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, crossCouplingErrors,
-                result.getBuffer());
+        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, crossCouplingErrors, result.getBuffer());
     }
 
     /**
@@ -1338,10 +1253,8 @@ public class MagneticFluxDensityFixer {
             final double measuredBx, final double measuredBy, final double measuredBz,
             final double biasX, final double biasY, final double biasZ,
             final double sx, final double sy, final double sz,
-            final double mxy, final double mxz,
-            final double myx, final double myz,
-            final double mzx, final double mzy,
-            final double[] result) throws AlgebraException {
+            final double mxy, final double mxz, final double myx,
+            final double myz, final double mzx, final double mzy, final double[] result) throws AlgebraException {
 
         mCrossCouplingErrors.setElementAt(0, 0, sx);
         mCrossCouplingErrors.setElementAt(1, 1, sy);
@@ -1353,8 +1266,7 @@ public class MagneticFluxDensityFixer {
         mCrossCouplingErrors.setElementAt(2, 0, mzx);
         mCrossCouplingErrors.setElementAt(2, 1, mzy);
 
-        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ,
-                mCrossCouplingErrors, result);
+        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, mCrossCouplingErrors, result);
     }
 
     /**
@@ -1390,18 +1302,15 @@ public class MagneticFluxDensityFixer {
             final double measuredBx, final double measuredBy, final double measuredBz,
             final double biasX, final double biasY, final double biasZ,
             final double sx, final double sy, final double sz,
-            final double mxy, final double mxz,
-            final double myx, final double myz,
-            final double mzx, final double mzy,
-            final Matrix result) throws AlgebraException {
+            final double mxy, final double mxz, final double myx,
+            final double myz, final double mzx, final double mzy, final Matrix result) throws AlgebraException {
 
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ,
-                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, result.getBuffer());
+        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
+                result.getBuffer());
     }
 
     /**
@@ -1414,8 +1323,7 @@ public class MagneticFluxDensityFixer {
      * @return restored true magnetic flux density.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    public MagneticFluxDensityTriad fixAndReturnNew(
-            final MagneticFluxDensityTriad measuredB) throws AlgebraException {
+    public MagneticFluxDensityTriad fixAndReturnNew(final MagneticFluxDensityTriad measuredB) throws AlgebraException {
         final MagneticFluxDensityTriad result = new MagneticFluxDensityTriad();
         fix(measuredB, result);
         return result;
@@ -1434,8 +1342,7 @@ public class MagneticFluxDensityFixer {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public MagneticFluxDensityTriad fixAndReturnNew(
-            final MagneticFluxDensity measuredBx,
-            final MagneticFluxDensity measuredBy,
+            final MagneticFluxDensity measuredBx, final MagneticFluxDensity measuredBy,
             final MagneticFluxDensity measuredBz) throws AlgebraException {
         final MagneticFluxDensityTriad result = new MagneticFluxDensityTriad();
         fix(measuredBx, measuredBy, measuredBz, result);
@@ -1454,10 +1361,9 @@ public class MagneticFluxDensityFixer {
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public double[] fixAndReturnNew(
-            final double[] measuredB) throws AlgebraException {
+    public double[] fixAndReturnNew(final double[] measuredB) throws AlgebraException {
 
-        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];
+        final double[] result = new double[Triad.COMPONENTS];
         fix(measuredB, result);
         return result;
     }
@@ -1474,10 +1380,9 @@ public class MagneticFluxDensityFixer {
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    public double[] fixAndReturnNew(final Matrix measuredB)
-            throws AlgebraException {
+    public double[] fixAndReturnNew(final Matrix measuredB) throws AlgebraException {
 
-        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];
+        final double[] result = new double[Triad.COMPONENTS];
         fix(measuredB, result);
         return result;
     }
@@ -1494,11 +1399,9 @@ public class MagneticFluxDensityFixer {
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    public Matrix fixAndReturnNewMatrix(final Matrix measuredB)
-            throws AlgebraException {
+    public Matrix fixAndReturnNewMatrix(final Matrix measuredB) throws AlgebraException {
 
-        final Matrix result = new Matrix(
-                MagneticFluxDensityTriad.COMPONENTS, 1);
+        final Matrix result = new Matrix(Triad.COMPONENTS, 1);
         fix(measuredB, result);
         return result;
     }
@@ -1519,9 +1422,8 @@ public class MagneticFluxDensityFixer {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public double[] fixAndReturnNew(
-            final double measuredBx, final double measuredBy, final double measuredBz)
-            throws AlgebraException {
-        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];
+            final double measuredBx, final double measuredBy, final double measuredBz) throws AlgebraException {
+        final double[] result = new double[Triad.COMPONENTS];
         fix(measuredBx, measuredBy, measuredBz, result);
         return result;
     }
@@ -1542,10 +1444,8 @@ public class MagneticFluxDensityFixer {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public Matrix fixAndReturnNewMatrix(
-            final double measuredBx, final double measuredBy, final double measuredBz)
-            throws AlgebraException {
-        final Matrix result = new Matrix(
-                MagneticFluxDensityTriad.COMPONENTS, 1);
+            final double measuredBx, final double measuredBy, final double measuredBz) throws AlgebraException {
+        final Matrix result = new Matrix(Triad.COMPONENTS, 1);
         fix(measuredBx, measuredBy, measuredBz, result);
         return result;
     }
@@ -1566,10 +1466,9 @@ public class MagneticFluxDensityFixer {
      *                                  not have proper size.
      */
     public double[] fixAndReturnNew(
-            final double[] measuredB, final Matrix bias,
-            final Matrix crossCouplingErrors) throws AlgebraException {
+            final double[] measuredB, final Matrix bias, final Matrix crossCouplingErrors) throws AlgebraException {
 
-        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];
+        final double[] result = new double[Triad.COMPONENTS];
         fix(measuredB, bias, crossCouplingErrors, result);
         return result;
     }
@@ -1590,10 +1489,9 @@ public class MagneticFluxDensityFixer {
      *                                  not have proper size.
      */
     public double[] fixAndReturnNew(
-            final Matrix measuredB, final Matrix bias,
-            final Matrix crossCouplingErrors) throws AlgebraException {
+            final Matrix measuredB, final Matrix bias, final Matrix crossCouplingErrors) throws AlgebraException {
 
-        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];
+        final double[] result = new double[Triad.COMPONENTS];
         fix(measuredB, bias, crossCouplingErrors, result);
         return result;
     }
@@ -1614,11 +1512,9 @@ public class MagneticFluxDensityFixer {
      *                                  not have proper size.
      */
     public Matrix fixAndReturnNewMatrix(
-            final Matrix measuredB, final Matrix bias,
-            final Matrix crossCouplingErrors) throws AlgebraException {
+            final Matrix measuredB, final Matrix bias, final Matrix crossCouplingErrors) throws AlgebraException {
 
-        final Matrix result = new Matrix(
-                MagneticFluxDensityTriad.COMPONENTS, 1);
+        final Matrix result = new Matrix(Triad.COMPONENTS, 1);
         fix(measuredB, bias, crossCouplingErrors, result);
         return result;
     }
@@ -1646,12 +1542,11 @@ public class MagneticFluxDensityFixer {
      */
     public double[] fixAndReturnNew(
             final double measuredBx, final double measuredBy, final double measuredBz,
-            final double biasX, final double biasY, final double biasZ,
-            final Matrix crossCouplingErrors) throws AlgebraException {
+            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrors)
+            throws AlgebraException {
 
-        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];
-        fix(measuredBx, measuredBy, measuredBz,
-                biasX, biasY, biasZ, crossCouplingErrors, result);
+        final double[] result = new double[Triad.COMPONENTS];
+        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, crossCouplingErrors, result);
         return result;
     }
 
@@ -1678,14 +1573,11 @@ public class MagneticFluxDensityFixer {
      */
     public Matrix fixAndReturnNewMatrix(
             final double measuredBx, final double measuredBy, final double measuredBz,
-            final double biasX, final double biasY, final double biasZ,
-            final Matrix crossCouplingErrors) throws AlgebraException {
+            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrors)
+            throws AlgebraException {
 
-        final Matrix result = new Matrix(
-                MagneticFluxDensityTriad.COMPONENTS, 1);
-        fix(measuredBx, measuredBy, measuredBz,
-                biasX, biasY, biasZ,
-                crossCouplingErrors, result);
+        final Matrix result = new Matrix(Triad.COMPONENTS, 1);
+        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, crossCouplingErrors, result);
         return result;
     }
 
@@ -1720,17 +1612,11 @@ public class MagneticFluxDensityFixer {
             final double measuredBx, final double measuredBy, final double measuredBz,
             final double biasX, final double biasY, final double biasZ,
             final double sx, final double sy, final double sz,
-            final double mxy, final double mxz,
-            final double myx, final double myz,
-            final double mzx, final double mzy) throws AlgebraException {
+            final double mxy, final double mxz, final double myx,
+            final double myz, final double mzx, final double mzy) throws AlgebraException {
 
-        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];
-        fix(measuredBx, measuredBy, measuredBz,
-                biasX, biasY, biasZ,
-                sx, sy, sz,
-                mxy, mxz,
-                myx, myz,
-                mzx, mzy, result);
+        final double[] result = new double[Triad.COMPONENTS];
+        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, result);
         return result;
     }
 
@@ -1765,18 +1651,11 @@ public class MagneticFluxDensityFixer {
             final double measuredBx, final double measuredBy, final double measuredBz,
             final double biasX, final double biasY, final double biasZ,
             final double sx, final double sy, final double sz,
-            final double mxy, final double mxz,
-            final double myx, final double myz,
-            final double mzx, final double mzy) throws AlgebraException {
+            final double mxy, final double mxz, final double myx,
+            final double myz, final double mzx, final double mzy) throws AlgebraException {
 
-        final Matrix result = new Matrix(
-                MagneticFluxDensityTriad.COMPONENTS, 1);
-        fix(measuredBx, measuredBy, measuredBz,
-                biasX, biasY, biasZ,
-                sx, sy, sz,
-                mxy, mxz,
-                myx, myz,
-                mzx, mzy, result);
+        final Matrix result = new Matrix(Triad.COMPONENTS, 1);
+        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, result);
         return result;
     }
 
@@ -1787,10 +1666,8 @@ public class MagneticFluxDensityFixer {
      * @param unit  unit of value to be converted.
      * @return converted value.
      */
-    private static double convertMagneticFluxDensity(
-            final double value, final MagneticFluxDensityUnit unit) {
-        return MagneticFluxDensityConverter.convert(value, unit,
-                MagneticFluxDensityUnit.TESLA);
+    private static double convertMagneticFluxDensity(final double value, final MagneticFluxDensityUnit unit) {
+        return MagneticFluxDensityConverter.convert(value, unit, MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -1800,7 +1677,6 @@ public class MagneticFluxDensityFixer {
      * @return converted value.
      */
     public static double convertMagneticFluxDensity(final MagneticFluxDensity b) {
-        return convertMagneticFluxDensity(b.getValue().doubleValue(),
-                b.getUnit());
+        return convertMagneticFluxDensity(b.getValue().doubleValue(), b.getUnit());
     }
 }

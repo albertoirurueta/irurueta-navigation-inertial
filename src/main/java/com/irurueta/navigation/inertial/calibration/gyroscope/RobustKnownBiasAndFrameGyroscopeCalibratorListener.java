@@ -43,8 +43,7 @@ public interface RobustKnownBiasAndFrameGyroscopeCalibratorListener {
      * @param iteration  current iteration.
      */
     void onCalibrateNextIteration(
-            final RobustKnownBiasAndFrameGyroscopeCalibrator calibrator,
-            final int iteration);
+            final RobustKnownBiasAndFrameGyroscopeCalibrator calibrator, final int iteration);
 
     /**
      * Called when calibration progress changes significantly.
@@ -53,6 +52,5 @@ public interface RobustKnownBiasAndFrameGyroscopeCalibratorListener {
      * @param progress   progress of calibration expressed as a value between 0.0 and 1.0.
      */
     void onCalibrateProgressChange(
-            final RobustKnownBiasAndFrameGyroscopeCalibrator calibrator,
-            final float progress);
+            final RobustKnownBiasAndFrameGyroscopeCalibrator calibrator, final float progress);
 }

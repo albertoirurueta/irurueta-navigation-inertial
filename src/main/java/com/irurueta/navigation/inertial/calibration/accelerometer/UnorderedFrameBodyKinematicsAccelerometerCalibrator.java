@@ -42,7 +42,7 @@ public interface UnorderedFrameBodyKinematicsAccelerometerCalibrator extends Acc
      * @return a collection of body kinematics measurements taken at different
      * frames (positions, orientations and velocities).
      */
-    Collection<? extends FrameBodyKinematics> getMeasurements();
+    Collection<FrameBodyKinematics> getMeasurements();
 
     /**
      * Sets a collection of body kinematics measurements taken at different
@@ -61,6 +61,5 @@ public interface UnorderedFrameBodyKinematicsAccelerometerCalibrator extends Acc
      *                     frames (positions, orientations and velocities).
      * @throws LockedException if estimator is currently running.
      */
-    void setMeasurements(final Collection<? extends FrameBodyKinematics> measurements)
-            throws LockedException;
+    void setMeasurements(final Collection<? extends FrameBodyKinematics> measurements) throws LockedException;
 }

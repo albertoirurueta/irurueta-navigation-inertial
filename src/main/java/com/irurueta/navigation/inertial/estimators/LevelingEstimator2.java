@@ -68,8 +68,7 @@ public class LevelingEstimator2 {
     public static void getAttitude(
             final double latitude, final double height,
             final double fx, final double fy, final double fz,
-            final double angularRateX, final double angularRateY,
-            final double angularRateZ,
+            final double angularRateX, final double angularRateY, final double angularRateZ,
             final CoordinateTransformation result) {
 
         getPartialAttitude(latitude, height, fx, fy, fz, result);
@@ -77,9 +76,7 @@ public class LevelingEstimator2 {
         // fix yaw angle
         final double roll = result.getRollEulerAngle();
         final double pitch = result.getPitchEulerAngle();
-        final double yaw = LevelingEstimator.getYaw(
-                roll, pitch, angularRateX, angularRateY,
-                angularRateZ);
+        final double yaw = LevelingEstimator.getYaw(roll, pitch, angularRateX, angularRateY, angularRateZ);
 
         result.setEulerAngles(roll, pitch, yaw);
     }
@@ -105,11 +102,9 @@ public class LevelingEstimator2 {
     public static void getAttitude(
             final NEDPosition position,
             final double fx, final double fy, final double fz,
-            final double angularRateX, final double angularRateY,
-            final double angularRateZ,
+            final double angularRateX, final double angularRateY, final double angularRateZ,
             final CoordinateTransformation result) {
-        getAttitude(position.getLatitude(), position.getHeight(),
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ,
+        getAttitude(position.getLatitude(), position.getHeight(), fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 result);
     }
 
@@ -123,14 +118,10 @@ public class LevelingEstimator2 {
      * @param result     instance where attitude will be stored.
      */
     public static void getAttitude(
-            final double latitude, final double height,
-            final BodyKinematics kinematics,
+            final double latitude, final double height, final BodyKinematics kinematics,
             final CoordinateTransformation result) {
-        getAttitude(latitude, height,
-                kinematics.getFx(), kinematics.getFy(),
-                kinematics.getFz(), kinematics.getAngularRateX(),
-                kinematics.getAngularRateY(),
-                kinematics.getAngularRateZ(), result);
+        getAttitude(latitude, height, kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
+                kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ(), result);
     }
 
     /**
@@ -142,11 +133,8 @@ public class LevelingEstimator2 {
      * @param result     instance where attitude will be stored.
      */
     public static void getAttitude(
-            final NEDPosition position,
-            final BodyKinematics kinematics,
-            final CoordinateTransformation result) {
-        getAttitude(position.getLatitude(), position.getHeight(),
-                kinematics, result);
+            final NEDPosition position, final BodyKinematics kinematics, final CoordinateTransformation result) {
+        getAttitude(position.getLatitude(), position.getHeight(), kinematics, result);
     }
 
     /**
@@ -171,14 +159,10 @@ public class LevelingEstimator2 {
     public static CoordinateTransformation getAttitude(
             final double latitude, final double height,
             final double fx, final double fy, final double fz,
-            final double angularRateX, final double angularRateY,
-            final double angularRateZ) {
-        final CoordinateTransformation result =
-                new CoordinateTransformation(
-                        FrameType.LOCAL_NAVIGATION_FRAME,
-                        FrameType.BODY_FRAME);
-        getAttitude(latitude, height, fx, fy, fz, angularRateX,
-                angularRateY, angularRateZ, result);
+            final double angularRateX, final double angularRateY, final double angularRateZ) {
+        final CoordinateTransformation result = new CoordinateTransformation(
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+        getAttitude(latitude, height, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -201,16 +185,11 @@ public class LevelingEstimator2 {
      * @return estimated attitude.
      */
     public static CoordinateTransformation getAttitude(
-            final NEDPosition position,
-            final double fx, final double fy, final double fz,
-            final double angularRateX, final double angularRateY,
-            final double angularRateZ) {
-        final CoordinateTransformation result =
-                new CoordinateTransformation(
-                        FrameType.LOCAL_NAVIGATION_FRAME,
-                        FrameType.BODY_FRAME);
-        getAttitude(position, fx, fy, fz, angularRateX, angularRateY,
-                angularRateZ, result);
+            final NEDPosition position, final double fx, final double fy, final double fz,
+            final double angularRateX, final double angularRateY, final double angularRateZ) {
+        final CoordinateTransformation result = new CoordinateTransformation(
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+        getAttitude(position, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
         return result;
     }
 
@@ -224,12 +203,9 @@ public class LevelingEstimator2 {
      * @return estimated attitude.
      */
     public static CoordinateTransformation getAttitude(
-            final double latitude, final double height,
-            final BodyKinematics kinematics) {
-        final CoordinateTransformation result =
-                new CoordinateTransformation(
-                        FrameType.LOCAL_NAVIGATION_FRAME,
-                        FrameType.BODY_FRAME);
+            final double latitude, final double height, final BodyKinematics kinematics) {
+        final CoordinateTransformation result = new CoordinateTransformation(
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         getAttitude(latitude, height, kinematics, result);
         return result;
     }
@@ -242,13 +218,9 @@ public class LevelingEstimator2 {
      *                   body specific force and angular rate.
      * @return estimated attitude.
      */
-    public static CoordinateTransformation getAttitude(
-            final NEDPosition position,
-            final BodyKinematics kinematics) {
+    public static CoordinateTransformation getAttitude(final NEDPosition position, final BodyKinematics kinematics) {
         final CoordinateTransformation result =
-                new CoordinateTransformation(
-                        FrameType.LOCAL_NAVIGATION_FRAME,
-                        FrameType.BODY_FRAME);
+                new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         getAttitude(position, kinematics, result);
         return result;
     }
@@ -268,8 +240,7 @@ public class LevelingEstimator2 {
      * @param result   instance where partial body attitude will be stored.
      */
     static void getPartialAttitude(
-            final double latitude, final double height,
-            final double fx, final double fy, final double fz,
+            final double latitude, final double height, final double fx, final double fy, final double fz,
             final CoordinateTransformation result) {
 
         try {
@@ -287,8 +258,7 @@ public class LevelingEstimator2 {
             // Because Earth is not fully spherical, normalized vector won't
             // be (0, 0, 1), because there will always be a small north
             // gravity component.
-            final NEDGravity nedGravity = NEDGravityEstimator
-                    .estimateGravityAndReturnNew(latitude, height);
+            final NEDGravity nedGravity = NEDGravityEstimator.estimateGravityAndReturnNew(latitude, height);
 
             final double[] normG = nedGravity.asArray();
 

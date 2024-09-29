@@ -99,8 +99,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed) {
+    public KnownBiasAndGravityNormAccelerometerCalibrator(final boolean commonAxisUsed) {
         super(commonAxisUsed);
     }
 
@@ -127,8 +126,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -159,9 +157,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param biasZ z-coordinate of accelerometer bias.
      *              This is expressed in meters per squared second (m/s^2).
      */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final double biasX, final double biasY,
-            final double biasZ) {
+    public KnownBiasAndGravityNormAccelerometerCalibrator(final double biasX, final double biasY, final double biasZ) {
         super(biasX, biasY, biasZ);
     }
 
@@ -177,8 +173,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param listener listener to handle events raised by this calibrator.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final double biasX, final double biasY,
-            final double biasZ,
+            final double biasX, final double biasY, final double biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(biasX, biasY, biasZ, listener);
     }
@@ -198,8 +193,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY,
-            final double biasZ) {
+            final double biasX, final double biasY, final double biasZ) {
         super(measurements, biasX, biasY, biasZ);
     }
 
@@ -219,8 +213,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY,
-            final double biasZ,
+            final double biasX, final double biasY, final double biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(measurements, biasX, biasY, biasZ, listener);
     }
@@ -238,9 +231,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                       This is expressed in meters per squared second (m/s^2).
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ) {
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ) {
         super(commonAxisUsed, biasX, biasY, biasZ);
     }
 
@@ -258,9 +249,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ,
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(commonAxisUsed, biasX, biasY, biasZ, listener);
     }
@@ -281,10 +270,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                       This is expressed in meters per squared second (m/s^2).
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ) {
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ) {
         super(measurements, commonAxisUsed, biasX, biasY, biasZ);
     }
 
@@ -305,10 +292,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, biasX, biasY, biasZ, listener);
     }
@@ -321,8 +306,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param biasZ z-coordinate of accelerometer bias.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ) {
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ) {
         super(biasX, biasY, biasZ);
     }
 
@@ -335,8 +319,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param listener listener to handle events raised by this calibrator.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(biasX, biasY, biasZ, listener);
     }
@@ -353,8 +336,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ) {
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ) {
         super(measurements, biasX, biasY, biasZ);
     }
 
@@ -371,8 +353,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(measurements, biasX, biasY, biasZ, listener);
     }
@@ -387,8 +368,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param biasZ          z-coordinate of accelerometer bias.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ) {
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY,
+            final Acceleration biasZ) {
         super(commonAxisUsed, biasX, biasY, biasZ);
     }
 
@@ -403,8 +384,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(commonAxisUsed, biasX, biasY, biasZ, listener);
     }
@@ -423,8 +403,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ) {
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY,
+            final Acceleration biasZ) {
         super(measurements, commonAxisUsed, biasX, biasY, biasZ);
     }
 
@@ -443,8 +423,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, biasX, biasY, biasZ, listener);
     }
@@ -463,9 +442,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param initialSz initial z scaling factor.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz) {
+            final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
         super(biasX, biasY, biasZ, initialSx, initialSy, initialSz);
     }
 
@@ -487,11 +465,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz) {
-        super(measurements, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz);
+            final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
+        super(measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz);
     }
 
     /**
@@ -513,13 +489,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz,
+            final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(measurements, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                listener);
+        super(measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
     }
 
     /**
@@ -538,11 +511,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param initialSz      initial z scaling factor.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed, final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz) {
-        super(commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz);
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
+        super(commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz);
     }
 
     /**
@@ -562,12 +533,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed, final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz,
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz, listener);
+        super(commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
     }
 
     /**
@@ -590,11 +559,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double biasX,
-            final double biasY, final double biasZ, final double initialSx,
-            final double initialSy, final double initialSz) {
-        super(measurements, commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz);
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
+        super(measurements, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz);
     }
 
     /**
@@ -617,13 +584,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double biasX,
-            final double biasY, final double biasZ, final double initialSx,
-            final double initialSy, final double initialSz,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(measurements, commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz, listener);
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ, final double initialSx, final double initialSy,
+            final double initialSz, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(measurements, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
     }
 
     /**
@@ -637,8 +601,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param initialSz initial z scaling factor.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final double initialSx,
             final double initialSy, final double initialSz) {
         super(biasX, biasY, biasZ, initialSx, initialSy, initialSz);
     }
@@ -655,8 +618,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param listener  listener to handle events raised by this calibrator.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final double initialSx,
             final double initialSy, final double initialSz,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
@@ -676,12 +638,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param initialSz    initial z scaling factor.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
+            final Collection<StandardDeviationBodyKinematics> measurements, final Acceleration biasX,
+            final Acceleration biasY, final Acceleration biasZ, final double initialSx,
             final double initialSy, final double initialSz) {
-        super(measurements, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz);
+        super(measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz);
     }
 
     /**
@@ -700,12 +660,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final double initialSx,
             final double initialSy, final double initialSz,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(measurements, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz, listener);
+        super(measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
     }
 
     /**
@@ -721,11 +679,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param initialSz      initial z scaling factor.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final double initialSx, final double initialSy, final double initialSz) {
-        super(commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz);
+        super(commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz);
     }
 
     /**
@@ -742,12 +698,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz, listener);
+        super(commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
     }
 
     /**
@@ -766,12 +720,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param initialSz      initial z scaling factor.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final double initialSx, final double initialSy, final double initialSz) {
-        super(measurements, commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz);
+        super(measurements, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz);
     }
 
     /**
@@ -791,13 +743,11 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(measurements, commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz, listener);
+        super(measurements, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
     }
 
     /**
@@ -820,13 +770,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param initialMzy initial z-y cross coupling error.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy) {
-        super(biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx, initialMyz,
+            final double biasX, final double biasY, final double biasZ, final double initialSx, final double initialSy,
+            final double initialSz, final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) {
+        super(biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx, initialMyz,
                 initialMzx, initialMzy);
     }
 
@@ -853,15 +800,11 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param initialMzy   initial z-y cross coupling error.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy) {
-        super(measurements, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
+            final Collection<StandardDeviationBodyKinematics> measurements, final double biasX, final double biasY,
+            final double biasZ, final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx, final double initialMyz,
+            final double initialMzx, final double initialMzy) {
+        super(measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
     }
 
@@ -890,15 +833,11 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy,
+            final double biasX, final double biasY, final double biasZ, final double initialSx, final double initialSy,
+            final double initialSz, final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(measurements, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
+        super(measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
     }
 
@@ -924,15 +863,11 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param initialMzy     initial z-y cross coupling error.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz, final double initialMxy,
+            final double initialMxz, final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy) {
-        super(commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
+        super(commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
     }
 
@@ -959,16 +894,11 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz, final double initialMxy,
+            final double initialMxz, final double initialMyx, final double initialMyz, final double initialMzx,
+            final double initialMzy, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
     }
 
@@ -997,17 +927,12 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param initialMzy     initial z-y cross coupling error.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy) {
-        super(measurements, commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ, final double initialSx, final double initialSy,
+            final double initialSz, final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) {
+        super(measurements, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
     }
 
     /**
@@ -1036,18 +961,13 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ, final double initialSx, final double initialSy,
+            final double initialSz, final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(measurements, commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy, listener);
+        super(measurements, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy, listener);
     }
 
     /**
@@ -1067,14 +987,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param initialMzy initial z-y cross coupling error.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz, final double initialMxy,
-            final double initialMxz, final double initialMyx, final double initialMyz,
-            final double initialMzx, final double initialMzy) {
-        super(biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final double initialSx,
+            final double initialSy, final double initialSz, final double initialMxy, final double initialMxz,
+            final double initialMyx, final double initialMyz, final double initialMzx, final double initialMzy) {
+        super(biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
     }
 
@@ -1096,15 +1012,11 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param listener   listener to handle events raised by this calibrator.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz, final double initialMxy,
-            final double initialMxz, final double initialMyx, final double initialMyz,
-            final double initialMzx, final double initialMzy,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final double initialSx,
+            final double initialSy, final double initialSz, final double initialMxy, final double initialMxz,
+            final double initialMyx, final double initialMyz, final double initialMzx, final double initialMzy,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
+        super(biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
     }
 
@@ -1129,14 +1041,11 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz, final double initialMxy,
-            final double initialMxz, final double initialMyx, final double initialMyz,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx, final double initialMyz,
             final double initialMzx, final double initialMzy) {
-        super(measurements, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
+        super(measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
     }
 
@@ -1162,15 +1071,11 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz, final double initialMxy,
-            final double initialMxz, final double initialMyx, final double initialMyz,
-            final double initialMzx, final double initialMzy,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(measurements, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz, final double initialMxy,
+            final double initialMxz, final double initialMyx, final double initialMyz, final double initialMzx,
+            final double initialMzy, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
     }
 
@@ -1193,14 +1098,11 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param initialMzy     initial z-y cross coupling error.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) {
-        super(commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
+        super(commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
     }
 
@@ -1224,15 +1126,12 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
+        super(commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
     }
 
@@ -1258,16 +1157,13 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param initialMzy     initial z-y cross coupling error.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) {
-        super(measurements, commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
+        super(measurements, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
     }
 
     /**
@@ -1294,16 +1190,13 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(measurements, commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy, listener);
+        super(measurements, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy, listener);
     }
 
     /**
@@ -1313,8 +1206,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *             in meters per squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] bias) {
+    public KnownBiasAndGravityNormAccelerometerCalibrator(final double[] bias) {
         super(bias);
     }
 
@@ -1327,8 +1219,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] bias,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final double[] bias, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(bias, listener);
     }
 
@@ -1343,8 +1234,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double[] bias) {
+            final Collection<StandardDeviationBodyKinematics> measurements, final double[] bias) {
         super(measurements, bias);
     }
 
@@ -1360,8 +1250,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
+            final Collection<StandardDeviationBodyKinematics> measurements, final double[] bias,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(measurements, bias, listener);
     }
@@ -1452,8 +1341,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Matrix bias,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Matrix bias, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(bias, listener);
     }
 
@@ -1467,8 +1355,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias) {
+            final Collection<StandardDeviationBodyKinematics> measurements, final Matrix bias) {
         super(measurements, bias);
     }
 
@@ -1482,8 +1369,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param listener     listener to handle events raised by this calibrator.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
+            final Collection<StandardDeviationBodyKinematics> measurements, final Matrix bias,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(measurements, bias, listener);
     }
@@ -1496,8 +1382,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param bias           known accelerometer bias.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed, final Matrix bias) {
+    public KnownBiasAndGravityNormAccelerometerCalibrator(final boolean commonAxisUsed, final Matrix bias) {
         super(commonAxisUsed, bias);
     }
 
@@ -1560,8 +1445,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Matrix bias, final Matrix initialMa) {
+    public KnownBiasAndGravityNormAccelerometerCalibrator(final Matrix bias, final Matrix initialMa) {
         super(bias, initialMa);
     }
 
@@ -1627,8 +1511,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa) {
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa) {
         super(commonAxisUsed, bias, initialMa);
     }
 
@@ -1644,8 +1527,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(commonAxisUsed, bias, initialMa, listener);
     }
@@ -1665,8 +1547,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa) {
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa) {
         super(measurements, commonAxisUsed, bias, initialMa);
     }
 
@@ -1686,8 +1567,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
             final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, bias, initialMa, listener);
     }
@@ -1699,8 +1579,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                               squared second (m/s^2).
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm) {
+    public KnownBiasAndGravityNormAccelerometerCalibrator(final Double groundTruthGravityNorm) {
         super(groundTruthGravityNorm);
     }
 
@@ -1729,8 +1608,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements) {
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements) {
         super(groundTruthGravityNorm, measurements);
     }
 
@@ -1746,8 +1624,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, listener);
     }
@@ -1762,8 +1639,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed) {
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed) {
         super(groundTruthGravityNorm, commonAxisUsed);
     }
 
@@ -1796,8 +1672,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         super(groundTruthGravityNorm, measurements, commonAxisUsed);
     }
@@ -1816,10 +1691,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, commonAxisUsed,
                 listener);
     }
@@ -1838,9 +1711,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final double biasX, final double biasY,
-            final double biasZ) {
+            final Double groundTruthGravityNorm, final double biasX, final double biasY, final double biasZ) {
         super(groundTruthGravityNorm, biasX, biasY, biasZ);
     }
 
@@ -1859,9 +1730,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final double biasX, final double biasY,
-            final double biasZ,
+            final Double groundTruthGravityNorm, final double biasX, final double biasY, final double biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, biasX, biasY, biasZ, listener);
     }
@@ -1883,10 +1752,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY,
-            final double biasZ) {
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final double biasX, final double biasY, final double biasZ) {
         super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ);
     }
 
@@ -1908,13 +1775,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY,
-            final double biasZ,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final double biasX, final double biasY, final double biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ,
-                listener);
+        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ, listener);
     }
 
     /**
@@ -1933,10 +1797,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ) {
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ) {
         super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ);
     }
 
@@ -1957,13 +1819,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ,
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ,
-                listener);
+        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ, listener);
     }
 
     /**
@@ -1985,13 +1844,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                biasX, biasY, biasZ);
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, biasX, biasY, biasZ);
     }
 
     /**
@@ -2014,14 +1869,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                biasX, biasY, biasZ, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, biasX, biasY, biasZ, listener);
     }
 
     /**
@@ -2035,47 +1886,44 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ) {
-        super(groundTruthGravityNorm, biasX, biasY, biasZ);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, biasX, biasY, biasZ, listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY,
+            final Double groundTruthGravityNorm, final Acceleration biasX, final Acceleration biasY,
             final Acceleration biasZ) {
+        super(groundTruthGravityNorm, biasX, biasY, biasZ);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final Acceleration biasX, final Acceleration biasY,
+            final Acceleration biasZ, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, biasX, biasY, biasZ, listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ) {
         super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ);
     }
 
@@ -2094,13 +1942,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ,
-                listener);
+        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ, listener);
     }
 
     /**
@@ -2116,8 +1961,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Acceleration biasX,
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed, final Acceleration biasX,
             final Acceleration biasY, final Acceleration biasZ) {
         super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ);
     }
@@ -2136,12 +1980,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Acceleration biasX,
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed, final Acceleration biasX,
             final Acceleration biasY, final Acceleration biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ,
-                listener);
+        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ, listener);
     }
 
     /**
@@ -2160,12 +2002,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                biasX, biasY, biasZ);
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY,
+            final Acceleration biasZ) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, biasX, biasY, biasZ);
     }
 
     /**
@@ -2185,13 +2025,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                biasX, biasY, biasZ, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, biasX, biasY, biasZ, listener);
     }
 
     /**
@@ -2211,317 +2048,62 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz) {
-        super(groundTruthGravityNorm, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasY                  y-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz) {
-        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasY                  y-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz, listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasY                  y-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed, final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz) {
-        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasY                  y-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed, final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz, listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasY                  y-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double biasX,
-            final double biasY, final double biasZ, final double initialSx,
-            final double initialSy, final double initialSz) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasY                  y-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double biasX,
-            final double biasY, final double biasZ, final double initialSx,
-            final double initialSy, final double initialSz,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz) {
-        super(groundTruthGravityNorm, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz, listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz) {
-        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz, listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Double groundTruthGravityNorm, final double biasX, final double biasY, final double biasZ,
             final double initialSx, final double initialSy, final double initialSz) {
-        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz);
+        super(groundTruthGravityNorm, biasX, biasY, biasZ, initialSx, initialSy, initialSz);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasY                  y-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final double biasX, final double biasY, final double biasZ, final double initialSx, final double initialSy,
+            final double initialSz) {
+        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasY                  y-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final double biasX, final double biasY, final double biasZ, final double initialSx, final double initialSy,
+            final double initialSz, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
     }
 
     /**
@@ -2532,8 +2114,35 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
      *                               accelerometer and gyroscope.
      * @param biasX                  x-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
      * @param biasY                  y-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
      * @param biasZ                  z-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed, final double biasX, final double biasY,
+            final double biasZ, final double initialSx, final double initialSy, final double initialSz) {
+        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasY                  y-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
      * @param initialSx              initial x scaling factor.
      * @param initialSy              initial y scaling factor.
      * @param initialSz              initial z scaling factor.
@@ -2541,12 +2150,69 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed, final double biasX, final double biasY,
+            final double biasZ, final double initialSx, final double initialSy, final double initialSz,
+            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasY                  y-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy,
+                initialSz);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasY                  y-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ,
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, biasX, biasY, biasZ,
                 initialSx, initialSy, initialSz, listener);
     }
 
@@ -2555,6 +2221,139 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *
      * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
      *                               squared second (m/s^2).
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final Acceleration biasX, final Acceleration biasY,
+            final Acceleration biasZ, final double initialSx, final double initialSy, final double initialSz) {
+        super(groundTruthGravityNorm, biasX, biasY, biasZ, initialSx, initialSy, initialSz);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final Acceleration biasX, final Acceleration biasY,
+            final Acceleration biasZ, final double initialSx, final double initialSy, final double initialSz,
+            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final double initialSx,
+            final double initialSy, final double initialSz) {
+        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final double initialSx,
+            final double initialSy, final double initialSz,
+            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed, final Acceleration biasX,
+            final Acceleration biasY, final Acceleration biasZ, final double initialSx, final double initialSy,
+            final double initialSz) {
+        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed, final Acceleration biasX,
+            final Acceleration biasY, final Acceleration biasZ, final double initialSx, final double initialSy,
+            final double initialSz, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz, listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
      * @param measurements           collection of body kinematics measurements with standard
      *                               deviations taken at the same position with zero velocity
      *                               and unknown different orientations.
@@ -2569,13 +2368,11 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final double initialSx, final double initialSy, final double initialSz) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz);
     }
 
     /**
@@ -2598,15 +2395,12 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz, listener);
     }
 
     /**
@@ -2632,16 +2426,12 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
+            final Double groundTruthGravityNorm, final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz, final double initialMxy,
+            final double initialMxz, final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy) {
-        super(groundTruthGravityNorm, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
+        super(groundTruthGravityNorm, biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
     }
 
     /**
@@ -2670,394 +2460,12 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy) {
-        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz, initialMxy, initialMxz,
-                initialMyx, initialMyz, initialMzx, initialMzy);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasY                  y-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz, initialMxy, initialMxz,
-                initialMyx, initialMyz, initialMzx, initialMzy, listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasY                  y-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy) {
-        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasY                  y-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy, listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasY                  y-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasY                  y-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy, listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz, final double initialMxy,
-            final double initialMxz, final double initialMyx, final double initialMyz,
-            final double initialMzx, final double initialMzy) {
-        super(groundTruthGravityNorm, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz, final double initialMxy,
-            final double initialMxz, final double initialMyx, final double initialMyz,
-            final double initialMzx, final double initialMzy,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy, listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz, final double initialMxy,
-            final double initialMxz, final double initialMyx, final double initialMyz,
-            final double initialMzx, final double initialMzy) {
-        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz, final double initialMxy,
-            final double initialMxz, final double initialMyx, final double initialMyz,
-            final double initialMzx, final double initialMzy,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy, listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
-     *                               squared second (m/s^2).
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
-            final double initialSx, final double initialSy, final double initialSz,
-            final double initialMxy, final double initialMxz, final double initialMyx,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final double biasX, final double biasY, final double biasZ, final double initialSx, final double initialSy,
+            final double initialSz, final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) {
-        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
+        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
     }
 
     /**
@@ -3065,11 +2473,15 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *
      * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
      *                               squared second (m/s^2).
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
      * @param biasX                  x-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
      * @param biasY                  y-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
      * @param biasZ                  z-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
      * @param initialSx              initial x scaling factor.
      * @param initialSy              initial y scaling factor.
      * @param initialSz              initial z scaling factor.
@@ -3083,17 +2495,349 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final double biasX, final double biasY, final double biasZ, final double initialSx, final double initialSy,
+            final double initialSz, final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy,
+            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy, listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasY                  y-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ, final double initialSx, final double initialSy,
+            final double initialSz, final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) {
+        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasY                  y-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ, final double initialSx, final double initialSy,
+            final double initialSz, final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy,
+            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy, listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasY                  y-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz, final double initialMxy,
+            final double initialMxz, final double initialMyx, final double initialMyz, final double initialMzx,
+            final double initialMzy) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
+                initialMyz, initialMzx, initialMzy);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasY                  y-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx, final double initialMyz,
+            final double initialMzx, final double initialMzy) {
+        super(groundTruthGravityNorm, biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy,
+            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy, listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) {
+        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy,
+            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, measurements, biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy, listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) {
+        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy,
+            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, commonAxisUsed, biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy, listener);
     }
 
     /**
@@ -3121,16 +2865,13 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
     }
 
@@ -3160,17 +2901,14 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
     }
 
@@ -3184,8 +2922,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3 or
      *                                  if provided gravity norm value is negative.
      */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm, final double[] bias) {
+    public KnownBiasAndGravityNormAccelerometerCalibrator(final Double groundTruthGravityNorm, final double[] bias) {
         super(groundTruthGravityNorm, bias);
     }
 
@@ -3220,8 +2957,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final double[] bias) {
         super(groundTruthGravityNorm, measurements, bias);
     }
@@ -3241,10 +2977,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final double[] bias, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, bias, listener);
     }
 
@@ -3261,9 +2995,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed,
-            final double[] bias) {
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed, final double[] bias) {
         super(groundTruthGravityNorm, commonAxisUsed, bias);
     }
 
@@ -3281,9 +3013,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed,
-            final double[] bias,
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed, final double[] bias,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, commonAxisUsed, bias, listener);
     }
@@ -3304,8 +3034,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias) {
         super(groundTruthGravityNorm, measurements, commonAxisUsed, bias);
     }
@@ -3327,12 +3056,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias,
-                listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, listener);
     }
 
     /**
@@ -3344,9 +3071,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
      *                                  if provided gravity norm value is negative.
      */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Matrix bias) {
+    public KnownBiasAndGravityNormAccelerometerCalibrator(final Double groundTruthGravityNorm, final Matrix bias) {
         super(groundTruthGravityNorm, bias);
     }
 
@@ -3361,8 +3086,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Matrix bias,
+            final Double groundTruthGravityNorm, final Matrix bias,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, bias, listener);
     }
@@ -3380,8 +3104,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final Matrix bias) {
         super(groundTruthGravityNorm, measurements, bias);
     }
@@ -3400,10 +3123,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final Matrix bias, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, bias, listener);
     }
 
@@ -3419,8 +3140,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Matrix bias) {
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed, final Matrix bias) {
         super(groundTruthGravityNorm, commonAxisUsed, bias);
     }
 
@@ -3437,8 +3157,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Matrix bias,
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed, final Matrix bias,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, commonAxisUsed, bias, listener);
     }
@@ -3458,8 +3177,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias) {
         super(groundTruthGravityNorm, measurements, commonAxisUsed, bias);
     }
@@ -3480,12 +3198,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias,
-                listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, listener);
     }
 
     /**
@@ -3500,8 +3216,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Matrix bias, final Matrix initialMa) {
+            final Double groundTruthGravityNorm, final Matrix bias, final Matrix initialMa) {
         super(groundTruthGravityNorm, bias, initialMa);
     }
 
@@ -3518,8 +3233,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Matrix bias, final Matrix initialMa,
+            final Double groundTruthGravityNorm, final Matrix bias, final Matrix initialMa,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, bias, initialMa, listener);
     }
@@ -3539,8 +3253,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa) {
         super(groundTruthGravityNorm, measurements, bias, initialMa);
     }
@@ -3561,12 +3274,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, bias, initialMa,
-                listener);
+        super(groundTruthGravityNorm, measurements, bias, initialMa, listener);
     }
 
     /**
@@ -3583,8 +3294,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Matrix bias,
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed, final Matrix bias,
             final Matrix initialMa) {
         super(groundTruthGravityNorm, commonAxisUsed, bias, initialMa);
     }
@@ -3604,12 +3314,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, commonAxisUsed, bias,
-                initialMa, listener);
+            final Double groundTruthGravityNorm, final boolean commonAxisUsed, final Matrix bias,
+            final Matrix initialMa, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, commonAxisUsed, bias, initialMa, listener);
     }
 
     /**
@@ -3629,12 +3336,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias,
-                initialMa);
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, initialMa);
     }
 
     /**
@@ -3655,13 +3359,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa,
+            final Double groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias,
-                initialMa, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, initialMa, listener);
     }
 
     /**
@@ -3670,8 +3371,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param groundTruthGravityNorm ground truth gravity norm.
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm) {
+    public KnownBiasAndGravityNormAccelerometerCalibrator(final Acceleration groundTruthGravityNorm) {
         this(convertAcceleration(groundTruthGravityNorm));
     }
 
@@ -3717,8 +3417,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
             final Acceleration groundTruthGravityNorm,
             final Collection<StandardDeviationBodyKinematics> measurements,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                listener);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, listener);
     }
 
     /**
@@ -3730,8 +3429,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed) {
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed) {
         this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed);
     }
 
@@ -3745,11 +3443,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed,
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed,
-                listener);
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, listener);
     }
 
     /**
@@ -3764,11 +3460,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                commonAxisUsed);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed);
     }
 
     /**
@@ -3784,12 +3478,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                commonAxisUsed, listener);
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, listener);
     }
 
     /**
@@ -3805,11 +3496,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final double biasX, final double biasY,
-            final double biasZ) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                biasX, biasY, biasZ);
+            final Acceleration groundTruthGravityNorm, final double biasX, final double biasY, final double biasZ) {
+        this(convertAcceleration(groundTruthGravityNorm), biasX, biasY, biasZ);
     }
 
     /**
@@ -3826,12 +3514,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final double biasX, final double biasY,
-            final double biasZ,
+            final Acceleration groundTruthGravityNorm, final double biasX, final double biasY, final double biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                biasX, biasY, biasZ, listener);
+        this(convertAcceleration(groundTruthGravityNorm), biasX, biasY, biasZ, listener);
     }
 
     /**
@@ -3850,12 +3535,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY,
-            final double biasZ) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                biasX, biasY, biasZ);
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final double biasX, final double biasY, final double biasZ) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, biasX, biasY, biasZ);
     }
 
     /**
@@ -3875,13 +3557,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY,
-            final double biasZ,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final double biasX, final double biasY, final double biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                biasX, biasY, biasZ, listener);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, biasX, biasY, biasZ, listener);
     }
 
     /**
@@ -3899,12 +3578,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                commonAxisUsed, biasX, biasY, biasZ);
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ) {
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, biasX, biasY, biasZ);
     }
 
     /**
@@ -3923,13 +3599,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ,
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed,
-                biasX, biasY, biasZ, listener);
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, biasX, biasY, biasZ, listener);
     }
 
     /**
@@ -3950,13 +3623,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                commonAxisUsed, biasX, biasY, biasZ);
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, biasX, biasY, biasZ);
     }
 
     /**
@@ -3978,14 +3647,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                commonAxisUsed, biasX, biasY, biasZ, listener);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, biasX, biasY, biasZ, listener);
     }
 
     /**
@@ -3998,12 +3663,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Acceleration biasX,
-            final Acceleration biasY,
+            final Acceleration groundTruthGravityNorm, final Acceleration biasX, final Acceleration biasY,
             final Acceleration biasZ) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                biasX, biasY, biasZ);
+        this(convertAcceleration(groundTruthGravityNorm), biasX, biasY, biasZ);
     }
 
     /**
@@ -4017,13 +3679,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Acceleration biasX,
-            final Acceleration biasY,
-            final Acceleration biasZ,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                biasX, biasY, biasZ, listener);
+            final Acceleration groundTruthGravityNorm, final Acceleration biasX, final Acceleration biasY,
+            final Acceleration biasZ, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        this(convertAcceleration(groundTruthGravityNorm), biasX, biasY, biasZ, listener);
     }
 
     /**
@@ -4039,12 +3697,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                measurements, biasX, biasY, biasZ);
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, biasX, biasY, biasZ);
     }
 
     /**
@@ -4061,13 +3716,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                biasX, biasY, biasZ, listener);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, biasX, biasY, biasZ, listener);
     }
 
     /**
@@ -4082,11 +3734,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Acceleration biasX,
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed, final Acceleration biasX,
             final Acceleration biasY, final Acceleration biasZ) {
-        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed,
-                biasX, biasY, biasZ);
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, biasX, biasY, biasZ);
     }
 
     /**
@@ -4102,12 +3752,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Acceleration biasX,
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed, final Acceleration biasX,
             final Acceleration biasY, final Acceleration biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed,
-                biasX, biasY, biasZ, listener);
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, biasX, biasY, biasZ, listener);
     }
 
     /**
@@ -4125,12 +3773,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                commonAxisUsed, biasX, biasY, biasZ);
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY,
+            final Acceleration biasZ) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, biasX, biasY, biasZ);
     }
 
     /**
@@ -4149,13 +3795,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                commonAxisUsed, biasX, biasY, biasZ, listener);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, biasX, biasY, biasZ, listener);
     }
 
     /**
@@ -4174,12 +3817,34 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                biasX, biasY, biasZ,
+            final Acceleration groundTruthGravityNorm, final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
+        this(convertAcceleration(groundTruthGravityNorm), biasX, biasY, biasZ, initialSx, initialSy, initialSz);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasY                  y-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, biasX, biasY, biasZ,
                 initialSx, initialSy, initialSz);
     }
 
@@ -4199,47 +3864,16 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param initialSx              initial x scaling factor.
      * @param initialSy              initial y scaling factor.
      * @param initialSz              initial z scaling factor.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasY                  y-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
      * @param listener               listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                listener);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz, listener);
     }
 
     /**
@@ -4260,12 +3894,11 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed, final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz) {
-        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz);
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz);
     }
 
     /**
@@ -4287,14 +3920,12 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed, final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz,
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                listener);
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz, listener);
     }
 
     /**
@@ -4318,13 +3949,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double biasX,
-            final double biasY, final double biasZ, final double initialSx,
-            final double initialSy, final double initialSz) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                commonAxisUsed, biasX, biasY, biasZ,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, biasX, biasY, biasZ,
                 initialSx, initialSy, initialSz);
     }
 
@@ -4350,14 +3978,11 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final double biasX,
-            final double biasY, final double biasZ, final double initialSx,
-            final double initialSy, final double initialSz,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                commonAxisUsed, biasX, biasY, biasZ,
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, biasX, biasY, biasZ,
                 initialSx, initialSy, initialSz, listener);
     }
 
@@ -4374,12 +3999,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz);
+            final Acceleration groundTruthGravityNorm, final Acceleration biasX, final Acceleration biasY,
+            final Acceleration biasZ, final double initialSx, final double initialSy, final double initialSz) {
+        this(convertAcceleration(groundTruthGravityNorm), biasX, biasY, biasZ, initialSx, initialSy, initialSz);
     }
 
     /**
@@ -4396,67 +4018,59 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
+            final Acceleration groundTruthGravityNorm, final Acceleration biasX, final Acceleration biasY,
+            final Acceleration biasZ, final double initialSx, final double initialSy, final double initialSz,
+            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        this(convertAcceleration(groundTruthGravityNorm), biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final double initialSx,
+            final double initialSy, final double initialSz) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final double initialSx,
             final double initialSy, final double initialSz,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                listener);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz, listener);
     }
 
     /**
@@ -4474,12 +4088,11 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Acceleration biasX,
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed, final Acceleration biasX,
             final Acceleration biasY, final Acceleration biasZ,
             final double initialSx, final double initialSy, final double initialSz) {
-        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz);
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz);
     }
 
     /**
@@ -4498,14 +4111,11 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
-            final double initialSx, final double initialSy, final double initialSz,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                listener);
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed, final Acceleration biasX,
+            final Acceleration biasY, final Acceleration biasZ, final double initialSx, final double initialSy,
+            final double initialSz, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz, listener);
     }
 
     /**
@@ -4526,13 +4136,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final double initialSx, final double initialSy, final double initialSz) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                commonAxisUsed, biasX, biasY, biasZ,
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, biasX, biasY, biasZ,
                 initialSx, initialSy, initialSz);
     }
 
@@ -4555,14 +4162,11 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                commonAxisUsed, biasX, biasY, biasZ,
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, biasX, biasY, biasZ,
                 initialSx, initialSy, initialSz, listener);
     }
 
@@ -4588,432 +4192,45 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasY                  y-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasY                  y-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy, listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasY                  y-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasY                  y-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy, listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasY                  y-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                measurements, commonAxisUsed,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasY                  y-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     *                               This is expressed in meters per squared second (m/s^2).
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final double biasX, final double biasY,
-            final double biasZ, final double initialSx, final double initialSy,
-            final double initialSz, final double initialMxy, final double initialMxz,
-            final double initialMyx, final double initialMyz, final double initialMzx,
-            final double initialMzy,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                measurements, commonAxisUsed,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy, listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz, final double initialMxy,
-            final double initialMxz, final double initialMyx, final double initialMyz,
-            final double initialMzx, final double initialMzy) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz, final double initialMxy,
-            final double initialMxz, final double initialMyx, final double initialMyz,
-            final double initialMzx, final double initialMzy,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(convertAcceleration(groundTruthGravityNorm),
-                biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy, listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz, final double initialMxy,
-            final double initialMxz, final double initialMyx, final double initialMyz,
-            final double initialMzx, final double initialMzy) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                measurements, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param measurements           collection of body kinematics measurements with standard
-     *                               deviations taken at the same position with zero velocity
-     *                               and unknown different orientations.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @param listener               listener to handle events raised by this calibrator.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Acceleration biasX, final Acceleration biasY,
-            final Acceleration biasZ, final double initialSx,
-            final double initialSy, final double initialSz, final double initialMxy,
-            final double initialMxz, final double initialMyx, final double initialMyz,
-            final double initialMzx, final double initialMzy,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                measurements, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy, listener);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
-     * @param biasX                  x-coordinate of accelerometer bias.
-     * @param biasY                  y-coordinate of accelerometer bias.
-     * @param biasZ                  z-coordinate of accelerometer bias.
-     * @param initialSx              initial x scaling factor.
-     * @param initialSy              initial y scaling factor.
-     * @param initialSz              initial z scaling factor.
-     * @param initialMxy             initial x-y cross coupling error.
-     * @param initialMxz             initial x-z cross coupling error.
-     * @param initialMyx             initial y-x cross coupling error.
-     * @param initialMyz             initial y-z cross coupling error.
-     * @param initialMzx             initial z-x cross coupling error.
-     * @param initialMzy             initial z-y cross coupling error.
-     * @throws IllegalArgumentException if provided gravity norm value is negative.
-     */
-    public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Acceleration groundTruthGravityNorm, final double biasX, final double biasY, final double biasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
+        this(convertAcceleration(groundTruthGravityNorm), biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasY                  y-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final double biasX, final double biasY, final double biasZ, final double initialSx, final double initialSy,
+            final double initialSz, final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
     }
 
@@ -5021,11 +4238,15 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * Constructor.
      *
      * @param groundTruthGravityNorm ground truth gravity norm.
-     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
-     *                               accelerometer and gyroscope.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
      * @param biasX                  x-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
      * @param biasY                  y-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
      * @param biasZ                  z-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
      * @param initialSx              initial x scaling factor.
      * @param initialSy              initial y scaling factor.
      * @param initialSz              initial z scaling factor.
@@ -5039,17 +4260,341 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final double biasX, final double biasY, final double biasZ, final double initialSx, final double initialSy,
+            final double initialSz, final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy,
+            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
+                initialMyz, initialMzx, initialMzy, listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasY                  y-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) {
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
+                initialMyz, initialMzx, initialMzy);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasY                  y-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed,
+            final double biasX, final double biasY, final double biasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                commonAxisUsed, biasX, biasY, biasZ,
-                initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
+                initialMyz, initialMzx, initialMzy, listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasY                  y-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed,
+                biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
+                initialMyz, initialMzx, initialMzy);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasY                  y-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     *                               This is expressed in meters per squared second (m/s^2).
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final double biasX, final double biasY, final double biasZ,
+            final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy,
+            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed,
+                biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
+                initialMyz, initialMzx, initialMzy, listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final Acceleration biasX, final Acceleration biasY,
+            final Acceleration biasZ, final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx, final double initialMyz,
+            final double initialMzx, final double initialMzy) {
+        this(convertAcceleration(groundTruthGravityNorm), biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final Acceleration biasX, final Acceleration biasY,
+            final Acceleration biasZ, final double initialSx, final double initialSy, final double initialSz,
+            final double initialMxy, final double initialMxz, final double initialMyx, final double initialMyz,
+            final double initialMzx, final double initialMzy,
+            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(convertAcceleration(groundTruthGravityNorm), biasX, biasY, biasZ, initialSx, initialSy, initialSz,
+                initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy, listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final double initialSx,
+            final double initialSy, final double initialSz, final double initialMxy, final double initialMxz,
+            final double initialMyx, final double initialMyz, final double initialMzx, final double initialMzy) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
+                initialMyz, initialMzx, initialMzy);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ, final double initialSx,
+            final double initialSy, final double initialSz, final double initialMxy, final double initialMxz,
+            final double initialMyx, final double initialMyz, final double initialMzx, final double initialMzy,
+            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
+                initialMyz, initialMzx, initialMzy, listener);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed, final Acceleration biasX,
+            final Acceleration biasY, final Acceleration biasZ, final double initialSx, final double initialSy,
+            final double initialSz, final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy) {
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
+                initialMyz, initialMzx, initialMzy);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param biasX                  x-coordinate of accelerometer bias.
+     * @param biasY                  y-coordinate of accelerometer bias.
+     * @param biasZ                  z-coordinate of accelerometer bias.
+     * @param initialSx              initial x scaling factor.
+     * @param initialSy              initial y scaling factor.
+     * @param initialSz              initial z scaling factor.
+     * @param initialMxy             initial x-y cross coupling error.
+     * @param initialMxz             initial x-z cross coupling error.
+     * @param initialMyx             initial y-x cross coupling error.
+     * @param initialMyz             initial y-z cross coupling error.
+     * @param initialMzx             initial z-x cross coupling error.
+     * @param initialMzy             initial z-y cross coupling error.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public KnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed, final Acceleration biasX,
+            final Acceleration biasY, final Acceleration biasZ, final double initialSx, final double initialSy,
+            final double initialSz, final double initialMxy, final double initialMxz, final double initialMyx,
+            final double initialMyz, final double initialMzx, final double initialMzy,
+            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, biasX, biasY, biasZ,
+                initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
     }
 
@@ -5077,17 +4622,13 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                measurements, commonAxisUsed,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed,
+                biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
     }
 
@@ -5116,18 +4657,14 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Acceleration biasX,
-            final Acceleration biasY, final Acceleration biasZ,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Acceleration biasX, final Acceleration biasY, final Acceleration biasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                measurements, commonAxisUsed,
-                biasX, biasY, biasZ, initialSx, initialSy, initialSz,
-                initialMxy, initialMxz, initialMyx,
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed,
+                biasX, biasY, biasZ, initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
     }
 
@@ -5156,8 +4693,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final double[] bias,
+            final Acceleration groundTruthGravityNorm, final double[] bias,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         this(convertAcceleration(groundTruthGravityNorm), bias, listener);
     }
@@ -5175,11 +4711,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final double[] bias) {
-        this(convertAcceleration(groundTruthGravityNorm), measurements,
-                bias);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, bias);
     }
 
     /**
@@ -5196,12 +4730,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                measurements, bias, listener);
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final double[] bias, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, bias, listener);
     }
 
     /**
@@ -5216,11 +4747,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed,
-            final double[] bias) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                commonAxisUsed, bias);
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed, final double[] bias) {
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, bias);
     }
 
     /**
@@ -5236,12 +4764,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed,
-            final double[] bias,
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed, final double[] bias,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                commonAxisUsed, bias, listener);
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, bias, listener);
     }
 
     /**
@@ -5259,11 +4784,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                measurements, commonAxisUsed, bias);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, bias);
     }
 
     /**
@@ -5282,12 +4805,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                measurements, commonAxisUsed, bias, listener);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, bias, listener);
     }
 
     /**
@@ -5299,8 +4820,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Matrix bias) {
+            final Acceleration groundTruthGravityNorm, final Matrix bias) {
         this(convertAcceleration(groundTruthGravityNorm), bias);
     }
 
@@ -5314,8 +4834,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Matrix bias,
+            final Acceleration groundTruthGravityNorm, final Matrix bias,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         this(convertAcceleration(groundTruthGravityNorm), bias, listener);
     }
@@ -5332,11 +4851,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final Matrix bias) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                measurements, bias);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, bias);
     }
 
     /**
@@ -5352,10 +4869,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final Matrix bias, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         this(convertAcceleration(groundTruthGravityNorm), measurements, bias, listener);
     }
 
@@ -5370,10 +4885,8 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Matrix bias) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                commonAxisUsed, bias);
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed, final Matrix bias) {
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, bias);
     }
 
     /**
@@ -5388,11 +4901,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Matrix bias,
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed, final Matrix bias,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                commonAxisUsed, bias, listener);
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, bias, listener);
     }
 
     /**
@@ -5409,11 +4920,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                measurements, commonAxisUsed, bias);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, bias);
     }
 
     /**
@@ -5431,12 +4940,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                measurements, commonAxisUsed, bias, listener);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, bias, listener);
     }
 
     /**
@@ -5450,8 +4957,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Matrix bias, final Matrix initialMa) {
+            final Acceleration groundTruthGravityNorm, final Matrix bias, final Matrix initialMa) {
         this(convertAcceleration(groundTruthGravityNorm), bias, initialMa);
     }
 
@@ -5467,11 +4973,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Matrix bias, final Matrix initialMa,
+            final Acceleration groundTruthGravityNorm, final Matrix bias, final Matrix initialMa,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                bias, initialMa, listener);
+        this(convertAcceleration(groundTruthGravityNorm), bias, initialMa, listener);
     }
 
     /**
@@ -5488,11 +4992,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                measurements, bias, initialMa);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, bias, initialMa);
     }
 
     /**
@@ -5510,12 +5012,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                measurements, bias, initialMa, listener);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, bias, initialMa, listener);
     }
 
     /**
@@ -5531,11 +5031,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Matrix bias,
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed, final Matrix bias,
             final Matrix initialMa) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                commonAxisUsed, bias, initialMa);
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, bias, initialMa);
     }
 
     /**
@@ -5552,12 +5050,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa,
-            final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                commonAxisUsed, bias, initialMa, listener);
+            final Acceleration groundTruthGravityNorm, final boolean commonAxisUsed, final Matrix bias,
+            final Matrix initialMa, final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        this(convertAcceleration(groundTruthGravityNorm), commonAxisUsed, bias, initialMa, listener);
     }
 
     /**
@@ -5576,12 +5071,9 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                measurements, commonAxisUsed, bias, initialMa);
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa) {
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, bias, initialMa);
     }
 
     /**
@@ -5601,13 +5093,10 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public KnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa,
+            final Acceleration groundTruthGravityNorm, final Collection<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa,
             final KnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        this(convertAcceleration(groundTruthGravityNorm),
-                measurements, commonAxisUsed, bias, initialMa, listener);
+        this(convertAcceleration(groundTruthGravityNorm), measurements, commonAxisUsed, bias, initialMa, listener);
     }
 
     /**
@@ -5620,8 +5109,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided value is negative.
      * @throws LockedException          if calibrator is currently running.
      */
-    public void setGroundTruthGravityNorm(final Double groundTruthGravityNorm)
-            throws LockedException {
+    public void setGroundTruthGravityNorm(final Double groundTruthGravityNorm) throws LockedException {
         if (isRunning()) {
             throw new LockedException();
         }
@@ -5637,9 +5125,7 @@ public class KnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided value is negative.
      * @throws LockedException          if calibrator is currently running.
      */
-    public void setGroundTruthGravityNorm(
-            final Acceleration groundTruthGravityNorm)
-            throws LockedException {
+    public void setGroundTruthGravityNorm(final Acceleration groundTruthGravityNorm) throws LockedException {
         setGroundTruthGravityNorm(groundTruthGravityNorm != null ?
                 convertAcceleration(groundTruthGravityNorm) : null);
     }

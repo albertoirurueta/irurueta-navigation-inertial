@@ -36,8 +36,7 @@ import java.util.Random;
 
 import static org.junit.Assert.*;
 
-public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
-        AccumulatedBodyKinematicsNoiseEstimatorListener {
+public class AccumulatedBodyKinematicsNoiseEstimatorTest implements AccumulatedBodyKinematicsNoiseEstimatorListener {
 
     private static final double MIN_ACCELEROMETER_VALUE = -2.0 * 9.81;
     private static final double MAX_ACCELEROMETER_VALUE = 2.0 * 9.81;
@@ -62,15 +61,14 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
 
     @Test
     public void testConstructor1() {
-        final AccumulatedBodyKinematicsNoiseEstimator estimator =
-                new AccumulatedBodyKinematicsNoiseEstimator();
+        final AccumulatedBodyKinematicsNoiseEstimator estimator = new AccumulatedBodyKinematicsNoiseEstimator();
 
         // check default values
-        assertEquals(AccumulatedBodyKinematicsNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
-                estimator.getTimeInterval(), 0.0);
+        assertEquals(AccumulatedBodyKinematicsNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS, estimator.getTimeInterval(),
+                0.0);
         final Time t1 = estimator.getTimeIntervalAsTime();
-        assertEquals(AccumulatedBodyKinematicsNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
-                t1.getValue().doubleValue(), 0.0);
+        assertEquals(AccumulatedBodyKinematicsNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS, t1.getValue().doubleValue(),
+                0.0);
         assertEquals(TimeUnit.SECOND, t1.getUnit());
         final Time t2 = new Time(1.0, TimeUnit.NANOSECOND);
         estimator.getTimeIntervalAsTime(t2);
@@ -82,24 +80,21 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final Acceleration avgFx1 = estimator.getAvgSpecificForceXAsMeasurement();
         assertEquals(0.0, avgFx1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgFx1.getUnit());
-        final Acceleration avgFx2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFx2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceXAsMeasurement(avgFx2);
         assertEquals(avgFx1, avgFx2);
         assertEquals(0.0, estimator.getAvgSpecificForceY(), 0.0);
         final Acceleration avgFy1 = estimator.getAvgSpecificForceYAsMeasurement();
         assertEquals(0.0, avgFy1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgFx1.getUnit());
-        final Acceleration avgFy2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFy2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceYAsMeasurement(avgFy2);
         assertEquals(avgFy1, avgFy2);
         assertEquals(0.0, estimator.getAvgSpecificForceZ(), 0.0);
         final Acceleration avgFz1 = estimator.getAvgSpecificForceZAsMeasurement();
         assertEquals(0.0, avgFz1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgFz1.getUnit());
-        final Acceleration avgFz2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceZAsMeasurement(avgFz2);
         assertEquals(avgFz1, avgFz2);
         final AccelerationTriad avgFTriad1 = estimator.getAvgSpecificForceAsTriad();
@@ -114,32 +109,28 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final Acceleration avgFNorm1 = estimator.getAvgSpecificForceNormAsMeasurement();
         assertEquals(0.0, avgFNorm1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgFNorm1.getUnit());
-        final Acceleration avgFNorm2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFNorm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceNormAsMeasurement(avgFNorm2);
         assertEquals(avgFNorm1, avgFNorm2);
         assertEquals(0.0, estimator.getAvgAngularRateX(), 0.0);
         final AngularSpeed avgWx1 = estimator.getAvgAngularRateXAsMeasurement();
         assertEquals(0.0, avgWx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWx1.getUnit());
-        final AngularSpeed avgWx2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgWx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgAngularRateXAsMeasurement(avgWx2);
         assertEquals(avgWx1, avgWx2);
         assertEquals(0.0, estimator.getAvgAngularRateY(), 0.0);
         final AngularSpeed avgWy1 = estimator.getAvgAngularRateYAsMeasurement();
         assertEquals(0.0, avgWy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWy1.getUnit());
-        final AngularSpeed avgWy2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgWy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgAngularRateYAsMeasurement(avgWy2);
         assertEquals(avgWy1, avgWy2);
         assertEquals(0.0, estimator.getAvgAngularRateZ(), 0.0);
         final AngularSpeed avgWz1 = estimator.getAvgAngularRateZAsMeasurement();
         assertEquals(0.0, avgWz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWz1.getUnit());
-        final AngularSpeed avgWz2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgWz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgAngularRateZAsMeasurement(avgWz2);
         assertEquals(avgWz1, avgWz2);
         final AngularSpeedTriad avgWTriad1 = estimator.getAvgAngularRateTriad();
@@ -154,8 +145,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final AngularSpeed avgWNorm1 = estimator.getAvgAngularRateNormAsMeasurement();
         assertEquals(0.0, avgWNorm1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWNorm1.getUnit());
-        final AngularSpeed avgWNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgWNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgAngularRateNormAsMeasurement(avgWNorm2);
         assertEquals(avgWNorm1, avgWNorm2);
         final BodyKinematics avgKinematics1 = estimator.getAvgBodyKinematics();
@@ -178,24 +168,21 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final Acceleration stdFx1 = estimator.getStandardDeviationSpecificForceXAsMeasurement();
         assertEquals(0.0, stdFx1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFx1.getUnit());
-        final Acceleration stdFx2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdFx2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceXAsMeasurement(stdFx2);
         assertEquals(stdFx1, stdFx2);
         assertEquals(0.0, estimator.getStandardDeviationSpecificForceY(), 0.0);
         final Acceleration stdFy1 = estimator.getStandardDeviationSpecificForceYAsMeasurement();
         assertEquals(0.0, stdFy1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFy1.getUnit());
-        final Acceleration stdFy2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdFy2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceYAsMeasurement(stdFy2);
         assertEquals(stdFy1, stdFy2);
         assertEquals(0.0, estimator.getStandardDeviationSpecificForceZ(), 0.0);
         final Acceleration stdFz1 = estimator.getStandardDeviationSpecificForceZAsMeasurement();
         assertEquals(0.0, stdFz1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFz1.getUnit());
-        final Acceleration stdFz2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdFz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceZAsMeasurement(stdFz2);
         assertEquals(stdFz1, stdFz2);
         final AccelerationTriad stdFTriad1 = estimator.getStandardDeviationSpecificForceTriad();
@@ -210,40 +197,35 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final Acceleration stdFNorm1 = estimator.getStandardDeviationSpecificForceNormAsMeasurement();
         assertEquals(0.0, stdFNorm1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFNorm1.getUnit());
-        final Acceleration stdFNorm2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdFNorm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceNormAsMeasurement(stdFNorm2);
         assertEquals(stdFNorm1, stdFNorm2);
         assertEquals(0.0, estimator.getAverageStandardDeviationSpecificForce(), 0.0);
         final Acceleration avgStdF1 = estimator.getAverageStandardDeviationSpecificForceAsMeasurement();
         assertEquals(0.0, avgStdF1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgStdF1.getUnit());
-        final Acceleration avgStdF2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgStdF2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAverageStandardDeviationSpecificForceAsMeasurement(avgStdF2);
         assertEquals(avgStdF1, avgStdF2);
         assertEquals(0.0, estimator.getStandardDeviationAngularRateX(), 0.0);
         final AngularSpeed stdWx1 = estimator.getStandardDeviationAngularRateXAsMeasurement();
         assertEquals(0.0, stdWx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWx1.getUnit());
-        final AngularSpeed stdWx2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularRateXAsMeasurement(stdWx2);
         assertEquals(stdWx1, stdWx2);
         assertEquals(0.0, estimator.getStandardDeviationAngularRateY(), 0.0);
         final AngularSpeed stdWy1 = estimator.getStandardDeviationAngularRateYAsMeasurement();
         assertEquals(0.0, stdWy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWx1.getUnit());
-        final AngularSpeed stdWy2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularRateYAsMeasurement(stdWy2);
         assertEquals(stdWy1, stdWy2);
         assertEquals(0.0, estimator.getStandardDeviationAngularRateZ(), 0.0);
         final AngularSpeed stdWz1 = estimator.getStandardDeviationAngularRateZAsMeasurement();
         assertEquals(0.0, stdWz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWz1.getUnit());
-        final AngularSpeed stdWz2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularRateZAsMeasurement(stdWz2);
         assertEquals(stdWz1, stdWz2);
         final AngularSpeedTriad stdWTriad1 = estimator.getStandardDeviationAngularSpeedTriad();
@@ -258,18 +240,14 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final AngularSpeed stdWNorm1 = estimator.getStandardDeviationAngularSpeedNormAsMeasurement();
         assertEquals(0.0, stdWNorm1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWNorm1.getUnit());
-        final AngularSpeed stdWNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularSpeedNormAsMeasurement(stdWNorm2);
         assertEquals(stdWNorm1, stdWNorm2);
-        assertEquals(0.0, estimator.getAverageStandardDeviationAngularSpeed(),
-                0.0);
-        final AngularSpeed avgStdW1 = estimator
-                .getAverageStandardDeviationAngularSpeedAsMeasurement();
+        assertEquals(0.0, estimator.getAverageStandardDeviationAngularSpeed(), 0.0);
+        final AngularSpeed avgStdW1 = estimator.getAverageStandardDeviationAngularSpeedAsMeasurement();
         assertEquals(0.0, avgStdW1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgStdW1.getUnit());
-        final AngularSpeed avgStdW2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgStdW2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAverageStandardDeviationAngularSpeedAsMeasurement(avgStdW2);
         assertEquals(avgStdW1, avgStdW2);
         final BodyKinematics stdKinematics1 = estimator.getStandardDeviationAsBodyKinematics();
@@ -306,15 +284,15 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
 
     @Test
     public void testConstructor2() {
-        final AccumulatedBodyKinematicsNoiseEstimator estimator =
-                new AccumulatedBodyKinematicsNoiseEstimator(this);
+        final AccumulatedBodyKinematicsNoiseEstimator estimator = new AccumulatedBodyKinematicsNoiseEstimator(
+                this);
 
         // check default values
-        assertEquals(AccumulatedBodyKinematicsNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
-                estimator.getTimeInterval(), 0.0);
+        assertEquals(AccumulatedBodyKinematicsNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS, estimator.getTimeInterval(),
+                0.0);
         final Time t1 = estimator.getTimeIntervalAsTime();
-        assertEquals(AccumulatedBodyKinematicsNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
-                t1.getValue().doubleValue(), 0.0);
+        assertEquals(AccumulatedBodyKinematicsNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS, t1.getValue().doubleValue(),
+                0.0);
         assertEquals(TimeUnit.SECOND, t1.getUnit());
         final Time t2 = new Time(1.0, TimeUnit.NANOSECOND);
         estimator.getTimeIntervalAsTime(t2);
@@ -326,24 +304,21 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final Acceleration avgFx1 = estimator.getAvgSpecificForceXAsMeasurement();
         assertEquals(0.0, avgFx1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgFx1.getUnit());
-        final Acceleration avgFx2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFx2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceXAsMeasurement(avgFx2);
         assertEquals(avgFx1, avgFx2);
         assertEquals(0.0, estimator.getAvgSpecificForceY(), 0.0);
         final Acceleration avgFy1 = estimator.getAvgSpecificForceYAsMeasurement();
         assertEquals(0.0, avgFy1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgFx1.getUnit());
-        final Acceleration avgFy2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFy2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceYAsMeasurement(avgFy2);
         assertEquals(avgFy1, avgFy2);
         assertEquals(0.0, estimator.getAvgSpecificForceZ(), 0.0);
         final Acceleration avgFz1 = estimator.getAvgSpecificForceZAsMeasurement();
         assertEquals(0.0, avgFz1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgFz1.getUnit());
-        final Acceleration avgFz2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceZAsMeasurement(avgFz2);
         assertEquals(avgFz1, avgFz2);
         final AccelerationTriad avgFTriad1 = estimator.getAvgSpecificForceAsTriad();
@@ -358,32 +333,28 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final Acceleration avgFNorm1 = estimator.getAvgSpecificForceNormAsMeasurement();
         assertEquals(0.0, avgFNorm1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgFNorm1.getUnit());
-        final Acceleration avgFNorm2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFNorm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceNormAsMeasurement(avgFNorm2);
         assertEquals(avgFNorm1, avgFNorm2);
         assertEquals(0.0, estimator.getAvgAngularRateX(), 0.0);
         final AngularSpeed avgWx1 = estimator.getAvgAngularRateXAsMeasurement();
         assertEquals(0.0, avgWx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWx1.getUnit());
-        final AngularSpeed avgWx2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgWx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgAngularRateXAsMeasurement(avgWx2);
         assertEquals(avgWx1, avgWx2);
         assertEquals(0.0, estimator.getAvgAngularRateY(), 0.0);
         final AngularSpeed avgWy1 = estimator.getAvgAngularRateYAsMeasurement();
         assertEquals(0.0, avgWy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWy1.getUnit());
-        final AngularSpeed avgWy2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgWy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgAngularRateYAsMeasurement(avgWy2);
         assertEquals(avgWy1, avgWy2);
         assertEquals(0.0, estimator.getAvgAngularRateZ(), 0.0);
         final AngularSpeed avgWz1 = estimator.getAvgAngularRateZAsMeasurement();
         assertEquals(0.0, avgWz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWz1.getUnit());
-        final AngularSpeed avgWz2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgWz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgAngularRateZAsMeasurement(avgWz2);
         assertEquals(avgWz1, avgWz2);
         final AngularSpeedTriad avgWTriad1 = estimator.getAvgAngularRateTriad();
@@ -398,8 +369,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final AngularSpeed avgWNorm1 = estimator.getAvgAngularRateNormAsMeasurement();
         assertEquals(0.0, avgWNorm1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWNorm1.getUnit());
-        final AngularSpeed avgWNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgWNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgAngularRateNormAsMeasurement(avgWNorm2);
         assertEquals(avgWNorm1, avgWNorm2);
         final BodyKinematics avgKinematics1 = estimator.getAvgBodyKinematics();
@@ -422,24 +392,21 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final Acceleration stdFx1 = estimator.getStandardDeviationSpecificForceXAsMeasurement();
         assertEquals(0.0, stdFx1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFx1.getUnit());
-        final Acceleration stdFx2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdFx2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceXAsMeasurement(stdFx2);
         assertEquals(stdFx1, stdFx2);
         assertEquals(0.0, estimator.getStandardDeviationSpecificForceY(), 0.0);
         final Acceleration stdFy1 = estimator.getStandardDeviationSpecificForceYAsMeasurement();
         assertEquals(0.0, stdFy1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFy1.getUnit());
-        final Acceleration stdFy2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdFy2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceYAsMeasurement(stdFy2);
         assertEquals(stdFy1, stdFy2);
         assertEquals(0.0, estimator.getStandardDeviationSpecificForceZ(), 0.0);
         final Acceleration stdFz1 = estimator.getStandardDeviationSpecificForceZAsMeasurement();
         assertEquals(0.0, stdFz1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFz1.getUnit());
-        final Acceleration stdFz2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdFz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceZAsMeasurement(stdFz2);
         assertEquals(stdFz1, stdFz2);
         final AccelerationTriad stdFTriad1 = estimator.getStandardDeviationSpecificForceTriad();
@@ -454,40 +421,35 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final Acceleration stdFNorm1 = estimator.getStandardDeviationSpecificForceNormAsMeasurement();
         assertEquals(0.0, stdFNorm1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFNorm1.getUnit());
-        final Acceleration stdFNorm2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdFNorm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceNormAsMeasurement(stdFNorm2);
         assertEquals(stdFNorm1, stdFNorm2);
         assertEquals(0.0, estimator.getAverageStandardDeviationSpecificForce(), 0.0);
         final Acceleration avgStdF1 = estimator.getAverageStandardDeviationSpecificForceAsMeasurement();
         assertEquals(0.0, avgStdF1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgStdF1.getUnit());
-        final Acceleration avgStdF2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgStdF2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAverageStandardDeviationSpecificForceAsMeasurement(avgStdF2);
         assertEquals(avgStdF1, avgStdF2);
         assertEquals(0.0, estimator.getStandardDeviationAngularRateX(), 0.0);
         final AngularSpeed stdWx1 = estimator.getStandardDeviationAngularRateXAsMeasurement();
         assertEquals(0.0, stdWx1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWx1.getUnit());
-        final AngularSpeed stdWx2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularRateXAsMeasurement(stdWx2);
         assertEquals(stdWx1, stdWx2);
         assertEquals(0.0, estimator.getStandardDeviationAngularRateY(), 0.0);
         final AngularSpeed stdWy1 = estimator.getStandardDeviationAngularRateYAsMeasurement();
         assertEquals(0.0, stdWy1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWx1.getUnit());
-        final AngularSpeed stdWy2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularRateYAsMeasurement(stdWy2);
         assertEquals(stdWy1, stdWy2);
         assertEquals(0.0, estimator.getStandardDeviationAngularRateZ(), 0.0);
         final AngularSpeed stdWz1 = estimator.getStandardDeviationAngularRateZAsMeasurement();
         assertEquals(0.0, stdWz1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWz1.getUnit());
-        final AngularSpeed stdWz2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularRateZAsMeasurement(stdWz2);
         assertEquals(stdWz1, stdWz2);
         final AngularSpeedTriad stdWTriad1 = estimator.getStandardDeviationAngularSpeedTriad();
@@ -502,18 +464,14 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final AngularSpeed stdWNorm1 = estimator.getStandardDeviationAngularSpeedNormAsMeasurement();
         assertEquals(0.0, stdWNorm1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWNorm1.getUnit());
-        final AngularSpeed stdWNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularSpeedNormAsMeasurement(stdWNorm2);
         assertEquals(stdWNorm1, stdWNorm2);
-        assertEquals(0.0, estimator.getAverageStandardDeviationAngularSpeed(),
-                0.0);
-        final AngularSpeed avgStdW1 = estimator
-                .getAverageStandardDeviationAngularSpeedAsMeasurement();
+        assertEquals(0.0, estimator.getAverageStandardDeviationAngularSpeed(), 0.0);
+        final AngularSpeed avgStdW1 = estimator.getAverageStandardDeviationAngularSpeedAsMeasurement();
         assertEquals(0.0, avgStdW1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgStdW1.getUnit());
-        final AngularSpeed avgStdW2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgStdW2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAverageStandardDeviationAngularSpeedAsMeasurement(avgStdW2);
         assertEquals(avgStdW1, avgStdW2);
         final BodyKinematics stdKinematics1 = estimator.getStandardDeviationAsBodyKinematics();
@@ -550,13 +508,11 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
 
     @Test
     public void testGetSetTimeInterval() throws LockedException {
-        final AccumulatedBodyKinematicsNoiseEstimator estimator =
-                new AccumulatedBodyKinematicsNoiseEstimator();
+        final AccumulatedBodyKinematicsNoiseEstimator estimator = new AccumulatedBodyKinematicsNoiseEstimator();
 
         // check default value
-        assertEquals(
-                AccumulatedBodyKinematicsNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
-                estimator.getTimeInterval(), 0.0);
+        assertEquals(AccumulatedBodyKinematicsNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS, estimator.getTimeInterval(),
+                0.0);
 
         // set new value
         estimator.setTimeInterval(1.0);
@@ -565,22 +521,16 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(1.0, estimator.getTimeInterval(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            estimator.setTimeInterval(-1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setTimeInterval(-1.0));
     }
 
     @Test
     public void testGetSetTimeIntervalAsTime() throws LockedException {
-        final AccumulatedBodyKinematicsNoiseEstimator estimator =
-                new AccumulatedBodyKinematicsNoiseEstimator();
+        final AccumulatedBodyKinematicsNoiseEstimator estimator = new AccumulatedBodyKinematicsNoiseEstimator();
 
         // check default value
         final Time time1 = estimator.getTimeIntervalAsTime();
-        assertEquals(
-                AccumulatedBodyKinematicsNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
+        assertEquals(AccumulatedBodyKinematicsNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 time1.getValue().doubleValue(), 0.0);
         assertEquals(TimeUnit.SECOND, time1.getUnit());
 
@@ -599,8 +549,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
 
     @Test
     public void testGetSetListener() throws LockedException {
-        final AccumulatedBodyKinematicsNoiseEstimator estimator =
-                new AccumulatedBodyKinematicsNoiseEstimator();
+        final AccumulatedBodyKinematicsNoiseEstimator estimator = new AccumulatedBodyKinematicsNoiseEstimator();
 
         // check default value
         assertNull(estimator.getListener());
@@ -613,8 +562,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
     }
 
     @Test
-    public void testAddBodyKinematicsAndReset1()
-            throws WrongSizeException, LockedException {
+    public void testAddBodyKinematicsAndReset1() throws WrongSizeException, LockedException {
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
         final Matrix ma = generateMa();
@@ -625,39 +573,35 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final AccumulatedBodyKinematicsNoiseEstimator estimator =
-                new AccumulatedBodyKinematicsNoiseEstimator(this);
+        final AccumulatedBodyKinematicsNoiseEstimator estimator = new AccumulatedBodyKinematicsNoiseEstimator(
+                this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mBodyKinematicsAdded, 0);
-        assertEquals(mReset, 0);
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mBodyKinematicsAdded);
+        assertEquals(0, mReset);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getLastBodyKinematics());
         assertFalse(estimator.getLastBodyKinematics(null));
         assertFalse(estimator.isRunning());
 
         final BodyKinematics kinematics = new BodyKinematics();
         final double timeInterval = estimator.getTimeInterval();
-        BodyKinematics lastKinematics = new BodyKinematics();
+        final BodyKinematics lastKinematics = new BodyKinematics();
 
         double avgFx = 0.0;
         double avgFy = 0.0;
@@ -677,8 +621,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
                 assertEquals(lastKinematics, kinematics);
             }
 
-            BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                    errors, random, kinematics);
+            BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
 
             final double fxi = kinematics.getFx();
             final double fyi = kinematics.getFy();
@@ -691,7 +634,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
 
             assertTrue(estimator.getLastBodyKinematics(lastKinematics));
             assertEquals(lastKinematics, kinematics);
-            assertEquals(estimator.getNumberOfProcessedSamples(), i + 1);
+            assertEquals(i + 1, estimator.getNumberOfProcessedSamples());
             assertFalse(estimator.isRunning());
 
             avgFx = avgFx * (double) i / (double) j + fxi / j;
@@ -727,11 +670,11 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
             varWz = varWz * (double) i / (double) j + diff2 / j;
         }
 
-        assertEquals(estimator.getNumberOfProcessedSamples(), N_SAMPLES);
+        assertEquals(N_SAMPLES, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
-        assertEquals(mStart, 1);
-        assertEquals(mBodyKinematicsAdded, N_SAMPLES);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(N_SAMPLES, mBodyKinematicsAdded);
+        assertEquals(0, mReset);
 
         final double avgFxB = estimator.getAvgSpecificForceX();
         final double avgFyB = estimator.getAvgSpecificForceY();
@@ -757,8 +700,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(avgWzB, omegaZ, LARGE_ABSOLUTE_ERROR);
 
         final Acceleration avgFx1 = estimator.getAvgSpecificForceXAsMeasurement();
-        final Acceleration avgFx2 = new Acceleration(1.0,
-                AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFx2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceXAsMeasurement(avgFx2);
 
         assertEquals(avgFx, avgFx1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
@@ -766,8 +708,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(avgFx1, avgFx2);
 
         final Acceleration avgFy1 = estimator.getAvgSpecificForceYAsMeasurement();
-        final Acceleration avgFy2 = new Acceleration(1.0,
-                AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFy2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceYAsMeasurement(avgFy2);
 
         assertEquals(avgFy, avgFy1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
@@ -775,8 +716,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(avgFy1, avgFy2);
 
         final Acceleration avgFz1 = estimator.getAvgSpecificForceZAsMeasurement();
-        final Acceleration avgFz2 = new Acceleration(1.0,
-                AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceZAsMeasurement(avgFz2);
 
         assertEquals(avgFz, avgFz1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
@@ -791,38 +731,32 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final AccelerationTriad avgFTriad2 = new AccelerationTriad();
         estimator.getAvgSpecificForceAsTriad(avgFTriad2);
         assertEquals(avgFTriad1, avgFTriad2);
-        assertEquals(avgFTriad1.getNorm(), estimator.getAvgSpecificForceNorm(),
-                0.0);
+        assertEquals(avgFTriad1.getNorm(), estimator.getAvgSpecificForceNorm(), 0.0);
         final Acceleration avgFNorm1 = estimator.getAvgSpecificForceNormAsMeasurement();
-        assertEquals(estimator.getAvgSpecificForceNorm(),
-                avgFNorm1.getValue().doubleValue(), 0.0);
+        assertEquals(avgFNorm1.getValue().doubleValue(), estimator.getAvgSpecificForceNorm(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgFNorm1.getUnit());
-        final Acceleration avgFNorm2 = new Acceleration(1.0,
-                AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFNorm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceNormAsMeasurement(avgFNorm2);
         assertEquals(avgFNorm1, avgFNorm2);
 
         final AngularSpeed avgWx1 = estimator.getAvgAngularRateXAsMeasurement();
         assertEquals(avgWx, avgWx1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWx1.getUnit());
-        final AngularSpeed avgWx2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgWx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgAngularRateXAsMeasurement(avgWx2);
         assertEquals(avgWx1, avgWx2);
 
         final AngularSpeed avgWy1 = estimator.getAvgAngularRateYAsMeasurement();
         assertEquals(avgWy, avgWy1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWy1.getUnit());
-        final AngularSpeed avgWy2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgWy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgAngularRateYAsMeasurement(avgWy2);
         assertEquals(avgWy1, avgWy2);
 
         final AngularSpeed avgWz1 = estimator.getAvgAngularRateZAsMeasurement();
         assertEquals(avgWz, avgWz1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWz1.getUnit());
-        final AngularSpeed avgWz2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgWz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgAngularRateZAsMeasurement(avgWz2);
         assertEquals(avgWz1, avgWz2);
 
@@ -835,14 +769,11 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         estimator.getAvgAngularRateTriad(avgWTriad2);
         assertEquals(avgWTriad1, avgWTriad2);
 
-        assertEquals(avgWTriad1.getNorm(), estimator.getAvgAngularRateNorm(),
-                0.0);
+        assertEquals(avgWTriad1.getNorm(), estimator.getAvgAngularRateNorm(), 0.0);
         final AngularSpeed avgWNorm1 = estimator.getAvgAngularRateNormAsMeasurement();
-        assertEquals(estimator.getAvgAngularRateNorm(),
-                avgWNorm1.getValue().doubleValue(), 0.0);
+        assertEquals(avgWNorm1.getValue().doubleValue(), estimator.getAvgAngularRateNorm(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWNorm1.getUnit());
-        final AngularSpeed avgWNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed avgWNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getAvgAngularRateNormAsMeasurement(avgWNorm2);
         assertEquals(avgWNorm1, avgWNorm2);
 
@@ -850,28 +781,19 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(avgFx, avgKinematics1.getFx(), SMALL_ABSOLUTE_ERROR);
         assertEquals(avgFy, avgKinematics1.getFy(), SMALL_ABSOLUTE_ERROR);
         assertEquals(avgFz, avgKinematics1.getFz(), SMALL_ABSOLUTE_ERROR);
-        assertEquals(avgWx, avgKinematics1.getAngularRateX(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(avgWy, avgKinematics1.getAngularRateY(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(avgWz, avgKinematics1.getAngularRateZ(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgWx, avgKinematics1.getAngularRateX(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgWy, avgKinematics1.getAngularRateY(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgWz, avgKinematics1.getAngularRateZ(), SMALL_ABSOLUTE_ERROR);
         final BodyKinematics avgKinematics2 = new BodyKinematics();
         estimator.getAvgBodyKinematics(avgKinematics2);
         assertEquals(avgKinematics1, avgKinematics2);
 
-        assertEquals(varFx, estimator.getVarianceSpecificForceX(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(varFy, estimator.getVarianceSpecificForceY(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(varFz, estimator.getVarianceSpecificForceZ(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(varWx, estimator.getVarianceAngularRateX(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(varWy, estimator.getVarianceAngularRateY(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(varWz, estimator.getVarianceAngularRateZ(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(varFx, estimator.getVarianceSpecificForceX(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(varFy, estimator.getVarianceSpecificForceY(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(varFz, estimator.getVarianceSpecificForceZ(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(varWx, estimator.getVarianceAngularRateX(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(varWy, estimator.getVarianceAngularRateY(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(varWz, estimator.getVarianceAngularRateZ(), SMALL_ABSOLUTE_ERROR);
 
         final double stdFx = Math.sqrt(varFx);
         final double stdFy = Math.sqrt(varFy);
@@ -880,36 +802,27 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final double stdWy = Math.sqrt(varWy);
         final double stdWz = Math.sqrt(varWz);
 
-        assertEquals(stdFx, estimator.getStandardDeviationSpecificForceX(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdFx, estimator.getStandardDeviationSpecificForceX(), SMALL_ABSOLUTE_ERROR);
         final Acceleration stdFx1 = estimator.getStandardDeviationSpecificForceXAsMeasurement();
         assertEquals(stdFx, stdFx1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                stdFx1.getUnit());
-        final Acceleration stdFx2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFx1.getUnit());
+        final Acceleration stdFx2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceXAsMeasurement(stdFx2);
         assertEquals(stdFx1, stdFx2);
 
-        assertEquals(stdFy, estimator.getStandardDeviationSpecificForceY(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdFy, estimator.getStandardDeviationSpecificForceY(), SMALL_ABSOLUTE_ERROR);
         final Acceleration stdFy1 = estimator.getStandardDeviationSpecificForceYAsMeasurement();
         assertEquals(stdFy, stdFy1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                stdFy1.getUnit());
-        final Acceleration stdFy2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFy1.getUnit());
+        final Acceleration stdFy2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceYAsMeasurement(stdFy2);
         assertEquals(stdFy1, stdFy2);
 
-        assertEquals(stdFz, estimator.getStandardDeviationSpecificForceZ(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdFz, estimator.getStandardDeviationSpecificForceZ(), SMALL_ABSOLUTE_ERROR);
         final Acceleration stdFz1 = estimator.getStandardDeviationSpecificForceZAsMeasurement();
         assertEquals(stdFz, stdFz1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                stdFz1.getUnit());
-        final Acceleration stdFz2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFz1.getUnit());
+        final Acceleration stdFz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceZAsMeasurement(stdFz2);
         assertEquals(stdFz1, stdFz2);
 
@@ -917,65 +830,50 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(stdFx, stdFTriad1.getValueX(), SMALL_ABSOLUTE_ERROR);
         assertEquals(stdFy, stdFTriad1.getValueY(), SMALL_ABSOLUTE_ERROR);
         assertEquals(stdFz, stdFTriad1.getValueZ(), SMALL_ABSOLUTE_ERROR);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                stdFTriad1.getUnit());
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFTriad1.getUnit());
 
         final AccelerationTriad stdFTriad2 = new AccelerationTriad();
         estimator.getStandardDeviationSpecificForceTriad(stdFTriad2);
         assertEquals(stdFTriad1, stdFTriad2);
 
-        assertEquals(stdFTriad1.getNorm(),
-                estimator.getStandardDeviationSpecificForceNorm(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdFTriad1.getNorm(), estimator.getStandardDeviationSpecificForceNorm(), SMALL_ABSOLUTE_ERROR);
         final Acceleration stdFNorm1 = estimator.getStandardDeviationSpecificForceNormAsMeasurement();
-        assertEquals(stdFTriad1.getNorm(), stdFNorm1.getValue().doubleValue(),
-                0.0);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                stdFNorm1.getUnit());
-        final Acceleration stdFNorm2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(stdFTriad1.getNorm(), stdFNorm1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFNorm1.getUnit());
+        final Acceleration stdFNorm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceNormAsMeasurement(stdFNorm2);
         assertEquals(stdFNorm1, stdFNorm2);
 
         final double avgStdF = (stdFx + stdFy + stdFz) / 3.0;
-        assertEquals(avgStdF, estimator.getAverageStandardDeviationSpecificForce(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgStdF, estimator.getAverageStandardDeviationSpecificForce(), SMALL_ABSOLUTE_ERROR);
         final Acceleration avgStdF1 = estimator.getAverageStandardDeviationSpecificForceAsMeasurement();
-        assertEquals(avgStdF, avgStdF1.getValue().doubleValue(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgStdF, avgStdF1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgStdF1.getUnit());
-        final Acceleration avgStdF2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgStdF2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAverageStandardDeviationSpecificForceAsMeasurement(avgStdF2);
         assertEquals(avgStdF1, avgStdF2);
 
-        assertEquals(stdWx, estimator.getStandardDeviationAngularRateX(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdWx, estimator.getStandardDeviationAngularRateX(), SMALL_ABSOLUTE_ERROR);
         final AngularSpeed stdWx1 = estimator.getStandardDeviationAngularRateXAsMeasurement();
         assertEquals(stdWx, stdWx1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWx1.getUnit());
-        final AngularSpeed stdWx2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularRateXAsMeasurement(stdWx2);
         assertEquals(stdWx1, stdWx2);
 
-        assertEquals(stdWy, estimator.getStandardDeviationAngularRateY(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdWy, estimator.getStandardDeviationAngularRateY(), SMALL_ABSOLUTE_ERROR);
         final AngularSpeed stdWy1 = estimator.getStandardDeviationAngularRateYAsMeasurement();
         assertEquals(stdWy, stdWy1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWy1.getUnit());
-        final AngularSpeed stdWy2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularRateYAsMeasurement(stdWy2);
         assertEquals(stdWy1, stdWy2);
 
-        assertEquals(stdWz, estimator.getStandardDeviationAngularRateZ(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdWz, estimator.getStandardDeviationAngularRateZ(), SMALL_ABSOLUTE_ERROR);
         final AngularSpeed stdWz1 = estimator.getStandardDeviationAngularRateZAsMeasurement();
         assertEquals(stdWz, stdWz1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWz1.getUnit());
-        final AngularSpeed stdWz2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularRateZAsMeasurement(stdWz2);
         assertEquals(stdWz1, stdWz2);
 
@@ -988,26 +886,20 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         estimator.getStandardDeviationAngularSpeedTriad(stdWTriad2);
         assertEquals(stdWTriad1, stdWTriad2);
 
-        assertEquals(stdWTriad1.getNorm(), estimator.getStandardDeviationAngularSpeedNorm(),
-                0.0);
+        assertEquals(stdWTriad1.getNorm(), estimator.getStandardDeviationAngularSpeedNorm(), 0.0);
         final AngularSpeed stdWNorm1 = estimator.getStandardDeviationAngularSpeedNormAsMeasurement();
-        assertEquals(stdWTriad1.getNorm(), stdWNorm1.getValue().doubleValue(),
-                0.0);
+        assertEquals(stdWTriad1.getNorm(), stdWNorm1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWNorm1.getUnit());
-        final AngularSpeed stdWNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularSpeedNormAsMeasurement(stdWNorm2);
         assertEquals(stdWNorm1, stdWNorm2);
 
         final double avgStdW = (stdWx + stdWy + stdWz) / 3.0;
-        assertEquals(avgStdW, estimator.getAverageStandardDeviationAngularSpeed(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgStdW, estimator.getAverageStandardDeviationAngularSpeed(), SMALL_ABSOLUTE_ERROR);
         final AngularSpeed avgStdW1 = estimator.getAverageStandardDeviationAngularSpeedAsMeasurement();
-        assertEquals(avgStdW, avgStdW1.getValue().doubleValue(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgStdW, avgStdW1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgStdW1.getUnit());
-        final AngularSpeed avgStdW2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgStdW2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAverageStandardDeviationAngularSpeedAsMeasurement(avgStdW2);
         assertEquals(avgStdW1, avgStdW2);
 
@@ -1043,40 +935,25 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final double rootPsdWy = Math.sqrt(psdWy);
         final double rootPsdWz = Math.sqrt(psdWz);
 
-        assertEquals(rootPsdFx, estimator.getSpecificForceRootPsdX(),
-                0.0);
-        assertEquals(rootPsdFy, estimator.getSpecificForceRootPsdY(),
-                0.0);
-        assertEquals(rootPsdFz, estimator.getSpecificForceRootPsdZ(),
-                0.0);
-        assertEquals(rootPsdWx, estimator.getAngularRateRootPsdX(),
-                0.0);
-        assertEquals(rootPsdWy, estimator.getAngularRateRootPsdY(),
-                0.0);
-        assertEquals(rootPsdWz, estimator.getAngularRateRootPsdZ(),
-                0.0);
+        assertEquals(rootPsdFx, estimator.getSpecificForceRootPsdX(), 0.0);
+        assertEquals(rootPsdFy, estimator.getSpecificForceRootPsdY(), 0.0);
+        assertEquals(rootPsdFz, estimator.getSpecificForceRootPsdZ(), 0.0);
+        assertEquals(rootPsdWx, estimator.getAngularRateRootPsdX(), 0.0);
+        assertEquals(rootPsdWy, estimator.getAngularRateRootPsdY(), 0.0);
+        assertEquals(rootPsdWz, estimator.getAngularRateRootPsdZ(), 0.0);
 
         final double avgPsdF = (psdFx + psdFy + psdFz) / 3.0;
         final double avgPsdW = (psdWx + psdWy + psdWz) / 3.0;
-        final double normRootPsdF = Math.sqrt(
-                rootPsdFx * rootPsdFx + rootPsdFy * rootPsdFy +
-                        rootPsdFz * rootPsdFz);
-        final double normRootPsdW = Math.sqrt(
-                rootPsdWx * rootPsdWx + rootPsdWy * rootPsdWy +
-                        rootPsdWz * rootPsdWz);
+        final double normRootPsdF = Math.sqrt(rootPsdFx * rootPsdFx + rootPsdFy * rootPsdFy + rootPsdFz * rootPsdFz);
+        final double normRootPsdW = Math.sqrt(rootPsdWx * rootPsdWx + rootPsdWy * rootPsdWy + rootPsdWz * rootPsdWz);
 
-        assertEquals(avgPsdF, estimator.getAvgSpecificForceNoisePsd(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(normRootPsdF, estimator.getSpecificForceNoiseRootPsdNorm(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(estimator.getSpecificForceNoiseRootPsdNorm(),
-                estimator.getAccelerometerBaseNoiseLevelRootPsd(), 0.0);
-        assertEquals(avgPsdW, estimator.getAvgAngularRateNoisePsd(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(normRootPsdW, estimator.getAngularRateNoiseRootPsdNorm(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(estimator.getAngularRateNoiseRootPsdNorm(),
-                estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
+        assertEquals(avgPsdF, estimator.getAvgSpecificForceNoisePsd(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(normRootPsdF, estimator.getSpecificForceNoiseRootPsdNorm(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(estimator.getSpecificForceNoiseRootPsdNorm(), estimator.getAccelerometerBaseNoiseLevelRootPsd(),
+                0.0);
+        assertEquals(avgPsdW, estimator.getAvgAngularRateNoisePsd(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(normRootPsdW, estimator.getAngularRateNoiseRootPsdNorm(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(estimator.getAngularRateNoiseRootPsdNorm(), estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
 
         assertEquals(rootPsdFx, accelNoiseRootPSD, ABSOLUTE_ERROR);
         assertEquals(rootPsdFy, accelNoiseRootPSD, ABSOLUTE_ERROR);
@@ -1087,12 +964,10 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(rootPsdWz, gyroNoiseRootPSD, ABSOLUTE_ERROR);
 
         final double accelNoisePsd = accelNoiseRootPSD * accelNoiseRootPSD;
-        assertEquals(estimator.getAvgSpecificForceNoisePsd(),
-                accelNoisePsd, ABSOLUTE_ERROR);
+        assertEquals(accelNoisePsd, estimator.getAvgSpecificForceNoisePsd(), ABSOLUTE_ERROR);
 
         final double gyroNoisePsd = gyroNoiseRootPSD * gyroNoiseRootPSD;
-        assertEquals(estimator.getAvgAngularRateNoisePsd(),
-                gyroNoisePsd, ABSOLUTE_ERROR);
+        assertEquals(gyroNoisePsd, estimator.getAvgAngularRateNoisePsd(), ABSOLUTE_ERROR);
 
         // reset
         assertTrue(estimator.reset());
@@ -1101,12 +976,11 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertNull(estimator.getLastBodyKinematics());
         assertFalse(estimator.getLastBodyKinematics(null));
         assertFalse(estimator.isRunning());
-        assertEquals(mReset, 1);
+        assertEquals(1, mReset);
     }
 
     @Test
-    public void testAddBodyKinematicsAndReset2()
-            throws WrongSizeException, LockedException {
+    public void testAddBodyKinematicsAndReset2() throws WrongSizeException, LockedException {
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
         final Matrix ma = generateMa();
@@ -1117,32 +991,28 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final AccumulatedBodyKinematicsNoiseEstimator estimator =
-                new AccumulatedBodyKinematicsNoiseEstimator(this);
+        final AccumulatedBodyKinematicsNoiseEstimator estimator = new AccumulatedBodyKinematicsNoiseEstimator(
+                this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mBodyKinematicsAdded, 0);
-        assertEquals(mReset, 0);
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mBodyKinematicsAdded);
+        assertEquals(0, mReset);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getLastBodyKinematics());
         assertFalse(estimator.getLastBodyKinematics(null));
         assertFalse(estimator.isRunning());
@@ -1165,12 +1035,11 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         double varWz = 0.0;
         for (int i = 0, j = 1; i < N_SAMPLES; i++, j++) {
             if (estimator.getLastBodyKinematics(lastKinematics)) {
-                assertEquals(estimator.getLastBodyKinematics(), lastKinematics);
+                assertEquals(lastKinematics, estimator.getLastBodyKinematics());
                 assertEquals(lastKinematics, kinematics);
             }
 
-            BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                    errors, random, kinematics);
+            BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
 
             final double fxi = kinematics.getFx();
             final double fyi = kinematics.getFy();
@@ -1179,17 +1048,13 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
             final double wyi = kinematics.getAngularRateY();
             final double wzi = kinematics.getAngularRateZ();
 
-            estimator.addBodyKinematics(
-                    kinematics.getSpecificForceX(),
-                    kinematics.getSpecificForceY(),
-                    kinematics.getSpecificForceZ(),
-                    kinematics.getAngularSpeedX(),
-                    kinematics.getAngularSpeedY(),
+            estimator.addBodyKinematics(kinematics.getSpecificForceX(), kinematics.getSpecificForceY(),
+                    kinematics.getSpecificForceZ(), kinematics.getAngularSpeedX(), kinematics.getAngularSpeedY(),
                     kinematics.getAngularSpeedZ());
 
             assertTrue(estimator.getLastBodyKinematics(lastKinematics));
             assertEquals(lastKinematics, kinematics);
-            assertEquals(estimator.getNumberOfProcessedSamples(), i + 1);
+            assertEquals(i + 1, estimator.getNumberOfProcessedSamples());
             assertFalse(estimator.isRunning());
 
             avgFx = avgFx * (double) i / (double) j + fxi / j;
@@ -1225,11 +1090,11 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
             varWz = varWz * (double) i / (double) j + diff2 / j;
         }
 
-        assertEquals(estimator.getNumberOfProcessedSamples(), N_SAMPLES);
+        assertEquals(N_SAMPLES, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
-        assertEquals(mStart, 1);
-        assertEquals(mBodyKinematicsAdded, N_SAMPLES);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(N_SAMPLES, mBodyKinematicsAdded);
+        assertEquals(0, mReset);
 
         final double avgFxB = estimator.getAvgSpecificForceX();
         final double avgFyB = estimator.getAvgSpecificForceY();
@@ -1255,8 +1120,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(avgWzB, omegaZ, LARGE_ABSOLUTE_ERROR);
 
         final Acceleration avgFx1 = estimator.getAvgSpecificForceXAsMeasurement();
-        final Acceleration avgFx2 = new Acceleration(1.0,
-                AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFx2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceXAsMeasurement(avgFx2);
 
         assertEquals(avgFx, avgFx1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
@@ -1264,8 +1128,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(avgFx1, avgFx2);
 
         final Acceleration avgFy1 = estimator.getAvgSpecificForceYAsMeasurement();
-        final Acceleration avgFy2 = new Acceleration(1.0,
-                AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFy2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceYAsMeasurement(avgFy2);
 
         assertEquals(avgFy, avgFy1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
@@ -1273,8 +1136,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(avgFy1, avgFy2);
 
         final Acceleration avgFz1 = estimator.getAvgSpecificForceZAsMeasurement();
-        final Acceleration avgFz2 = new Acceleration(1.0,
-                AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceZAsMeasurement(avgFz2);
 
         assertEquals(avgFz, avgFz1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
@@ -1289,38 +1151,32 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final AccelerationTriad avgFTriad2 = new AccelerationTriad();
         estimator.getAvgSpecificForceAsTriad(avgFTriad2);
         assertEquals(avgFTriad1, avgFTriad2);
-        assertEquals(avgFTriad1.getNorm(), estimator.getAvgSpecificForceNorm(),
-                0.0);
+        assertEquals(avgFTriad1.getNorm(), estimator.getAvgSpecificForceNorm(), 0.0);
         final Acceleration avgFNorm1 = estimator.getAvgSpecificForceNormAsMeasurement();
-        assertEquals(estimator.getAvgSpecificForceNorm(),
-                avgFNorm1.getValue().doubleValue(), 0.0);
+        assertEquals(avgFNorm1.getValue().doubleValue(), estimator.getAvgSpecificForceNorm(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgFNorm1.getUnit());
-        final Acceleration avgFNorm2 = new Acceleration(1.0,
-                AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFNorm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceNormAsMeasurement(avgFNorm2);
         assertEquals(avgFNorm1, avgFNorm2);
 
         final AngularSpeed avgWx1 = estimator.getAvgAngularRateXAsMeasurement();
         assertEquals(avgWx, avgWx1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWx1.getUnit());
-        final AngularSpeed avgWx2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgWx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgAngularRateXAsMeasurement(avgWx2);
         assertEquals(avgWx1, avgWx2);
 
         final AngularSpeed avgWy1 = estimator.getAvgAngularRateYAsMeasurement();
         assertEquals(avgWy, avgWy1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWy1.getUnit());
-        final AngularSpeed avgWy2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgWy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgAngularRateYAsMeasurement(avgWy2);
         assertEquals(avgWy1, avgWy2);
 
         final AngularSpeed avgWz1 = estimator.getAvgAngularRateZAsMeasurement();
         assertEquals(avgWz, avgWz1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWz1.getUnit());
-        final AngularSpeed avgWz2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgWz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgAngularRateZAsMeasurement(avgWz2);
         assertEquals(avgWz1, avgWz2);
 
@@ -1333,14 +1189,11 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         estimator.getAvgAngularRateTriad(avgWTriad2);
         assertEquals(avgWTriad1, avgWTriad2);
 
-        assertEquals(avgWTriad1.getNorm(), estimator.getAvgAngularRateNorm(),
-                0.0);
+        assertEquals(avgWTriad1.getNorm(), estimator.getAvgAngularRateNorm(), 0.0);
         final AngularSpeed avgWNorm1 = estimator.getAvgAngularRateNormAsMeasurement();
-        assertEquals(estimator.getAvgAngularRateNorm(),
-                avgWNorm1.getValue().doubleValue(), 0.0);
+        assertEquals(estimator.getAvgAngularRateNorm(), avgWNorm1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWNorm1.getUnit());
-        final AngularSpeed avgWNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed avgWNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getAvgAngularRateNormAsMeasurement(avgWNorm2);
         assertEquals(avgWNorm1, avgWNorm2);
 
@@ -1348,28 +1201,19 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(avgFx, avgKinematics1.getFx(), SMALL_ABSOLUTE_ERROR);
         assertEquals(avgFy, avgKinematics1.getFy(), SMALL_ABSOLUTE_ERROR);
         assertEquals(avgFz, avgKinematics1.getFz(), SMALL_ABSOLUTE_ERROR);
-        assertEquals(avgWx, avgKinematics1.getAngularRateX(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(avgWy, avgKinematics1.getAngularRateY(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(avgWz, avgKinematics1.getAngularRateZ(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgWx, avgKinematics1.getAngularRateX(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgWy, avgKinematics1.getAngularRateY(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgWz, avgKinematics1.getAngularRateZ(), SMALL_ABSOLUTE_ERROR);
         final BodyKinematics avgKinematics2 = new BodyKinematics();
         estimator.getAvgBodyKinematics(avgKinematics2);
         assertEquals(avgKinematics1, avgKinematics2);
 
-        assertEquals(varFx, estimator.getVarianceSpecificForceX(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(varFy, estimator.getVarianceSpecificForceY(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(varFz, estimator.getVarianceSpecificForceZ(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(varWx, estimator.getVarianceAngularRateX(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(varWy, estimator.getVarianceAngularRateY(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(varWz, estimator.getVarianceAngularRateZ(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(varFx, estimator.getVarianceSpecificForceX(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(varFy, estimator.getVarianceSpecificForceY(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(varFz, estimator.getVarianceSpecificForceZ(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(varWx, estimator.getVarianceAngularRateX(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(varWy, estimator.getVarianceAngularRateY(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(varWz, estimator.getVarianceAngularRateZ(), SMALL_ABSOLUTE_ERROR);
 
         final double stdFx = Math.sqrt(varFx);
         final double stdFy = Math.sqrt(varFy);
@@ -1378,36 +1222,27 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final double stdWy = Math.sqrt(varWy);
         final double stdWz = Math.sqrt(varWz);
 
-        assertEquals(stdFx, estimator.getStandardDeviationSpecificForceX(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdFx, estimator.getStandardDeviationSpecificForceX(), SMALL_ABSOLUTE_ERROR);
         final Acceleration stdFx1 = estimator.getStandardDeviationSpecificForceXAsMeasurement();
         assertEquals(stdFx, stdFx1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                stdFx1.getUnit());
-        final Acceleration stdFx2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFx1.getUnit());
+        final Acceleration stdFx2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceXAsMeasurement(stdFx2);
         assertEquals(stdFx1, stdFx2);
 
-        assertEquals(stdFy, estimator.getStandardDeviationSpecificForceY(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdFy, estimator.getStandardDeviationSpecificForceY(), SMALL_ABSOLUTE_ERROR);
         final Acceleration stdFy1 = estimator.getStandardDeviationSpecificForceYAsMeasurement();
         assertEquals(stdFy, stdFy1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                stdFy1.getUnit());
-        final Acceleration stdFy2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFy1.getUnit());
+        final Acceleration stdFy2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceYAsMeasurement(stdFy2);
         assertEquals(stdFy1, stdFy2);
 
-        assertEquals(stdFz, estimator.getStandardDeviationSpecificForceZ(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdFz, estimator.getStandardDeviationSpecificForceZ(), SMALL_ABSOLUTE_ERROR);
         final Acceleration stdFz1 = estimator.getStandardDeviationSpecificForceZAsMeasurement();
         assertEquals(stdFz, stdFz1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                stdFz1.getUnit());
-        final Acceleration stdFz2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFz1.getUnit());
+        final Acceleration stdFz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceZAsMeasurement(stdFz2);
         assertEquals(stdFz1, stdFz2);
 
@@ -1415,65 +1250,50 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(stdFx, stdFTriad1.getValueX(), SMALL_ABSOLUTE_ERROR);
         assertEquals(stdFy, stdFTriad1.getValueY(), SMALL_ABSOLUTE_ERROR);
         assertEquals(stdFz, stdFTriad1.getValueZ(), SMALL_ABSOLUTE_ERROR);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                stdFTriad1.getUnit());
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFTriad1.getUnit());
 
         final AccelerationTriad stdFTriad2 = new AccelerationTriad();
         estimator.getStandardDeviationSpecificForceTriad(stdFTriad2);
         assertEquals(stdFTriad1, stdFTriad2);
 
-        assertEquals(stdFTriad1.getNorm(),
-                estimator.getStandardDeviationSpecificForceNorm(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdFTriad1.getNorm(), estimator.getStandardDeviationSpecificForceNorm(), SMALL_ABSOLUTE_ERROR);
         final Acceleration stdFNorm1 = estimator.getStandardDeviationSpecificForceNormAsMeasurement();
-        assertEquals(stdFTriad1.getNorm(), stdFNorm1.getValue().doubleValue(),
-                0.0);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                stdFNorm1.getUnit());
-        final Acceleration stdFNorm2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(stdFTriad1.getNorm(), stdFNorm1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFNorm1.getUnit());
+        final Acceleration stdFNorm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceNormAsMeasurement(stdFNorm2);
         assertEquals(stdFNorm1, stdFNorm2);
 
         final double avgStdF = (stdFx + stdFy + stdFz) / 3.0;
-        assertEquals(avgStdF, estimator.getAverageStandardDeviationSpecificForce(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgStdF, estimator.getAverageStandardDeviationSpecificForce(), SMALL_ABSOLUTE_ERROR);
         final Acceleration avgStdF1 = estimator.getAverageStandardDeviationSpecificForceAsMeasurement();
-        assertEquals(avgStdF, avgStdF1.getValue().doubleValue(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgStdF, avgStdF1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgStdF1.getUnit());
-        final Acceleration avgStdF2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgStdF2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAverageStandardDeviationSpecificForceAsMeasurement(avgStdF2);
         assertEquals(avgStdF1, avgStdF2);
 
-        assertEquals(stdWx, estimator.getStandardDeviationAngularRateX(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdWx, estimator.getStandardDeviationAngularRateX(), SMALL_ABSOLUTE_ERROR);
         final AngularSpeed stdWx1 = estimator.getStandardDeviationAngularRateXAsMeasurement();
         assertEquals(stdWx, stdWx1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWx1.getUnit());
-        final AngularSpeed stdWx2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularRateXAsMeasurement(stdWx2);
         assertEquals(stdWx1, stdWx2);
 
-        assertEquals(stdWy, estimator.getStandardDeviationAngularRateY(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdWy, estimator.getStandardDeviationAngularRateY(), SMALL_ABSOLUTE_ERROR);
         final AngularSpeed stdWy1 = estimator.getStandardDeviationAngularRateYAsMeasurement();
         assertEquals(stdWy, stdWy1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWy1.getUnit());
-        final AngularSpeed stdWy2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularRateYAsMeasurement(stdWy2);
         assertEquals(stdWy1, stdWy2);
 
-        assertEquals(stdWz, estimator.getStandardDeviationAngularRateZ(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdWz, estimator.getStandardDeviationAngularRateZ(), SMALL_ABSOLUTE_ERROR);
         final AngularSpeed stdWz1 = estimator.getStandardDeviationAngularRateZAsMeasurement();
         assertEquals(stdWz, stdWz1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWz1.getUnit());
-        final AngularSpeed stdWz2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularRateZAsMeasurement(stdWz2);
         assertEquals(stdWz1, stdWz2);
 
@@ -1486,26 +1306,20 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         estimator.getStandardDeviationAngularSpeedTriad(stdWTriad2);
         assertEquals(stdWTriad1, stdWTriad2);
 
-        assertEquals(stdWTriad1.getNorm(), estimator.getStandardDeviationAngularSpeedNorm(),
-                0.0);
+        assertEquals(stdWTriad1.getNorm(), estimator.getStandardDeviationAngularSpeedNorm(), 0.0);
         final AngularSpeed stdWNorm1 = estimator.getStandardDeviationAngularSpeedNormAsMeasurement();
-        assertEquals(stdWTriad1.getNorm(), stdWNorm1.getValue().doubleValue(),
-                0.0);
+        assertEquals(stdWTriad1.getNorm(), stdWNorm1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWNorm1.getUnit());
-        final AngularSpeed stdWNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularSpeedNormAsMeasurement(stdWNorm2);
         assertEquals(stdWNorm1, stdWNorm2);
 
         final double avgStdW = (stdWx + stdWy + stdWz) / 3.0;
-        assertEquals(avgStdW, estimator.getAverageStandardDeviationAngularSpeed(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgStdW, estimator.getAverageStandardDeviationAngularSpeed(), SMALL_ABSOLUTE_ERROR);
         final AngularSpeed avgStdW1 = estimator.getAverageStandardDeviationAngularSpeedAsMeasurement();
-        assertEquals(avgStdW, avgStdW1.getValue().doubleValue(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgStdW, avgStdW1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgStdW1.getUnit());
-        final AngularSpeed avgStdW2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgStdW2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAverageStandardDeviationAngularSpeedAsMeasurement(avgStdW2);
         assertEquals(avgStdW1, avgStdW2);
 
@@ -1541,40 +1355,25 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final double rootPsdWy = Math.sqrt(psdWy);
         final double rootPsdWz = Math.sqrt(psdWz);
 
-        assertEquals(rootPsdFx, estimator.getSpecificForceRootPsdX(),
-                0.0);
-        assertEquals(rootPsdFy, estimator.getSpecificForceRootPsdY(),
-                0.0);
-        assertEquals(rootPsdFz, estimator.getSpecificForceRootPsdZ(),
-                0.0);
-        assertEquals(rootPsdWx, estimator.getAngularRateRootPsdX(),
-                0.0);
-        assertEquals(rootPsdWy, estimator.getAngularRateRootPsdY(),
-                0.0);
-        assertEquals(rootPsdWz, estimator.getAngularRateRootPsdZ(),
-                0.0);
+        assertEquals(rootPsdFx, estimator.getSpecificForceRootPsdX(), 0.0);
+        assertEquals(rootPsdFy, estimator.getSpecificForceRootPsdY(), 0.0);
+        assertEquals(rootPsdFz, estimator.getSpecificForceRootPsdZ(), 0.0);
+        assertEquals(rootPsdWx, estimator.getAngularRateRootPsdX(), 0.0);
+        assertEquals(rootPsdWy, estimator.getAngularRateRootPsdY(), 0.0);
+        assertEquals(rootPsdWz, estimator.getAngularRateRootPsdZ(), 0.0);
 
         final double avgPsdF = (psdFx + psdFy + psdFz) / 3.0;
         final double avgPsdW = (psdWx + psdWy + psdWz) / 3.0;
-        final double normRootPsdF = Math.sqrt(
-                rootPsdFx * rootPsdFx + rootPsdFy * rootPsdFy +
-                        rootPsdFz * rootPsdFz);
-        final double normRootPsdW = Math.sqrt(
-                rootPsdWx * rootPsdWx + rootPsdWy * rootPsdWy +
-                        rootPsdWz * rootPsdWz);
+        final double normRootPsdF = Math.sqrt(rootPsdFx * rootPsdFx + rootPsdFy * rootPsdFy + rootPsdFz * rootPsdFz);
+        final double normRootPsdW = Math.sqrt(rootPsdWx * rootPsdWx + rootPsdWy * rootPsdWy + rootPsdWz * rootPsdWz);
 
-        assertEquals(avgPsdF, estimator.getAvgSpecificForceNoisePsd(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(normRootPsdF, estimator.getSpecificForceNoiseRootPsdNorm(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(estimator.getSpecificForceNoiseRootPsdNorm(),
-                estimator.getAccelerometerBaseNoiseLevelRootPsd(), 0.0);
-        assertEquals(avgPsdW, estimator.getAvgAngularRateNoisePsd(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(normRootPsdW, estimator.getAngularRateNoiseRootPsdNorm(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(estimator.getAngularRateNoiseRootPsdNorm(),
-                estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
+        assertEquals(avgPsdF, estimator.getAvgSpecificForceNoisePsd(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(normRootPsdF, estimator.getSpecificForceNoiseRootPsdNorm(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(estimator.getSpecificForceNoiseRootPsdNorm(), estimator.getAccelerometerBaseNoiseLevelRootPsd(),
+                0.0);
+        assertEquals(avgPsdW, estimator.getAvgAngularRateNoisePsd(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(normRootPsdW, estimator.getAngularRateNoiseRootPsdNorm(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(estimator.getAngularRateNoiseRootPsdNorm(), estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
 
         assertEquals(rootPsdFx, accelNoiseRootPSD, ABSOLUTE_ERROR);
         assertEquals(rootPsdFy, accelNoiseRootPSD, ABSOLUTE_ERROR);
@@ -1585,12 +1384,10 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(rootPsdWz, gyroNoiseRootPSD, ABSOLUTE_ERROR);
 
         final double accelNoisePsd = accelNoiseRootPSD * accelNoiseRootPSD;
-        assertEquals(estimator.getAvgSpecificForceNoisePsd(),
-                accelNoisePsd, ABSOLUTE_ERROR);
+        assertEquals(estimator.getAvgSpecificForceNoisePsd(), accelNoisePsd, ABSOLUTE_ERROR);
 
         final double gyroNoisePsd = gyroNoiseRootPSD * gyroNoiseRootPSD;
-        assertEquals(estimator.getAvgAngularRateNoisePsd(),
-                gyroNoisePsd, ABSOLUTE_ERROR);
+        assertEquals(estimator.getAvgAngularRateNoisePsd(), gyroNoisePsd, ABSOLUTE_ERROR);
 
         // reset
         assertTrue(estimator.reset());
@@ -1599,12 +1396,11 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertNull(estimator.getLastBodyKinematics());
         assertFalse(estimator.getLastBodyKinematics(null));
         assertFalse(estimator.isRunning());
-        assertEquals(mReset, 1);
+        assertEquals(1, mReset);
     }
 
     @Test
-    public void testAddBodyKinematicsAndReset3()
-            throws WrongSizeException, LockedException {
+    public void testAddBodyKinematicsAndReset3() throws WrongSizeException, LockedException {
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             final Matrix ba = generateBa();
@@ -1617,39 +1413,35 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
             final double accelQuantLevel = 0.0;
             final double gyroQuantLevel = 0.0;
 
-            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                    gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+            final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                    accelQuantLevel, gyroQuantLevel);
 
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
-            final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                    MAX_ACCELEROMETER_VALUE);
-            final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                    MAX_ACCELEROMETER_VALUE);
-            final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                    MAX_ACCELEROMETER_VALUE);
+            final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+            final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+            final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
             final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
             final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
             final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-            final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                    omegaX, omegaY, omegaZ);
+            final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-            final AccumulatedBodyKinematicsNoiseEstimator estimator =
-                    new AccumulatedBodyKinematicsNoiseEstimator(this);
+            final AccumulatedBodyKinematicsNoiseEstimator estimator = new AccumulatedBodyKinematicsNoiseEstimator(
+                    this);
 
             reset();
-            assertEquals(mStart, 0);
-            assertEquals(mBodyKinematicsAdded, 0);
-            assertEquals(mReset, 0);
-            assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+            assertEquals(0, mStart);
+            assertEquals(0, mBodyKinematicsAdded);
+            assertEquals(0, mReset);
+            assertEquals(0, estimator.getNumberOfProcessedSamples());
             assertNull(estimator.getLastBodyKinematics());
             assertFalse(estimator.getLastBodyKinematics(null));
             assertFalse(estimator.isRunning());
 
             final BodyKinematics kinematics = new BodyKinematics();
             final double timeInterval = estimator.getTimeInterval();
-            BodyKinematics lastKinematics = new BodyKinematics();
+            final BodyKinematics lastKinematics = new BodyKinematics();
 
             double avgFx = 0.0;
             double avgFy = 0.0;
@@ -1665,12 +1457,11 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
             double varWz = 0.0;
             for (int i = 0, j = 1; i < N_SAMPLES; i++, j++) {
                 if (estimator.getLastBodyKinematics(lastKinematics)) {
-                    assertEquals(estimator.getLastBodyKinematics(), lastKinematics);
+                    assertEquals(lastKinematics, estimator.getLastBodyKinematics());
                     assertEquals(lastKinematics, kinematics);
                 }
 
-                BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                        errors, random, kinematics);
+                BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
 
                 final double fxi = kinematics.getFx();
                 final double fyi = kinematics.getFy();
@@ -1679,13 +1470,11 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
                 final double wyi = kinematics.getAngularRateY();
                 final double wzi = kinematics.getAngularRateZ();
 
-                estimator.addBodyKinematics(
-                        kinematics.getSpecificForceTriad(),
-                        kinematics.getAngularRateTriad());
+                estimator.addBodyKinematics(kinematics.getSpecificForceTriad(), kinematics.getAngularRateTriad());
 
                 assertTrue(estimator.getLastBodyKinematics(lastKinematics));
                 assertEquals(lastKinematics, kinematics);
-                assertEquals(estimator.getNumberOfProcessedSamples(), i + 1);
+                assertEquals(i + 1, estimator.getNumberOfProcessedSamples());
                 assertFalse(estimator.isRunning());
 
                 avgFx = avgFx * (double) i / (double) j + fxi / j;
@@ -1721,11 +1510,11 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
                 varWz = varWz * (double) i / (double) j + diff2 / j;
             }
 
-            assertEquals(estimator.getNumberOfProcessedSamples(), N_SAMPLES);
+            assertEquals(N_SAMPLES, estimator.getNumberOfProcessedSamples());
             assertFalse(estimator.isRunning());
-            assertEquals(mStart, 1);
-            assertEquals(mBodyKinematicsAdded, N_SAMPLES);
-            assertEquals(mReset, 0);
+            assertEquals(1, mStart);
+            assertEquals(N_SAMPLES, mBodyKinematicsAdded);
+            assertEquals(0, mReset);
 
             final double avgFxB = estimator.getAvgSpecificForceX();
             final double avgFyB = estimator.getAvgSpecificForceY();
@@ -1769,8 +1558,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
             assertEquals(avgWzB, omegaZ, LARGE_ABSOLUTE_ERROR);
 
             final Acceleration avgFx1 = estimator.getAvgSpecificForceXAsMeasurement();
-            final Acceleration avgFx2 = new Acceleration(1.0,
-                    AccelerationUnit.FEET_PER_SQUARED_SECOND);
+            final Acceleration avgFx2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
             estimator.getAvgSpecificForceXAsMeasurement(avgFx2);
 
             assertEquals(avgFx, avgFx1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
@@ -1778,8 +1566,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
             assertEquals(avgFx1, avgFx2);
 
             final Acceleration avgFy1 = estimator.getAvgSpecificForceYAsMeasurement();
-            final Acceleration avgFy2 = new Acceleration(1.0,
-                    AccelerationUnit.FEET_PER_SQUARED_SECOND);
+            final Acceleration avgFy2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
             estimator.getAvgSpecificForceYAsMeasurement(avgFy2);
 
             assertEquals(avgFy, avgFy1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
@@ -1787,8 +1574,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
             assertEquals(avgFy1, avgFy2);
 
             final Acceleration avgFz1 = estimator.getAvgSpecificForceZAsMeasurement();
-            final Acceleration avgFz2 = new Acceleration(1.0,
-                    AccelerationUnit.FEET_PER_SQUARED_SECOND);
+            final Acceleration avgFz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
             estimator.getAvgSpecificForceZAsMeasurement(avgFz2);
 
             assertEquals(avgFz, avgFz1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
@@ -1803,38 +1589,32 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
             final AccelerationTriad avgFTriad2 = new AccelerationTriad();
             estimator.getAvgSpecificForceAsTriad(avgFTriad2);
             assertEquals(avgFTriad1, avgFTriad2);
-            assertEquals(avgFTriad1.getNorm(), estimator.getAvgSpecificForceNorm(),
-                    0.0);
+            assertEquals(avgFTriad1.getNorm(), estimator.getAvgSpecificForceNorm(), 0.0);
             final Acceleration avgFNorm1 = estimator.getAvgSpecificForceNormAsMeasurement();
-            assertEquals(estimator.getAvgSpecificForceNorm(),
-                    avgFNorm1.getValue().doubleValue(), 0.0);
+            assertEquals(estimator.getAvgSpecificForceNorm(), avgFNorm1.getValue().doubleValue(), 0.0);
             assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgFNorm1.getUnit());
-            final Acceleration avgFNorm2 = new Acceleration(1.0,
-                    AccelerationUnit.FEET_PER_SQUARED_SECOND);
+            final Acceleration avgFNorm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
             estimator.getAvgSpecificForceNormAsMeasurement(avgFNorm2);
             assertEquals(avgFNorm1, avgFNorm2);
 
             final AngularSpeed avgWx1 = estimator.getAvgAngularRateXAsMeasurement();
             assertEquals(avgWx, avgWx1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
             assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWx1.getUnit());
-            final AngularSpeed avgWx2 = new AngularSpeed(
-                    1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+            final AngularSpeed avgWx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
             estimator.getAvgAngularRateXAsMeasurement(avgWx2);
             assertEquals(avgWx1, avgWx2);
 
             final AngularSpeed avgWy1 = estimator.getAvgAngularRateYAsMeasurement();
             assertEquals(avgWy, avgWy1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
             assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWy1.getUnit());
-            final AngularSpeed avgWy2 = new AngularSpeed(
-                    1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+            final AngularSpeed avgWy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
             estimator.getAvgAngularRateYAsMeasurement(avgWy2);
             assertEquals(avgWy1, avgWy2);
 
             final AngularSpeed avgWz1 = estimator.getAvgAngularRateZAsMeasurement();
             assertEquals(avgWz, avgWz1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
             assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWz1.getUnit());
-            final AngularSpeed avgWz2 = new AngularSpeed(
-                    1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+            final AngularSpeed avgWz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
             estimator.getAvgAngularRateZAsMeasurement(avgWz2);
             assertEquals(avgWz1, avgWz2);
 
@@ -1847,14 +1627,11 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
             estimator.getAvgAngularRateTriad(avgWTriad2);
             assertEquals(avgWTriad1, avgWTriad2);
 
-            assertEquals(avgWTriad1.getNorm(), estimator.getAvgAngularRateNorm(),
-                    0.0);
+            assertEquals(avgWTriad1.getNorm(), estimator.getAvgAngularRateNorm(), 0.0);
             final AngularSpeed avgWNorm1 = estimator.getAvgAngularRateNormAsMeasurement();
-            assertEquals(estimator.getAvgAngularRateNorm(),
-                    avgWNorm1.getValue().doubleValue(), 0.0);
+            assertEquals(avgWNorm1.getValue().doubleValue(), estimator.getAvgAngularRateNorm(), 0.0);
             assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWNorm1.getUnit());
-            final AngularSpeed avgWNorm2 = new AngularSpeed(
-                    1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+            final AngularSpeed avgWNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
             estimator.getAvgAngularRateNormAsMeasurement(avgWNorm2);
             assertEquals(avgWNorm1, avgWNorm2);
 
@@ -1862,28 +1639,19 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
             assertEquals(avgFx, avgKinematics1.getFx(), SMALL_ABSOLUTE_ERROR);
             assertEquals(avgFy, avgKinematics1.getFy(), SMALL_ABSOLUTE_ERROR);
             assertEquals(avgFz, avgKinematics1.getFz(), SMALL_ABSOLUTE_ERROR);
-            assertEquals(avgWx, avgKinematics1.getAngularRateX(),
-                    SMALL_ABSOLUTE_ERROR);
-            assertEquals(avgWy, avgKinematics1.getAngularRateY(),
-                    SMALL_ABSOLUTE_ERROR);
-            assertEquals(avgWz, avgKinematics1.getAngularRateZ(),
-                    SMALL_ABSOLUTE_ERROR);
+            assertEquals(avgWx, avgKinematics1.getAngularRateX(), SMALL_ABSOLUTE_ERROR);
+            assertEquals(avgWy, avgKinematics1.getAngularRateY(), SMALL_ABSOLUTE_ERROR);
+            assertEquals(avgWz, avgKinematics1.getAngularRateZ(), SMALL_ABSOLUTE_ERROR);
             final BodyKinematics avgKinematics2 = new BodyKinematics();
             estimator.getAvgBodyKinematics(avgKinematics2);
             assertEquals(avgKinematics1, avgKinematics2);
 
-            assertEquals(varFx, estimator.getVarianceSpecificForceX(),
-                    SMALL_ABSOLUTE_ERROR);
-            assertEquals(varFy, estimator.getVarianceSpecificForceY(),
-                    SMALL_ABSOLUTE_ERROR);
-            assertEquals(varFz, estimator.getVarianceSpecificForceZ(),
-                    SMALL_ABSOLUTE_ERROR);
-            assertEquals(varWx, estimator.getVarianceAngularRateX(),
-                    SMALL_ABSOLUTE_ERROR);
-            assertEquals(varWy, estimator.getVarianceAngularRateY(),
-                    SMALL_ABSOLUTE_ERROR);
-            assertEquals(varWz, estimator.getVarianceAngularRateZ(),
-                    SMALL_ABSOLUTE_ERROR);
+            assertEquals(varFx, estimator.getVarianceSpecificForceX(), SMALL_ABSOLUTE_ERROR);
+            assertEquals(varFy, estimator.getVarianceSpecificForceY(), SMALL_ABSOLUTE_ERROR);
+            assertEquals(varFz, estimator.getVarianceSpecificForceZ(), SMALL_ABSOLUTE_ERROR);
+            assertEquals(varWx, estimator.getVarianceAngularRateX(), SMALL_ABSOLUTE_ERROR);
+            assertEquals(varWy, estimator.getVarianceAngularRateY(), SMALL_ABSOLUTE_ERROR);
+            assertEquals(varWz, estimator.getVarianceAngularRateZ(), SMALL_ABSOLUTE_ERROR);
 
             final double stdFx = Math.sqrt(varFx);
             final double stdFy = Math.sqrt(varFy);
@@ -1892,36 +1660,27 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
             final double stdWy = Math.sqrt(varWy);
             final double stdWz = Math.sqrt(varWz);
 
-            assertEquals(stdFx, estimator.getStandardDeviationSpecificForceX(),
-                    SMALL_ABSOLUTE_ERROR);
+            assertEquals(stdFx, estimator.getStandardDeviationSpecificForceX(), SMALL_ABSOLUTE_ERROR);
             final Acceleration stdFx1 = estimator.getStandardDeviationSpecificForceXAsMeasurement();
             assertEquals(stdFx, stdFx1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
-            assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                    stdFx1.getUnit());
-            final Acceleration stdFx2 = new Acceleration(
-                    1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+            assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFx1.getUnit());
+            final Acceleration stdFx2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
             estimator.getStandardDeviationSpecificForceXAsMeasurement(stdFx2);
             assertEquals(stdFx1, stdFx2);
 
-            assertEquals(stdFy, estimator.getStandardDeviationSpecificForceY(),
-                    SMALL_ABSOLUTE_ERROR);
+            assertEquals(stdFy, estimator.getStandardDeviationSpecificForceY(), SMALL_ABSOLUTE_ERROR);
             final Acceleration stdFy1 = estimator.getStandardDeviationSpecificForceYAsMeasurement();
             assertEquals(stdFy, stdFy1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
-            assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                    stdFy1.getUnit());
-            final Acceleration stdFy2 = new Acceleration(
-                    1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+            assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFy1.getUnit());
+            final Acceleration stdFy2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
             estimator.getStandardDeviationSpecificForceYAsMeasurement(stdFy2);
             assertEquals(stdFy1, stdFy2);
 
-            assertEquals(stdFz, estimator.getStandardDeviationSpecificForceZ(),
-                    SMALL_ABSOLUTE_ERROR);
+            assertEquals(stdFz, estimator.getStandardDeviationSpecificForceZ(), SMALL_ABSOLUTE_ERROR);
             final Acceleration stdFz1 = estimator.getStandardDeviationSpecificForceZAsMeasurement();
             assertEquals(stdFz, stdFz1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
-            assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                    stdFz1.getUnit());
-            final Acceleration stdFz2 = new Acceleration(
-                    1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+            assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFz1.getUnit());
+            final Acceleration stdFz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
             estimator.getStandardDeviationSpecificForceZAsMeasurement(stdFz2);
             assertEquals(stdFz1, stdFz2);
 
@@ -1929,65 +1688,50 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
             assertEquals(stdFx, stdFTriad1.getValueX(), SMALL_ABSOLUTE_ERROR);
             assertEquals(stdFy, stdFTriad1.getValueY(), SMALL_ABSOLUTE_ERROR);
             assertEquals(stdFz, stdFTriad1.getValueZ(), SMALL_ABSOLUTE_ERROR);
-            assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                    stdFTriad1.getUnit());
+            assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFTriad1.getUnit());
 
             final AccelerationTriad stdFTriad2 = new AccelerationTriad();
             estimator.getStandardDeviationSpecificForceTriad(stdFTriad2);
             assertEquals(stdFTriad1, stdFTriad2);
 
-            assertEquals(stdFTriad1.getNorm(),
-                    estimator.getStandardDeviationSpecificForceNorm(),
-                    SMALL_ABSOLUTE_ERROR);
+            assertEquals(stdFTriad1.getNorm(), estimator.getStandardDeviationSpecificForceNorm(), SMALL_ABSOLUTE_ERROR);
             final Acceleration stdFNorm1 = estimator.getStandardDeviationSpecificForceNormAsMeasurement();
-            assertEquals(stdFTriad1.getNorm(), stdFNorm1.getValue().doubleValue(),
-                    0.0);
-            assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                    stdFNorm1.getUnit());
-            final Acceleration stdFNorm2 = new Acceleration(
-                    1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+            assertEquals(stdFTriad1.getNorm(), stdFNorm1.getValue().doubleValue(), 0.0);
+            assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFNorm1.getUnit());
+            final Acceleration stdFNorm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
             estimator.getStandardDeviationSpecificForceNormAsMeasurement(stdFNorm2);
             assertEquals(stdFNorm1, stdFNorm2);
 
             final double avgStdF = (stdFx + stdFy + stdFz) / 3.0;
-            assertEquals(avgStdF, estimator.getAverageStandardDeviationSpecificForce(),
-                    SMALL_ABSOLUTE_ERROR);
+            assertEquals(avgStdF, estimator.getAverageStandardDeviationSpecificForce(), SMALL_ABSOLUTE_ERROR);
             final Acceleration avgStdF1 = estimator.getAverageStandardDeviationSpecificForceAsMeasurement();
-            assertEquals(avgStdF, avgStdF1.getValue().doubleValue(),
-                    SMALL_ABSOLUTE_ERROR);
+            assertEquals(avgStdF, avgStdF1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
             assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgStdF1.getUnit());
-            final Acceleration avgStdF2 = new Acceleration(
-                    1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+            final Acceleration avgStdF2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
             estimator.getAverageStandardDeviationSpecificForceAsMeasurement(avgStdF2);
             assertEquals(avgStdF1, avgStdF2);
 
-            assertEquals(stdWx, estimator.getStandardDeviationAngularRateX(),
-                    SMALL_ABSOLUTE_ERROR);
+            assertEquals(stdWx, estimator.getStandardDeviationAngularRateX(), SMALL_ABSOLUTE_ERROR);
             final AngularSpeed stdWx1 = estimator.getStandardDeviationAngularRateXAsMeasurement();
             assertEquals(stdWx, stdWx1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
             assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWx1.getUnit());
-            final AngularSpeed stdWx2 = new AngularSpeed(
-                    1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+            final AngularSpeed stdWx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
             estimator.getStandardDeviationAngularRateXAsMeasurement(stdWx2);
             assertEquals(stdWx1, stdWx2);
 
-            assertEquals(stdWy, estimator.getStandardDeviationAngularRateY(),
-                    SMALL_ABSOLUTE_ERROR);
+            assertEquals(stdWy, estimator.getStandardDeviationAngularRateY(), SMALL_ABSOLUTE_ERROR);
             final AngularSpeed stdWy1 = estimator.getStandardDeviationAngularRateYAsMeasurement();
             assertEquals(stdWy, stdWy1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
             assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWy1.getUnit());
-            final AngularSpeed stdWy2 = new AngularSpeed(
-                    1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+            final AngularSpeed stdWy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
             estimator.getStandardDeviationAngularRateYAsMeasurement(stdWy2);
             assertEquals(stdWy1, stdWy2);
 
-            assertEquals(stdWz, estimator.getStandardDeviationAngularRateZ(),
-                    SMALL_ABSOLUTE_ERROR);
+            assertEquals(stdWz, estimator.getStandardDeviationAngularRateZ(), SMALL_ABSOLUTE_ERROR);
             final AngularSpeed stdWz1 = estimator.getStandardDeviationAngularRateZAsMeasurement();
             assertEquals(stdWz, stdWz1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
             assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWz1.getUnit());
-            final AngularSpeed stdWz2 = new AngularSpeed(
-                    1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+            final AngularSpeed stdWz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
             estimator.getStandardDeviationAngularRateZAsMeasurement(stdWz2);
             assertEquals(stdWz1, stdWz2);
 
@@ -2000,26 +1744,20 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
             estimator.getStandardDeviationAngularSpeedTriad(stdWTriad2);
             assertEquals(stdWTriad1, stdWTriad2);
 
-            assertEquals(stdWTriad1.getNorm(), estimator.getStandardDeviationAngularSpeedNorm(),
-                    0.0);
+            assertEquals(stdWTriad1.getNorm(), estimator.getStandardDeviationAngularSpeedNorm(), 0.0);
             final AngularSpeed stdWNorm1 = estimator.getStandardDeviationAngularSpeedNormAsMeasurement();
-            assertEquals(stdWTriad1.getNorm(), stdWNorm1.getValue().doubleValue(),
-                    0.0);
+            assertEquals(stdWTriad1.getNorm(), stdWNorm1.getValue().doubleValue(), 0.0);
             assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWNorm1.getUnit());
-            final AngularSpeed stdWNorm2 = new AngularSpeed(
-                    1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+            final AngularSpeed stdWNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
             estimator.getStandardDeviationAngularSpeedNormAsMeasurement(stdWNorm2);
             assertEquals(stdWNorm1, stdWNorm2);
 
             final double avgStdW = (stdWx + stdWy + stdWz) / 3.0;
-            assertEquals(avgStdW, estimator.getAverageStandardDeviationAngularSpeed(),
-                    SMALL_ABSOLUTE_ERROR);
+            assertEquals(avgStdW, estimator.getAverageStandardDeviationAngularSpeed(), SMALL_ABSOLUTE_ERROR);
             final AngularSpeed avgStdW1 = estimator.getAverageStandardDeviationAngularSpeedAsMeasurement();
-            assertEquals(avgStdW, avgStdW1.getValue().doubleValue(),
-                    SMALL_ABSOLUTE_ERROR);
+            assertEquals(avgStdW, avgStdW1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
             assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgStdW1.getUnit());
-            final AngularSpeed avgStdW2 = new AngularSpeed(
-                    1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+            final AngularSpeed avgStdW2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
             estimator.getAverageStandardDeviationAngularSpeedAsMeasurement(avgStdW2);
             assertEquals(avgStdW1, avgStdW2);
 
@@ -2055,40 +1793,28 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
             final double rootPsdWy = Math.sqrt(psdWy);
             final double rootPsdWz = Math.sqrt(psdWz);
 
-            assertEquals(rootPsdFx, estimator.getSpecificForceRootPsdX(),
-                    0.0);
-            assertEquals(rootPsdFy, estimator.getSpecificForceRootPsdY(),
-                    0.0);
-            assertEquals(rootPsdFz, estimator.getSpecificForceRootPsdZ(),
-                    0.0);
-            assertEquals(rootPsdWx, estimator.getAngularRateRootPsdX(),
-                    0.0);
-            assertEquals(rootPsdWy, estimator.getAngularRateRootPsdY(),
-                    0.0);
-            assertEquals(rootPsdWz, estimator.getAngularRateRootPsdZ(),
-                    0.0);
+            assertEquals(rootPsdFx, estimator.getSpecificForceRootPsdX(), 0.0);
+            assertEquals(rootPsdFy, estimator.getSpecificForceRootPsdY(), 0.0);
+            assertEquals(rootPsdFz, estimator.getSpecificForceRootPsdZ(), 0.0);
+            assertEquals(rootPsdWx, estimator.getAngularRateRootPsdX(), 0.0);
+            assertEquals(rootPsdWy, estimator.getAngularRateRootPsdY(), 0.0);
+            assertEquals(rootPsdWz, estimator.getAngularRateRootPsdZ(), 0.0);
 
             final double avgPsdF = (psdFx + psdFy + psdFz) / 3.0;
             final double avgPsdW = (psdWx + psdWy + psdWz) / 3.0;
-            final double normRootPsdF = Math.sqrt(
-                    rootPsdFx * rootPsdFx + rootPsdFy * rootPsdFy +
-                            rootPsdFz * rootPsdFz);
-            final double normRootPsdW = Math.sqrt(
-                    rootPsdWx * rootPsdWx + rootPsdWy * rootPsdWy +
-                            rootPsdWz * rootPsdWz);
+            final double normRootPsdF = Math.sqrt(rootPsdFx * rootPsdFx + rootPsdFy * rootPsdFy
+                    + rootPsdFz * rootPsdFz);
+            final double normRootPsdW = Math.sqrt(rootPsdWx * rootPsdWx + rootPsdWy * rootPsdWy
+                    + rootPsdWz * rootPsdWz);
 
-            assertEquals(avgPsdF, estimator.getAvgSpecificForceNoisePsd(),
-                    SMALL_ABSOLUTE_ERROR);
-            assertEquals(normRootPsdF, estimator.getSpecificForceNoiseRootPsdNorm(),
-                    SMALL_ABSOLUTE_ERROR);
+            assertEquals(avgPsdF, estimator.getAvgSpecificForceNoisePsd(), SMALL_ABSOLUTE_ERROR);
+            assertEquals(normRootPsdF, estimator.getSpecificForceNoiseRootPsdNorm(), SMALL_ABSOLUTE_ERROR);
             assertEquals(estimator.getSpecificForceNoiseRootPsdNorm(),
                     estimator.getAccelerometerBaseNoiseLevelRootPsd(), 0.0);
-            assertEquals(avgPsdW, estimator.getAvgAngularRateNoisePsd(),
-                    SMALL_ABSOLUTE_ERROR);
-            assertEquals(normRootPsdW, estimator.getAngularRateNoiseRootPsdNorm(),
-                    SMALL_ABSOLUTE_ERROR);
-            assertEquals(estimator.getAngularRateNoiseRootPsdNorm(),
-                    estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
+            assertEquals(avgPsdW, estimator.getAvgAngularRateNoisePsd(), SMALL_ABSOLUTE_ERROR);
+            assertEquals(normRootPsdW, estimator.getAngularRateNoiseRootPsdNorm(), SMALL_ABSOLUTE_ERROR);
+            assertEquals(estimator.getAngularRateNoiseRootPsdNorm(), estimator.getGyroscopeBaseNoiseLevelRootPsd(),
+                    0.0);
 
             assertEquals(rootPsdFx, accelNoiseRootPSD, ABSOLUTE_ERROR);
             assertEquals(rootPsdFy, accelNoiseRootPSD, ABSOLUTE_ERROR);
@@ -2099,12 +1825,10 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
             assertEquals(rootPsdWz, gyroNoiseRootPSD, ABSOLUTE_ERROR);
 
             final double accelNoisePsd = accelNoiseRootPSD * accelNoiseRootPSD;
-            assertEquals(estimator.getAvgSpecificForceNoisePsd(),
-                    accelNoisePsd, ABSOLUTE_ERROR);
+            assertEquals(accelNoisePsd, estimator.getAvgSpecificForceNoisePsd(), ABSOLUTE_ERROR);
 
             final double gyroNoisePsd = gyroNoiseRootPSD * gyroNoiseRootPSD;
-            assertEquals(estimator.getAvgAngularRateNoisePsd(),
-                    gyroNoisePsd, ABSOLUTE_ERROR);
+            assertEquals(gyroNoisePsd, estimator.getAvgAngularRateNoisePsd(), ABSOLUTE_ERROR);
 
             // reset
             assertTrue(estimator.reset());
@@ -2113,7 +1837,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
             assertNull(estimator.getLastBodyKinematics());
             assertFalse(estimator.getLastBodyKinematics(null));
             assertFalse(estimator.isRunning());
-            assertEquals(mReset, 1);
+            assertEquals(1, mReset);
 
             numValid++;
             break;
@@ -2123,8 +1847,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
     }
 
     @Test
-    public void testAddBodyKinematicsAndReset4()
-            throws WrongSizeException, LockedException {
+    public void testAddBodyKinematicsAndReset4() throws WrongSizeException, LockedException {
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
         final Matrix ma = generateMa();
@@ -2135,32 +1858,28 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final AccumulatedBodyKinematicsNoiseEstimator estimator =
-                new AccumulatedBodyKinematicsNoiseEstimator(this);
+        final AccumulatedBodyKinematicsNoiseEstimator estimator = new AccumulatedBodyKinematicsNoiseEstimator(
+                this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mBodyKinematicsAdded, 0);
-        assertEquals(mReset, 0);
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mBodyKinematicsAdded);
+        assertEquals(0, mReset);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getLastBodyKinematics());
         assertFalse(estimator.getLastBodyKinematics(null));
         assertFalse(estimator.isRunning());
@@ -2183,12 +1902,11 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         double varWz = 0.0;
         for (int i = 0, j = 1; i < N_SAMPLES; i++, j++) {
             if (estimator.getLastBodyKinematics(lastKinematics)) {
-                assertEquals(estimator.getLastBodyKinematics(), lastKinematics);
+                assertEquals(lastKinematics, estimator.getLastBodyKinematics());
                 assertEquals(lastKinematics, kinematics);
             }
 
-            BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                    errors, random, kinematics);
+            BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
 
             final double fxi = kinematics.getFx();
             final double fyi = kinematics.getFy();
@@ -2237,11 +1955,11 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
             varWz = varWz * (double) i / (double) j + diff2 / j;
         }
 
-        assertEquals(estimator.getNumberOfProcessedSamples(), N_SAMPLES);
+        assertEquals(N_SAMPLES, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
-        assertEquals(mStart, 1);
-        assertEquals(mBodyKinematicsAdded, N_SAMPLES);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(N_SAMPLES, mBodyKinematicsAdded);
+        assertEquals(0, mReset);
 
         final double avgFxB = estimator.getAvgSpecificForceX();
         final double avgFyB = estimator.getAvgSpecificForceY();
@@ -2267,8 +1985,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(avgWzB, omegaZ, LARGE_ABSOLUTE_ERROR);
 
         final Acceleration avgFx1 = estimator.getAvgSpecificForceXAsMeasurement();
-        final Acceleration avgFx2 = new Acceleration(1.0,
-                AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFx2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceXAsMeasurement(avgFx2);
 
         assertEquals(avgFx, avgFx1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
@@ -2276,8 +1993,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(avgFx1, avgFx2);
 
         final Acceleration avgFy1 = estimator.getAvgSpecificForceYAsMeasurement();
-        final Acceleration avgFy2 = new Acceleration(1.0,
-                AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFy2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceYAsMeasurement(avgFy2);
 
         assertEquals(avgFy, avgFy1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
@@ -2285,8 +2001,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(avgFy1, avgFy2);
 
         final Acceleration avgFz1 = estimator.getAvgSpecificForceZAsMeasurement();
-        final Acceleration avgFz2 = new Acceleration(1.0,
-                AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceZAsMeasurement(avgFz2);
 
         assertEquals(avgFz, avgFz1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
@@ -2301,38 +2016,32 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final AccelerationTriad avgFTriad2 = new AccelerationTriad();
         estimator.getAvgSpecificForceAsTriad(avgFTriad2);
         assertEquals(avgFTriad1, avgFTriad2);
-        assertEquals(avgFTriad1.getNorm(), estimator.getAvgSpecificForceNorm(),
-                0.0);
+        assertEquals(avgFTriad1.getNorm(), estimator.getAvgSpecificForceNorm(), 0.0);
         final Acceleration avgFNorm1 = estimator.getAvgSpecificForceNormAsMeasurement();
-        assertEquals(estimator.getAvgSpecificForceNorm(),
-                avgFNorm1.getValue().doubleValue(), 0.0);
+        assertEquals(avgFNorm1.getValue().doubleValue(), estimator.getAvgSpecificForceNorm(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgFNorm1.getUnit());
-        final Acceleration avgFNorm2 = new Acceleration(1.0,
-                AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgFNorm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgSpecificForceNormAsMeasurement(avgFNorm2);
         assertEquals(avgFNorm1, avgFNorm2);
 
         final AngularSpeed avgWx1 = estimator.getAvgAngularRateXAsMeasurement();
         assertEquals(avgWx, avgWx1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWx1.getUnit());
-        final AngularSpeed avgWx2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgWx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgAngularRateXAsMeasurement(avgWx2);
         assertEquals(avgWx1, avgWx2);
 
         final AngularSpeed avgWy1 = estimator.getAvgAngularRateYAsMeasurement();
         assertEquals(avgWy, avgWy1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWy1.getUnit());
-        final AngularSpeed avgWy2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgWy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgAngularRateYAsMeasurement(avgWy2);
         assertEquals(avgWy1, avgWy2);
 
         final AngularSpeed avgWz1 = estimator.getAvgAngularRateZAsMeasurement();
         assertEquals(avgWz, avgWz1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWz1.getUnit());
-        final AngularSpeed avgWz2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgWz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgAngularRateZAsMeasurement(avgWz2);
         assertEquals(avgWz1, avgWz2);
 
@@ -2345,14 +2054,11 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         estimator.getAvgAngularRateTriad(avgWTriad2);
         assertEquals(avgWTriad1, avgWTriad2);
 
-        assertEquals(avgWTriad1.getNorm(), estimator.getAvgAngularRateNorm(),
-                0.0);
+        assertEquals(avgWTriad1.getNorm(), estimator.getAvgAngularRateNorm(), 0.0);
         final AngularSpeed avgWNorm1 = estimator.getAvgAngularRateNormAsMeasurement();
-        assertEquals(estimator.getAvgAngularRateNorm(),
-                avgWNorm1.getValue().doubleValue(), 0.0);
+        assertEquals(avgWNorm1.getValue().doubleValue(), estimator.getAvgAngularRateNorm(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgWNorm1.getUnit());
-        final AngularSpeed avgWNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed avgWNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getAvgAngularRateNormAsMeasurement(avgWNorm2);
         assertEquals(avgWNorm1, avgWNorm2);
 
@@ -2360,28 +2066,19 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(avgFx, avgKinematics1.getFx(), SMALL_ABSOLUTE_ERROR);
         assertEquals(avgFy, avgKinematics1.getFy(), SMALL_ABSOLUTE_ERROR);
         assertEquals(avgFz, avgKinematics1.getFz(), SMALL_ABSOLUTE_ERROR);
-        assertEquals(avgWx, avgKinematics1.getAngularRateX(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(avgWy, avgKinematics1.getAngularRateY(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(avgWz, avgKinematics1.getAngularRateZ(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgWx, avgKinematics1.getAngularRateX(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgWy, avgKinematics1.getAngularRateY(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgWz, avgKinematics1.getAngularRateZ(), SMALL_ABSOLUTE_ERROR);
         final BodyKinematics avgKinematics2 = new BodyKinematics();
         estimator.getAvgBodyKinematics(avgKinematics2);
         assertEquals(avgKinematics1, avgKinematics2);
 
-        assertEquals(varFx, estimator.getVarianceSpecificForceX(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(varFy, estimator.getVarianceSpecificForceY(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(varFz, estimator.getVarianceSpecificForceZ(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(varWx, estimator.getVarianceAngularRateX(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(varWy, estimator.getVarianceAngularRateY(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(varWz, estimator.getVarianceAngularRateZ(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(varFx, estimator.getVarianceSpecificForceX(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(varFy, estimator.getVarianceSpecificForceY(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(varFz, estimator.getVarianceSpecificForceZ(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(varWx, estimator.getVarianceAngularRateX(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(varWy, estimator.getVarianceAngularRateY(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(varWz, estimator.getVarianceAngularRateZ(), SMALL_ABSOLUTE_ERROR);
 
         final double stdFx = Math.sqrt(varFx);
         final double stdFy = Math.sqrt(varFy);
@@ -2390,36 +2087,27 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final double stdWy = Math.sqrt(varWy);
         final double stdWz = Math.sqrt(varWz);
 
-        assertEquals(stdFx, estimator.getStandardDeviationSpecificForceX(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdFx, estimator.getStandardDeviationSpecificForceX(), SMALL_ABSOLUTE_ERROR);
         final Acceleration stdFx1 = estimator.getStandardDeviationSpecificForceXAsMeasurement();
         assertEquals(stdFx, stdFx1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                stdFx1.getUnit());
-        final Acceleration stdFx2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFx1.getUnit());
+        final Acceleration stdFx2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceXAsMeasurement(stdFx2);
         assertEquals(stdFx1, stdFx2);
 
-        assertEquals(stdFy, estimator.getStandardDeviationSpecificForceY(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdFy, estimator.getStandardDeviationSpecificForceY(), SMALL_ABSOLUTE_ERROR);
         final Acceleration stdFy1 = estimator.getStandardDeviationSpecificForceYAsMeasurement();
         assertEquals(stdFy, stdFy1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                stdFy1.getUnit());
-        final Acceleration stdFy2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFy1.getUnit());
+        final Acceleration stdFy2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceYAsMeasurement(stdFy2);
         assertEquals(stdFy1, stdFy2);
 
-        assertEquals(stdFz, estimator.getStandardDeviationSpecificForceZ(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdFz, estimator.getStandardDeviationSpecificForceZ(), SMALL_ABSOLUTE_ERROR);
         final Acceleration stdFz1 = estimator.getStandardDeviationSpecificForceZAsMeasurement();
         assertEquals(stdFz, stdFz1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                stdFz1.getUnit());
-        final Acceleration stdFz2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFz1.getUnit());
+        final Acceleration stdFz2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceZAsMeasurement(stdFz2);
         assertEquals(stdFz1, stdFz2);
 
@@ -2427,65 +2115,50 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(stdFx, stdFTriad1.getValueX(), SMALL_ABSOLUTE_ERROR);
         assertEquals(stdFy, stdFTriad1.getValueY(), SMALL_ABSOLUTE_ERROR);
         assertEquals(stdFz, stdFTriad1.getValueZ(), SMALL_ABSOLUTE_ERROR);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                stdFTriad1.getUnit());
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFTriad1.getUnit());
 
         final AccelerationTriad stdFTriad2 = new AccelerationTriad();
         estimator.getStandardDeviationSpecificForceTriad(stdFTriad2);
         assertEquals(stdFTriad1, stdFTriad2);
 
-        assertEquals(stdFTriad1.getNorm(),
-                estimator.getStandardDeviationSpecificForceNorm(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdFTriad1.getNorm(), estimator.getStandardDeviationSpecificForceNorm(), SMALL_ABSOLUTE_ERROR);
         final Acceleration stdFNorm1 = estimator.getStandardDeviationSpecificForceNormAsMeasurement();
-        assertEquals(stdFTriad1.getNorm(), stdFNorm1.getValue().doubleValue(),
-                0.0);
-        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND,
-                stdFNorm1.getUnit());
-        final Acceleration stdFNorm2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        assertEquals(stdFTriad1.getNorm(), stdFNorm1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdFNorm1.getUnit());
+        final Acceleration stdFNorm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationSpecificForceNormAsMeasurement(stdFNorm2);
         assertEquals(stdFNorm1, stdFNorm2);
 
         final double avgStdF = (stdFx + stdFy + stdFz) / 3.0;
-        assertEquals(avgStdF, estimator.getAverageStandardDeviationSpecificForce(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgStdF, estimator.getAverageStandardDeviationSpecificForce(), SMALL_ABSOLUTE_ERROR);
         final Acceleration avgStdF1 = estimator.getAverageStandardDeviationSpecificForceAsMeasurement();
-        assertEquals(avgStdF, avgStdF1.getValue().doubleValue(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgStdF, avgStdF1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgStdF1.getUnit());
-        final Acceleration avgStdF2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgStdF2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAverageStandardDeviationSpecificForceAsMeasurement(avgStdF2);
         assertEquals(avgStdF1, avgStdF2);
 
-        assertEquals(stdWx, estimator.getStandardDeviationAngularRateX(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdWx, estimator.getStandardDeviationAngularRateX(), SMALL_ABSOLUTE_ERROR);
         final AngularSpeed stdWx1 = estimator.getStandardDeviationAngularRateXAsMeasurement();
         assertEquals(stdWx, stdWx1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWx1.getUnit());
-        final AngularSpeed stdWx2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWx2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularRateXAsMeasurement(stdWx2);
         assertEquals(stdWx1, stdWx2);
 
-        assertEquals(stdWy, estimator.getStandardDeviationAngularRateY(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdWy, estimator.getStandardDeviationAngularRateY(), SMALL_ABSOLUTE_ERROR);
         final AngularSpeed stdWy1 = estimator.getStandardDeviationAngularRateYAsMeasurement();
         assertEquals(stdWy, stdWy1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWy1.getUnit());
-        final AngularSpeed stdWy2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWy2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularRateYAsMeasurement(stdWy2);
         assertEquals(stdWy1, stdWy2);
 
-        assertEquals(stdWz, estimator.getStandardDeviationAngularRateZ(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(stdWz, estimator.getStandardDeviationAngularRateZ(), SMALL_ABSOLUTE_ERROR);
         final AngularSpeed stdWz1 = estimator.getStandardDeviationAngularRateZAsMeasurement();
         assertEquals(stdWz, stdWz1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWz1.getUnit());
-        final AngularSpeed stdWz2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWz2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularRateZAsMeasurement(stdWz2);
         assertEquals(stdWz1, stdWz2);
 
@@ -2498,26 +2171,20 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         estimator.getStandardDeviationAngularSpeedTriad(stdWTriad2);
         assertEquals(stdWTriad1, stdWTriad2);
 
-        assertEquals(stdWTriad1.getNorm(), estimator.getStandardDeviationAngularSpeedNorm(),
-                0.0);
+        assertEquals(stdWTriad1.getNorm(), estimator.getStandardDeviationAngularSpeedNorm(), 0.0);
         final AngularSpeed stdWNorm1 = estimator.getStandardDeviationAngularSpeedNormAsMeasurement();
-        assertEquals(stdWTriad1.getNorm(), stdWNorm1.getValue().doubleValue(),
-                0.0);
+        assertEquals(stdWTriad1.getNorm(), stdWNorm1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdWNorm1.getUnit());
-        final AngularSpeed stdWNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdWNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationAngularSpeedNormAsMeasurement(stdWNorm2);
         assertEquals(stdWNorm1, stdWNorm2);
 
         final double avgStdW = (stdWx + stdWy + stdWz) / 3.0;
-        assertEquals(avgStdW, estimator.getAverageStandardDeviationAngularSpeed(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgStdW, estimator.getAverageStandardDeviationAngularSpeed(), SMALL_ABSOLUTE_ERROR);
         final AngularSpeed avgStdW1 = estimator.getAverageStandardDeviationAngularSpeedAsMeasurement();
-        assertEquals(avgStdW, avgStdW1.getValue().doubleValue(),
-                SMALL_ABSOLUTE_ERROR);
+        assertEquals(avgStdW, avgStdW1.getValue().doubleValue(), SMALL_ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgStdW1.getUnit());
-        final AngularSpeed avgStdW2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgStdW2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAverageStandardDeviationAngularSpeedAsMeasurement(avgStdW2);
         assertEquals(avgStdW1, avgStdW2);
 
@@ -2553,40 +2220,25 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         final double rootPsdWy = Math.sqrt(psdWy);
         final double rootPsdWz = Math.sqrt(psdWz);
 
-        assertEquals(rootPsdFx, estimator.getSpecificForceRootPsdX(),
-                0.0);
-        assertEquals(rootPsdFy, estimator.getSpecificForceRootPsdY(),
-                0.0);
-        assertEquals(rootPsdFz, estimator.getSpecificForceRootPsdZ(),
-                0.0);
-        assertEquals(rootPsdWx, estimator.getAngularRateRootPsdX(),
-                0.0);
-        assertEquals(rootPsdWy, estimator.getAngularRateRootPsdY(),
-                0.0);
-        assertEquals(rootPsdWz, estimator.getAngularRateRootPsdZ(),
-                0.0);
+        assertEquals(rootPsdFx, estimator.getSpecificForceRootPsdX(), 0.0);
+        assertEquals(rootPsdFy, estimator.getSpecificForceRootPsdY(), 0.0);
+        assertEquals(rootPsdFz, estimator.getSpecificForceRootPsdZ(), 0.0);
+        assertEquals(rootPsdWx, estimator.getAngularRateRootPsdX(), 0.0);
+        assertEquals(rootPsdWy, estimator.getAngularRateRootPsdY(), 0.0);
+        assertEquals(rootPsdWz, estimator.getAngularRateRootPsdZ(), 0.0);
 
         final double avgPsdF = (psdFx + psdFy + psdFz) / 3.0;
         final double avgPsdW = (psdWx + psdWy + psdWz) / 3.0;
-        final double normRootPsdF = Math.sqrt(
-                rootPsdFx * rootPsdFx + rootPsdFy * rootPsdFy +
-                        rootPsdFz * rootPsdFz);
-        final double normRootPsdW = Math.sqrt(
-                rootPsdWx * rootPsdWx + rootPsdWy * rootPsdWy +
-                        rootPsdWz * rootPsdWz);
+        final double normRootPsdF = Math.sqrt(rootPsdFx * rootPsdFx + rootPsdFy * rootPsdFy + rootPsdFz * rootPsdFz);
+        final double normRootPsdW = Math.sqrt(rootPsdWx * rootPsdWx + rootPsdWy * rootPsdWy + rootPsdWz * rootPsdWz);
 
-        assertEquals(avgPsdF, estimator.getAvgSpecificForceNoisePsd(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(normRootPsdF, estimator.getSpecificForceNoiseRootPsdNorm(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(estimator.getSpecificForceNoiseRootPsdNorm(),
-                estimator.getAccelerometerBaseNoiseLevelRootPsd(), 0.0);
-        assertEquals(avgPsdW, estimator.getAvgAngularRateNoisePsd(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(normRootPsdW, estimator.getAngularRateNoiseRootPsdNorm(),
-                SMALL_ABSOLUTE_ERROR);
-        assertEquals(estimator.getAngularRateNoiseRootPsdNorm(),
-                estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
+        assertEquals(avgPsdF, estimator.getAvgSpecificForceNoisePsd(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(normRootPsdF, estimator.getSpecificForceNoiseRootPsdNorm(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(estimator.getSpecificForceNoiseRootPsdNorm(), estimator.getAccelerometerBaseNoiseLevelRootPsd(),
+                0.0);
+        assertEquals(avgPsdW, estimator.getAvgAngularRateNoisePsd(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(normRootPsdW, estimator.getAngularRateNoiseRootPsdNorm(), SMALL_ABSOLUTE_ERROR);
+        assertEquals(estimator.getAngularRateNoiseRootPsdNorm(), estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
 
         assertEquals(rootPsdFx, accelNoiseRootPSD, ABSOLUTE_ERROR);
         assertEquals(rootPsdFy, accelNoiseRootPSD, ABSOLUTE_ERROR);
@@ -2597,12 +2249,10 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertEquals(rootPsdWz, gyroNoiseRootPSD, ABSOLUTE_ERROR);
 
         final double accelNoisePsd = accelNoiseRootPSD * accelNoiseRootPSD;
-        assertEquals(estimator.getAvgSpecificForceNoisePsd(),
-                accelNoisePsd, ABSOLUTE_ERROR);
+        assertEquals(accelNoisePsd, estimator.getAvgSpecificForceNoisePsd(), ABSOLUTE_ERROR);
 
         final double gyroNoisePsd = gyroNoiseRootPSD * gyroNoiseRootPSD;
-        assertEquals(estimator.getAvgAngularRateNoisePsd(),
-                gyroNoisePsd, ABSOLUTE_ERROR);
+        assertEquals(gyroNoisePsd, estimator.getAvgAngularRateNoisePsd(), ABSOLUTE_ERROR);
 
         // reset
         assertTrue(estimator.reset());
@@ -2611,7 +2261,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         assertNull(estimator.getLastBodyKinematics());
         assertFalse(estimator.getLastBodyKinematics(null));
         assertFalse(estimator.isRunning());
-        assertEquals(mReset, 1);
+        assertEquals(1, mReset);
     }
 
     @Override
@@ -2638,71 +2288,38 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
 
     private void checkLocked(final AccumulatedBodyKinematicsNoiseEstimator estimator) {
         assertTrue(estimator.isRunning());
-        try {
-            estimator.setTimeInterval(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setTimeInterval(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setListener(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.addBodyKinematics(0.0, 0.0, 0.0,
-                    0.0, 0.0, 0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        final Acceleration a = new Acceleration(
-                0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final AngularSpeed w = new AngularSpeed(
-                0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        try {
-            estimator.addBodyKinematics(a, a, a, w, w, w);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
+        assertThrows(LockedException.class, () -> estimator.setTimeInterval(0.0));
+        assertThrows(LockedException.class, () -> estimator.setTimeInterval(null));
+        assertThrows(LockedException.class, () -> estimator.setListener(null));
+        assertThrows(LockedException.class, () -> estimator.addBodyKinematics(
+                0.0, 0.0, 0.0,
+                0.0, 0.0, 0.0));
+        final Acceleration a = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final AngularSpeed w = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertThrows(LockedException.class, () -> estimator.addBodyKinematics(a, a, a, w, w, w));
         final AccelerationTriad aTriad = new AccelerationTriad();
         final AngularSpeedTriad wTriad = new AngularSpeedTriad();
-        try {
-            estimator.addBodyKinematics(aTriad, wTriad);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
+        assertThrows(LockedException.class, () -> estimator.addBodyKinematics(aTriad, wTriad));
         final BodyKinematics kinematics = new BodyKinematics();
-        try {
-            estimator.addBodyKinematics(kinematics);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            assertFalse(estimator.reset());
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
+        assertThrows(LockedException.class, () -> estimator.addBodyKinematics(kinematics));
+        assertThrows(LockedException.class, () -> assertFalse(estimator.reset()));
     }
 
-    private Matrix generateBa() {
+    private static Matrix generateBa() {
         return Matrix.newFromArray(new double[]{
                 900 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 -1300 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 800 * MICRO_G_TO_METERS_PER_SECOND_SQUARED});
     }
 
-    private Matrix generateBg() {
+    private static Matrix generateBg() {
         return Matrix.newFromArray(new double[]{
                 -9 * DEG_TO_RAD / 3600.0,
                 13 * DEG_TO_RAD / 3600.0,
                 -8 * DEG_TO_RAD / 3600.0});
     }
 
-    private Matrix generateMa() throws WrongSizeException {
+    private static Matrix generateMa() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
@@ -2713,7 +2330,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         return result;
     }
 
-    private Matrix generateMg() throws WrongSizeException {
+    private static Matrix generateMg() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
@@ -2724,7 +2341,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         return result;
     }
 
-    private Matrix generateGg() throws WrongSizeException {
+    private static Matrix generateGg() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         final double tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
@@ -2736,11 +2353,11 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         return result;
     }
 
-    private double getAccelNoiseRootPSD() {
+    private static double getAccelNoiseRootPSD() {
         return 100.0 * MICRO_G_TO_METERS_PER_SECOND_SQUARED;
     }
 
-    private double getGyroNoiseRootPSD() {
+    private static double getGyroNoiseRootPSD() {
         return 0.01 * DEG_TO_RAD / 60.0;
     }
 }

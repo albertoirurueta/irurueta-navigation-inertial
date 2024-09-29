@@ -52,8 +52,7 @@ import java.util.List;
  * - ftrue is ground-truth specific force.
  * - w is measurement noise.
  */
-public class LMedSRobustKnownPositionAccelerometerCalibrator extends
-        RobustKnownPositionAccelerometerCalibrator {
+public class LMedSRobustKnownPositionAccelerometerCalibrator extends RobustKnownPositionAccelerometerCalibrator {
 
     /**
      * Default value to be used for stop threshold. Stop threshold can be used to
@@ -121,8 +120,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *                     different unknown orientations and containing the standard deviations
      *                     of accelerometer and gyroscope measurements.
      */
-    public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final List<StandardDeviationBodyKinematics> measurements) {
+    public LMedSRobustKnownPositionAccelerometerCalibrator(final List<StandardDeviationBodyKinematics> measurements) {
         super(measurements);
     }
 
@@ -132,8 +130,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final boolean commonAxisUsed) {
+    public LMedSRobustKnownPositionAccelerometerCalibrator(final boolean commonAxisUsed) {
         super(commonAxisUsed);
     }
 
@@ -145,8 +142,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *                    squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final double[] initialBias) {
+    public LMedSRobustKnownPositionAccelerometerCalibrator(final double[] initialBias) {
         super(initialBias);
     }
 
@@ -168,8 +164,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final Matrix initialBias, final Matrix initialMa) {
+    public LMedSRobustKnownPositionAccelerometerCalibrator(final Matrix initialBias, final Matrix initialMa) {
         super(initialBias, initialMa);
     }
 
@@ -178,8 +173,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *
      * @param position position where body kinematics measures have been taken.
      */
-    public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position) {
+    public LMedSRobustKnownPositionAccelerometerCalibrator(final ECEFPosition position) {
         super(position);
     }
 
@@ -192,8 +186,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *                     of accelerometer and gyroscope measurements.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements) {
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements) {
         super(position, measurements);
     }
 
@@ -208,8 +201,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *                     starts, ends or its progress significantly changes.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, listener);
     }
@@ -225,8 +217,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         super(position, measurements, commonAxisUsed);
     }
@@ -244,10 +235,8 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *                       starts, ends or its progress significantly changes.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownPositionAccelerometerCalibratorListener listener) {
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, listener);
     }
 
@@ -264,8 +253,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final double[] initialBias) {
         super(position, measurements, initialBias);
     }
@@ -284,10 +272,8 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final RobustKnownPositionAccelerometerCalibratorListener listener) {
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] initialBias, final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, initialBias, listener);
     }
 
@@ -306,8 +292,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
         super(position, measurements, commonAxisUsed, initialBias);
     }
@@ -328,8 +313,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, initialBias, listener);
@@ -346,8 +330,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias) {
         super(position, measurements, initialBias);
     }
@@ -363,10 +346,8 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      * @param listener     listener to handle events raised by this calibrator.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final RobustKnownPositionAccelerometerCalibratorListener listener) {
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix initialBias, final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, initialBias, listener);
     }
 
@@ -383,8 +364,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
         super(position, measurements, commonAxisUsed, initialBias);
     }
@@ -403,8 +383,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, initialBias, listener);
@@ -423,8 +402,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa) {
         super(position, measurements, initialBias, initialMa);
     }
@@ -443,8 +421,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, initialBias, initialMa, listener);
@@ -465,10 +442,8 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa) {
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa) {
         super(position, measurements, commonAxisUsed, initialBias, initialMa);
     }
 
@@ -488,13 +463,10 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa,
+            final ECEFPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-        super(position, measurements, commonAxisUsed, initialBias, initialMa,
-                listener);
+        super(position, measurements, commonAxisUsed, initialBias, initialMa, listener);
     }
 
     /**
@@ -502,8 +474,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *
      * @param position position where body kinematics measures have been taken.
      */
-    public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position) {
+    public LMedSRobustKnownPositionAccelerometerCalibrator(final NEDPosition position) {
         super(position);
     }
 
@@ -516,8 +487,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *                     of accelerometer and gyroscope measurements.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements) {
         super(position, measurements);
     }
 
@@ -532,8 +502,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *                     starts, ends or its progress significantly changes.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, listener);
     }
@@ -549,8 +518,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         super(position, measurements, commonAxisUsed);
     }
@@ -568,10 +536,8 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *                       starts, ends or its progress significantly changes.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownPositionAccelerometerCalibratorListener listener) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, listener);
     }
 
@@ -588,8 +554,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final double[] initialBias) {
         super(position, measurements, initialBias);
     }
@@ -608,10 +573,8 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final RobustKnownPositionAccelerometerCalibratorListener listener) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] initialBias, final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, initialBias, listener);
     }
 
@@ -630,8 +593,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
         super(position, measurements, commonAxisUsed, initialBias);
     }
@@ -652,8 +614,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, initialBias, listener);
@@ -670,8 +631,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias) {
         super(position, measurements, initialBias);
     }
@@ -687,10 +647,8 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      * @param listener     listener to handle events raised by this calibrator.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final RobustKnownPositionAccelerometerCalibratorListener listener) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix initialBias, final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, initialBias, listener);
     }
 
@@ -707,8 +665,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
         super(position, measurements, commonAxisUsed, initialBias);
     }
@@ -727,8 +684,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, initialBias, listener);
@@ -747,8 +703,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa) {
         super(position, measurements, initialBias, initialMa);
     }
@@ -767,8 +722,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix initialBias, final Matrix initialMa,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
         super(position, measurements, initialBias, initialMa, listener);
@@ -789,10 +743,8 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa) {
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa) {
         super(position, measurements, commonAxisUsed, initialBias, initialMa);
     }
 
@@ -812,13 +764,10 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      *                                  scaling and coupling error matrix is not 3x3.
      */
     public LMedSRobustKnownPositionAccelerometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix initialBias,
-            final Matrix initialMa,
+            final NEDPosition position, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix initialBias, final Matrix initialMa,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-        super(position, measurements, commonAxisUsed, initialBias, initialMa,
-                listener);
+        super(position, measurements, commonAxisUsed, initialBias, initialMa, listener);
     }
 
     /**
@@ -897,7 +846,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
         mGravityNorm = computeGravityNorm();
 
         final LMedSRobustEstimator<PreliminaryResult> innerEstimator =
-                new LMedSRobustEstimator<>(new LMedSRobustEstimatorListener<PreliminaryResult>() {
+                new LMedSRobustEstimator<>(new LMedSRobustEstimatorListener<>() {
                     @Override
                     public int getTotalSamples() {
                         return mMeasurements.size();
@@ -910,14 +859,12 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
 
                     @Override
                     public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List<PreliminaryResult> solutions) {
+                            final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                         computePreliminarySolutions(samplesIndices, solutions);
                     }
 
                     @Override
-                    public double computeResidual(
-                            final PreliminaryResult currentEstimation, final int i) {
+                    public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
                         return computeError(mMeasurements.get(i), currentEstimation);
                     }
 
@@ -927,36 +874,30 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
                     }
 
                     @Override
-                    public void onEstimateStart(
-                            final RobustEstimator<PreliminaryResult> estimator) {
+                    public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                         // no action needed
                     }
 
                     @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator<PreliminaryResult> estimator) {
+                    public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                         // no action needed
                     }
 
                     @Override
                     public void onEstimateNextIteration(
-                            final RobustEstimator<PreliminaryResult> estimator,
-                            final int iteration) {
+                            final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                         if (mListener != null) {
                             mListener.onCalibrateNextIteration(
-                                    LMedSRobustKnownPositionAccelerometerCalibrator.this,
-                                    iteration);
+                                    LMedSRobustKnownPositionAccelerometerCalibrator.this, iteration);
                         }
                     }
 
                     @Override
                     public void onEstimateProgressChange(
-                            final RobustEstimator<PreliminaryResult> estimator,
-                            final float progress) {
+                            final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                         if (mListener != null) {
                             mListener.onCalibrateProgressChange(
-                                    LMedSRobustKnownPositionAccelerometerCalibrator.this,
-                                    progress);
+                                    LMedSRobustKnownPositionAccelerometerCalibrator.this, progress);
                         }
                     }
                 });
@@ -1000,7 +941,7 @@ public class LMedSRobustKnownPositionAccelerometerCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.LMedS;
+        return RobustEstimatorMethod.LMEDS;
     }
 
     /**

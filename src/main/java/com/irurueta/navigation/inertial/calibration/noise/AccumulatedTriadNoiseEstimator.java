@@ -547,11 +547,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @return estimated standard deviation triad of measurements.
      */
     public T getStandardDeviationTriad() {
-        return createTriad(
-                getStandardDeviationX(),
-                getStandardDeviationY(),
-                getStandardDeviationZ(),
-                getDefaultUnit());
+        return createTriad(getStandardDeviationX(), getStandardDeviationY(), getStandardDeviationZ(), getDefaultUnit());
     }
 
     /**
@@ -561,10 +557,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      *               measurement will be stored.
      */
     public void getStandardDeviationTriad(final T result) {
-        result.setValueCoordinatesAndUnit(
-                getStandardDeviationX(),
-                getStandardDeviationY(),
-                getStandardDeviationZ(),
+        result.setValueCoordinatesAndUnit(getStandardDeviationX(), getStandardDeviationY(), getStandardDeviationZ(),
                 getDefaultUnit());
     }
 
@@ -754,9 +747,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @throws LockedException if estimator is currently running.
      */
     @SuppressWarnings("DuplicatedCode")
-    public void addTriad(
-            final double valueX, final double valueY, final double valueZ)
-            throws LockedException {
+    public void addTriad(final double valueX, final double valueY, final double valueZ) throws LockedException {
 
         if (mRunning) {
             throw new LockedException();
@@ -824,8 +815,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @param valueZ z coordinate of measurement to be added and processed.
      * @throws LockedException if estimator is currently running.
      */
-    public void addTriad(final M valueX, final M valueY, final M valueZ)
-            throws LockedException {
+    public void addTriad(final M valueX, final M valueY, final M valueZ) throws LockedException {
         addTriad(convertToDefaultUnit(valueX.getValue().doubleValue(), valueX.getUnit()),
                 convertToDefaultUnit(valueY.getValue().doubleValue(), valueY.getUnit()),
                 convertToDefaultUnit(valueZ.getValue().doubleValue(), valueZ.getUnit()));
@@ -876,8 +866,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @param unit   unit.
      * @return created triad.
      */
-    protected abstract T createTriad(
-            final double valueX, final double valueY, final double valueZ, final U unit);
+    protected abstract T createTriad(final double valueX, final double valueY, final double valueZ, final U unit);
 
     /**
      * Gets default unit for a measurement.

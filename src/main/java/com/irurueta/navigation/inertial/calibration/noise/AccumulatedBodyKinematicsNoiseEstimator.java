@@ -46,8 +46,8 @@ import com.irurueta.units.Time;
  * cannot be used to determine biases. Only norm of noise estimations
  * (variance or standard deviation) can be safely used.
  */
-public class AccumulatedBodyKinematicsNoiseEstimator
-        implements AccelerometerNoiseRootPsdSource, GyroscopeNoiseRootPsdSource {
+public class AccumulatedBodyKinematicsNoiseEstimator implements AccelerometerNoiseRootPsdSource,
+        GyroscopeNoiseRootPsdSource {
 
     /**
      * Default time interval between accelerometer samples expressed in seconds
@@ -94,8 +94,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      *
      * @param listener listener to handle events raised by this estimator.
      */
-    public AccumulatedBodyKinematicsNoiseEstimator(
-            final AccumulatedBodyKinematicsNoiseEstimatorListener listener) {
+    public AccumulatedBodyKinematicsNoiseEstimator(final AccumulatedBodyKinematicsNoiseEstimatorListener listener) {
         mListener = listener;
     }
 
@@ -174,8 +173,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      * @param listener listener to handle events raised by this estimator.
      * @throws LockedException if this estimator is running.
      */
-    public void setListener(final AccumulatedBodyKinematicsNoiseEstimatorListener listener)
-            throws LockedException {
+    public void setListener(final AccumulatedBodyKinematicsNoiseEstimatorListener listener) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -633,8 +631,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      * @param result instance where estimated standard deviation of x
      *               coordinate of sensed specific force will be stored.
      */
-    public void getStandardDeviationSpecificForceXAsMeasurement(
-            final Acceleration result) {
+    public void getStandardDeviationSpecificForceXAsMeasurement(final Acceleration result) {
         mAccelerationEstimator.getStandardDeviationXAsMeasurement(result);
     }
 
@@ -667,8 +664,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      * @param result instance where estimated standard deviation of y
      *               coordinate of sensed specific force will be stored.
      */
-    public void getStandardDeviationSpecificForceYAsMeasurement(
-            final Acceleration result) {
+    public void getStandardDeviationSpecificForceYAsMeasurement(final Acceleration result) {
         mAccelerationEstimator.getStandardDeviationYAsMeasurement(result);
     }
 
@@ -701,8 +697,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      * @param result instance where estimated standard deviation of z
      *               coordinate of sensed specific force will be stored.
      */
-    public void getStandardDeviationSpecificForceZAsMeasurement(
-            final Acceleration result) {
+    public void getStandardDeviationSpecificForceZAsMeasurement(final Acceleration result) {
         mAccelerationEstimator.getStandardDeviationZAsMeasurement(result);
     }
 
@@ -721,8 +716,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      * @param result instance where estimated standard deviation triad of
      *               accelerometer measurements will be stored.
      */
-    public void getStandardDeviationSpecificForceTriad(
-            final AccelerationTriad result) {
+    public void getStandardDeviationSpecificForceTriad(final AccelerationTriad result) {
         mAccelerationEstimator.getStandardDeviationTriad(result);
     }
 
@@ -752,10 +746,8 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      * @param result instance where norm of estimated standard deviation will be
      *               stored.
      */
-    public void getStandardDeviationSpecificForceNormAsMeasurement(
-            final Acceleration result) {
-        mAccelerationEstimator.getStandardDeviationNormAsMeasurement(
-                result);
+    public void getStandardDeviationSpecificForceNormAsMeasurement(final Acceleration result) {
+        mAccelerationEstimator.getStandardDeviationNormAsMeasurement(result);
     }
 
     /**
@@ -785,8 +777,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      * @param result instance where average of estimated standard deviation coordinates
      *               will be stored.
      */
-    public void getAverageStandardDeviationSpecificForceAsMeasurement(
-            final Acceleration result) {
+    public void getAverageStandardDeviationSpecificForceAsMeasurement(final Acceleration result) {
         mAccelerationEstimator.getAverageStandardDeviationAsMeasurement(result);
     }
 
@@ -814,8 +805,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      *
      * @param result estimated standard deviation of x coordinate of gyroscope.
      */
-    public void getStandardDeviationAngularRateXAsMeasurement(
-            final AngularSpeed result) {
+    public void getStandardDeviationAngularRateXAsMeasurement(final AngularSpeed result) {
         mAngularSpeedEstimator.getStandardDeviationXAsMeasurement(result);
     }
 
@@ -843,8 +833,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      *
      * @param result estimated standard deviation of y coordinate of gyroscope.
      */
-    public void getStandardDeviationAngularRateYAsMeasurement(
-            final AngularSpeed result) {
+    public void getStandardDeviationAngularRateYAsMeasurement(final AngularSpeed result) {
         mAngularSpeedEstimator.getStandardDeviationYAsMeasurement(result);
     }
 
@@ -872,8 +861,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      *
      * @param result estimated standard deviation of z coordinate of gyroscope.
      */
-    public void getStandardDeviationAngularRateZAsMeasurement(
-            final AngularSpeed result) {
+    public void getStandardDeviationAngularRateZAsMeasurement(final AngularSpeed result) {
         mAngularSpeedEstimator.getStandardDeviationZAsMeasurement(result);
     }
 
@@ -892,8 +880,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      * @param result instance where estimated standard deviation triad of
      *               gyroscope measurements will be stored.
      */
-    public void getStandardDeviationAngularSpeedTriad(
-            final AngularSpeedTriad result) {
+    public void getStandardDeviationAngularSpeedTriad(final AngularSpeedTriad result) {
         mAngularSpeedEstimator.getStandardDeviationTriad(result);
     }
 
@@ -923,8 +910,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      * @param result instance where norm of estimated standard deviation will be
      *               stored.
      */
-    public void getStandardDeviationAngularSpeedNormAsMeasurement(
-            final AngularSpeed result) {
+    public void getStandardDeviationAngularSpeedNormAsMeasurement(final AngularSpeed result) {
         mAngularSpeedEstimator.getStandardDeviationNormAsMeasurement(result);
     }
 
@@ -955,8 +941,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      * @param result instance where average of estimated standard deviation coordinates
      *               will be stored.
      */
-    public void getAverageStandardDeviationAngularSpeedAsMeasurement(
-            final AngularSpeed result) {
+    public void getAverageStandardDeviationAngularSpeedAsMeasurement(final AngularSpeed result) {
         mAngularSpeedEstimator.getAverageStandardDeviationAsMeasurement(
                 result);
     }
@@ -1182,8 +1167,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      */
     public void addBodyKinematics(
             final double specificForceX, final double specificForceY, final double specificForceZ,
-            final double angularRateX, final double angularRateY, final double angularRateZ)
-            throws LockedException {
+            final double angularRateX, final double angularRateY, final double angularRateZ) throws LockedException {
 
         if (mRunning) {
             throw new LockedException();
@@ -1223,12 +1207,8 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      * @throws LockedException if estimator is currently running.
      */
     public void addBodyKinematics(
-            final Acceleration specificForceX,
-            final Acceleration specificForceY,
-            final Acceleration specificForceZ,
-            final AngularSpeed angularRateX,
-            final AngularSpeed angularRateY,
-            final AngularSpeed angularRateZ)
+            final Acceleration specificForceX, final Acceleration specificForceY, final Acceleration specificForceZ,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws LockedException {
         addBodyKinematics(convertAcceleration(specificForceX),
                 convertAcceleration(specificForceY),
@@ -1246,8 +1226,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      * @throws LockedException if estimator is currently running.
      */
     public void addBodyKinematics(
-            final AccelerationTriad specificForce,
-            final AngularSpeedTriad angularSpeed) throws LockedException {
+            final AccelerationTriad specificForce, final AngularSpeedTriad angularSpeed) throws LockedException {
         addBodyKinematics(convertAcceleration(specificForce.getValueX(), specificForce.getUnit()),
                 convertAcceleration(specificForce.getValueY(), specificForce.getUnit()),
                 convertAcceleration(specificForce.getValueZ(), specificForce.getUnit()),
@@ -1263,12 +1242,8 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      * @throws LockedException if estimator is currently running.
      */
     public void addBodyKinematics(final BodyKinematics bodyKinematics) throws LockedException {
-        addBodyKinematics(bodyKinematics.getFx(),
-                bodyKinematics.getFy(),
-                bodyKinematics.getFz(),
-                bodyKinematics.getAngularRateX(),
-                bodyKinematics.getAngularRateY(),
-                bodyKinematics.getAngularRateZ());
+        addBodyKinematics(bodyKinematics.getFx(), bodyKinematics.getFy(), bodyKinematics.getFz(),
+                bodyKinematics.getAngularRateX(), bodyKinematics.getAngularRateY(), bodyKinematics.getAngularRateZ());
     }
 
     /**
@@ -1303,9 +1278,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      * @return converted value.
      */
     private double convertAcceleration(final Acceleration value) {
-        return AccelerationConverter.convert(
-                value.getValue().doubleValue(),
-                value.getUnit(),
+        return AccelerationConverter.convert(value.getValue().doubleValue(), value.getUnit(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -1316,10 +1289,8 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      * @param unit  unit of value to be converted.
      * @return converted value.
      */
-    private double convertAcceleration(
-            final double value, final AccelerationUnit unit) {
-        return AccelerationConverter.convert(value, unit,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+    private double convertAcceleration(final double value, final AccelerationUnit unit) {
+        return AccelerationConverter.convert(value, unit, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1329,9 +1300,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      * @return converted value.
      */
     private double convertAngularSpeed(final AngularSpeed value) {
-        return AngularSpeedConverter.convert(
-                value.getValue().doubleValue(),
-                value.getUnit(),
+        return AngularSpeedConverter.convert(value.getValue().doubleValue(), value.getUnit(),
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -1344,8 +1313,7 @@ public class AccumulatedBodyKinematicsNoiseEstimator
      */
     private double convertAngularSpeed(
             final double value, final AngularSpeedUnit unit) {
-        return AngularSpeedConverter.convert(value, unit,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return AngularSpeedConverter.convert(value, unit, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**

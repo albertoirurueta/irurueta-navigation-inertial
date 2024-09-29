@@ -54,33 +54,26 @@ public class NEDVelocityEstimatorTest {
         final NEDVelocityEstimator estimator = new NEDVelocityEstimator();
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double oldLatitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldLongitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                MAX_VELOCITY_VALUE);
-        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                MAX_VELOCITY_VALUE);
-        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                MAX_VELOCITY_VALUE);
+        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double longitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
         final NEDVelocity result1 = new NEDVelocity();
-        estimator.estimate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight,
-                oldVn, oldVe, oldVd, latitude, longitude, height, result1);
+        estimator.estimate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,
+                latitude, longitude, height, result1);
 
         final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
         final NEDVelocity result2 = new NEDVelocity();
-        estimator.estimate(timeInterval, oldLatitude, oldLongitude, oldHeight,
-                oldVn, oldVe, oldVd, latitude, longitude, height, result2);
+        estimator.estimate(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, latitude, longitude,
+                height, result2);
 
         final Angle oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
         final Angle oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
@@ -92,92 +85,73 @@ public class NEDVelocityEstimatorTest {
         final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
         final Distance heightDistance = new Distance(height, DistanceUnit.METER);
         final NEDVelocity result3 = new NEDVelocity();
-        estimator.estimate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD,
-                latitudeAngle, longitudeAngle, heightDistance, result3);
+        estimator.estimate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance,
+                oldSpeedN, oldSpeedE, oldSpeedD, latitudeAngle, longitudeAngle, heightDistance, result3);
 
         final NEDVelocity result4 = new NEDVelocity();
-        estimator.estimate(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD,
-                latitudeAngle, longitudeAngle, heightDistance, result4);
+        estimator.estimate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance,
+                oldSpeedN, oldSpeedE, oldSpeedD, latitudeAngle, longitudeAngle, heightDistance, result4);
 
         final NEDVelocity result5 = new NEDVelocity();
-        estimator.estimate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldVn, oldVe, oldVd, latitudeAngle, longitudeAngle,
-                heightDistance, result5);
+        estimator.estimate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance,
+                oldVn, oldVe, oldVd, latitudeAngle, longitudeAngle, heightDistance, result5);
 
         final NEDVelocity result6 = new NEDVelocity();
         estimator.estimate(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldVn, oldVe, oldVd, latitudeAngle,
-                longitudeAngle, heightDistance, result6);
+                oldHeightDistance, oldVn, oldVe, oldVd, latitudeAngle, longitudeAngle, heightDistance, result6);
 
         final NEDVelocity result7 = new NEDVelocity();
         final NEDVelocity oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
-        estimator.estimate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
-                oldHeight, oldVelocity, latitude, longitude, height, result7);
+        estimator.estimate(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight, oldVelocity,
+                latitude, longitude, height, result7);
 
         final NEDVelocity result8 = new NEDVelocity();
-        estimator.estimate(timeInterval, oldLatitude, oldLongitude, oldHeight,
-                oldVelocity, latitude, longitude, height, result8);
+        estimator.estimate(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity, latitude, longitude, height,
+                result8);
 
         final NEDVelocity result9 = new NEDVelocity();
-        estimator.estimate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldVelocity, latitudeAngle, longitudeAngle,
-                heightDistance, result9);
+        estimator.estimate(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldVelocity,
+                latitudeAngle, longitudeAngle, heightDistance, result9);
 
         final NEDVelocity result10 = new NEDVelocity();
-        estimator.estimate(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldVelocity, latitudeAngle, longitudeAngle,
-                heightDistance, result10);
+        estimator.estimate(timeInterval, oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldVelocity,
+                latitudeAngle, longitudeAngle, heightDistance, result10);
 
-        final NEDFrame oldFrame = new NEDFrame(oldLatitude, oldLongitude, oldHeight,
-                oldVn, oldVe, oldVd);
+        final NEDFrame oldFrame = new NEDFrame(oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd);
         final NEDVelocity result11 = new NEDVelocity();
-        estimator.estimate(TIME_INTERVAL_SECONDS, oldFrame, latitude, longitude,
-                height, result11);
+        estimator.estimate(TIME_INTERVAL_SECONDS, oldFrame, latitude, longitude, height, result11);
 
         final NEDVelocity result12 = new NEDVelocity();
-        estimator.estimate(timeInterval, oldFrame, latitude, longitude, height,
-                result12);
+        estimator.estimate(timeInterval, oldFrame, latitude, longitude, height, result12);
 
         final NEDVelocity result13 = new NEDVelocity();
-        estimator.estimate(TIME_INTERVAL_SECONDS, oldFrame, latitudeAngle,
-                longitudeAngle, heightDistance, result13);
+        estimator.estimate(TIME_INTERVAL_SECONDS, oldFrame, latitudeAngle, longitudeAngle, heightDistance, result13);
 
         final NEDVelocity result14 = new NEDVelocity();
-        estimator.estimate(timeInterval, oldFrame, latitudeAngle, longitudeAngle,
-                heightDistance, result14);
+        estimator.estimate(timeInterval, oldFrame, latitudeAngle, longitudeAngle, heightDistance, result14);
 
-        final NEDPosition oldPosition = new NEDPosition(
-                oldLatitude, oldLongitude, oldHeight);
+        final NEDPosition oldPosition = new NEDPosition(oldLatitude, oldLongitude, oldHeight);
         final NEDPosition position = new NEDPosition(latitude, longitude, height);
         final NEDVelocity result15 = new NEDVelocity();
-        estimator.estimate(TIME_INTERVAL_SECONDS, oldPosition, oldVn, oldVe, oldVd,
-                position, result15);
+        estimator.estimate(TIME_INTERVAL_SECONDS, oldPosition, oldVn, oldVe, oldVd, position, result15);
 
         final NEDVelocity result16 = new NEDVelocity();
-        estimator.estimate(timeInterval, oldPosition, oldVn, oldVe, oldVd,
-                position, result16);
+        estimator.estimate(timeInterval, oldPosition, oldVn, oldVe, oldVd, position, result16);
 
         final NEDVelocity result17 = new NEDVelocity();
-        estimator.estimate(TIME_INTERVAL_SECONDS, oldPosition, oldSpeedN,
-                oldSpeedE, oldSpeedD, position, result17);
+        estimator.estimate(TIME_INTERVAL_SECONDS, oldPosition, oldSpeedN, oldSpeedE, oldSpeedD, position, result17);
 
         final NEDVelocity result18 = new NEDVelocity();
-        estimator.estimate(timeInterval, oldPosition, oldSpeedN, oldSpeedE, oldSpeedD,
-                position, result18);
+        estimator.estimate(timeInterval, oldPosition, oldSpeedN, oldSpeedE, oldSpeedD, position, result18);
 
         final NEDVelocity result19 = new NEDVelocity();
-        estimator.estimate(TIME_INTERVAL_SECONDS, oldPosition, oldVelocity,
-                position, result19);
+        estimator.estimate(TIME_INTERVAL_SECONDS, oldPosition, oldVelocity, position, result19);
 
         final NEDVelocity result20 = new NEDVelocity();
-        estimator.estimate(timeInterval, oldPosition, oldVelocity, position,
-                result20);
+        estimator.estimate(timeInterval, oldPosition, oldVelocity, position, result20);
 
         final NEDVelocity result21 = new NEDVelocity();
-        estimator.estimate(TIME_INTERVAL_SECONDS, oldFrame, position,
-                result21);
+        estimator.estimate(TIME_INTERVAL_SECONDS, oldFrame, position, result21);
 
         final NEDVelocity result22 = new NEDVelocity();
         estimator.estimate(timeInterval, oldFrame, position, result22);
@@ -211,32 +185,23 @@ public class NEDVelocityEstimatorTest {
         final NEDVelocityEstimator estimator = new NEDVelocityEstimator();
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double oldLatitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldLongitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                MAX_VELOCITY_VALUE);
-        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                MAX_VELOCITY_VALUE);
-        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                MAX_VELOCITY_VALUE);
+        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double longitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final NEDVelocity result1 = estimator.estimateAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight,
-                oldVn, oldVe, oldVd, latitude, longitude, height);
+        final NEDVelocity result1 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, latitude, longitude, height);
 
         final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-        final NEDVelocity result2 = estimator.estimateAndReturnNew(
-                timeInterval, oldLatitude, oldLongitude, oldHeight,
+        final NEDVelocity result2 = estimator.estimateAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight,
                 oldVn, oldVe, oldVd, latitude, longitude, height);
 
         final Angle oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
@@ -248,93 +213,69 @@ public class NEDVelocityEstimatorTest {
         final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
         final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
         final Distance heightDistance = new Distance(height, DistanceUnit.METER);
-        final NEDVelocity result3 = estimator.estimateAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD,
+        final NEDVelocity result3 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD,
                 latitudeAngle, longitudeAngle, heightDistance);
 
-        final NEDVelocity result4 = estimator.estimateAndReturnNew(
-                timeInterval, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD,
-                latitudeAngle, longitudeAngle, heightDistance);
+        final NEDVelocity result4 = estimator.estimateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
+                oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD, latitudeAngle, longitudeAngle, heightDistance);
 
-        final NEDVelocity result5 = estimator.estimateAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldVn, oldVe, oldVd, latitudeAngle, longitudeAngle,
-                heightDistance);
-
-        final NEDVelocity result6 = estimator.estimateAndReturnNew(
-                timeInterval, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldVn, oldVe, oldVd, latitudeAngle,
+        final NEDVelocity result5 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldVn, oldVe, oldVd, latitudeAngle,
                 longitudeAngle, heightDistance);
+
+        final NEDVelocity result6 = estimator.estimateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
+                oldHeightDistance, oldVn, oldVe, oldVd, latitudeAngle, longitudeAngle, heightDistance);
 
         final NEDVelocity oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
-        final NEDVelocity result7 = estimator.estimateAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
+        final NEDVelocity result7 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
                 oldHeight, oldVelocity, latitude, longitude, height);
 
-        final NEDVelocity result8 = estimator.estimateAndReturnNew(
-                timeInterval, oldLatitude, oldLongitude, oldHeight,
+        final NEDVelocity result8 = estimator.estimateAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight,
                 oldVelocity, latitude, longitude, height);
 
-        final NEDVelocity result9 = estimator.estimateAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldVelocity, latitudeAngle, longitudeAngle,
+        final NEDVelocity result9 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldVelocity, latitudeAngle, longitudeAngle,
                 heightDistance);
 
-        final NEDVelocity result10 = estimator.estimateAndReturnNew(
-                timeInterval, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldVelocity, latitudeAngle, longitudeAngle,
-                heightDistance);
+        final NEDVelocity result10 = estimator.estimateAndReturnNew(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
+                oldHeightDistance, oldVelocity, latitudeAngle, longitudeAngle, heightDistance);
 
-        final NEDFrame oldFrame = new NEDFrame(oldLatitude, oldLongitude, oldHeight,
-                oldVn, oldVe, oldVd);
-        final NEDVelocity result11 = estimator.estimateAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldFrame, latitude, longitude,
-                height);
+        final NEDFrame oldFrame = new NEDFrame(oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd);
+        final NEDVelocity result11 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+                latitude, longitude, height);
 
-        final NEDVelocity result12 = estimator.estimateAndReturnNew(
-                timeInterval, oldFrame, latitude, longitude, height);
+        final NEDVelocity result12 = estimator.estimateAndReturnNew(timeInterval, oldFrame,
+                latitude, longitude, height);
 
-        final NEDVelocity result13 = estimator.estimateAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldFrame, latitudeAngle,
+        final NEDVelocity result13 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, latitudeAngle,
                 longitudeAngle, heightDistance);
 
-        final NEDVelocity result14 = estimator.estimateAndReturnNew(
-                timeInterval, oldFrame, latitudeAngle, longitudeAngle,
-                heightDistance);
+        final NEDVelocity result14 = estimator.estimateAndReturnNew(timeInterval, oldFrame,
+                latitudeAngle, longitudeAngle, heightDistance);
 
-        final NEDPosition oldPosition = new NEDPosition(
-                oldLatitude, oldLongitude, oldHeight);
+        final NEDPosition oldPosition = new NEDPosition(oldLatitude, oldLongitude, oldHeight);
         final NEDPosition position = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity result15 = estimator.estimateAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldPosition, oldVn, oldVe, oldVd,
+        final NEDVelocity result15 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition,
+                oldVn, oldVe, oldVd, position);
+
+        final NEDVelocity result16 = estimator.estimateAndReturnNew(timeInterval, oldPosition, oldVn, oldVe, oldVd,
                 position);
 
-        final NEDVelocity result16 = estimator.estimateAndReturnNew(
-                timeInterval, oldPosition, oldVn, oldVe, oldVd,
-                position);
-
-        final NEDVelocity result17 = estimator.estimateAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldPosition, oldSpeedN,
+        final NEDVelocity result17 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldSpeedN,
                 oldSpeedE, oldSpeedD, position);
 
-        final NEDVelocity result18 = estimator.estimateAndReturnNew(
-                timeInterval, oldPosition, oldSpeedN, oldSpeedE, oldSpeedD,
+        final NEDVelocity result18 = estimator.estimateAndReturnNew(timeInterval, oldPosition,
+                oldSpeedN, oldSpeedE, oldSpeedD, position);
+
+        final NEDVelocity result19 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, oldPosition, oldVelocity,
                 position);
 
-        final NEDVelocity result19 = estimator.estimateAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldPosition, oldVelocity,
-                position);
+        final NEDVelocity result20 = estimator.estimateAndReturnNew(timeInterval, oldPosition, oldVelocity, position);
 
-        final NEDVelocity result20 = estimator.estimateAndReturnNew(
-                timeInterval, oldPosition, oldVelocity, position);
+        final NEDVelocity result21 = estimator.estimateAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame, position);
 
-        final NEDVelocity result21 = estimator.estimateAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldFrame, position);
-
-        final NEDVelocity result22 = estimator.estimateAndReturnNew(
-                timeInterval, oldFrame, position);
+        final NEDVelocity result22 = estimator.estimateAndReturnNew(timeInterval, oldFrame, position);
 
         assertEquals(result1, result2);
         assertEquals(result1, result3);
@@ -363,35 +304,26 @@ public class NEDVelocityEstimatorTest {
     public void testEstimateVelocity() {
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double oldLatitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldLongitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                MAX_VELOCITY_VALUE);
-        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                MAX_VELOCITY_VALUE);
-        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                MAX_VELOCITY_VALUE);
+        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double longitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
         final NEDVelocity result1 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight,
+        NEDVelocityEstimator.estimateVelocity(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight,
                 oldVn, oldVe, oldVd, latitude, longitude, height, result1);
 
         final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
         final NEDVelocity result2 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                timeInterval, oldLatitude, oldLongitude, oldHeight,
-                oldVn, oldVe, oldVd, latitude, longitude, height, result2);
+        NEDVelocityEstimator.estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,
+                latitude, longitude, height, result2);
 
         final Angle oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
         final Angle oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
@@ -403,115 +335,83 @@ public class NEDVelocityEstimatorTest {
         final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
         final Distance heightDistance = new Distance(height, DistanceUnit.METER);
         final NEDVelocity result3 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD,
-                latitudeAngle, longitudeAngle, heightDistance, result3);
+        NEDVelocityEstimator.estimateVelocity(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
+                oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD, latitudeAngle, longitudeAngle, heightDistance,
+                result3);
 
         final NEDVelocity result4 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                timeInterval, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD,
-                latitudeAngle, longitudeAngle, heightDistance, result4);
+        NEDVelocityEstimator.estimateVelocity(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
+                oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD, latitudeAngle, longitudeAngle, heightDistance,
+                result4);
 
         final NEDVelocity result5 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldVn, oldVe, oldVd, latitudeAngle, longitudeAngle,
-                heightDistance, result5);
+        NEDVelocityEstimator.estimateVelocity(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
+                oldHeightDistance, oldVn, oldVe, oldVd, latitudeAngle, longitudeAngle, heightDistance, result5);
 
         final NEDVelocity result6 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                timeInterval, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldVn, oldVe, oldVd, latitudeAngle,
-                longitudeAngle, heightDistance, result6);
+        NEDVelocityEstimator.estimateVelocity(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
+                oldHeightDistance, oldVn, oldVe, oldVd, latitudeAngle, longitudeAngle, heightDistance, result6);
 
         final NEDVelocity result7 = new NEDVelocity();
         final NEDVelocity oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
-        NEDVelocityEstimator.estimateVelocity(
-                TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
-                oldHeight, oldVelocity, latitude, longitude, height, result7);
+        NEDVelocityEstimator.estimateVelocity(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight, oldVelocity,
+                latitude, longitude, height, result7);
 
         final NEDVelocity result8 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                timeInterval, oldLatitude, oldLongitude, oldHeight,
-                oldVelocity, latitude, longitude, height, result8);
+        NEDVelocityEstimator.estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity,
+                latitude, longitude, height, result8);
 
         final NEDVelocity result9 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldVelocity, latitudeAngle, longitudeAngle,
-                heightDistance, result9);
+        NEDVelocityEstimator.estimateVelocity(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
+                oldHeightDistance, oldVelocity, latitudeAngle, longitudeAngle, heightDistance, result9);
 
         final NEDVelocity result10 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                timeInterval, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldVelocity, latitudeAngle, longitudeAngle,
-                heightDistance, result10);
+        NEDVelocityEstimator.estimateVelocity(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
+                oldHeightDistance, oldVelocity, latitudeAngle, longitudeAngle, heightDistance, result10);
 
-        final NEDFrame oldFrame = new NEDFrame(oldLatitude, oldLongitude, oldHeight,
-                oldVn, oldVe, oldVd);
+        final NEDFrame oldFrame = new NEDFrame(oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd);
         final NEDVelocity result11 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                TIME_INTERVAL_SECONDS, oldFrame, latitude, longitude,
-                height, result11);
+        NEDVelocityEstimator.estimateVelocity(TIME_INTERVAL_SECONDS, oldFrame, latitude, longitude, height, result11);
 
         final NEDVelocity result12 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                timeInterval, oldFrame, latitude, longitude, height,
-                result12);
+        NEDVelocityEstimator.estimateVelocity(timeInterval, oldFrame, latitude, longitude, height, result12);
 
         final NEDVelocity result13 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                TIME_INTERVAL_SECONDS, oldFrame, latitudeAngle,
-                longitudeAngle, heightDistance, result13);
+        NEDVelocityEstimator.estimateVelocity(TIME_INTERVAL_SECONDS, oldFrame, latitudeAngle, longitudeAngle,
+                heightDistance, result13);
 
         final NEDVelocity result14 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                timeInterval, oldFrame, latitudeAngle, longitudeAngle,
-                heightDistance, result14);
+        NEDVelocityEstimator.estimateVelocity(timeInterval, oldFrame, latitudeAngle, longitudeAngle, heightDistance,
+                result14);
 
-        final NEDPosition oldPosition = new NEDPosition(
-                oldLatitude, oldLongitude, oldHeight);
+        final NEDPosition oldPosition = new NEDPosition(oldLatitude, oldLongitude, oldHeight);
         final NEDPosition position = new NEDPosition(latitude, longitude, height);
         final NEDVelocity result15 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                TIME_INTERVAL_SECONDS, oldPosition, oldVn, oldVe, oldVd,
-                position, result15);
+        NEDVelocityEstimator.estimateVelocity(TIME_INTERVAL_SECONDS, oldPosition, oldVn, oldVe, oldVd, position,
+                result15);
 
         final NEDVelocity result16 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                timeInterval, oldPosition, oldVn, oldVe, oldVd,
-                position, result16);
+        NEDVelocityEstimator.estimateVelocity(timeInterval, oldPosition, oldVn, oldVe, oldVd, position, result16);
 
         final NEDVelocity result17 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                TIME_INTERVAL_SECONDS, oldPosition, oldSpeedN,
-                oldSpeedE, oldSpeedD, position, result17);
+        NEDVelocityEstimator.estimateVelocity(TIME_INTERVAL_SECONDS, oldPosition, oldSpeedN, oldSpeedE, oldSpeedD,
+                position, result17);
 
         final NEDVelocity result18 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                timeInterval, oldPosition, oldSpeedN, oldSpeedE, oldSpeedD,
-                position, result18);
+        NEDVelocityEstimator.estimateVelocity(timeInterval, oldPosition, oldSpeedN, oldSpeedE, oldSpeedD, position,
+                result18);
 
         final NEDVelocity result19 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                TIME_INTERVAL_SECONDS, oldPosition, oldVelocity,
-                position, result19);
+        NEDVelocityEstimator.estimateVelocity(TIME_INTERVAL_SECONDS, oldPosition, oldVelocity, position, result19);
 
         final NEDVelocity result20 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                timeInterval, oldPosition, oldVelocity, position,
-                result20);
+        NEDVelocityEstimator.estimateVelocity(timeInterval, oldPosition, oldVelocity, position, result20);
 
         final NEDVelocity result21 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                TIME_INTERVAL_SECONDS, oldFrame, position,
-                result21);
+        NEDVelocityEstimator.estimateVelocity(TIME_INTERVAL_SECONDS, oldFrame, position, result21);
 
         final NEDVelocity result22 = new NEDVelocity();
-        NEDVelocityEstimator.estimateVelocity(
-                timeInterval, oldFrame, position, result22);
+        NEDVelocityEstimator.estimateVelocity(timeInterval, oldFrame, position, result22);
 
         assertEquals(result1, result2);
         assertEquals(result1, result3);
@@ -540,33 +440,24 @@ public class NEDVelocityEstimatorTest {
     public void testEstimateVelocityAndReturnNew() {
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double oldLatitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldLongitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                MAX_VELOCITY_VALUE);
-        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                MAX_VELOCITY_VALUE);
-        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                MAX_VELOCITY_VALUE);
+        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double longitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final NEDVelocity result1 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight,
-                oldVn, oldVe, oldVd, latitude, longitude, height);
+        final NEDVelocity result1 = NEDVelocityEstimator.estimateVelocityAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, latitude, longitude, height);
 
         final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
-        final NEDVelocity result2 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                timeInterval, oldLatitude, oldLongitude, oldHeight,
-                oldVn, oldVe, oldVd, latitude, longitude, height);
+        final NEDVelocity result2 = NEDVelocityEstimator.estimateVelocityAndReturnNew(timeInterval,
+                oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, latitude, longitude, height);
 
         final Angle oldLatitudeAngle = new Angle(oldLatitude, AngleUnit.RADIANS);
         final Angle oldLongitudeAngle = new Angle(oldLongitude, AngleUnit.RADIANS);
@@ -577,93 +468,75 @@ public class NEDVelocityEstimatorTest {
         final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
         final Angle longitudeAngle = new Angle(longitude, AngleUnit.RADIANS);
         final Distance heightDistance = new Distance(height, DistanceUnit.METER);
-        final NEDVelocity result3 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD,
+        final NEDVelocity result3 = NEDVelocityEstimator.estimateVelocityAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD,
                 latitudeAngle, longitudeAngle, heightDistance);
 
-        final NEDVelocity result4 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                timeInterval, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD,
+        final NEDVelocity result4 = NEDVelocityEstimator.estimateVelocityAndReturnNew(timeInterval,
+                oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldSpeedN, oldSpeedE, oldSpeedD,
                 latitudeAngle, longitudeAngle, heightDistance);
 
-        final NEDVelocity result5 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldVn, oldVe, oldVd, latitudeAngle, longitudeAngle,
-                heightDistance);
+        final NEDVelocity result5 = NEDVelocityEstimator.estimateVelocityAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldVn, oldVe, oldVd,
+                latitudeAngle, longitudeAngle, heightDistance);
 
-        final NEDVelocity result6 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                timeInterval, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldVn, oldVe, oldVd, latitudeAngle,
+        final NEDVelocity result6 = NEDVelocityEstimator.estimateVelocityAndReturnNew(timeInterval,
+                oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldVn, oldVe, oldVd, latitudeAngle,
                 longitudeAngle, heightDistance);
 
         final NEDVelocity oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
-        final NEDVelocity result7 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
-                oldHeight, oldVelocity, latitude, longitude, height);
+        final NEDVelocity result7 = NEDVelocityEstimator.estimateVelocityAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldLatitude, oldLongitude, oldHeight, oldVelocity, latitude, longitude, height);
 
-        final NEDVelocity result8 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                timeInterval, oldLatitude, oldLongitude, oldHeight,
-                oldVelocity, latitude, longitude, height);
+        final NEDVelocity result8 = NEDVelocityEstimator.estimateVelocityAndReturnNew(timeInterval,
+                oldLatitude, oldLongitude, oldHeight, oldVelocity, latitude, longitude, height);
 
-        final NEDVelocity result9 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldVelocity, latitudeAngle, longitudeAngle,
+        final NEDVelocity result9 = NEDVelocityEstimator.estimateVelocityAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldVelocity, latitudeAngle, longitudeAngle,
                 heightDistance);
 
-        final NEDVelocity result10 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                timeInterval, oldLatitudeAngle, oldLongitudeAngle,
-                oldHeightDistance, oldVelocity, latitudeAngle, longitudeAngle,
+        final NEDVelocity result10 = NEDVelocityEstimator.estimateVelocityAndReturnNew(timeInterval,
+                oldLatitudeAngle, oldLongitudeAngle, oldHeightDistance, oldVelocity, latitudeAngle, longitudeAngle,
                 heightDistance);
 
-        final NEDFrame oldFrame = new NEDFrame(oldLatitude, oldLongitude, oldHeight,
-                oldVn, oldVe, oldVd);
-        final NEDVelocity result11 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldFrame, latitude, longitude,
-                height);
+        final NEDFrame oldFrame = new NEDFrame(oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd);
+        final NEDVelocity result11 = NEDVelocityEstimator.estimateVelocityAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+                latitude, longitude, height);
 
-        final NEDVelocity result12 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                timeInterval, oldFrame, latitude, longitude, height);
+        final NEDVelocity result12 = NEDVelocityEstimator.estimateVelocityAndReturnNew(timeInterval, oldFrame,
+                latitude, longitude, height);
 
-        final NEDVelocity result13 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldFrame, latitudeAngle,
-                longitudeAngle, heightDistance);
+        final NEDVelocity result13 = NEDVelocityEstimator.estimateVelocityAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
+                latitudeAngle, longitudeAngle, heightDistance);
 
-        final NEDVelocity result14 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                timeInterval, oldFrame, latitudeAngle, longitudeAngle,
-                heightDistance);
+        final NEDVelocity result14 = NEDVelocityEstimator.estimateVelocityAndReturnNew(timeInterval, oldFrame,
+                latitudeAngle, longitudeAngle, heightDistance);
 
-        final NEDPosition oldPosition = new NEDPosition(
-                oldLatitude, oldLongitude, oldHeight);
+        final NEDPosition oldPosition = new NEDPosition(oldLatitude, oldLongitude, oldHeight);
         final NEDPosition position = new NEDPosition(latitude, longitude, height);
-        final NEDVelocity result15 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldPosition, oldVn, oldVe, oldVd,
+        final NEDVelocity result15 = NEDVelocityEstimator.estimateVelocityAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldPosition, oldVn, oldVe, oldVd, position);
+
+        final NEDVelocity result16 = NEDVelocityEstimator.estimateVelocityAndReturnNew(timeInterval, oldPosition,
+                oldVn, oldVe, oldVd, position);
+
+        final NEDVelocity result17 = NEDVelocityEstimator.estimateVelocityAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldPosition, oldSpeedN, oldSpeedE, oldSpeedD, position);
+
+        final NEDVelocity result18 = NEDVelocityEstimator.estimateVelocityAndReturnNew(timeInterval, oldPosition,
+                oldSpeedN, oldSpeedE, oldSpeedD, position);
+
+        final NEDVelocity result19 = NEDVelocityEstimator.estimateVelocityAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldPosition, oldVelocity, position);
+
+        final NEDVelocity result20 = NEDVelocityEstimator.estimateVelocityAndReturnNew(timeInterval, oldPosition,
+                oldVelocity, position);
+
+        final NEDVelocity result21 = NEDVelocityEstimator.estimateVelocityAndReturnNew(TIME_INTERVAL_SECONDS, oldFrame,
                 position);
 
-        final NEDVelocity result16 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                timeInterval, oldPosition, oldVn, oldVe, oldVd,
+        final NEDVelocity result22 = NEDVelocityEstimator.estimateVelocityAndReturnNew(timeInterval, oldFrame,
                 position);
-
-        final NEDVelocity result17 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldPosition, oldSpeedN,
-                oldSpeedE, oldSpeedD, position);
-
-        final NEDVelocity result18 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                timeInterval, oldPosition, oldSpeedN, oldSpeedE, oldSpeedD,
-                position);
-
-        final NEDVelocity result19 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldPosition, oldVelocity,
-                position);
-
-        final NEDVelocity result20 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                timeInterval, oldPosition, oldVelocity, position);
-
-        final NEDVelocity result21 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldFrame, position);
-
-        final NEDVelocity result22 = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                timeInterval, oldFrame, position);
 
         assertEquals(result1, result2);
         assertEquals(result1, result3);
@@ -693,49 +566,36 @@ public class NEDVelocityEstimatorTest {
         final NEDVelocityEstimator estimator = new NEDVelocityEstimator();
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double oldLatitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldLongitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                MAX_VELOCITY_VALUE);
-        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                MAX_VELOCITY_VALUE);
-        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                MAX_VELOCITY_VALUE);
+        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double longitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
         final NEDVelocity result1 = new NEDVelocity();
-        estimator.estimate(0.0, oldLatitude, oldLongitude, oldHeight,
-                oldVn, oldVe, oldVd, latitude, longitude, height, result1);
+        estimator.estimate(0.0, oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,
+                latitude, longitude, height, result1);
     }
 
     @Test
     public void testWhenNoPositionChange() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double oldLatitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double oldLongitude = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double oldLatitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double oldLongitude = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                MAX_VELOCITY_VALUE);
-        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                MAX_VELOCITY_VALUE);
-        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                MAX_VELOCITY_VALUE);
+        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-        final NEDVelocity result = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight,
-                oldVn, oldVe, oldVd, oldLatitude, oldLongitude, oldHeight);
+        final NEDVelocity result = NEDVelocityEstimator.estimateVelocityAndReturnNew(TIME_INTERVAL_SECONDS,
+                oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd, oldLatitude, oldLongitude, oldHeight);
 
         assertEquals(result.getVn(), -oldVn, ABSOLUTE_ERROR);
         assertEquals(result.getVe(), -oldVe, ABSOLUTE_ERROR);

@@ -66,8 +66,7 @@ public class BodyKinematicsGeneratorTest {
     private static final double GYRO_QUANT_LEVEL = 2e-4;
 
     @Test
-    public void testGenerateSingleTimeIntervalQuantizedAndWithNoise()
-            throws WrongSizeException {
+    public void testGenerateSingleTimeIntervalQuantizedAndWithNoise() throws WrongSizeException {
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
         final Matrix ma = generateMa();
@@ -76,146 +75,89 @@ public class BodyKinematicsGeneratorTest {
         final double accelNoiseRootPSD = getAccelNoiseRootPSD();
         final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, ACCEL_QUANT_LEVEL, GYRO_QUANT_LEVEL);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                ACCEL_QUANT_LEVEL, GYRO_QUANT_LEVEL);
 
         final Random random = mock(Random.class);
         when(random.nextGaussian()).thenReturn(0.5);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
         final double[] oldQuantizationResiduals = new double[6];
         for (int i = 0; i < 3; i++) {
-            oldQuantizationResiduals[i] = randomizer.nextDouble(
-                    MIN_ACCEL_QUANT_RESIDUAL, MAX_ACCEL_QUANT_RESIDUAL);
+            oldQuantizationResiduals[i] = randomizer.nextDouble(MIN_ACCEL_QUANT_RESIDUAL, MAX_ACCEL_QUANT_RESIDUAL);
         }
         for (int i = 3; i < 6; i++) {
-            oldQuantizationResiduals[i] = randomizer.nextDouble(
-                    MIN_GYRO_QUANT_RESIDUAL, MAX_GYRO_QUANT_RESIDUAL);
+            oldQuantizationResiduals[i] = randomizer.nextDouble(MIN_GYRO_QUANT_RESIDUAL, MAX_GYRO_QUANT_RESIDUAL);
         }
 
         final double[] quantizationResiduals1 = new double[6];
         final BodyKinematics result1 = new BodyKinematics();
-        BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, random, oldQuantizationResiduals,
-                result1, quantizationResiduals1);
+        BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random,
+                oldQuantizationResiduals, result1, quantizationResiduals1);
         final double[] quantizationResiduals2 = new double[6];
-        final BodyKinematics result2 = BodyKinematicsGenerator.generate(
-                TIME_INTERVAL_SECONDS, trueKinematics, errors, random,
-                oldQuantizationResiduals, quantizationResiduals2);
+        final BodyKinematics result2 = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors,
+                random, oldQuantizationResiduals, quantizationResiduals2);
 
         final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
         final BodyKinematics result3 = new BodyKinematics();
         final double[] quantizationResiduals3 = new double[6];
-        BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors,
-                random, oldQuantizationResiduals, result3, quantizationResiduals3);
+        BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, oldQuantizationResiduals,
+                result3, quantizationResiduals3);
 
         final double[] quantizationResiduals4 = new double[6];
-        final BodyKinematics result4 = BodyKinematicsGenerator.generate(timeInterval,
-                trueKinematics, errors, random, oldQuantizationResiduals,
-                quantizationResiduals4);
+        final BodyKinematics result4 = BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random,
+                oldQuantizationResiduals, quantizationResiduals4);
 
         final double[] expectedQuantizationResiduals = new double[6];
-        final BodyKinematics expected = generate(TIME_INTERVAL_SECONDS, trueKinematics,
-                errors, random, oldQuantizationResiduals, expectedQuantizationResiduals);
+        final BodyKinematics expected = generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random,
+                oldQuantizationResiduals, expectedQuantizationResiduals);
 
 
         assertTrue(expected.equals(result1, ABSOLUTE_ERROR));
-        assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals1,
-                ABSOLUTE_ERROR);
+        assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals1, ABSOLUTE_ERROR);
 
         assertTrue(expected.equals(result2, ABSOLUTE_ERROR));
-        assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals2,
-                ABSOLUTE_ERROR);
+        assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals2, ABSOLUTE_ERROR);
 
         assertTrue(expected.equals(result3, ABSOLUTE_ERROR));
-        assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals3,
-                ABSOLUTE_ERROR);
+        assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals3, ABSOLUTE_ERROR);
 
         assertTrue(expected.equals(result4, ABSOLUTE_ERROR));
-        assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals4,
-                ABSOLUTE_ERROR);
+        assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals4, ABSOLUTE_ERROR);
 
         // Force IllegalArgumentException
-        try {
-            BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                    trueKinematics, errors, random, new double[1], result1,
-                    quantizationResiduals1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                    trueKinematics, errors, random, oldQuantizationResiduals,
-                    result1, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, random, new double[1], result1, quantizationResiduals1));
+        assertThrows(IllegalArgumentException.class, () -> BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, random, oldQuantizationResiduals, result1, new double[1]));
 
-        BodyKinematics result = null;
-        try {
-            result = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                    trueKinematics, errors, random, new double[1],
-                    quantizationResiduals2);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            result = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                    trueKinematics, errors, random, oldQuantizationResiduals,
-                    new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(result);
+        assertThrows(IllegalArgumentException.class, () -> BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, random, new double[1], quantizationResiduals2));
+        assertThrows(IllegalArgumentException.class, () -> BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors, random, oldQuantizationResiduals, new double[1]));
 
-        try {
-            BodyKinematicsGenerator.generate(timeInterval,
-                    trueKinematics, errors, random, new double[1], result3,
-                    quantizationResiduals3);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            BodyKinematicsGenerator.generate(timeInterval,
-                    trueKinematics, errors, random, oldQuantizationResiduals,
-                    result3, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> BodyKinematicsGenerator.generate(timeInterval,
+                trueKinematics, errors, random, new double[1], result3, quantizationResiduals3));
+        assertThrows(IllegalArgumentException.class, () -> BodyKinematicsGenerator.generate(timeInterval,
+                trueKinematics, errors, random, oldQuantizationResiduals, result3, new double[1]));
 
-        try {
-            result = BodyKinematicsGenerator.generate(timeInterval,
-                    trueKinematics, errors, random, new double[1],
-                    quantizationResiduals4);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            result = BodyKinematicsGenerator.generate(timeInterval,
-                    trueKinematics, errors, random, oldQuantizationResiduals,
-                    new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(result);
+        assertThrows(IllegalArgumentException.class, () -> BodyKinematicsGenerator.generate(timeInterval,
+                trueKinematics, errors, random, new double[1], quantizationResiduals4));
+        assertThrows(IllegalArgumentException.class, () -> BodyKinematicsGenerator.generate(timeInterval,
+                trueKinematics, errors, random, oldQuantizationResiduals, new double[1]));
     }
 
     @Test
-    public void testGenerateSingleNoTimeIntervalQuantizedAndWithNoise()
-            throws WrongSizeException {
+    public void testGenerateSingleNoTimeIntervalQuantizedAndWithNoise() throws WrongSizeException {
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
         final Matrix ma = generateMa();
@@ -224,57 +166,48 @@ public class BodyKinematicsGeneratorTest {
         final double accelNoiseRootPSD = getAccelNoiseRootPSD();
         final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, ACCEL_QUANT_LEVEL, GYRO_QUANT_LEVEL);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                ACCEL_QUANT_LEVEL, GYRO_QUANT_LEVEL);
 
         final Random random = mock(Random.class);
         when(random.nextGaussian()).thenReturn(0.5);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
         final double[] oldQuantizationResiduals = new double[6];
         for (int i = 0; i < 3; i++) {
-            oldQuantizationResiduals[i] = randomizer.nextDouble(
-                    MIN_ACCEL_QUANT_RESIDUAL, MAX_ACCEL_QUANT_RESIDUAL);
+            oldQuantizationResiduals[i] = randomizer.nextDouble(MIN_ACCEL_QUANT_RESIDUAL, MAX_ACCEL_QUANT_RESIDUAL);
         }
         for (int i = 3; i < 6; i++) {
-            oldQuantizationResiduals[i] = randomizer.nextDouble(
-                    MIN_GYRO_QUANT_RESIDUAL, MAX_GYRO_QUANT_RESIDUAL);
+            oldQuantizationResiduals[i] = randomizer.nextDouble(MIN_GYRO_QUANT_RESIDUAL, MAX_GYRO_QUANT_RESIDUAL);
         }
 
         final double[] quantizationResiduals1 = new double[6];
         final BodyKinematics result1 = new BodyKinematics();
-        BodyKinematicsGenerator.generate(0.0,
-                trueKinematics, errors, random, oldQuantizationResiduals,
+        BodyKinematicsGenerator.generate(0.0, trueKinematics, errors, random, oldQuantizationResiduals,
                 result1, quantizationResiduals1);
 
         final double[] expectedQuantizationResiduals = new double[6];
-        final BodyKinematics expected = generate(0.0, trueKinematics,
-                errors, random, oldQuantizationResiduals, expectedQuantizationResiduals);
+        final BodyKinematics expected = generate(0.0, trueKinematics, errors, random,
+                oldQuantizationResiduals, expectedQuantizationResiduals);
 
 
         assertTrue(expected.equals(result1, ABSOLUTE_ERROR));
-        assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals1,
-                ABSOLUTE_ERROR);
+        assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals1, ABSOLUTE_ERROR);
 
         verifyNoInteractions(random);
     }
 
     @Test
-    public void testGenerateSingleTimeIntervalQuantizedAndWithoutNoise()
-            throws WrongSizeException {
+    public void testGenerateSingleTimeIntervalQuantizedAndWithoutNoise() throws WrongSizeException {
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
         final Matrix ma = generateMa();
@@ -283,51 +216,43 @@ public class BodyKinematicsGeneratorTest {
         final double accelNoiseRootPSD = 0.0;
         final double gyroNoiseRootPSD = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, ACCEL_QUANT_LEVEL, GYRO_QUANT_LEVEL);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                ACCEL_QUANT_LEVEL, GYRO_QUANT_LEVEL);
 
         final Random random = mock(Random.class);
         when(random.nextGaussian()).thenReturn(0.5);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
         final double[] oldQuantizationResiduals = new double[6];
         for (int i = 0; i < 3; i++) {
-            oldQuantizationResiduals[i] = randomizer.nextDouble(
-                    MIN_ACCEL_QUANT_RESIDUAL, MAX_ACCEL_QUANT_RESIDUAL);
+            oldQuantizationResiduals[i] = randomizer.nextDouble(MIN_ACCEL_QUANT_RESIDUAL, MAX_ACCEL_QUANT_RESIDUAL);
         }
         for (int i = 3; i < 6; i++) {
-            oldQuantizationResiduals[i] = randomizer.nextDouble(
-                    MIN_GYRO_QUANT_RESIDUAL, MAX_GYRO_QUANT_RESIDUAL);
+            oldQuantizationResiduals[i] = randomizer.nextDouble(MIN_GYRO_QUANT_RESIDUAL, MAX_GYRO_QUANT_RESIDUAL);
         }
 
         final double[] quantizationResiduals1 = new double[6];
         final BodyKinematics result1 = new BodyKinematics();
-        BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors, random, oldQuantizationResiduals,
-                result1, quantizationResiduals1);
+        BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random,
+                oldQuantizationResiduals, result1, quantizationResiduals1);
 
         // When no noise is present, is equivalent to zero time interval
         final double[] expectedQuantizationResiduals = new double[6];
-        final BodyKinematics expected = generate(0.0, trueKinematics,
-                errors, random, oldQuantizationResiduals, expectedQuantizationResiduals);
+        final BodyKinematics expected = generate(0.0, trueKinematics, errors, random,
+                oldQuantizationResiduals, expectedQuantizationResiduals);
 
 
         assertTrue(expected.equals(result1, ABSOLUTE_ERROR));
-        assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals1,
-                ABSOLUTE_ERROR);
+        assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals1, ABSOLUTE_ERROR);
 
         verify(random, atLeast(6)).nextGaussian();
     }
@@ -346,84 +271,70 @@ public class BodyKinematicsGeneratorTest {
         final double accelQuantLevel1 = 0.0;
         final double gyroQuantLevel1 = 0.0;
 
-        final IMUErrors errors1 = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel1, gyroQuantLevel1);
+        final IMUErrors errors1 = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                accelQuantLevel1, gyroQuantLevel1);
 
         final Random random = mock(Random.class);
         when(random.nextGaussian()).thenReturn(0.5);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
         final double[] oldQuantizationResiduals = new double[6];
         for (int i = 0; i < 3; i++) {
-            oldQuantizationResiduals[i] = randomizer.nextDouble(
-                    MIN_ACCEL_QUANT_RESIDUAL, MAX_ACCEL_QUANT_RESIDUAL);
+            oldQuantizationResiduals[i] = randomizer.nextDouble(MIN_ACCEL_QUANT_RESIDUAL, MAX_ACCEL_QUANT_RESIDUAL);
         }
         for (int i = 3; i < 6; i++) {
-            oldQuantizationResiduals[i] = randomizer.nextDouble(
-                    MIN_GYRO_QUANT_RESIDUAL, MAX_GYRO_QUANT_RESIDUAL);
+            oldQuantizationResiduals[i] = randomizer.nextDouble(MIN_GYRO_QUANT_RESIDUAL, MAX_GYRO_QUANT_RESIDUAL);
         }
 
         final double[] quantizationResiduals1 = new double[6];
         final BodyKinematics result1 = new BodyKinematics();
-        BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors1, random, oldQuantizationResiduals,
-                result1, quantizationResiduals1);
+        BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors1, random,
+                oldQuantizationResiduals, result1, quantizationResiduals1);
 
 
-        final IMUErrors errors2 = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, ACCEL_QUANT_LEVEL, GYRO_QUANT_LEVEL);
+        final IMUErrors errors2 = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                ACCEL_QUANT_LEVEL, GYRO_QUANT_LEVEL);
 
         // when no old quantization residuals are provided, quantization gets disabled
         final double[] quantizationResiduals2 = new double[6];
         final BodyKinematics result2 = new BodyKinematics();
-        BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors2, random, null,
-                result2, quantizationResiduals2);
+        BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors2, random,
+                null, result2, quantizationResiduals2);
 
         final BodyKinematics result3 = new BodyKinematics();
-        BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors1, random, oldQuantizationResiduals,
-                result3, null);
+        BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors1, random,
+                oldQuantizationResiduals, result3, null);
 
         final BodyKinematics result4 = new BodyKinematics();
-        BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
-                trueKinematics, errors1, random, result4);
+        BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors1, random, result4);
 
-        final BodyKinematics result5 = BodyKinematicsGenerator.generate(
-                TIME_INTERVAL_SECONDS, trueKinematics, errors1, random);
+        final BodyKinematics result5 = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors1,
+                random);
 
         final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
         final BodyKinematics result6 = new BodyKinematics();
-        BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors1,
-                random, result6);
+        BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors1, random, result6);
 
-        final BodyKinematics result7 = BodyKinematicsGenerator.generate(timeInterval,
-                trueKinematics, errors1, random);
+        final BodyKinematics result7 = BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors1, random);
 
         final double[] expectedQuantizationResiduals = new double[6];
-        final BodyKinematics expected = generate(TIME_INTERVAL_SECONDS, trueKinematics,
-                errors1, random, oldQuantizationResiduals, expectedQuantizationResiduals);
+        final BodyKinematics expected = generate(TIME_INTERVAL_SECONDS, trueKinematics, errors1, random,
+                oldQuantizationResiduals, expectedQuantizationResiduals);
 
         assertTrue(expected.equals(result1, ABSOLUTE_ERROR));
-        assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals1,
-                ABSOLUTE_ERROR);
+        assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals1, ABSOLUTE_ERROR);
 
         assertTrue(expected.equals(result2, ABSOLUTE_ERROR));
-        assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals2,
-                ABSOLUTE_ERROR);
+        assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals2, ABSOLUTE_ERROR);
 
         assertTrue(expected.equals(result3, ABSOLUTE_ERROR));
         assertTrue(expected.equals(result4, ABSOLUTE_ERROR));
@@ -431,13 +342,13 @@ public class BodyKinematicsGeneratorTest {
         assertTrue(expected.equals(result6, ABSOLUTE_ERROR));
         assertTrue(expected.equals(result7, ABSOLUTE_ERROR));
 
-        assertArrayEquals(quantizationResiduals1, new double[6], 0.0);
-        assertArrayEquals(quantizationResiduals2, new double[6], 0.0);
+        assertArrayEquals(new double[6], quantizationResiduals1, 0.0);
+        assertArrayEquals(new double[6], quantizationResiduals2, 0.0);
     }
 
     @Test
-    public void testGenerateSingleNoTimeIntervalNoQuantizationAndNoNoise()
-            throws WrongSizeException, RankDeficientMatrixException, DecomposerException {
+    public void testGenerateSingleNoTimeIntervalNoQuantizationAndNoNoise() throws WrongSizeException,
+            RankDeficientMatrixException, DecomposerException {
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
         final Matrix ma = generateMa();
@@ -448,49 +359,41 @@ public class BodyKinematicsGeneratorTest {
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = mock(Random.class);
         when(random.nextGaussian()).thenReturn(0.5);
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
         final double[] oldQuantizationResiduals = new double[6];
         for (int i = 0; i < 3; i++) {
-            oldQuantizationResiduals[i] = randomizer.nextDouble(
-                    MIN_ACCEL_QUANT_RESIDUAL, MAX_ACCEL_QUANT_RESIDUAL);
+            oldQuantizationResiduals[i] = randomizer.nextDouble(MIN_ACCEL_QUANT_RESIDUAL, MAX_ACCEL_QUANT_RESIDUAL);
         }
         for (int i = 3; i < 6; i++) {
-            oldQuantizationResiduals[i] = randomizer.nextDouble(
-                    MIN_GYRO_QUANT_RESIDUAL, MAX_GYRO_QUANT_RESIDUAL);
+            oldQuantizationResiduals[i] = randomizer.nextDouble(MIN_GYRO_QUANT_RESIDUAL, MAX_GYRO_QUANT_RESIDUAL);
         }
 
         final double[] quantizationResiduals1 = new double[6];
         final BodyKinematics result1 = new BodyKinematics();
-        BodyKinematicsGenerator.generate(0.0,
-                trueKinematics, errors, random, oldQuantizationResiduals,
+        BodyKinematicsGenerator.generate(0.0, trueKinematics, errors, random, oldQuantizationResiduals,
                 result1, quantizationResiduals1);
 
         final double[] expectedQuantizationResiduals = new double[6];
-        final BodyKinematics expected = generate(0.0, trueKinematics,
-                errors, random, oldQuantizationResiduals, expectedQuantizationResiduals);
+        final BodyKinematics expected = generate(0.0, trueKinematics, errors, random,
+                oldQuantizationResiduals, expectedQuantizationResiduals);
 
         assertTrue(expected.equals(result1, ABSOLUTE_ERROR));
-        assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals1,
-                ABSOLUTE_ERROR);
+        assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals1, ABSOLUTE_ERROR);
 
         // Because we follow the model
         // uf = ba + (I + Ma)*f + noise
@@ -506,14 +409,12 @@ public class BodyKinematicsGeneratorTest {
         final Matrix ug = result1.asAngularRateMatrix();
 
         final Matrix identity = Matrix.identity(3, 3);
-        final Matrix f = Utils.inverse(identity.addAndReturnNew(ma))
-                .multiplyAndReturnNew(uf.subtractAndReturnNew(ba));
+        final Matrix f = Utils.inverse(identity.addAndReturnNew(ma)).multiplyAndReturnNew(uf.subtractAndReturnNew(ba));
 
         assertTrue(f.equals(trueKinematics.asSpecificForceMatrix(), ABSOLUTE_ERROR));
 
-        final Matrix g = Utils.inverse(identity.addAndReturnNew(mg))
-                .multiplyAndReturnNew(ug.subtractAndReturnNew(bg)
-                        .subtractAndReturnNew(gg.multiplyAndReturnNew(f)));
+        final Matrix g = Utils.inverse(identity.addAndReturnNew(mg)).multiplyAndReturnNew(ug.subtractAndReturnNew(bg)
+                .subtractAndReturnNew(gg.multiplyAndReturnNew(f)));
 
         assertTrue(g.equals(trueKinematics.asAngularRateMatrix(), ABSOLUTE_ERROR));
     }
@@ -528,10 +429,10 @@ public class BodyKinematicsGeneratorTest {
         final double accelNoiseRootPSD = getAccelNoiseRootPSD();
         final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
 
-        final IMUErrors errors1 = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, ACCEL_QUANT_LEVEL, GYRO_QUANT_LEVEL);
-        final IMUErrors errors2 = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, 0.0, 0.0);
+        final IMUErrors errors1 = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                ACCEL_QUANT_LEVEL, GYRO_QUANT_LEVEL);
+        final IMUErrors errors2 = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD,
+                0.0, 0.0);
 
         final Random random = mock(Random.class);
         when(random.nextGaussian()).thenReturn(0.5);
@@ -543,36 +444,30 @@ public class BodyKinematicsGeneratorTest {
         final List<BodyKinematics> trueKinematics = new ArrayList<>();
         final List<BodyKinematics> expected = new ArrayList<>();
         for (int i = 0; i < NUM; i++) {
-            final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                    MAX_ACCELEROMETER_VALUE);
-            final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                    MAX_ACCELEROMETER_VALUE);
-            final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                    MAX_ACCELEROMETER_VALUE);
+            final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+            final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+            final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
             final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
             final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
             final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-            trueKinematics.add(new BodyKinematics(fx, fy, fz,
-                    omegaX, omegaY, omegaZ));
+            trueKinematics.add(new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ));
 
-            expected.add(generate(TIME_INTERVAL_SECONDS, trueKinematics.get(i),
-                    errors2, random, oldQuantizationResiduals, quantizationResiduals));
+            expected.add(generate(TIME_INTERVAL_SECONDS, trueKinematics.get(i), errors2, random,
+                    oldQuantizationResiduals, quantizationResiduals));
         }
 
         final List<BodyKinematics> result1 = new ArrayList<>();
-        BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics,
-                errors1, random, result1);
-        final Collection<BodyKinematics> result2 = BodyKinematicsGenerator.generate(
-                TIME_INTERVAL_SECONDS, trueKinematics, errors1, random);
+        BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors1, random, result1);
+        final Collection<BodyKinematics> result2 = BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS,
+                trueKinematics, errors1, random);
 
         final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
         final List<BodyKinematics> result3 = new ArrayList<>();
-        BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors1,
-                random, result3);
+        BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors1, random, result3);
 
-        final Collection<BodyKinematics> result4 = BodyKinematicsGenerator.generate(
-                timeInterval, trueKinematics, errors1, random);
+        final Collection<BodyKinematics> result4 = BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
+                errors1, random);
 
         assertEquals(expected, result1);
         assertEquals(expected, result2);
@@ -592,24 +487,20 @@ public class BodyKinematicsGeneratorTest {
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
 
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
         final double omegaX = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
         final BodyKinematics result = new BodyKinematics();
         double avgFx = 0.0;
@@ -625,8 +516,7 @@ public class BodyKinematicsGeneratorTest {
         double varOmegaY = 0.0;
         double varOmegaZ = 0.0;
         for (int i = 0, j = 1; i < SAMPLES; i++, j++) {
-            BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics,
-                    errors, random, result);
+            BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random, result);
 
             avgFx = avgFx * (double) i / (double) j + result.getFx() / j;
             avgFy = avgFy * (double) i / (double) j + result.getFy() / j;
@@ -677,20 +567,16 @@ public class BodyKinematicsGeneratorTest {
         assertEquals(rootPsdOmegaZ, gyroNoiseRootPSD, LARGE_ABSOLUTE_ERROR);
     }
 
-    private BodyKinematics generate(final double timeInterval,
-                                    final BodyKinematics trueKinematics,
-                                    final IMUErrors errors,
-                                    final Random random,
-                                    final double[] oldQuantizationResiduals,
-                                    final double[] quantizationResiduals) throws WrongSizeException {
+    private static BodyKinematics generate(
+            final double timeInterval, final BodyKinematics trueKinematics, final IMUErrors errors, final Random random,
+            final double[] oldQuantizationResiduals, final double[] quantizationResiduals) throws WrongSizeException {
 
         final Matrix accelNoise = new Matrix(3, 1);
         final Matrix gyroNoise = new Matrix(3, 1);
         if (timeInterval > 0.0) {
             for (int i = 0; i < 3; i++) {
                 accelNoise.setElementAtIndex(i, random.nextGaussian()
-                        * errors.getAccelerometerNoiseRootPSD()
-                        / Math.sqrt(timeInterval));
+                        * errors.getAccelerometerNoiseRootPSD() / Math.sqrt(timeInterval));
                 gyroNoise.setElementAtIndex(i, random.nextGaussian()
                         * errors.getGyroNoiseRootPSD() / Math.sqrt(timeInterval));
             }
@@ -731,8 +617,8 @@ public class BodyKinematicsGeneratorTest {
 
 
             for (int i = 0; i < 3; i++) {
-                quantizationResiduals[i] = uqFibb.getElementAtIndex(i)
-                        + oldQuantizationResiduals[i] - measFibb.getElementAtIndex(i);
+                quantizationResiduals[i] = uqFibb.getElementAtIndex(i) + oldQuantizationResiduals[i]
+                        - measFibb.getElementAtIndex(i);
             }
         } else {
             measFibb = uqFibb;
@@ -756,8 +642,8 @@ public class BodyKinematicsGeneratorTest {
 
 
             for (int i = 0, j = 3; i < 3; i++, j++) {
-                quantizationResiduals[j] = uqOmegaibb.getElementAtIndex(i)
-                        + oldQuantizationResiduals[j] - measOmegaIbb.getElementAtIndex(i);
+                quantizationResiduals[j] = uqOmegaibb.getElementAtIndex(i) + oldQuantizationResiduals[j]
+                        - measOmegaIbb.getElementAtIndex(i);
             }
         } else {
             measOmegaIbb = uqOmegaibb;
@@ -768,27 +654,26 @@ public class BodyKinematicsGeneratorTest {
             }
         }
 
-        return new BodyKinematics(measFibb.getElementAtIndex(0),
-                measFibb.getElementAtIndex(1), measFibb.getElementAtIndex(2),
-                measOmegaIbb.getElementAtIndex(0), measOmegaIbb.getElementAtIndex(1),
+        return new BodyKinematics(measFibb.getElementAtIndex(0), measFibb.getElementAtIndex(1),
+                measFibb.getElementAtIndex(2), measOmegaIbb.getElementAtIndex(0), measOmegaIbb.getElementAtIndex(1),
                 measOmegaIbb.getElementAtIndex(2));
     }
 
-    private Matrix generateBa() {
+    private static Matrix generateBa() {
         return Matrix.newFromArray(new double[]{
                 900 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 -1300 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 800 * MICRO_G_TO_METERS_PER_SECOND_SQUARED});
     }
 
-    private Matrix generateBg() {
+    private static Matrix generateBg() {
         return Matrix.newFromArray(new double[]{
                 -9 * DEG_TO_RAD / 3600.0,
                 13 * DEG_TO_RAD / 3600.0,
                 -8 * DEG_TO_RAD / 3600.0});
     }
 
-    private Matrix generateMa() throws WrongSizeException {
+    private static Matrix generateMa() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
@@ -799,7 +684,7 @@ public class BodyKinematicsGeneratorTest {
         return result;
     }
 
-    private Matrix generateMg() throws WrongSizeException {
+    private static Matrix generateMg() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
@@ -810,7 +695,7 @@ public class BodyKinematicsGeneratorTest {
         return result;
     }
 
-    private Matrix generateGg() throws WrongSizeException {
+    private static Matrix generateGg() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         final double tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
@@ -822,11 +707,11 @@ public class BodyKinematicsGeneratorTest {
         return result;
     }
 
-    private double getAccelNoiseRootPSD() {
+    private static double getAccelNoiseRootPSD() {
         return 100.0 * MICRO_G_TO_METERS_PER_SECOND_SQUARED;
     }
 
-    private double getGyroNoiseRootPSD() {
+    private static double getGyroNoiseRootPSD() {
         return 0.01 * DEG_TO_RAD / 60.0;
     }
 }

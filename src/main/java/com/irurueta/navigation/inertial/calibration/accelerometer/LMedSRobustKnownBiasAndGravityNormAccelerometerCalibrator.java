@@ -134,8 +134,7 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed) {
+    public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(final boolean commonAxisUsed) {
         super(commonAxisUsed);
     }
 
@@ -146,8 +145,7 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *             in meters per squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] bias) {
+    public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(final double[] bias) {
         super(bias);
     }
 
@@ -157,8 +155,7 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param bias known accelerometer bias.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Matrix bias) {
+    public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(final Matrix bias) {
         super(bias);
     }
 
@@ -170,8 +167,7 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Matrix bias, final Matrix initialMa) {
+    public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(final Matrix bias, final Matrix initialMa) {
         super(bias, initialMa);
     }
 
@@ -182,8 +178,7 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                               squared second (m/s^2).
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm) {
+    public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(final Double groundTruthGravityNorm) {
         super(groundTruthGravityNorm);
     }
 
@@ -198,8 +193,7 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements) {
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements) {
         super(groundTruthGravityNorm, measurements);
     }
 
@@ -216,8 +210,7 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, listener);
     }
@@ -235,8 +228,7 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         super(groundTruthGravityNorm, measurements, commonAxisUsed);
     }
@@ -256,10 +248,8 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, commonAxisUsed, listener);
     }
 
@@ -277,8 +267,7 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final double[] bias) {
         super(groundTruthGravityNorm, measurements, bias);
     }
@@ -298,10 +287,8 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] bias, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, bias, listener);
     }
 
@@ -321,11 +308,9 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias);
     }
 
     /**
@@ -345,12 +330,10 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, listener);
     }
 
     /**
@@ -366,8 +349,7 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias) {
         super(groundTruthGravityNorm, measurements, bias);
     }
@@ -386,10 +368,8 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix bias, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, bias, listener);
     }
 
@@ -408,11 +388,9 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias);
     }
 
     /**
@@ -431,12 +409,10 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, listener);
     }
 
     /**
@@ -454,8 +430,7 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa) {
         super(groundTruthGravityNorm, measurements, bias, initialMa);
     }
@@ -476,12 +451,10 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, bias, initialMa,
-                listener);
+        super(groundTruthGravityNorm, measurements, bias, initialMa, listener);
     }
 
     /**
@@ -501,12 +474,9 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, initialMa);
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, initialMa);
     }
 
     /**
@@ -527,13 +497,10 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, initialMa, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, initialMa, listener);
     }
 
     /**
@@ -542,8 +509,7 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param groundTruthGravityNorm ground truth gravity norm.
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm) {
+    public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(final Acceleration groundTruthGravityNorm) {
         super(groundTruthGravityNorm);
     }
 
@@ -557,8 +523,7 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements) {
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements) {
         super(groundTruthGravityNorm, measurements);
     }
 
@@ -574,11 +539,9 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                listener);
+        super(groundTruthGravityNorm, measurements, listener);
     }
 
     /**
@@ -593,11 +556,9 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed);
     }
 
     /**
@@ -614,12 +575,9 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, listener);
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, listener);
     }
 
     /**
@@ -635,11 +593,9 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final double[] bias) {
-        super(groundTruthGravityNorm, measurements,
-                bias);
+        super(groundTruthGravityNorm, measurements, bias);
     }
 
     /**
@@ -656,12 +612,9 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                bias, listener);
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] bias, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, measurements, bias, listener);
     }
 
     /**
@@ -679,11 +632,9 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, bias);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias);
     }
 
     /**
@@ -702,12 +653,10 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, bias, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, listener);
     }
 
     /**
@@ -722,8 +671,7 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias) {
         super(groundTruthGravityNorm, measurements, bias);
     }
@@ -741,10 +689,8 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix bias, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, bias, listener);
     }
 
@@ -762,8 +708,7 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias) {
         super(groundTruthGravityNorm, measurements, commonAxisUsed, bias);
     }
@@ -783,12 +728,10 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, bias, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, listener);
     }
 
     /**
@@ -805,8 +748,7 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa) {
         super(groundTruthGravityNorm, measurements, bias, initialMa);
     }
@@ -826,12 +768,10 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, bias, initialMa,
-                listener);
+        super(groundTruthGravityNorm, measurements, bias, initialMa, listener);
     }
 
     /**
@@ -850,12 +790,9 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, initialMa);
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, initialMa);
     }
 
     /**
@@ -875,13 +812,10 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, initialMa, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, initialMa, listener);
     }
 
     /**
@@ -958,7 +892,7 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
         }
 
         final LMedSRobustEstimator<PreliminaryResult> innerEstimator =
-                new LMedSRobustEstimator<>(new LMedSRobustEstimatorListener<PreliminaryResult>() {
+                new LMedSRobustEstimator<>(new LMedSRobustEstimatorListener<>() {
                     @Override
                     public int getTotalSamples() {
                         return mMeasurements.size();
@@ -971,14 +905,12 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
 
                     @Override
                     public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List<PreliminaryResult> solutions) {
+                            final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                         computePreliminarySolutions(samplesIndices, solutions);
                     }
 
                     @Override
-                    public double computeResidual(
-                            final PreliminaryResult currentEstimation, final int i) {
+                    public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
                         return computeError(mMeasurements.get(i), currentEstimation);
                     }
 
@@ -988,36 +920,30 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
                     }
 
                     @Override
-                    public void onEstimateStart(
-                            final RobustEstimator<PreliminaryResult> estimator) {
+                    public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                         // no action needed
                     }
 
                     @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator<PreliminaryResult> estimator) {
+                    public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                         // no action needed
                     }
 
                     @Override
                     public void onEstimateNextIteration(
-                            final RobustEstimator<PreliminaryResult> estimator,
-                            final int iteration) {
+                            final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                         if (mListener != null) {
                             mListener.onCalibrateNextIteration(
-                                    LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.this,
-                                    iteration);
+                                    LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.this, iteration);
                         }
                     }
 
                     @Override
                     public void onEstimateProgressChange(
-                            final RobustEstimator<PreliminaryResult> estimator,
-                            final float progress) {
+                            final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                         if (mListener != null) {
                             mListener.onCalibrateProgressChange(
-                                    LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.this,
-                                    progress);
+                                    LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.this, progress);
                         }
                     }
                 });
@@ -1061,7 +987,7 @@ public class LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.LMedS;
+        return RobustEstimatorMethod.LMEDS;
     }
 
     /**

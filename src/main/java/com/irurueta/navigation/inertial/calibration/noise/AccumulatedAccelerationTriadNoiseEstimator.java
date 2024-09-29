@@ -46,8 +46,7 @@ import com.irurueta.units.AccelerationUnit;
  */
 public class AccumulatedAccelerationTriadNoiseEstimator extends
         AccumulatedTriadNoiseEstimator<AccelerationUnit, Acceleration, AccelerationTriad,
-                AccumulatedAccelerationTriadNoiseEstimator,
-                AccumulatedAccelerationTriadNoiseEstimatorListener>
+                AccumulatedAccelerationTriadNoiseEstimator, AccumulatedAccelerationTriadNoiseEstimatorListener>
         implements AccelerometerNoiseRootPsdSource {
 
     /**
@@ -78,8 +77,7 @@ public class AccumulatedAccelerationTriadNoiseEstimator extends
      */
     @Override
     protected AccelerationTriad createTriad(
-            final double valueX, final double valueY, final double valueZ,
-            final AccelerationUnit unit) {
+            final double valueX, final double valueY, final double valueZ, final AccelerationUnit unit) {
         return new AccelerationTriad(unit, valueX, valueY, valueZ);
     }
 
@@ -101,8 +99,7 @@ public class AccumulatedAccelerationTriadNoiseEstimator extends
      * @return created measurement.
      */
     @Override
-    protected Acceleration createMeasurement(
-            final double value, final AccelerationUnit unit) {
+    protected Acceleration createMeasurement(final double value, final AccelerationUnit unit) {
         return new Acceleration(value, unit);
     }
 

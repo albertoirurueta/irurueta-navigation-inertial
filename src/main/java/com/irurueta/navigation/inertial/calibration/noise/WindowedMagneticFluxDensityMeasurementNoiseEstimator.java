@@ -93,7 +93,6 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimator extends
      */
     @Override
     protected double convertToDefaultUnit(MagneticFluxDensity value) {
-        return MagneticFluxDensityConverter.convert(value.getValue().doubleValue(),
-                value.getUnit(), getDefaultUnit());
+        return MagneticFluxDensityConverter.convert(value.getValue().doubleValue(), value.getUnit(), getDefaultUnit());
     }
 }

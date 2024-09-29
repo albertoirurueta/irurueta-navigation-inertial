@@ -18,11 +18,15 @@ package com.irurueta.navigation.inertial.calibration.gyroscope;
 import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Quaternion;
+import com.irurueta.geometry.Rotation3D;
 import com.irurueta.geometry.RotationException;
 
 /**
  * Computes one step of a Runge-Kutta (RK4) integration algorithm.
- * More information available here: https://en.wikipedia.org/wiki/Runge–Kutta_methods
+ * More information available here:
+ * <a href="https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods">
+ *     https://en.wikipedia.org/wiki/Runge–Kutta_methods
+ * </a>
  */
 public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator {
 
@@ -100,9 +104,9 @@ public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator
      */
     public RungeKuttaQuaternionStepIntegrator() {
         try {
-            mOmega0 = new Matrix(Quaternion.INHOM_COORDS, 1);
-            mOmega1 = new Matrix(Quaternion.INHOM_COORDS, 1);
-            mOmega01 = new Matrix(Quaternion.INHOM_COORDS, 1);
+            mOmega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            mOmega1 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            mOmega01 = new Matrix(Rotation3D.INHOM_COORDS, 1);
             mQuat = new Matrix(Quaternion.N_PARAMS, 1);
             mQuatResult = new Matrix(Quaternion.N_PARAMS, 1);
             mTmpQ = new Matrix(Quaternion.N_PARAMS, 1);
@@ -128,7 +132,10 @@ public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator
 
     /**
      * Performs an RK4 Runge-Kutta integration step.
-     * More information available here: https://en.wikipedia.org/wiki/Runge–Kutta_methods
+     * More information available here:
+     * <a href="https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods">
+     *     https://en.wikipedia.org/wiki/Runge–Kutta_methods
+     * </a>–
      *
      * @param initialAttitude initial attitude.
      * @param initialWx       initial x-coordinate rotation velocity at initial timestamp expressed in
@@ -148,18 +155,20 @@ public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator
      * @throws RotationException if a numerical error occurs.
      */
     @Override
-    public void integrate(final Quaternion initialAttitude,
-                          final double initialWx, final double initialWy, final double initialWz,
-                          final double currentWx, final double currentWy, final double currentWz,
-                          final double dt, Quaternion result) throws RotationException {
-        integrationStep(initialAttitude, initialWx, initialWy, initialWz,
-                currentWx, currentWy, currentWz, dt, result, mOmega0, mOmega1,
-                mOmega01, mQuat, mQuatResult, mTmpQ, mK1, mK2, mK3, mK4, mOmegaSkew);
+    public void integrate(
+            final Quaternion initialAttitude, final double initialWx, final double initialWy, final double initialWz,
+            final double currentWx, final double currentWy, final double currentWz, final double dt,
+            Quaternion result) throws RotationException {
+        integrationStep(initialAttitude, initialWx, initialWy, initialWz, currentWx, currentWy, currentWz, dt, result,
+                mOmega0, mOmega1, mOmega01, mQuat, mQuatResult, mTmpQ, mK1, mK2, mK3, mK4, mOmegaSkew);
     }
 
     /**
      * Performs an RK4 Runge-Kutta integration step.
-     * More information available here: https://en.wikipedia.org/wiki/Runge–Kutta_methods
+     * More information available here:
+     * <a href="https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods">
+     *     https://en.wikipedia.org/wiki/Runge–Kutta_methods
+     * </a>
      *
      * @param initialAttitude initial attitude.
      * @param initialWx       initial x-coordinate rotation velocity at initial timestamp expressed in
@@ -179,14 +188,13 @@ public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator
      * @throws RotationException if a numerical error occurs.
      */
     public static void integrationStep(
-            final Quaternion initialAttitude,
-            final double initialWx, final double initialWy, final double initialWz,
-            final double currentWx, final double currentWy, final double currentWz,
-            final double dt, Quaternion result) throws RotationException {
+            final Quaternion initialAttitude, final double initialWx, final double initialWy, final double initialWz,
+            final double currentWx, final double currentWy, final double currentWz, final double dt, Quaternion result)
+            throws RotationException {
         try {
-            final Matrix omega0 = new Matrix(Quaternion.INHOM_COORDS, 1);
-            final Matrix omega1 = new Matrix(Quaternion.INHOM_COORDS, 1);
-            final Matrix omega01 = new Matrix(Quaternion.INHOM_COORDS, 1);
+            final Matrix omega0 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            final Matrix omega1 = new Matrix(Rotation3D.INHOM_COORDS, 1);
+            final Matrix omega01 = new Matrix(Rotation3D.INHOM_COORDS, 1);
             final Matrix quat = new Matrix(Quaternion.N_PARAMS, 1);
             final Matrix quatResult = new Matrix(Quaternion.N_PARAMS, 1);
             final Matrix tmpQ = new Matrix(Quaternion.N_PARAMS, 1);
@@ -195,9 +203,8 @@ public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator
             final Matrix k3 = new Matrix(Quaternion.N_PARAMS, 1);
             final Matrix k4 = new Matrix(Quaternion.N_PARAMS, 1);
             final Matrix omegaSkew = new Matrix(Quaternion.N_PARAMS, Quaternion.N_PARAMS);
-            integrationStep(initialAttitude, initialWx, initialWy, initialWz,
-                    currentWx, currentWy, currentWz, dt, result, omega0, omega1,
-                    omega01, quat, quatResult, tmpQ, k1, k2, k3, k4, omegaSkew);
+            integrationStep(initialAttitude, initialWx, initialWy, initialWz, currentWx, currentWy, currentWz, dt,
+                    result, omega0, omega1, omega01, quat, quatResult, tmpQ, k1, k2, k3, k4, omegaSkew);
         } catch (final AlgebraException ignore) {
             // never happens
         }
@@ -205,7 +212,10 @@ public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator
 
     /**
      * Performs an RK4 Runge-Kutta integration step.
-     * More information available here: https://en.wikipedia.org/wiki/Runge–Kutta_methods
+     * More information available here:
+     * <a href="https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods">
+     *     https://en.wikipedia.org/wiki/Runge–Kutta_methods
+     * </a>
      *
      * @param initialAttitude initial attitude.
      * @param initialWx       initial x-coordinate rotation velocity at initial timestamp expressed in
@@ -244,12 +254,10 @@ public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator
      * @throws RotationException if a numerical error occurs.
      */
     private static void integrationStep(
-            final Quaternion initialAttitude,
-            final double initialWx, final double initialWy, final double initialWz,
-            final double currentWx, final double currentWy, final double currentWz,
-            final double dt, Quaternion result, final Matrix omega0, final Matrix omega1,
-            final Matrix omega01, final Matrix quat, final Matrix quatResult, final Matrix tmpQ,
-            final Matrix k1, final Matrix k2, final Matrix k3, final Matrix k4,
+            final Quaternion initialAttitude, final double initialWx, final double initialWy, final double initialWz,
+            final double currentWx, final double currentWy, final double currentWz, final double dt, Quaternion result,
+            final Matrix omega0, final Matrix omega1, final Matrix omega01, final Matrix quat, final Matrix quatResult,
+            final Matrix tmpQ, final Matrix k1, final Matrix k2, final Matrix k3, final Matrix k4,
             final Matrix omegaSkew) throws RotationException {
         try {
             // normalize and copy initial attitude into matrix form
@@ -263,8 +271,7 @@ public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator
             copyAngularSpeedToMatrix(currentWx, currentWy, currentWz, omega1);
 
             // compute average of angular speeds at mid-point between t0 and t1
-            computeAverageAngularSpeed(initialWx, initialWy, initialWz,
-                    currentWx, currentWy, currentWz, omega01);
+            computeAverageAngularSpeed(initialWx, initialWy, initialWz, currentWx, currentWy, currentWz, omega01);
 
             // Compute First Runge-Kutta coefficient k1 as the slope at initial point: k1 = f(t(n), x(n))
             // so that x(t(n) + 0.5 * dt) = x(n) + 0.5 * dt * k1
@@ -298,7 +305,7 @@ public class RungeKuttaQuaternionStepIntegrator extends QuaternionStepIntegrator
             computeOmegaSkew(omega1, omegaSkew);
             computeTimeDerivative(tmpQ, omegaSkew, k4);
 
-            // result = quat + dt * (ONE_THIRD * k1 + ONE_SIXTH * k2 + ONE_SIXTH * k3 + ONE_THIRD * k4)
+            // result = quat + dt * (ONE_SIXTH * k1 + ONE_THIRD * k2 + ONE_THIRD * k3 + ONE_SIXTH * k4)
             k1.multiplyByScalar(ONE_SIXTH);
             k2.multiplyByScalar(ONE_THIRD);
             k3.multiplyByScalar(ONE_THIRD);

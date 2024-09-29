@@ -152,8 +152,7 @@ public interface KnownHardIronMagnetometerCalibrator {
      * @throws LockedException if calibrator is currently running.
      */
     void setHardIronCoordinates(
-            final double hardIronX, final double hardIronY,
-            final double hardIronZ) throws LockedException;
+            final double hardIronX, final double hardIronY, final double hardIronZ) throws LockedException;
 
     /**
      * Sets known hard-iron coordinates.
@@ -164,8 +163,7 @@ public interface KnownHardIronMagnetometerCalibrator {
      * @throws LockedException if calibrator is currently running.
      */
     void setHardIronCoordinates(
-            final MagneticFluxDensity hardIronX,
-            final MagneticFluxDensity hardIronY,
+            final MagneticFluxDensity hardIronX, final MagneticFluxDensity hardIronY,
             final MagneticFluxDensity hardIronZ) throws LockedException;
 
     /**
@@ -188,8 +186,7 @@ public interface KnownHardIronMagnetometerCalibrator {
      * @param hardIron hard-iron to be set.
      * @throws LockedException if calibrator is currently running.
      */
-    void setHardIron(final MagneticFluxDensityTriad hardIron)
-            throws LockedException;
+    void setHardIron(final MagneticFluxDensityTriad hardIron) throws LockedException;
 
     /**
      * Gets known hard-iron bias as an array.

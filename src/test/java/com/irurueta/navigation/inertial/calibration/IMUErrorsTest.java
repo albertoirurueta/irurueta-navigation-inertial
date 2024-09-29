@@ -47,18 +47,16 @@ public class IMUErrorsTest {
 
         // check default values
         final double[] zeros = new double[COMPONENTS];
-        assertArrayEquals(errors.getAccelerometerBiases(), zeros, 0.0);
-        assertArrayEquals(errors.getGyroBiases(), zeros, 0.0);
-        assertEquals(errors.getAccelerometerScaleFactorAndCrossCouplingErrors(),
-                Matrix.identity(COMPONENTS, COMPONENTS));
-        assertEquals(errors.getGyroScaleFactorAndCrossCouplingErrors(),
-                Matrix.identity(COMPONENTS, COMPONENTS));
-        assertEquals(errors.getGyroGDependentBiases(),
-                new Matrix(COMPONENTS, COMPONENTS));
-        assertEquals(errors.getAccelerometerNoiseRootPSD(), 0.0, 0.0);
-        assertEquals(errors.getGyroNoiseRootPSD(), 0.0, 0.0);
-        assertEquals(errors.getAccelerometerQuantizationLevel(), 0.0, 0.0);
-        assertEquals(errors.getGyroQuantizationLevel(), 0.0, 0.0);
+        assertArrayEquals(zeros, errors.getAccelerometerBiases(), 0.0);
+        assertArrayEquals(zeros, errors.getGyroBiases(), 0.0);
+        assertEquals(Matrix.identity(COMPONENTS, COMPONENTS),
+                errors.getAccelerometerScaleFactorAndCrossCouplingErrors());
+        assertEquals(Matrix.identity(COMPONENTS, COMPONENTS), errors.getGyroScaleFactorAndCrossCouplingErrors());
+        assertEquals(new Matrix(COMPONENTS, COMPONENTS), errors.getGyroGDependentBiases());
+        assertEquals(0.0, errors.getAccelerometerNoiseRootPSD(), 0.0);
+        assertEquals(0.0, errors.getGyroNoiseRootPSD(), 0.0);
+        assertEquals(0.0, errors.getAccelerometerQuantizationLevel(), 0.0);
+        assertEquals(0.0, errors.getGyroQuantizationLevel(), 0.0);
 
         // test constructor 2
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -69,95 +67,51 @@ public class IMUErrorsTest {
         final double[] gyroBiases = new double[COMPONENTS];
         randomizer.fill(gyroBiases, MIN_VALUE, MAX_VALUE);
 
-        final Matrix accelerometerScaleFactorAndCrossCouplingErrors =
-                new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                accelerometerScaleFactorAndCrossCouplingErrors);
+        final Matrix accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, accelerometerScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroScaleFactorAndCrossCouplingErrors =
-                new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                gyroScaleFactorAndCrossCouplingErrors);
+        final Matrix gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroScaleFactorAndCrossCouplingErrors);
 
-        final double accelerometerNoiseRootPSD = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double gyroNoiseRootPSD = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
+        final double accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        errors = new IMUErrors(accelerometerBiases,
-                gyroBiases, accelerometerScaleFactorAndCrossCouplingErrors,
-                gyroScaleFactorAndCrossCouplingErrors, accelerometerNoiseRootPSD,
-                gyroNoiseRootPSD);
+        errors = new IMUErrors(accelerometerBiases, gyroBiases, accelerometerScaleFactorAndCrossCouplingErrors,
+                gyroScaleFactorAndCrossCouplingErrors, accelerometerNoiseRootPSD, gyroNoiseRootPSD);
 
         // check default values
-        assertArrayEquals(errors.getAccelerometerBiases(), accelerometerBiases,
-                0.0);
-        assertArrayEquals(errors.getGyroBiases(), gyroBiases, 0.0);
-        assertEquals(errors.getAccelerometerScaleFactorAndCrossCouplingErrors(),
-                accelerometerScaleFactorAndCrossCouplingErrors);
-        assertEquals(errors.getGyroScaleFactorAndCrossCouplingErrors(),
-                gyroScaleFactorAndCrossCouplingErrors);
-        assertEquals(errors.getGyroGDependentBiases(),
-                new Matrix(COMPONENTS, COMPONENTS));
-        assertEquals(errors.getAccelerometerNoiseRootPSD(),
-                accelerometerNoiseRootPSD, 0.0);
-        assertEquals(errors.getGyroNoiseRootPSD(), gyroNoiseRootPSD, 0.0);
-        assertEquals(errors.getAccelerometerQuantizationLevel(), 0.0, 0.0);
-        assertEquals(errors.getGyroQuantizationLevel(), 0.0, 0.0);
+        assertArrayEquals(accelerometerBiases, errors.getAccelerometerBiases(), 0.0);
+        assertArrayEquals(gyroBiases, errors.getGyroBiases(), 0.0);
+        assertEquals(accelerometerScaleFactorAndCrossCouplingErrors,
+                errors.getAccelerometerScaleFactorAndCrossCouplingErrors());
+        assertEquals(gyroScaleFactorAndCrossCouplingErrors, errors.getGyroScaleFactorAndCrossCouplingErrors());
+        assertEquals(new Matrix(COMPONENTS, COMPONENTS), errors.getGyroGDependentBiases());
+        assertEquals(accelerometerNoiseRootPSD, errors.getAccelerometerNoiseRootPSD(), 0.0);
+        assertEquals(gyroNoiseRootPSD, errors.getGyroNoiseRootPSD(), 0.0);
+        assertEquals(0.0, errors.getAccelerometerQuantizationLevel(), 0.0);
+        assertEquals(0.0, errors.getGyroQuantizationLevel(), 0.0);
 
         // Force IllegalArgumentException
         double[] wrongArray = new double[1];
         final Matrix wrongMatrix1 = new Matrix(1, 3);
         final Matrix wrongMatrix2 = new Matrix(4, 1);
 
-        errors = null;
-        try {
-            errors = new IMUErrors(wrongArray,
-                    gyroBiases, accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors, accelerometerNoiseRootPSD,
-                    gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases,
-                    wrongArray, accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors, accelerometerNoiseRootPSD,
-                    gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases,
-                    gyroBiases, wrongMatrix1,
-                    gyroScaleFactorAndCrossCouplingErrors, accelerometerNoiseRootPSD,
-                    gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases,
-                    gyroBiases, wrongMatrix2,
-                    gyroScaleFactorAndCrossCouplingErrors, accelerometerNoiseRootPSD,
-                    gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases,
-                    gyroBiases, accelerometerScaleFactorAndCrossCouplingErrors,
-                    wrongMatrix1, accelerometerNoiseRootPSD, gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases,
-                    gyroBiases, accelerometerScaleFactorAndCrossCouplingErrors,
-                    wrongMatrix2, accelerometerNoiseRootPSD, gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(errors);
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(wrongArray, gyroBiases,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases, wrongArray,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases, gyroBiases, wrongMatrix1,
+                gyroScaleFactorAndCrossCouplingErrors, accelerometerNoiseRootPSD, gyroNoiseRootPSD));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases, gyroBiases, wrongMatrix2,
+                gyroScaleFactorAndCrossCouplingErrors, accelerometerNoiseRootPSD, gyroNoiseRootPSD));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases, gyroBiases,
+                accelerometerScaleFactorAndCrossCouplingErrors, wrongMatrix1, accelerometerNoiseRootPSD,
+                gyroNoiseRootPSD));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases, gyroBiases,
+                accelerometerScaleFactorAndCrossCouplingErrors, wrongMatrix2, accelerometerNoiseRootPSD,
+                gyroNoiseRootPSD));
 
         // test constructor 3
         final Matrix accelerometerBiasesMatrix = new Matrix(3, 1);
@@ -166,553 +120,265 @@ public class IMUErrorsTest {
         final Matrix gyroBiasesMatrix = new Matrix(3, 1);
         gyroBiasesMatrix.fromArray(gyroBiases);
 
-        errors = new IMUErrors(accelerometerBiasesMatrix,
-                gyroBiasesMatrix, accelerometerScaleFactorAndCrossCouplingErrors,
-                gyroScaleFactorAndCrossCouplingErrors, accelerometerNoiseRootPSD,
-                gyroNoiseRootPSD);
+        errors = new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD);
 
         // check default values
-        assertArrayEquals(errors.getAccelerometerBiases(), accelerometerBiases,
-                0.0);
-        assertArrayEquals(errors.getGyroBiases(), gyroBiases, 0.0);
-        assertEquals(errors.getAccelerometerScaleFactorAndCrossCouplingErrors(),
-                accelerometerScaleFactorAndCrossCouplingErrors);
-        assertEquals(errors.getGyroScaleFactorAndCrossCouplingErrors(),
-                gyroScaleFactorAndCrossCouplingErrors);
-        assertEquals(errors.getGyroGDependentBiases(),
-                new Matrix(COMPONENTS, COMPONENTS));
-        assertEquals(errors.getAccelerometerNoiseRootPSD(),
-                accelerometerNoiseRootPSD, 0.0);
-        assertEquals(errors.getGyroNoiseRootPSD(), gyroNoiseRootPSD, 0.0);
-        assertEquals(errors.getAccelerometerQuantizationLevel(), 0.0, 0.0);
-        assertEquals(errors.getGyroQuantizationLevel(), 0.0, 0.0);
+        assertArrayEquals(accelerometerBiases, errors.getAccelerometerBiases(), 0.0);
+        assertArrayEquals(gyroBiases, errors.getGyroBiases(), 0.0);
+        assertEquals(accelerometerScaleFactorAndCrossCouplingErrors,
+                errors.getAccelerometerScaleFactorAndCrossCouplingErrors());
+        assertEquals(gyroScaleFactorAndCrossCouplingErrors, errors.getGyroScaleFactorAndCrossCouplingErrors());
+        assertEquals(new Matrix(COMPONENTS, COMPONENTS), errors.getGyroGDependentBiases());
+        assertEquals(accelerometerNoiseRootPSD, errors.getAccelerometerNoiseRootPSD(), 0.0);
+        assertEquals(gyroNoiseRootPSD, errors.getGyroNoiseRootPSD(), 0.0);
+        assertEquals(0.0, errors.getAccelerometerQuantizationLevel(), 0.0);
+        assertEquals(0.0, errors.getGyroQuantizationLevel(), 0.0);
 
         // Force IllegalArgumentException
-        errors = null;
-        try {
-            errors = new IMUErrors(wrongMatrix1, gyroBiasesMatrix,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(wrongMatrix2, gyroBiasesMatrix,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiasesMatrix, wrongMatrix1,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiasesMatrix, wrongMatrix2,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
-                    wrongMatrix1, gyroScaleFactorAndCrossCouplingErrors,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
-                    wrongMatrix2, gyroScaleFactorAndCrossCouplingErrors,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
-                    accelerometerScaleFactorAndCrossCouplingErrors, wrongMatrix1,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
-                    accelerometerScaleFactorAndCrossCouplingErrors, wrongMatrix2,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(errors);
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(wrongMatrix1, gyroBiasesMatrix,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(wrongMatrix2, gyroBiasesMatrix,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiasesMatrix, wrongMatrix1,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiasesMatrix, wrongMatrix2,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
+                wrongMatrix1, gyroScaleFactorAndCrossCouplingErrors, accelerometerNoiseRootPSD, gyroNoiseRootPSD));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
+                wrongMatrix2, gyroScaleFactorAndCrossCouplingErrors, accelerometerNoiseRootPSD, gyroNoiseRootPSD));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
+                accelerometerScaleFactorAndCrossCouplingErrors, wrongMatrix1, accelerometerNoiseRootPSD,
+                gyroNoiseRootPSD));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
+                accelerometerScaleFactorAndCrossCouplingErrors, wrongMatrix2, accelerometerNoiseRootPSD,
+                gyroNoiseRootPSD));
 
         // test constructor 4
         final Acceleration[] accelerometerBiases2 = new Acceleration[COMPONENTS];
-        accelerometerBiases2[0] = new Acceleration(accelerometerBiases[0],
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        accelerometerBiases2[1] = new Acceleration(accelerometerBiases[1],
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        accelerometerBiases2[2] = new Acceleration(accelerometerBiases[2],
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        accelerometerBiases2[0] = new Acceleration(accelerometerBiases[0], AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        accelerometerBiases2[1] = new Acceleration(accelerometerBiases[1], AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        accelerometerBiases2[2] = new Acceleration(accelerometerBiases[2], AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         final AngularSpeed[] gyroBiases2 = new AngularSpeed[COMPONENTS];
-        gyroBiases2[0] = new AngularSpeed(gyroBiases[0],
-                AngularSpeedUnit.RADIANS_PER_SECOND);
-        gyroBiases2[1] = new AngularSpeed(gyroBiases[1],
-                AngularSpeedUnit.RADIANS_PER_SECOND);
-        gyroBiases2[2] = new AngularSpeed(gyroBiases[2],
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        gyroBiases2[0] = new AngularSpeed(gyroBiases[0], AngularSpeedUnit.RADIANS_PER_SECOND);
+        gyroBiases2[1] = new AngularSpeed(gyroBiases[1], AngularSpeedUnit.RADIANS_PER_SECOND);
+        gyroBiases2[2] = new AngularSpeed(gyroBiases[2], AngularSpeedUnit.RADIANS_PER_SECOND);
 
-        errors = new IMUErrors(accelerometerBiases2, gyroBiases2,
-                accelerometerScaleFactorAndCrossCouplingErrors,
-                gyroScaleFactorAndCrossCouplingErrors, accelerometerNoiseRootPSD,
-                gyroNoiseRootPSD);
+        errors = new IMUErrors(accelerometerBiases2, gyroBiases2, accelerometerScaleFactorAndCrossCouplingErrors,
+                gyroScaleFactorAndCrossCouplingErrors, accelerometerNoiseRootPSD, gyroNoiseRootPSD);
 
         // check default values
-        assertArrayEquals(errors.getAccelerometerBiases(), accelerometerBiases,
-                0.0);
-        assertArrayEquals(errors.getGyroBiases(), gyroBiases, 0.0);
-        assertEquals(errors.getAccelerometerScaleFactorAndCrossCouplingErrors(),
-                accelerometerScaleFactorAndCrossCouplingErrors);
-        assertEquals(errors.getGyroScaleFactorAndCrossCouplingErrors(),
-                gyroScaleFactorAndCrossCouplingErrors);
-        assertEquals(errors.getGyroGDependentBiases(),
-                new Matrix(COMPONENTS, COMPONENTS));
-        assertEquals(errors.getAccelerometerNoiseRootPSD(),
-                accelerometerNoiseRootPSD, 0.0);
-        assertEquals(errors.getGyroNoiseRootPSD(), gyroNoiseRootPSD, 0.0);
-        assertEquals(errors.getAccelerometerQuantizationLevel(), 0.0, 0.0);
-        assertEquals(errors.getGyroQuantizationLevel(), 0.0, 0.0);
+        assertArrayEquals(accelerometerBiases, errors.getAccelerometerBiases(), 0.0);
+        assertArrayEquals(gyroBiases, errors.getGyroBiases(), 0.0);
+        assertEquals(accelerometerScaleFactorAndCrossCouplingErrors,
+                errors.getAccelerometerScaleFactorAndCrossCouplingErrors());
+        assertEquals(gyroScaleFactorAndCrossCouplingErrors, errors.getGyroScaleFactorAndCrossCouplingErrors());
+        assertEquals(new Matrix(COMPONENTS, COMPONENTS), errors.getGyroGDependentBiases());
+        assertEquals(accelerometerNoiseRootPSD, errors.getAccelerometerNoiseRootPSD(), 0.0);
+        assertEquals(gyroNoiseRootPSD, errors.getGyroNoiseRootPSD(), 0.0);
+        assertEquals(0.0, errors.getAccelerometerQuantizationLevel(), 0.0);
+        assertEquals(0.0, errors.getGyroQuantizationLevel(), 0.0);
 
         // Force IllegalArgumentException
         final Acceleration[] wrongAccelerations = new Acceleration[1];
         final AngularSpeed[] wrongAngularSpeed = new AngularSpeed[1];
 
-        errors = null;
-        try {
-            errors = new IMUErrors(wrongAccelerations, gyroBiases2,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases2, wrongAngularSpeed,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases2, gyroBiases2,
-                    wrongMatrix1, gyroScaleFactorAndCrossCouplingErrors,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases2, gyroBiases2,
-                    wrongMatrix2, gyroScaleFactorAndCrossCouplingErrors,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases2, gyroBiases2,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    wrongMatrix1, accelerometerNoiseRootPSD,
-                    gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases2, gyroBiases2,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    wrongMatrix2, accelerometerNoiseRootPSD,
-                    gyroNoiseRootPSD);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(errors);
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(wrongAccelerations, gyroBiases2,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases2, wrongAngularSpeed,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases2, gyroBiases2,
+                wrongMatrix1, gyroScaleFactorAndCrossCouplingErrors, accelerometerNoiseRootPSD, gyroNoiseRootPSD));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases2, gyroBiases2,
+                wrongMatrix2, gyroScaleFactorAndCrossCouplingErrors, accelerometerNoiseRootPSD, gyroNoiseRootPSD));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases2, gyroBiases2,
+                accelerometerScaleFactorAndCrossCouplingErrors, wrongMatrix1, accelerometerNoiseRootPSD,
+                gyroNoiseRootPSD));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases2, gyroBiases2,
+                accelerometerScaleFactorAndCrossCouplingErrors, wrongMatrix2, accelerometerNoiseRootPSD,
+                gyroNoiseRootPSD));
 
         // test constructor 5
         final Matrix gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                gyroGDependenciesBiases);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroGDependenciesBiases);
 
-        final double accelerometerQuantizationLevel = randomizer
-                .nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroQuantizationLevel = randomizer
-                .nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        errors = new IMUErrors(accelerometerBiases, gyroBiases,
-                accelerometerScaleFactorAndCrossCouplingErrors,
-                gyroScaleFactorAndCrossCouplingErrors,
-                gyroGDependenciesBiases, accelerometerNoiseRootPSD,
-                gyroNoiseRootPSD, accelerometerQuantizationLevel,
-                gyroQuantizationLevel);
+        errors = new IMUErrors(accelerometerBiases, gyroBiases, accelerometerScaleFactorAndCrossCouplingErrors,
+                gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases, accelerometerNoiseRootPSD,
+                gyroNoiseRootPSD, accelerometerQuantizationLevel, gyroQuantizationLevel);
 
         // check default values
-        assertArrayEquals(errors.getAccelerometerBiases(), accelerometerBiases,
-                0.0);
-        assertArrayEquals(errors.getGyroBiases(), gyroBiases, 0.0);
-        assertEquals(errors.getAccelerometerScaleFactorAndCrossCouplingErrors(),
-                accelerometerScaleFactorAndCrossCouplingErrors);
-        assertEquals(errors.getGyroScaleFactorAndCrossCouplingErrors(),
-                gyroScaleFactorAndCrossCouplingErrors);
-        assertEquals(errors.getGyroGDependentBiases(), gyroGDependenciesBiases);
-        assertEquals(errors.getAccelerometerNoiseRootPSD(),
-                accelerometerNoiseRootPSD, 0.0);
-        assertEquals(errors.getGyroNoiseRootPSD(), gyroNoiseRootPSD, 0.0);
-        assertEquals(errors.getAccelerometerQuantizationLevel(),
-                accelerometerQuantizationLevel, 0.0);
-        assertEquals(errors.getGyroQuantizationLevel(),
-                gyroQuantizationLevel, 0.0);
+        assertArrayEquals(accelerometerBiases, errors.getAccelerometerBiases(), 0.0);
+        assertArrayEquals(gyroBiases, errors.getGyroBiases(), 0.0);
+        assertEquals(accelerometerScaleFactorAndCrossCouplingErrors,
+                errors.getAccelerometerScaleFactorAndCrossCouplingErrors());
+        assertEquals(gyroScaleFactorAndCrossCouplingErrors, errors.getGyroScaleFactorAndCrossCouplingErrors());
+        assertEquals(gyroGDependenciesBiases, errors.getGyroGDependentBiases());
+        assertEquals(accelerometerNoiseRootPSD, errors.getAccelerometerNoiseRootPSD(), 0.0);
+        assertEquals(gyroNoiseRootPSD, errors.getGyroNoiseRootPSD(), 0.0);
+        assertEquals(accelerometerQuantizationLevel, errors.getAccelerometerQuantizationLevel(), 0.0);
+        assertEquals(gyroQuantizationLevel, errors.getGyroQuantizationLevel(), 0.0);
 
         // Force IllegalArgumentException
-        errors = null;
-        try {
-            errors = new IMUErrors(wrongArray,
-                    gyroBiases, accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel, gyroQuantizationLevel);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases,
-                    wrongArray, accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel, gyroQuantizationLevel);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases,
-                    gyroBiases, wrongMatrix1,
-                    gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel, gyroQuantizationLevel);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases,
-                    gyroBiases, wrongMatrix2,
-                    gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel, gyroQuantizationLevel);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases,
-                    gyroBiases, accelerometerScaleFactorAndCrossCouplingErrors,
-                    wrongMatrix1, gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel, gyroQuantizationLevel);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases,
-                    gyroBiases, accelerometerScaleFactorAndCrossCouplingErrors,
-                    wrongMatrix2, gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel, gyroQuantizationLevel);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases,
-                    gyroBiases, accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors, wrongMatrix1,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel, gyroQuantizationLevel);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases,
-                    gyroBiases, accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors, wrongMatrix2,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel, gyroQuantizationLevel);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(errors);
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(wrongArray, gyroBiases,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
+                gyroQuantizationLevel));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases, wrongArray,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
+                gyroQuantizationLevel));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases, gyroBiases, wrongMatrix1,
+                gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases, accelerometerNoiseRootPSD,
+                gyroNoiseRootPSD, accelerometerQuantizationLevel, gyroQuantizationLevel));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases, gyroBiases, wrongMatrix2,
+                gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel, gyroQuantizationLevel));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases, gyroBiases,
+                accelerometerScaleFactorAndCrossCouplingErrors, wrongMatrix1, gyroGDependenciesBiases,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel, gyroQuantizationLevel));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases, gyroBiases,
+                accelerometerScaleFactorAndCrossCouplingErrors, wrongMatrix2, gyroGDependenciesBiases,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel, gyroQuantizationLevel));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases, gyroBiases,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors, wrongMatrix1,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel, gyroQuantizationLevel));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases,
+                gyroBiases, accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                wrongMatrix2, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
+                gyroQuantizationLevel));
 
         // test constructor 6
-        errors = new IMUErrors(accelerometerBiasesMatrix,
-                gyroBiasesMatrix, accelerometerScaleFactorAndCrossCouplingErrors,
-                gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases,
-                accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                accelerometerQuantizationLevel, gyroQuantizationLevel);
+        errors = new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
+                gyroQuantizationLevel);
 
         // check default values
-        assertArrayEquals(errors.getAccelerometerBiases(), accelerometerBiases,
-                0.0);
-        assertArrayEquals(errors.getGyroBiases(), gyroBiases, 0.0);
-        assertEquals(errors.getAccelerometerScaleFactorAndCrossCouplingErrors(),
-                accelerometerScaleFactorAndCrossCouplingErrors);
-        assertEquals(errors.getGyroScaleFactorAndCrossCouplingErrors(),
-                gyroScaleFactorAndCrossCouplingErrors);
-        assertEquals(errors.getGyroGDependentBiases(), gyroGDependenciesBiases);
-        assertEquals(errors.getAccelerometerNoiseRootPSD(),
-                accelerometerNoiseRootPSD, 0.0);
-        assertEquals(errors.getGyroNoiseRootPSD(), gyroNoiseRootPSD, 0.0);
-        assertEquals(errors.getAccelerometerQuantizationLevel(),
-                accelerometerQuantizationLevel, 0.0);
-        assertEquals(errors.getGyroQuantizationLevel(),
-                gyroQuantizationLevel, 0.0);
+        assertArrayEquals(accelerometerBiases, errors.getAccelerometerBiases(), 0.0);
+        assertArrayEquals(gyroBiases, errors.getGyroBiases(), 0.0);
+        assertEquals(accelerometerScaleFactorAndCrossCouplingErrors,
+                errors.getAccelerometerScaleFactorAndCrossCouplingErrors());
+        assertEquals(gyroScaleFactorAndCrossCouplingErrors, errors.getGyroScaleFactorAndCrossCouplingErrors());
+        assertEquals(gyroGDependenciesBiases, errors.getGyroGDependentBiases());
+        assertEquals(accelerometerNoiseRootPSD, errors.getAccelerometerNoiseRootPSD(), 0.0);
+        assertEquals(gyroNoiseRootPSD, errors.getGyroNoiseRootPSD(), 0.0);
+        assertEquals(accelerometerQuantizationLevel, errors.getAccelerometerQuantizationLevel(), 0.0);
+        assertEquals(gyroQuantizationLevel, errors.getGyroQuantizationLevel(), 0.0);
 
         // Force IllegalArgumentException
-        errors = null;
-        try {
-            errors = new IMUErrors(wrongMatrix1, gyroBiasesMatrix,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel, gyroQuantizationLevel);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(wrongMatrix2, gyroBiasesMatrix,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel, gyroQuantizationLevel);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiasesMatrix, wrongMatrix1,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel, gyroQuantizationLevel);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiasesMatrix, wrongMatrix2,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel, gyroQuantizationLevel);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
-                    wrongMatrix1, gyroScaleFactorAndCrossCouplingErrors,
-                    gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel, gyroQuantizationLevel);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
-                    wrongMatrix2, gyroScaleFactorAndCrossCouplingErrors,
-                    gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel, gyroQuantizationLevel);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
-                    accelerometerScaleFactorAndCrossCouplingErrors, wrongMatrix1,
-                    gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel, gyroQuantizationLevel);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
-                    accelerometerScaleFactorAndCrossCouplingErrors, wrongMatrix2,
-                    gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel, gyroQuantizationLevel);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors, wrongMatrix1,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel, gyroQuantizationLevel);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors, wrongMatrix2,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel, gyroQuantizationLevel);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(errors);
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(wrongMatrix1, gyroBiasesMatrix,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
+                gyroQuantizationLevel));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(wrongMatrix2, gyroBiasesMatrix,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
+                gyroQuantizationLevel));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiasesMatrix, wrongMatrix1,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
+                gyroQuantizationLevel));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiasesMatrix, wrongMatrix2,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
+                gyroQuantizationLevel));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
+                wrongMatrix1, gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases, accelerometerNoiseRootPSD,
+                gyroNoiseRootPSD, accelerometerQuantizationLevel, gyroQuantizationLevel));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
+                wrongMatrix2, gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases, accelerometerNoiseRootPSD,
+                gyroNoiseRootPSD, accelerometerQuantizationLevel, gyroQuantizationLevel));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
+                accelerometerScaleFactorAndCrossCouplingErrors, wrongMatrix1, gyroGDependenciesBiases,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel, gyroQuantizationLevel));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
+                accelerometerScaleFactorAndCrossCouplingErrors, wrongMatrix2, gyroGDependenciesBiases,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel, gyroQuantizationLevel));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors, wrongMatrix1,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel, gyroQuantizationLevel));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiasesMatrix, gyroBiasesMatrix,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors, wrongMatrix2,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel, gyroQuantizationLevel));
 
         // test constructor 7
-        final Acceleration accelerometerQuantizationLevel2 =
-                new Acceleration(accelerometerQuantizationLevel,
-                        AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final AngularSpeed gyroQuantizationLevel2 =
-                new AngularSpeed(gyroQuantizationLevel,
-                        AngularSpeedUnit.RADIANS_PER_SECOND);
-        errors = new IMUErrors(accelerometerBiases2, gyroBiases2,
-                accelerometerScaleFactorAndCrossCouplingErrors,
-                gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases,
-                accelerometerNoiseRootPSD,
-                gyroNoiseRootPSD, accelerometerQuantizationLevel2,
-                gyroQuantizationLevel2);
+        final Acceleration accelerometerQuantizationLevel2 = new Acceleration(accelerometerQuantizationLevel,
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final AngularSpeed gyroQuantizationLevel2 = new AngularSpeed(gyroQuantizationLevel,
+                AngularSpeedUnit.RADIANS_PER_SECOND);
+        errors = new IMUErrors(accelerometerBiases2, gyroBiases2, accelerometerScaleFactorAndCrossCouplingErrors,
+                gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases, accelerometerNoiseRootPSD,
+                gyroNoiseRootPSD, accelerometerQuantizationLevel2, gyroQuantizationLevel2);
 
         // check default values
-        assertArrayEquals(errors.getAccelerometerBiases(), accelerometerBiases,
-                0.0);
-        assertArrayEquals(errors.getGyroBiases(), gyroBiases, 0.0);
-        assertEquals(errors.getAccelerometerScaleFactorAndCrossCouplingErrors(),
-                accelerometerScaleFactorAndCrossCouplingErrors);
-        assertEquals(errors.getGyroScaleFactorAndCrossCouplingErrors(),
-                gyroScaleFactorAndCrossCouplingErrors);
-        assertEquals(errors.getGyroGDependentBiases(), gyroGDependenciesBiases);
-        assertEquals(errors.getAccelerometerNoiseRootPSD(),
-                accelerometerNoiseRootPSD, 0.0);
-        assertEquals(errors.getGyroNoiseRootPSD(), gyroNoiseRootPSD, 0.0);
-        assertEquals(errors.getAccelerometerQuantizationLevel(),
-                accelerometerQuantizationLevel, 0.0);
-        assertEquals(errors.getGyroQuantizationLevel(),
-                gyroQuantizationLevel, 0.0);
+        assertArrayEquals(accelerometerBiases, errors.getAccelerometerBiases(), 0.0);
+        assertArrayEquals(gyroBiases, errors.getGyroBiases(), 0.0);
+        assertEquals(accelerometerScaleFactorAndCrossCouplingErrors, errors.getAccelerometerScaleFactorAndCrossCouplingErrors());
+        assertEquals(gyroScaleFactorAndCrossCouplingErrors, errors.getGyroScaleFactorAndCrossCouplingErrors());
+        assertEquals(gyroGDependenciesBiases, errors.getGyroGDependentBiases());
+        assertEquals(accelerometerNoiseRootPSD, errors.getAccelerometerNoiseRootPSD(), 0.0);
+        assertEquals(gyroNoiseRootPSD, errors.getGyroNoiseRootPSD(), 0.0);
+        assertEquals(accelerometerQuantizationLevel, errors.getAccelerometerQuantizationLevel(), 0.0);
+        assertEquals(gyroQuantizationLevel, errors.getGyroQuantizationLevel(), 0.0);
 
         // Force IllegalArgumentException
-        errors = null;
-        try {
-            errors = new IMUErrors(wrongAccelerations, gyroBiases2,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors,
-                    gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel2,
-                    gyroQuantizationLevel2);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases2, wrongAngularSpeed,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors,
-                    gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel2,
-                    gyroQuantizationLevel2);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases2, gyroBiases2,
-                    wrongMatrix1, gyroScaleFactorAndCrossCouplingErrors,
-                    gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel2,
-                    gyroQuantizationLevel2);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases2, gyroBiases2,
-                    wrongMatrix2, gyroScaleFactorAndCrossCouplingErrors,
-                    gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel2,
-                    gyroQuantizationLevel2);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases2, gyroBiases2,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    wrongMatrix1, gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel2,
-                    gyroQuantizationLevel2);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases2, gyroBiases2,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    wrongMatrix2, gyroGDependenciesBiases,
-                    accelerometerNoiseRootPSD, gyroNoiseRootPSD,
-                    accelerometerQuantizationLevel2,
-                    gyroQuantizationLevel2);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases2, gyroBiases2,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors,
-                    wrongMatrix1, accelerometerNoiseRootPSD,
-                    gyroNoiseRootPSD, accelerometerQuantizationLevel2,
-                    gyroQuantizationLevel2);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors = new IMUErrors(accelerometerBiases2, gyroBiases2,
-                    accelerometerScaleFactorAndCrossCouplingErrors,
-                    gyroScaleFactorAndCrossCouplingErrors,
-                    wrongMatrix2, accelerometerNoiseRootPSD,
-                    gyroNoiseRootPSD, accelerometerQuantizationLevel2,
-                    gyroQuantizationLevel2);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(errors);
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(wrongAccelerations, gyroBiases2,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel2,
+                gyroQuantizationLevel2));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases2, wrongAngularSpeed,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel2,
+                gyroQuantizationLevel2));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases2, gyroBiases2,
+                wrongMatrix1, gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases, accelerometerNoiseRootPSD,
+                gyroNoiseRootPSD, accelerometerQuantizationLevel2, gyroQuantizationLevel2));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases2, gyroBiases2,
+                wrongMatrix2, gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases, accelerometerNoiseRootPSD,
+                gyroNoiseRootPSD, accelerometerQuantizationLevel2, gyroQuantizationLevel2));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases2, gyroBiases2,
+                accelerometerScaleFactorAndCrossCouplingErrors, wrongMatrix1, gyroGDependenciesBiases,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel2, gyroQuantizationLevel2));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases2, gyroBiases2,
+                accelerometerScaleFactorAndCrossCouplingErrors, wrongMatrix2, gyroGDependenciesBiases,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel2, gyroQuantizationLevel2));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases2, gyroBiases2,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors, wrongMatrix1,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel2, gyroQuantizationLevel2));
+        assertThrows(IllegalArgumentException.class, () -> new IMUErrors(accelerometerBiases2, gyroBiases2,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors, wrongMatrix2,
+                accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel2, gyroQuantizationLevel2));
 
         // test constructor 8
-        errors = new IMUErrors(accelerometerBiases, gyroBiases,
-                accelerometerScaleFactorAndCrossCouplingErrors,
-                gyroScaleFactorAndCrossCouplingErrors,
-                gyroGDependenciesBiases, accelerometerNoiseRootPSD,
-                gyroNoiseRootPSD, accelerometerQuantizationLevel,
-                gyroQuantizationLevel);
+        errors = new IMUErrors(accelerometerBiases, gyroBiases, accelerometerScaleFactorAndCrossCouplingErrors,
+                gyroScaleFactorAndCrossCouplingErrors, gyroGDependenciesBiases, accelerometerNoiseRootPSD,
+                gyroNoiseRootPSD, accelerometerQuantizationLevel, gyroQuantizationLevel);
 
         final IMUErrors errors2 = new IMUErrors(errors);
 
         // check default values
-        assertArrayEquals(errors2.getAccelerometerBiases(), accelerometerBiases,
-                0.0);
-        assertArrayEquals(errors2.getGyroBiases(), gyroBiases, 0.0);
-        assertEquals(errors2.getAccelerometerScaleFactorAndCrossCouplingErrors(),
-                accelerometerScaleFactorAndCrossCouplingErrors);
-        assertEquals(errors2.getGyroScaleFactorAndCrossCouplingErrors(),
-                gyroScaleFactorAndCrossCouplingErrors);
-        assertEquals(errors2.getGyroGDependentBiases(), gyroGDependenciesBiases);
-        assertEquals(errors2.getAccelerometerNoiseRootPSD(),
-                accelerometerNoiseRootPSD, 0.0);
-        assertEquals(errors2.getGyroNoiseRootPSD(), gyroNoiseRootPSD, 0.0);
-        assertEquals(errors2.getAccelerometerQuantizationLevel(),
-                accelerometerQuantizationLevel, 0.0);
-        assertEquals(errors2.getGyroQuantizationLevel(),
-                gyroQuantizationLevel, 0.0);
+        assertArrayEquals(accelerometerBiases, errors2.getAccelerometerBiases(), 0.0);
+        assertArrayEquals(gyroBiases, errors2.getGyroBiases(), 0.0);
+        assertEquals(accelerometerScaleFactorAndCrossCouplingErrors,
+                errors2.getAccelerometerScaleFactorAndCrossCouplingErrors());
+        assertEquals(gyroScaleFactorAndCrossCouplingErrors, errors2.getGyroScaleFactorAndCrossCouplingErrors());
+        assertEquals(gyroGDependenciesBiases, errors2.getGyroGDependentBiases());
+        assertEquals(accelerometerNoiseRootPSD, errors2.getAccelerometerNoiseRootPSD(), 0.0);
+        assertEquals(gyroNoiseRootPSD, errors2.getGyroNoiseRootPSD(), 0.0);
+        assertEquals(accelerometerQuantizationLevel, errors2.getAccelerometerQuantizationLevel(), 0.0);
+        assertEquals(gyroQuantizationLevel, errors2.getGyroQuantizationLevel(), 0.0);
     }
 
     @Test
@@ -721,7 +387,7 @@ public class IMUErrorsTest {
 
         // check default value
         final double[] zeros = new double[COMPONENTS];
-        assertArrayEquals(errors.getAccelerometerBiases(), zeros, 0.0);
+        assertArrayEquals(zeros, errors.getAccelerometerBiases(), 0.0);
 
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -731,23 +397,14 @@ public class IMUErrorsTest {
 
         errors.setAccelerometerBiases(accelerometerBiases);
 
-        assertArrayEquals(errors.getAccelerometerBiases(), accelerometerBiases,
-                0.0);
+        assertArrayEquals(accelerometerBiases, errors.getAccelerometerBiases(), 0.0);
         final double[] result = new double[COMPONENTS];
         errors.getAccelerometerBiases(result);
         assertArrayEquals(result, accelerometerBiases, 0.0);
 
         // Force IllegalArgumentException
-        try {
-            errors.setAccelerometerBiases(new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors.getAccelerometerBiases(new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> errors.setAccelerometerBiases(new double[1]));
+        assertThrows(IllegalArgumentException.class, () -> errors.getAccelerometerBiases(new double[1]));
     }
 
     @Test
@@ -755,8 +412,7 @@ public class IMUErrorsTest {
         final IMUErrors errors = new IMUErrors();
 
         // check default value
-        assertEquals(errors.getAccelerometerBiasesAsMatrix(),
-                new Matrix(COMPONENTS, 1));
+        assertEquals(new Matrix(COMPONENTS, 1), errors.getAccelerometerBiasesAsMatrix());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -777,21 +433,12 @@ public class IMUErrorsTest {
         assertEquals(accelerometerBiases1, accelerometerBiases3);
 
         // Force IllegalArgumentException
-        try {
-            errors.getAccelerometerBiasesAsMatrix(new Matrix(1, COMPONENTS));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors.setAccelerometerBiases(new Matrix(COMPONENTS, COMPONENTS));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors.setAccelerometerBiases(new Matrix(1, COMPONENTS));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, COMPONENTS);
+        assertThrows(IllegalArgumentException.class, () -> errors.getAccelerometerBiasesAsMatrix(m1));
+        final var m2 = new Matrix(COMPONENTS, COMPONENTS);
+        assertThrows(IllegalArgumentException.class, () -> errors.setAccelerometerBiases(m2));
+        final var m3 = new Matrix(1, COMPONENTS);
+        assertThrows(IllegalArgumentException.class, () -> errors.setAccelerometerBiases(m3));
     }
 
     @Test
@@ -801,16 +448,14 @@ public class IMUErrorsTest {
         // check default value
         final Acceleration[] accelerations1 = errors.getAccelerometerBiasesAsAcceleration();
         for (Acceleration a : accelerations1) {
-            assertEquals(a, new Acceleration(0.0,
-                    AccelerationUnit.METERS_PER_SQUARED_SECOND));
+            assertEquals(a, new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND));
         }
 
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final Acceleration[] accelerations2 = new Acceleration[COMPONENTS];
         for (int i = 0; i < COMPONENTS; i++) {
-            accelerations2[i] = new Acceleration(
-                    randomizer.nextDouble(MIN_VALUE, MAX_VALUE),
+            accelerations2[i] = new Acceleration(randomizer.nextDouble(MIN_VALUE, MAX_VALUE),
                     AccelerationUnit.METERS_PER_SQUARED_SECOND);
         }
 
@@ -826,16 +471,9 @@ public class IMUErrorsTest {
         assertArrayEquals(accelerations2, accelerations4);
 
         // Force IllegalArgumentException
-        try {
-            errors.getAccelerometerBiasesAsAcceleration(new Acceleration[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors.setAccelerometerBiases(new Acceleration[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class,
+                () -> errors.getAccelerometerBiasesAsAcceleration(new Acceleration[1]));
+        assertThrows(IllegalArgumentException.class, () -> errors.setAccelerometerBiases(new Acceleration[1]));
     }
 
     @Test
@@ -844,7 +482,7 @@ public class IMUErrorsTest {
 
         // check default value
         final double[] zeros = new double[COMPONENTS];
-        assertArrayEquals(errors.getGyroBiases(), zeros, 0.0);
+        assertArrayEquals(zeros, errors.getGyroBiases(), 0.0);
 
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -854,22 +492,14 @@ public class IMUErrorsTest {
 
         errors.setGyroBiases(gyroBiases);
 
-        assertArrayEquals(errors.getGyroBiases(), gyroBiases, 0.0);
+        assertArrayEquals(gyroBiases, errors.getGyroBiases(), 0.0);
         final double[] result = new double[COMPONENTS];
         errors.getGyroBiases(result);
         assertArrayEquals(result, gyroBiases, 0.0);
 
         // Force IllegalArgumentException
-        try {
-            errors.setGyroBiases(new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors.getGyroBiases(new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> errors.setGyroBiases(new double[1]));
+        assertThrows(IllegalArgumentException.class, () -> errors.getGyroBiases(new double[1]));
     }
 
     @Test
@@ -877,8 +507,7 @@ public class IMUErrorsTest {
         final IMUErrors errors = new IMUErrors();
 
         // check default value
-        assertEquals(errors.getGyroBiasesAsMatrix(),
-                new Matrix(COMPONENTS, 1));
+        assertEquals(new Matrix(COMPONENTS, 1), errors.getGyroBiasesAsMatrix());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -899,21 +528,12 @@ public class IMUErrorsTest {
         assertEquals(gyroBiases1, gyroBiases3);
 
         // Force IllegalArgumentException
-        try {
-            errors.getGyroBiasesAsMatrix(new Matrix(1, COMPONENTS));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors.setGyroBiases(new Matrix(COMPONENTS, COMPONENTS));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors.setGyroBiases(new Matrix(1, COMPONENTS));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, COMPONENTS);
+        assertThrows(IllegalArgumentException.class, () -> errors.getGyroBiasesAsMatrix(m1));
+        final var m2 = new Matrix(COMPONENTS, COMPONENTS);
+        assertThrows(IllegalArgumentException.class, () -> errors.setGyroBiases(m2));
+        final var m3 = new Matrix(1, COMPONENTS);
+        assertThrows(IllegalArgumentException.class, () -> errors.setGyroBiases(m3));
     }
 
     @Test
@@ -923,16 +543,14 @@ public class IMUErrorsTest {
         // check default value
         final AngularSpeed[] array1 = errors.getGyroBiasesAsAngularSpeed();
         for (final AngularSpeed as : array1) {
-            assertEquals(as, new AngularSpeed(0.0,
-                    AngularSpeedUnit.RADIANS_PER_SECOND));
+            assertEquals(as, new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND));
         }
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final AngularSpeed[] array2 = new AngularSpeed[COMPONENTS];
         for (int i = 0; i < COMPONENTS; i++) {
-            array2[i] = new AngularSpeed(
-                    randomizer.nextDouble(MIN_VALUE, MAX_VALUE),
+            array2[i] = new AngularSpeed(randomizer.nextDouble(MIN_VALUE, MAX_VALUE),
                     AngularSpeedUnit.RADIANS_PER_SECOND);
         }
 
@@ -948,26 +566,17 @@ public class IMUErrorsTest {
         assertArrayEquals(array2, array4);
 
         // Force IllegalArgumentException
-        try {
-            errors.getGyroBiasesAsAngularSpeed(new AngularSpeed[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors.setGyroBiases(new AngularSpeed[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> errors.getGyroBiasesAsAngularSpeed(new AngularSpeed[1]));
+        assertThrows(IllegalArgumentException.class, () -> errors.setGyroBiases(new AngularSpeed[1]));
     }
 
     @Test
-    public void testGetSetAccelerometerScaleFactorAndCrossCouplingErrors()
-            throws WrongSizeException {
+    public void testGetSetAccelerometerScaleFactorAndCrossCouplingErrors() throws WrongSizeException {
         final IMUErrors errors = new IMUErrors();
 
         // check default value
-        assertEquals(errors.getAccelerometerScaleFactorAndCrossCouplingErrors(),
-                Matrix.identity(COMPONENTS, COMPONENTS));
+        assertEquals(Matrix.identity(COMPONENTS, COMPONENTS),
+                errors.getAccelerometerScaleFactorAndCrossCouplingErrors());
 
         // set new value
         final Matrix ma1 = new Matrix(COMPONENTS, COMPONENTS);
@@ -984,28 +593,20 @@ public class IMUErrorsTest {
         assertEquals(ma1, ma3);
 
         // Force IllegalArgumentException
-        try {
-            errors.setAccelerometerScaleFactorAndCrossCouplingErrors(
-                    new Matrix(COMPONENTS, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors.setAccelerometerScaleFactorAndCrossCouplingErrors(
-                    new Matrix(1, COMPONENTS));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(COMPONENTS, 1);
+        assertThrows(IllegalArgumentException.class, () -> errors.setAccelerometerScaleFactorAndCrossCouplingErrors(
+                m1));
+        final var m2 = new Matrix(1, COMPONENTS);
+        assertThrows(IllegalArgumentException.class, () -> errors.setAccelerometerScaleFactorAndCrossCouplingErrors(
+                m2));
     }
 
     @Test
-    public void testGetSetGyroScaleFactorAndCrossCouplingErrors()
-            throws WrongSizeException {
+    public void testGetSetGyroScaleFactorAndCrossCouplingErrors() throws WrongSizeException {
         final IMUErrors errors = new IMUErrors();
 
         // check default value
-        assertEquals(errors.getGyroScaleFactorAndCrossCouplingErrors(),
-                Matrix.identity(COMPONENTS, COMPONENTS));
+        assertEquals(Matrix.identity(COMPONENTS, COMPONENTS), errors.getGyroScaleFactorAndCrossCouplingErrors());
 
         // set new value
         final Matrix mg1 = new Matrix(COMPONENTS, COMPONENTS);
@@ -1022,18 +623,10 @@ public class IMUErrorsTest {
         assertEquals(mg1, mg3);
 
         // Force IllegalArgumentException
-        try {
-            errors.setGyroScaleFactorAndCrossCouplingErrors(
-                    new Matrix(COMPONENTS, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors.setGyroScaleFactorAndCrossCouplingErrors(
-                    new Matrix(1, COMPONENTS));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(COMPONENTS, 1);
+        assertThrows(IllegalArgumentException.class, () -> errors.setGyroScaleFactorAndCrossCouplingErrors(m1));
+        final var m2 = new Matrix(1, COMPONENTS);
+        assertThrows(IllegalArgumentException.class, () -> errors.setGyroScaleFactorAndCrossCouplingErrors(m2));
     }
 
     @Test
@@ -1041,8 +634,7 @@ public class IMUErrorsTest {
         final IMUErrors errors = new IMUErrors();
 
         // check default value
-        assertEquals(errors.getGyroGDependentBiases(),
-                new Matrix(COMPONENTS, COMPONENTS));
+        assertEquals(new Matrix(COMPONENTS, COMPONENTS), errors.getGyroGDependentBiases());
 
         // set new value
         final Matrix mf1 = new Matrix(COMPONENTS, COMPONENTS);
@@ -1059,16 +651,10 @@ public class IMUErrorsTest {
         assertEquals(mf1, mf3);
 
         // Force IllegalArgumentException
-        try {
-            errors.setGyroGDependentBiases(new Matrix(COMPONENTS, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            errors.setGyroGDependentBiases(new Matrix(1, COMPONENTS));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(COMPONENTS, 1);
+        assertThrows(IllegalArgumentException.class, () -> errors.setGyroGDependentBiases(m1));
+        final var m2 = new Matrix(1, COMPONENTS);
+        assertThrows(IllegalArgumentException.class, () -> errors.setGyroGDependentBiases(m2));
     }
 
     @Test
@@ -1076,22 +662,18 @@ public class IMUErrorsTest {
         final IMUErrors errors = new IMUErrors();
 
         // check default value
-        assertEquals(errors.getAccelerometerNoiseRootPSD(), 0.0, 0.0);
-        assertEquals(errors.getAccelerometerNoisePSD(), 0.0, 0.0);
+        assertEquals(0.0, errors.getAccelerometerNoiseRootPSD(), 0.0);
+        assertEquals(0.0, errors.getAccelerometerNoisePSD(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double accelerometerNoiseRootPSD = randomizer
-                .nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         errors.setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);
 
         // check
-        assertEquals(errors.getAccelerometerNoiseRootPSD(),
-                accelerometerNoiseRootPSD, 0.0);
-        assertEquals(errors.getAccelerometerNoisePSD(),
-                accelerometerNoiseRootPSD * accelerometerNoiseRootPSD,
-                0.0);
+        assertEquals(accelerometerNoiseRootPSD, errors.getAccelerometerNoiseRootPSD(), 0.0);
+        assertEquals(accelerometerNoiseRootPSD * accelerometerNoiseRootPSD, errors.getAccelerometerNoisePSD(), 0.0);
     }
 
     @Test
@@ -1099,28 +681,21 @@ public class IMUErrorsTest {
         final IMUErrors errors = new IMUErrors();
 
         // check default value
-        assertEquals(errors.getAccelerometerNoiseRootPSD(), 0.0, 0.0);
-        assertEquals(errors.getAccelerometerNoisePSD(), 0.0, 0.0);
+        assertEquals(0.0, errors.getAccelerometerNoiseRootPSD(), 0.0);
+        assertEquals(0.0, errors.getAccelerometerNoisePSD(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double accelerometerNoisePSD = randomizer
-                .nextDouble(0.0, MAX_VALUE);
+        final double accelerometerNoisePSD = randomizer.nextDouble(0.0, MAX_VALUE);
 
         errors.setAccelerometerNoisePSD(accelerometerNoisePSD);
 
         // check
-        assertEquals(errors.getAccelerometerNoisePSD(), accelerometerNoisePSD,
-                ABSOLUTE_ERROR);
-        assertEquals(errors.getAccelerometerNoiseRootPSD(),
-                Math.sqrt(accelerometerNoisePSD), 0.0);
+        assertEquals(accelerometerNoisePSD, errors.getAccelerometerNoisePSD(), ABSOLUTE_ERROR);
+        assertEquals(Math.sqrt(accelerometerNoisePSD), errors.getAccelerometerNoiseRootPSD(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            errors.setAccelerometerNoisePSD(-1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> errors.setAccelerometerNoisePSD(-1.0));
     }
 
     @Test
@@ -1128,8 +703,8 @@ public class IMUErrorsTest {
         final IMUErrors errors = new IMUErrors();
 
         // check default value
-        assertEquals(errors.getGyroNoiseRootPSD(), 0.0, 0.0);
-        assertEquals(errors.getGyroNoisePSD(), 0.0, 0.0);
+        assertEquals(0.0, errors.getGyroNoiseRootPSD(), 0.0);
+        assertEquals(0.0, errors.getGyroNoisePSD(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1138,10 +713,8 @@ public class IMUErrorsTest {
         errors.setGyroNoiseRootPSD(gyroNoiseRootPSD);
 
         // check
-        assertEquals(errors.getGyroNoiseRootPSD(),
-                gyroNoiseRootPSD, 0.0);
-        assertEquals(errors.getGyroNoisePSD(),
-                gyroNoiseRootPSD * gyroNoiseRootPSD, 0.0);
+        assertEquals(gyroNoiseRootPSD, errors.getGyroNoiseRootPSD(), 0.0);
+        assertEquals(gyroNoiseRootPSD * gyroNoiseRootPSD, errors.getGyroNoisePSD(), 0.0);
     }
 
     @Test
@@ -1149,8 +722,8 @@ public class IMUErrorsTest {
         final IMUErrors errors = new IMUErrors();
 
         // check default value
-        assertEquals(errors.getGyroNoiseRootPSD(), 0.0, 0.0);
-        assertEquals(errors.getGyroNoisePSD(), 0.0, 0.0);
+        assertEquals(0.0, errors.getGyroNoiseRootPSD(), 0.0);
+        assertEquals(0.0, errors.getGyroNoisePSD(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1159,16 +732,11 @@ public class IMUErrorsTest {
         errors.setGyroNoisePSD(gyroNoisePSD);
 
         // check
-        assertEquals(errors.getGyroNoisePSD(), gyroNoisePSD, ABSOLUTE_ERROR);
-        assertEquals(errors.getGyroNoiseRootPSD(),
-                Math.sqrt(gyroNoisePSD), 0.0);
+        assertEquals(gyroNoisePSD, errors.getGyroNoisePSD(), ABSOLUTE_ERROR);
+        assertEquals(Math.sqrt(gyroNoisePSD), errors.getGyroNoiseRootPSD(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            errors.setGyroNoisePSD(-1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> errors.setGyroNoisePSD(-1.0));
     }
 
     @Test
@@ -1176,8 +744,7 @@ public class IMUErrorsTest {
         final IMUErrors errors = new IMUErrors();
 
         // check default value
-        assertEquals(errors.getAccelerometerQuantizationLevel(), 0.0,
-                0.0);
+        assertEquals(0.0, errors.getAccelerometerQuantizationLevel(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1186,7 +753,7 @@ public class IMUErrorsTest {
         errors.setAccelerometerQuantizationLevel(level);
 
         // check
-        assertEquals(errors.getAccelerometerQuantizationLevel(), level, 0.0);
+        assertEquals(level, errors.getAccelerometerQuantizationLevel(), 0.0);
     }
 
     @Test
@@ -1194,25 +761,21 @@ public class IMUErrorsTest {
         final IMUErrors errors = new IMUErrors();
 
         // check default value
-        final Acceleration level1 = errors
-                .getAccelerometerQuantizationLevelAsAcceleration();
+        final Acceleration level1 = errors.getAccelerometerQuantizationLevelAsAcceleration();
 
-        assertEquals(level1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(level1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, level1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, level1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double value = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final Acceleration level2 = new Acceleration(value,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration level2 = new Acceleration(value, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         errors.setAccelerometerQuantizationLevel(level2);
 
         // check
-        final Acceleration level3 = errors
-                .getAccelerometerQuantizationLevelAsAcceleration();
-        final Acceleration level4 = new Acceleration(0.0,
-                AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration level3 = errors.getAccelerometerQuantizationLevelAsAcceleration();
+        final Acceleration level4 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         errors.getAccelerometerQuantizationLevelAsAcceleration(level4);
 
         assertEquals(level2, level3);
@@ -1224,7 +787,7 @@ public class IMUErrorsTest {
         final IMUErrors errors = new IMUErrors();
 
         // check default value
-        assertEquals(errors.getGyroQuantizationLevel(), 0.0, 0.0);
+        assertEquals(0.0, errors.getGyroQuantizationLevel(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1233,7 +796,7 @@ public class IMUErrorsTest {
         errors.setGyroQuantizationLevel(level);
 
         // check
-        assertEquals(errors.getGyroQuantizationLevel(), level, 0.0);
+        assertEquals(level, errors.getGyroQuantizationLevel(), 0.0);
     }
 
     @Test
@@ -1243,21 +806,19 @@ public class IMUErrorsTest {
         // check default value
         final AngularSpeed level1 = errors.getGyroQuantizationLevelAsAngularSpeed();
 
-        assertEquals(level1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(level1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(0.0, level1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, level1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double value = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-        final AngularSpeed level2 = new AngularSpeed(value,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed level2 = new AngularSpeed(value, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         errors.setGyroQuantizationLevel(level2);
 
         // check
         final AngularSpeed level3 = errors.getGyroQuantizationLevelAsAngularSpeed();
-        final AngularSpeed level4 = new AngularSpeed(0.0,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed level4 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         errors.getGyroQuantizationLevelAsAngularSpeed(level4);
 
         assertEquals(level2, level3);
@@ -1274,35 +835,24 @@ public class IMUErrorsTest {
         final double[] gyroBiases = new double[COMPONENTS];
         randomizer.fill(gyroBiases, MIN_VALUE, MAX_VALUE);
 
-        final Matrix accelerometerScaleFactorAndCrossCouplingErrors =
-                new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                accelerometerScaleFactorAndCrossCouplingErrors);
+        final Matrix accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, accelerometerScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroScaleFactorAndCrossCouplingErrors =
-                new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                gyroScaleFactorAndCrossCouplingErrors);
+        final Matrix gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroScaleFactorAndCrossCouplingErrors);
 
         final Matrix gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                gyroGDependenciesBiases);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroGDependenciesBiases);
 
-        final double accelerometerNoiseRootPSD = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double gyroNoiseRootPSD = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
+        final double accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final double accelerometerQuantizationLevel = randomizer
-                .nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroQuantizationLevel = randomizer
-                .nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         final IMUErrors errors = new IMUErrors(accelerometerBiases, gyroBiases,
-                accelerometerScaleFactorAndCrossCouplingErrors,
-                gyroScaleFactorAndCrossCouplingErrors,
-                gyroGDependenciesBiases, accelerometerNoiseRootPSD,
-                gyroNoiseRootPSD, accelerometerQuantizationLevel,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
                 gyroQuantizationLevel);
 
         final IMUErrors errors2 = new IMUErrors();
@@ -1311,21 +861,16 @@ public class IMUErrorsTest {
         errors.copyTo(errors2);
 
         // check
-        assertArrayEquals(errors2.getAccelerometerBiases(), accelerometerBiases,
-                0.0);
-        assertArrayEquals(errors2.getGyroBiases(), gyroBiases, 0.0);
-        assertEquals(errors2.getAccelerometerScaleFactorAndCrossCouplingErrors(),
-                accelerometerScaleFactorAndCrossCouplingErrors);
-        assertEquals(errors2.getGyroScaleFactorAndCrossCouplingErrors(),
-                gyroScaleFactorAndCrossCouplingErrors);
-        assertEquals(errors2.getGyroGDependentBiases(), gyroGDependenciesBiases);
-        assertEquals(errors2.getAccelerometerNoiseRootPSD(),
-                accelerometerNoiseRootPSD, 0.0);
-        assertEquals(errors2.getGyroNoiseRootPSD(), gyroNoiseRootPSD, 0.0);
-        assertEquals(errors2.getAccelerometerQuantizationLevel(),
-                accelerometerQuantizationLevel, 0.0);
-        assertEquals(errors2.getGyroQuantizationLevel(),
-                gyroQuantizationLevel, 0.0);
+        assertArrayEquals(accelerometerBiases, errors2.getAccelerometerBiases(), 0.0);
+        assertArrayEquals(gyroBiases, errors2.getGyroBiases(), 0.0);
+        assertEquals(accelerometerScaleFactorAndCrossCouplingErrors,
+                errors2.getAccelerometerScaleFactorAndCrossCouplingErrors());
+        assertEquals(gyroScaleFactorAndCrossCouplingErrors, errors2.getGyroScaleFactorAndCrossCouplingErrors());
+        assertEquals(gyroGDependenciesBiases, errors2.getGyroGDependentBiases());
+        assertEquals(accelerometerNoiseRootPSD, errors2.getAccelerometerNoiseRootPSD(), 0.0);
+        assertEquals(gyroNoiseRootPSD, errors2.getGyroNoiseRootPSD(), 0.0);
+        assertEquals(accelerometerQuantizationLevel, errors2.getAccelerometerQuantizationLevel(), 0.0);
+        assertEquals(gyroQuantizationLevel, errors2.getGyroQuantizationLevel(), 0.0);
     }
 
     @Test
@@ -1338,35 +883,24 @@ public class IMUErrorsTest {
         final double[] gyroBiases = new double[COMPONENTS];
         randomizer.fill(gyroBiases, MIN_VALUE, MAX_VALUE);
 
-        final Matrix accelerometerScaleFactorAndCrossCouplingErrors =
-                new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                accelerometerScaleFactorAndCrossCouplingErrors);
+        final Matrix accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, accelerometerScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroScaleFactorAndCrossCouplingErrors =
-                new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                gyroScaleFactorAndCrossCouplingErrors);
+        final Matrix gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroScaleFactorAndCrossCouplingErrors);
 
         final Matrix gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                gyroGDependenciesBiases);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroGDependenciesBiases);
 
-        final double accelerometerNoiseRootPSD = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double gyroNoiseRootPSD = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
+        final double accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final double accelerometerQuantizationLevel = randomizer
-                .nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroQuantizationLevel = randomizer
-                .nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         final IMUErrors errors = new IMUErrors(accelerometerBiases, gyroBiases,
-                accelerometerScaleFactorAndCrossCouplingErrors,
-                gyroScaleFactorAndCrossCouplingErrors,
-                gyroGDependenciesBiases, accelerometerNoiseRootPSD,
-                gyroNoiseRootPSD, accelerometerQuantizationLevel,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
                 gyroQuantizationLevel);
 
         final IMUErrors errors2 = new IMUErrors();
@@ -1375,21 +909,16 @@ public class IMUErrorsTest {
         errors2.copyFrom(errors);
 
         // check
-        assertArrayEquals(errors2.getAccelerometerBiases(), accelerometerBiases,
-                0.0);
-        assertArrayEquals(errors2.getGyroBiases(), gyroBiases, 0.0);
-        assertEquals(errors2.getAccelerometerScaleFactorAndCrossCouplingErrors(),
-                accelerometerScaleFactorAndCrossCouplingErrors);
-        assertEquals(errors2.getGyroScaleFactorAndCrossCouplingErrors(),
-                gyroScaleFactorAndCrossCouplingErrors);
-        assertEquals(errors2.getGyroGDependentBiases(), gyroGDependenciesBiases);
-        assertEquals(errors2.getAccelerometerNoiseRootPSD(),
-                accelerometerNoiseRootPSD, 0.0);
-        assertEquals(errors2.getGyroNoiseRootPSD(), gyroNoiseRootPSD, 0.0);
-        assertEquals(errors2.getAccelerometerQuantizationLevel(),
-                accelerometerQuantizationLevel, 0.0);
-        assertEquals(errors2.getGyroQuantizationLevel(),
-                gyroQuantizationLevel, 0.0);
+        assertArrayEquals(accelerometerBiases, errors2.getAccelerometerBiases(), 0.0);
+        assertArrayEquals(gyroBiases, errors2.getGyroBiases(), 0.0);
+        assertEquals(accelerometerScaleFactorAndCrossCouplingErrors,
+                errors2.getAccelerometerScaleFactorAndCrossCouplingErrors());
+        assertEquals(gyroScaleFactorAndCrossCouplingErrors, errors2.getGyroScaleFactorAndCrossCouplingErrors());
+        assertEquals(gyroGDependenciesBiases, errors2.getGyroGDependentBiases());
+        assertEquals(accelerometerNoiseRootPSD, errors2.getAccelerometerNoiseRootPSD(), 0.0);
+        assertEquals(gyroNoiseRootPSD, errors2.getGyroNoiseRootPSD(), 0.0);
+        assertEquals(accelerometerQuantizationLevel, errors2.getAccelerometerQuantizationLevel(), 0.0);
+        assertEquals(gyroQuantizationLevel, errors2.getGyroQuantizationLevel(), 0.0);
     }
 
     @Test
@@ -1402,41 +931,28 @@ public class IMUErrorsTest {
         final double[] gyroBiases = new double[COMPONENTS];
         randomizer.fill(gyroBiases, MIN_VALUE, MAX_VALUE);
 
-        final Matrix accelerometerScaleFactorAndCrossCouplingErrors =
-                new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                accelerometerScaleFactorAndCrossCouplingErrors);
+        final Matrix accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, accelerometerScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroScaleFactorAndCrossCouplingErrors =
-                new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                gyroScaleFactorAndCrossCouplingErrors);
+        final Matrix gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroScaleFactorAndCrossCouplingErrors);
 
         final Matrix gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                gyroGDependenciesBiases);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroGDependenciesBiases);
 
-        final double accelerometerNoiseRootPSD = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double gyroNoiseRootPSD = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
+        final double accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final double accelerometerQuantizationLevel = randomizer
-                .nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroQuantizationLevel = randomizer
-                .nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         final IMUErrors errors1 = new IMUErrors(accelerometerBiases, gyroBiases,
-                accelerometerScaleFactorAndCrossCouplingErrors,
-                gyroScaleFactorAndCrossCouplingErrors,
-                gyroGDependenciesBiases, accelerometerNoiseRootPSD,
-                gyroNoiseRootPSD, accelerometerQuantizationLevel,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
                 gyroQuantizationLevel);
         final IMUErrors errors2 = new IMUErrors(accelerometerBiases, gyroBiases,
-                accelerometerScaleFactorAndCrossCouplingErrors,
-                gyroScaleFactorAndCrossCouplingErrors,
-                gyroGDependenciesBiases, accelerometerNoiseRootPSD,
-                gyroNoiseRootPSD, accelerometerQuantizationLevel,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
                 gyroQuantizationLevel);
         final IMUErrors errors3 = new IMUErrors();
 
@@ -1454,54 +970,41 @@ public class IMUErrorsTest {
         final double[] gyroBiases = new double[COMPONENTS];
         randomizer.fill(gyroBiases, MIN_VALUE, MAX_VALUE);
 
-        final Matrix accelerometerScaleFactorAndCrossCouplingErrors =
-                new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                accelerometerScaleFactorAndCrossCouplingErrors);
+        final Matrix accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, accelerometerScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroScaleFactorAndCrossCouplingErrors =
-                new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                gyroScaleFactorAndCrossCouplingErrors);
+        final Matrix gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroScaleFactorAndCrossCouplingErrors);
 
         final Matrix gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                gyroGDependenciesBiases);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroGDependenciesBiases);
 
-        final double accelerometerNoiseRootPSD = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double gyroNoiseRootPSD = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
+        final double accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final double accelerometerQuantizationLevel = randomizer
-                .nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroQuantizationLevel = randomizer
-                .nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         final IMUErrors errors1 = new IMUErrors(accelerometerBiases, gyroBiases,
-                accelerometerScaleFactorAndCrossCouplingErrors,
-                gyroScaleFactorAndCrossCouplingErrors,
-                gyroGDependenciesBiases, accelerometerNoiseRootPSD,
-                gyroNoiseRootPSD, accelerometerQuantizationLevel,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
                 gyroQuantizationLevel);
         final IMUErrors errors2 = new IMUErrors(accelerometerBiases, gyroBiases,
-                accelerometerScaleFactorAndCrossCouplingErrors,
-                gyroScaleFactorAndCrossCouplingErrors,
-                gyroGDependenciesBiases, accelerometerNoiseRootPSD,
-                gyroNoiseRootPSD, accelerometerQuantizationLevel,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
                 gyroQuantizationLevel);
         final IMUErrors errors3 = new IMUErrors();
 
         //noinspection SimplifiableJUnitAssertion,EqualsWithItself
-        assertTrue(errors1.equals(errors1));
+        assertEquals(errors1, errors1);
         //noinspection SimplifiableJUnitAssertion
-        assertTrue(errors1.equals(errors2));
+        assertEquals(errors1, errors2);
         //noinspection SimplifiableJUnitAssertion
-        assertFalse(errors1.equals(errors3));
+        assertNotEquals(errors1, errors3);
         //noinspection SimplifiableJUnitAssertion,ConstantConditions
-        assertFalse(errors1.equals(null));
+        assertNotEquals(errors1, null);
         //noinspection SimplifiableJUnitAssertion
-        assertFalse(errors1.equals(new Object()));
+        assertNotEquals(errors1, new Object());
     }
 
     @Test
@@ -1514,35 +1017,24 @@ public class IMUErrorsTest {
         final double[] gyroBiases = new double[COMPONENTS];
         randomizer.fill(gyroBiases, MIN_VALUE, MAX_VALUE);
 
-        final Matrix accelerometerScaleFactorAndCrossCouplingErrors =
-                new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                accelerometerScaleFactorAndCrossCouplingErrors);
+        final Matrix accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, accelerometerScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroScaleFactorAndCrossCouplingErrors =
-                new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                gyroScaleFactorAndCrossCouplingErrors);
+        final Matrix gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroScaleFactorAndCrossCouplingErrors);
 
         final Matrix gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                gyroGDependenciesBiases);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroGDependenciesBiases);
 
-        final double accelerometerNoiseRootPSD = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double gyroNoiseRootPSD = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
+        final double accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final double accelerometerQuantizationLevel = randomizer
-                .nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroQuantizationLevel = randomizer
-                .nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         final IMUErrors errors1 = new IMUErrors(accelerometerBiases, gyroBiases,
-                accelerometerScaleFactorAndCrossCouplingErrors,
-                gyroScaleFactorAndCrossCouplingErrors,
-                gyroGDependenciesBiases, accelerometerNoiseRootPSD,
-                gyroNoiseRootPSD, accelerometerQuantizationLevel,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
                 gyroQuantizationLevel);
 
         final Object errors2 = errors1.clone();
@@ -1560,35 +1052,24 @@ public class IMUErrorsTest {
         final double[] gyroBiases = new double[COMPONENTS];
         randomizer.fill(gyroBiases, MIN_VALUE, MAX_VALUE);
 
-        final Matrix accelerometerScaleFactorAndCrossCouplingErrors =
-                new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                accelerometerScaleFactorAndCrossCouplingErrors);
+        final Matrix accelerometerScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, accelerometerScaleFactorAndCrossCouplingErrors);
 
-        final Matrix gyroScaleFactorAndCrossCouplingErrors =
-                new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                gyroScaleFactorAndCrossCouplingErrors);
+        final Matrix gyroScaleFactorAndCrossCouplingErrors = new Matrix(COMPONENTS, COMPONENTS);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroScaleFactorAndCrossCouplingErrors);
 
         final Matrix gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
-        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
-                gyroGDependenciesBiases);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE, gyroGDependenciesBiases);
 
-        final double accelerometerNoiseRootPSD = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
-        final double gyroNoiseRootPSD = randomizer.nextDouble(
-                MIN_VALUE, MAX_VALUE);
+        final double accelerometerNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroNoiseRootPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final double accelerometerQuantizationLevel = randomizer
-                .nextDouble(MIN_VALUE, MAX_VALUE);
-        final double gyroQuantizationLevel = randomizer
-                .nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerometerQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroQuantizationLevel = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
         final IMUErrors errors1 = new IMUErrors(accelerometerBiases, gyroBiases,
-                accelerometerScaleFactorAndCrossCouplingErrors,
-                gyroScaleFactorAndCrossCouplingErrors,
-                gyroGDependenciesBiases, accelerometerNoiseRootPSD,
-                gyroNoiseRootPSD, accelerometerQuantizationLevel,
+                accelerometerScaleFactorAndCrossCouplingErrors, gyroScaleFactorAndCrossCouplingErrors,
+                gyroGDependenciesBiases, accelerometerNoiseRootPSD, gyroNoiseRootPSD, accelerometerQuantizationLevel,
                 gyroQuantizationLevel);
 
         final byte[] bytes = SerializationHelper.serialize(errors1);

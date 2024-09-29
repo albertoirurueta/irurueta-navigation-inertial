@@ -19,6 +19,8 @@ import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
 
+import java.io.Serial;
+
 /**
  * Contains a triad of acceleration measurements.
  */
@@ -33,6 +35,7 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration> imp
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -58,8 +61,7 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration> imp
      * @param valueY y-coordinate of measurement value expressed in default unit.
      * @param valueZ z-coordinate of measurement value expressed in default unit.
      */
-    public AccelerationTriad(
-            final double valueX, final double valueY, final double valueZ) {
+    public AccelerationTriad(final double valueX, final double valueY, final double valueZ) {
         this(DEFAULT_UNIT, valueX, valueY, valueZ);
     }
 
@@ -75,8 +77,7 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration> imp
      *               provided unit.
      */
     public AccelerationTriad(
-            final AccelerationUnit unit,
-            final double valueX, final double valueY, final double valueZ) {
+            final AccelerationUnit unit, final double valueX, final double valueY, final double valueZ) {
         super(unit, valueX, valueY, valueZ);
     }
 
@@ -88,9 +89,7 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration> imp
      * @param measurementZ z-coordinate of measurement.
      */
     public AccelerationTriad(
-            final Acceleration measurementX,
-            final Acceleration measurementY,
-            final Acceleration measurementZ) {
+            final Acceleration measurementX, final Acceleration measurementY, final Acceleration measurementZ) {
         super(DEFAULT_UNIT);
         setMeasurementCoordinates(measurementX, measurementY, measurementZ);
     }
@@ -133,8 +132,8 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration> imp
      */
     @Override
     public void setMeasurementX(final Acceleration measurementX) {
-        setValueX(AccelerationConverter.convert(measurementX.getValue(),
-                measurementX.getUnit(), getUnit()).doubleValue());
+        setValueX(AccelerationConverter.convert(measurementX.getValue(), measurementX.getUnit(),
+                getUnit()).doubleValue());
     }
 
     /**
@@ -166,8 +165,8 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration> imp
      */
     @Override
     public void setMeasurementY(final Acceleration measurementY) {
-        setValueY(AccelerationConverter.convert(measurementY.getValue(),
-                measurementY.getUnit(), getUnit()).doubleValue());
+        setValueY(AccelerationConverter.convert(measurementY.getValue(), measurementY.getUnit(),
+                getUnit()).doubleValue());
     }
 
     /**
@@ -199,8 +198,8 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration> imp
      */
     @Override
     public void setMeasurementZ(final Acceleration measurementZ) {
-        setValueZ(AccelerationConverter.convert(measurementZ.getValue(),
-                measurementZ.getUnit(), getUnit()).doubleValue());
+        setValueZ(AccelerationConverter.convert(measurementZ.getValue(), measurementZ.getUnit(),
+                getUnit()).doubleValue());
     }
 
     /**
@@ -212,9 +211,7 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration> imp
      */
     @Override
     public void setMeasurementCoordinates(
-            final Acceleration measurementX,
-            final Acceleration measurementY,
-            final Acceleration measurementZ) {
+            final Acceleration measurementX, final Acceleration measurementY, final Acceleration measurementZ) {
         setMeasurementX(measurementX);
         setMeasurementY(measurementY);
         setMeasurementZ(measurementZ);

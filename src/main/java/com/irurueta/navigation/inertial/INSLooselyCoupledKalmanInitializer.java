@@ -23,7 +23,9 @@ import com.irurueta.algebra.WrongSizeException;
  * matrix.
  * This implementation is based on the equations defined in "Principles of GNSS, Inertial, and Multisensor
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
- * https://github.com/ymjdz/MATLAB-Codes/blob/master/Initialize_LC_P_matrix.m
+ * <a href="https://github.com/ymjdz/MATLAB-Codes/blob/master/Initialize_LC_P_matrix.m">
+ *     https://github.com/ymjdz/MATLAB-Codes/blob/master/Initialize_LC_P_matrix.m
+ * </a>
  */
 public class INSLooselyCoupledKalmanInitializer {
 
@@ -47,8 +49,7 @@ public class INSLooselyCoupledKalmanInitializer {
      *               will be stored. Matrix must be 15x15, otherwise it will be resized.
      */
     @SuppressWarnings("DuplicatedCode")
-    public static void initialize(final INSLooselyCoupledKalmanInitializerConfig config,
-                                  final Matrix result) {
+    public static void initialize(final INSLooselyCoupledKalmanInitializerConfig config, final Matrix result) {
         if (result.getRows() != NUM_PARAMS || result.getColumns() != NUM_PARAMS) {
             try {
                 result.resize(NUM_PARAMS, NUM_PARAMS);

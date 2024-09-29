@@ -22,6 +22,7 @@ import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityConverter;
 import com.irurueta.units.MagneticFluxDensityUnit;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -39,6 +40,7 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -72,8 +74,7 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      * @param bd down component of magnetic flux density expressed in
      *           Teslas (T).
      */
-    public NEDMagneticFluxDensity(
-            final double bn, final double be, final double bd) {
+    public NEDMagneticFluxDensity(final double bn, final double be, final double bd) {
         setCoordinates(bn, be, bd);
     }
 
@@ -85,9 +86,7 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      * @param bd down component of magnetic flux density.
      */
     public NEDMagneticFluxDensity(
-            final MagneticFluxDensity bn,
-            final MagneticFluxDensity be,
-            final MagneticFluxDensity bd) {
+            final MagneticFluxDensity bn, final MagneticFluxDensity be, final MagneticFluxDensity bd) {
         setCoordinates(bn, be, bd);
     }
 
@@ -261,8 +260,7 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      * @param be east component of magnetic flux density.
      * @param bd down component of magnetic flux density.
      */
-    public void setCoordinates(
-            final double bn, final double be, final double bd) {
+    public void setCoordinates(final double bn, final double be, final double bd) {
         mBn = bn;
         mBe = be;
         mBd = bd;
@@ -276,11 +274,8 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      * @param bd down component of magnetic flux density.
      */
     public void setCoordinates(
-            final MagneticFluxDensity bn,
-            final MagneticFluxDensity be,
-            final MagneticFluxDensity bd) {
-        setCoordinates(convertMagneticFluxDensity(bn),
-                convertMagneticFluxDensity(be), convertMagneticFluxDensity(bd));
+            final MagneticFluxDensity bn, final MagneticFluxDensity be, final MagneticFluxDensity bd) {
+        setCoordinates(convertMagneticFluxDensity(bn), convertMagneticFluxDensity(be), convertMagneticFluxDensity(bd));
     }
 
     /**
@@ -467,6 +462,7 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
             return false;
         }
 
+        //noinspection PatternVariableCanBeUsed
         final NEDMagneticFluxDensity other = (NEDMagneticFluxDensity) obj;
         return equals(other);
     }
@@ -492,14 +488,12 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      * @return true if both instances are considered to be equal (up to provided
      * threshold), false otherwise.
      */
-    public boolean equals(
-            final NEDMagneticFluxDensity other, final double threshold) {
+    public boolean equals(final NEDMagneticFluxDensity other, final double threshold) {
         if (other == null) {
             return false;
         }
 
-        return Math.abs(mBn - other.mBn) <= threshold
-                && Math.abs(mBe - other.mBe) <= threshold
+        return Math.abs(mBn - other.mBn) <= threshold && Math.abs(mBe - other.mBe) <= threshold
                 && Math.abs(mBd - other.mBd) <= threshold;
     }
 
@@ -523,8 +517,8 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      * @return converted value.
      */
     private double convertMagneticFluxDensity(final MagneticFluxDensity b) {
-        return MagneticFluxDensityConverter.convert(b.getValue().doubleValue(),
-                b.getUnit(), MagneticFluxDensityUnit.TESLA);
+        return MagneticFluxDensityConverter.convert(b.getValue().doubleValue(), b.getUnit(),
+                MagneticFluxDensityUnit.TESLA);
     }
 
     /**
@@ -534,8 +528,7 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      * @param unit  unit of value to be converted
      * @return converted value.
      */
-    private double convertMagneticFluxDensity(
-            final double value, final MagneticFluxDensityUnit unit) {
+    private double convertMagneticFluxDensity(final double value, final MagneticFluxDensityUnit unit) {
         return MagneticFluxDensityConverter.convert(value, unit, MagneticFluxDensityUnit.TESLA);
     }
 }

@@ -62,8 +62,7 @@ public class WindowedAngularSpeedTriadNoiseEstimator extends
      *
      * @param listener listener to handle events raised by this estimator.
      */
-    public WindowedAngularSpeedTriadNoiseEstimator(
-            final WindowedAngularSpeedTriadNoiseEstimatorListener listener) {
+    public WindowedAngularSpeedTriadNoiseEstimator(final WindowedAngularSpeedTriadNoiseEstimatorListener listener) {
         super(listener);
     }
 
@@ -89,8 +88,7 @@ public class WindowedAngularSpeedTriadNoiseEstimator extends
      */
     @Override
     protected AngularSpeedTriad createTriad(
-            final double valueX, final double valueY, final double valueZ,
-            final AngularSpeedUnit unit) {
+            final double valueX, final double valueY, final double valueZ, final AngularSpeedUnit unit) {
         return new AngularSpeedTriad(unit, valueX, valueY, valueZ);
     }
 

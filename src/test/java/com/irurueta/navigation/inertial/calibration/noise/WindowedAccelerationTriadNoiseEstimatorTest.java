@@ -52,14 +52,12 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
 
     @Test
     public void testConstructor1() {
-        final WindowedAccelerationTriadNoiseEstimator estimator =
-                new WindowedAccelerationTriadNoiseEstimator();
+        final WindowedAccelerationTriadNoiseEstimator estimator = new WindowedAccelerationTriadNoiseEstimator();
 
         // check default values
-        assertEquals(WindowedAccelerationTriadNoiseEstimator.DEFAULT_WINDOW_SIZE,
-                estimator.getWindowSize());
-        assertEquals(WindowedAccelerationTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
-                estimator.getTimeInterval(), 0.0);
+        assertEquals(WindowedAccelerationTriadNoiseEstimator.DEFAULT_WINDOW_SIZE, estimator.getWindowSize());
+        assertEquals(WindowedAccelerationTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS, estimator.getTimeInterval(),
+                0.0);
         final Time time1 = estimator.getTimeIntervalAsTime();
         assertEquals(WindowedAccelerationTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 time1.getValue().doubleValue(), 0.0);
@@ -76,24 +74,21 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration avgX1 = estimator.getAvgXAsMeasurement();
         assertEquals(0.0, avgX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgX1.getUnit());
-        final Acceleration avgX2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgX2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgXAsMeasurement(avgX2);
         assertEquals(avgX1, avgX2);
         assertEquals(0.0, estimator.getAvgY(), 0.0);
         final Acceleration avgY1 = estimator.getAvgYAsMeasurement();
         assertEquals(0.0, avgY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgY1.getUnit());
-        final Acceleration avgY2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgY2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgYAsMeasurement(avgY2);
         assertEquals(avgY1, avgY2);
         assertEquals(0.0, estimator.getAvgZ(), 0.0);
         final Acceleration avgZ1 = estimator.getAvgZAsMeasurement();
         assertEquals(0.0, avgZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgZ1.getUnit());
-        final Acceleration avgZ2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgZ2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgZAsMeasurement(avgZ2);
         assertEquals(avgZ1, avgZ2);
         final AccelerationTriad triad1 = estimator.getAvgTriad();
@@ -108,8 +103,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration norm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(0.0, norm1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, norm1.getUnit());
-        final Acceleration norm2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration norm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgNormAsMeasurement(norm2);
         assertEquals(norm1, norm2);
         assertEquals(0.0, estimator.getVarianceX(), 0.0);
@@ -119,24 +113,21 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(0.0, stdX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdX1.getUnit());
-        final Acceleration stdX2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdX2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
         assertEquals(0.0, estimator.getStandardDeviationY(), 0.0);
         final Acceleration stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(0.0, stdY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdY1.getUnit());
-        final Acceleration stdY2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdY2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
         assertEquals(0.0, estimator.getStandardDeviationZ(), 0.0);
         final Acceleration stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(0.0, stdZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdZ1.getUnit());
-        final Acceleration stdZ2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdZ2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
         final AccelerationTriad stdTriad1 = estimator.getStandardDeviationTriad();
@@ -151,16 +142,14 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(0.0, stdNorm1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdNorm1.getUnit());
-        final Acceleration stdNorm2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdNorm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
         assertEquals(0.0, estimator.getAverageStandardDeviation(), 0.0);
         final Acceleration avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(0.0, avgStd1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgStd1.getUnit());
-        final Acceleration avgStd2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgStd2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
         assertEquals(0.0, estimator.getPsdX(), 0.0);
@@ -180,14 +169,13 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
 
     @Test
     public void testConstructor2() {
-        final WindowedAccelerationTriadNoiseEstimator estimator =
-                new WindowedAccelerationTriadNoiseEstimator(this);
+        final WindowedAccelerationTriadNoiseEstimator estimator = new WindowedAccelerationTriadNoiseEstimator(
+                this);
 
         // check default values
-        assertEquals(WindowedAccelerationTriadNoiseEstimator.DEFAULT_WINDOW_SIZE,
-                estimator.getWindowSize());
-        assertEquals(WindowedAccelerationTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
-                estimator.getTimeInterval(), 0.0);
+        assertEquals(WindowedAccelerationTriadNoiseEstimator.DEFAULT_WINDOW_SIZE, estimator.getWindowSize());
+        assertEquals(WindowedAccelerationTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS, estimator.getTimeInterval(),
+                0.0);
         final Time time1 = estimator.getTimeIntervalAsTime();
         assertEquals(WindowedAccelerationTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
                 time1.getValue().doubleValue(), 0.0);
@@ -204,24 +192,21 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration avgX1 = estimator.getAvgXAsMeasurement();
         assertEquals(0.0, avgX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgX1.getUnit());
-        final Acceleration avgX2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgX2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgXAsMeasurement(avgX2);
         assertEquals(avgX1, avgX2);
         assertEquals(0.0, estimator.getAvgY(), 0.0);
         final Acceleration avgY1 = estimator.getAvgYAsMeasurement();
         assertEquals(0.0, avgY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgY1.getUnit());
-        final Acceleration avgY2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgY2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgYAsMeasurement(avgY2);
         assertEquals(avgY1, avgY2);
         assertEquals(0.0, estimator.getAvgZ(), 0.0);
         final Acceleration avgZ1 = estimator.getAvgZAsMeasurement();
         assertEquals(0.0, avgZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgZ1.getUnit());
-        final Acceleration avgZ2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgZ2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgZAsMeasurement(avgZ2);
         assertEquals(avgZ1, avgZ2);
         final AccelerationTriad triad1 = estimator.getAvgTriad();
@@ -236,8 +221,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration norm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(0.0, norm1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, norm1.getUnit());
-        final Acceleration norm2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration norm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgNormAsMeasurement(norm2);
         assertEquals(norm1, norm2);
         assertEquals(0.0, estimator.getVarianceX(), 0.0);
@@ -247,24 +231,21 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(0.0, stdX1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdX1.getUnit());
-        final Acceleration stdX2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdX2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
         assertEquals(0.0, estimator.getStandardDeviationY(), 0.0);
         final Acceleration stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(0.0, stdY1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdY1.getUnit());
-        final Acceleration stdY2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdY2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
         assertEquals(0.0, estimator.getStandardDeviationZ(), 0.0);
         final Acceleration stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(0.0, stdZ1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdZ1.getUnit());
-        final Acceleration stdZ2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdZ2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
         final AccelerationTriad stdTriad1 = estimator.getStandardDeviationTriad();
@@ -279,16 +260,14 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(0.0, stdNorm1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdNorm1.getUnit());
-        final Acceleration stdNorm2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdNorm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
         assertEquals(0.0, estimator.getAverageStandardDeviation(), 0.0);
         final Acceleration avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(0.0, avgStd1.getValue().doubleValue(), 0.0);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgStd1.getUnit());
-        final Acceleration avgStd2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgStd2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
         assertEquals(0.0, estimator.getPsdX(), 0.0);
@@ -308,12 +287,10 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
 
     @Test
     public void testGetSetWindowSize() throws LockedException {
-        final WindowedAccelerationTriadNoiseEstimator estimator =
-                new WindowedAccelerationTriadNoiseEstimator();
+        final WindowedAccelerationTriadNoiseEstimator estimator = new WindowedAccelerationTriadNoiseEstimator();
 
         // check default value
-        assertEquals(WindowedAccelerationTriadNoiseEstimator.DEFAULT_WINDOW_SIZE,
-                estimator.getWindowSize());
+        assertEquals(WindowedAccelerationTriadNoiseEstimator.DEFAULT_WINDOW_SIZE, estimator.getWindowSize());
 
         // set new value
         estimator.setWindowSize(3);
@@ -322,26 +299,17 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         assertEquals(3, estimator.getWindowSize());
 
         // force IllegalArgumentException
-        try {
-            estimator.setWindowSize(1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator.setWindowSize(2);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setWindowSize(1));
+        assertThrows(IllegalArgumentException.class, () -> estimator.setWindowSize(2));
     }
 
     @Test
     public void testGetSetTimeInterval() throws LockedException {
-        final WindowedAccelerationTriadNoiseEstimator estimator =
-                new WindowedAccelerationTriadNoiseEstimator();
+        final WindowedAccelerationTriadNoiseEstimator estimator = new WindowedAccelerationTriadNoiseEstimator();
 
         // check default value
-        assertEquals(WindowedAccelerationTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
-                estimator.getTimeInterval(), 0.0);
+        assertEquals(WindowedAccelerationTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS, estimator.getTimeInterval(),
+                0.0);
 
         // set new value
         estimator.setTimeInterval(1.0);
@@ -350,17 +318,12 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         assertEquals(1.0, estimator.getTimeInterval(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            estimator.setTimeInterval(-1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setTimeInterval(-1.0));
     }
 
     @Test
     public void testGetSetTimeIntervalAsTime() throws LockedException {
-        final WindowedAccelerationTriadNoiseEstimator estimator =
-                new WindowedAccelerationTriadNoiseEstimator();
+        final WindowedAccelerationTriadNoiseEstimator estimator = new WindowedAccelerationTriadNoiseEstimator();
 
         // check default value
         final Time time1 = estimator.getTimeIntervalAsTime();
@@ -383,8 +346,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
 
     @Test
     public void testGetSetListener() throws LockedException {
-        final WindowedAccelerationTriadNoiseEstimator estimator =
-                new WindowedAccelerationTriadNoiseEstimator();
+        final WindowedAccelerationTriadNoiseEstimator estimator = new WindowedAccelerationTriadNoiseEstimator();
 
         // check default value
         assertNull(estimator.getListener());
@@ -408,34 +370,30 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
         final double omegaX = 0.0;
         final double omegaY = 0.0;
         final double omegaZ = 0.0;
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final WindowedAccelerationTriadNoiseEstimator estimator =
-                new WindowedAccelerationTriadNoiseEstimator(this);
+        final WindowedAccelerationTriadNoiseEstimator estimator = new WindowedAccelerationTriadNoiseEstimator(
+                this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mTriadAdded, 0);
-        assertEquals(mWindowFilled, 0);
-        assertEquals(mReset, 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mTriadAdded);
+        assertEquals(0, mWindowFilled);
+        assertEquals(0, mReset);
         assertFalse(estimator.isWindowFilled());
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.isRunning());
@@ -456,16 +414,15 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final List<AccelerationTriad> triads = new ArrayList<>();
         for (int i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedTriad(firstTriad)) {
-                assertEquals(estimator.getFirstWindowedTriad(), firstTriad);
+                assertEquals(firstTriad, estimator.getFirstWindowedTriad());
                 assertEquals(firstTriad, firstKinematics.getSpecificForceTriad());
             }
             if (estimator.getLastWindowedTriad(lastTriad)) {
-                assertEquals(estimator.getLastWindowedTriad(), lastTriad);
+                assertEquals(lastTriad, estimator.getLastWindowedTriad());
                 assertEquals(lastTriad, triad);
             }
 
-            BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                    errors, random, kinematics);
+            BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
 
             if (i == 0) {
                 firstKinematics.copyFrom(kinematics);
@@ -527,8 +484,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         Acceleration a1 = estimator.getAvgXAsMeasurement();
         assertEquals(avgFx, a1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, a1.getUnit());
-        final Acceleration a2 = new Acceleration(
-                0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration a2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgXAsMeasurement(a2);
         assertEquals(a1, a2);
 
@@ -557,8 +513,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration norm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(triad1.getNorm(), norm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, norm1.getUnit());
-        final Acceleration norm2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration norm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgNormAsMeasurement(norm2);
         assertEquals(norm1, norm2);
 
@@ -573,24 +528,21 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(stdFx, stdX1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdX1.getUnit());
-        final Acceleration stdX2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdX2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
 
         final Acceleration stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(stdFy, stdY1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdY1.getUnit());
-        final Acceleration stdY2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdY2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
 
         final Acceleration stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(stdFz, stdZ1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdZ1.getUnit());
-        final Acceleration stdZ2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdZ2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
 
@@ -607,8 +559,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(stdTriad1.getNorm(), stdNorm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdNorm1.getUnit());
-        final Acceleration stdNorm2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdNorm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
 
@@ -617,8 +568,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(avgStd, avgStd1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgStd1.getUnit());
-        final Acceleration avgStd2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgStd2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
 
@@ -641,24 +591,21 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final double avgPsd = (psdX + psdY + psdZ) / 3.0;
         assertEquals(avgPsd, estimator.getAvgNoisePsd(), ABSOLUTE_ERROR);
 
-        final double normRootPsd = Math.sqrt(rootPsdX * rootPsdX
-                + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
+        final double normRootPsd = Math.sqrt(rootPsdX * rootPsdX + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
         assertEquals(normRootPsd, estimator.getNoiseRootPsdNorm(), ABSOLUTE_ERROR);
-        assertEquals(estimator.getNoiseRootPsdNorm(),
-                estimator.getAccelerometerBaseNoiseLevelRootPsd(), 0.0);
+        assertEquals(estimator.getNoiseRootPsdNorm(), estimator.getAccelerometerBaseNoiseLevelRootPsd(), 0.0);
 
         assertEquals(windowSize, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, windowSize);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize, mTriadAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
         // if we add more triads, window filled is not called again
-        BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                errors, random, kinematics);
+        BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
         kinematics.getSpecificForceTriad(triad);
 
         triads.add(new AccelerationTriad(triad));
@@ -669,19 +616,19 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(triads.size(), windowSize + 1);
+        assertEquals(windowSize + 1, triads.size());
         assertEquals(triads.get(1), estimator.getFirstWindowedTriad());
         assertEquals(triads.get(windowSize), estimator.getLastWindowedTriad());
 
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, windowSize + 1);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize + 1, mTriadAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(mReset, 1);
+        assertEquals(1, mReset);
 
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
@@ -722,34 +669,30 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
         final double omegaX = 0.0;
         final double omegaY = 0.0;
         final double omegaZ = 0.0;
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final WindowedAccelerationTriadNoiseEstimator estimator =
-                new WindowedAccelerationTriadNoiseEstimator(this);
+        final WindowedAccelerationTriadNoiseEstimator estimator = new WindowedAccelerationTriadNoiseEstimator(
+                this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mTriadAdded, 0);
-        assertEquals(mWindowFilled, 0);
-        assertEquals(mReset, 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mTriadAdded);
+        assertEquals(0, mWindowFilled);
+        assertEquals(0, mReset);
         assertFalse(estimator.isWindowFilled());
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.isRunning());
@@ -774,12 +717,11 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
                 assertEquals(firstTriad, firstKinematics.getSpecificForceTriad());
             }
             if (estimator.getLastWindowedTriad(lastTriad)) {
-                assertEquals(estimator.getLastWindowedTriad(), lastTriad);
+                assertEquals(lastTriad, estimator.getLastWindowedTriad());
                 assertEquals(lastTriad, triad);
             }
 
-            BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                    errors, random, kinematics);
+            BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
 
             if (i == 0) {
                 firstKinematics.copyFrom(kinematics);
@@ -795,7 +737,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
 
             assertTrue(estimator.getLastWindowedTriad(lastTriad));
             assertEquals(lastTriad, triad);
-            assertEquals(estimator.getNumberOfProcessedSamples(), i + 1);
+            assertEquals(i + 1, estimator.getNumberOfProcessedSamples());
             assertFalse(estimator.isRunning());
 
             avgFx += valueX;
@@ -841,8 +783,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         Acceleration a1 = estimator.getAvgXAsMeasurement();
         assertEquals(avgFx, a1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, a1.getUnit());
-        final Acceleration a2 = new Acceleration(
-                0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration a2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgXAsMeasurement(a2);
         assertEquals(a1, a2);
 
@@ -871,8 +812,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration norm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(triad1.getNorm(), norm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, norm1.getUnit());
-        final Acceleration norm2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration norm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgNormAsMeasurement(norm2);
         assertEquals(norm1, norm2);
 
@@ -887,24 +827,21 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(stdFx, stdX1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdX1.getUnit());
-        final Acceleration stdX2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdX2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
 
         final Acceleration stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(stdFy, stdY1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdY1.getUnit());
-        final Acceleration stdY2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdY2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
 
         final Acceleration stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(stdFz, stdZ1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdZ1.getUnit());
-        final Acceleration stdZ2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdZ2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
 
@@ -921,8 +858,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(stdTriad1.getNorm(), stdNorm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdNorm1.getUnit());
-        final Acceleration stdNorm2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdNorm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
 
@@ -931,8 +867,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(avgStd, avgStd1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgStd1.getUnit());
-        final Acceleration avgStd2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgStd2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
 
@@ -955,48 +890,44 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final double avgPsd = (psdX + psdY + psdZ) / 3.0;
         assertEquals(avgPsd, estimator.getAvgNoisePsd(), ABSOLUTE_ERROR);
 
-        final double normRootPsd = Math.sqrt(rootPsdX * rootPsdX
-                + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
+        final double normRootPsd = Math.sqrt(rootPsdX * rootPsdX + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
         assertEquals(normRootPsd, estimator.getNoiseRootPsdNorm(), ABSOLUTE_ERROR);
-        assertEquals(estimator.getNoiseRootPsdNorm(),
-                estimator.getAccelerometerBaseNoiseLevelRootPsd(), 0.0);
+        assertEquals(estimator.getNoiseRootPsdNorm(), estimator.getAccelerometerBaseNoiseLevelRootPsd(), 0.0);
 
         assertEquals(windowSize, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, windowSize);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize, mTriadAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
         // if we add more triads, window filled is not called again
-        BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                errors, random, kinematics);
+        BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
         kinematics.getSpecificForceTriad(triad);
 
         triads.add(new AccelerationTriad(triad));
 
-        estimator.addTriadAndProcess(
-                triad.getValueX(), triad.getValueY(), triad.getValueZ());
+        estimator.addTriadAndProcess(triad.getValueX(), triad.getValueY(), triad.getValueZ());
 
         assertEquals(windowSize + 1, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(triads.size(), windowSize + 1);
+        assertEquals(windowSize + 1, triads.size());
         assertEquals(triads.get(1), estimator.getFirstWindowedTriad());
         assertEquals(triads.get(windowSize), estimator.getLastWindowedTriad());
 
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, windowSize + 1);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize + 1, mTriadAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(mReset, 1);
+        assertEquals(1, mReset);
 
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
@@ -1037,34 +968,30 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
         final double omegaX = 0.0;
         final double omegaY = 0.0;
         final double omegaZ = 0.0;
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final WindowedAccelerationTriadNoiseEstimator estimator =
-                new WindowedAccelerationTriadNoiseEstimator(this);
+        final WindowedAccelerationTriadNoiseEstimator estimator = new WindowedAccelerationTriadNoiseEstimator(
+                this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mTriadAdded, 0);
-        assertEquals(mWindowFilled, 0);
-        assertEquals(mReset, 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mTriadAdded);
+        assertEquals(0, mWindowFilled);
+        assertEquals(0, mReset);
         assertFalse(estimator.isWindowFilled());
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.isRunning());
@@ -1085,7 +1012,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final List<AccelerationTriad> triads = new ArrayList<>();
         for (int i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedTriad(firstTriad)) {
-                assertEquals(estimator.getFirstWindowedTriad(), firstTriad);
+                assertEquals(firstTriad, estimator.getFirstWindowedTriad());
                 assertEquals(firstTriad, firstKinematics.getSpecificForceTriad());
             }
             if (estimator.getLastWindowedTriad(lastTriad)) {
@@ -1093,8 +1020,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
                 assertEquals(lastTriad, triad);
             }
 
-            BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                    errors, random, kinematics);
+            BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
 
             if (i == 0) {
                 firstKinematics.copyFrom(kinematics);
@@ -1106,12 +1032,11 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
             valueY = triad.getValueY();
             valueZ = triad.getValueZ();
 
-            estimator.addTriadAndProcess(
-                    triad.getMeasurementX(), triad.getMeasurementY(), triad.getMeasurementZ());
+            estimator.addTriadAndProcess(triad.getMeasurementX(), triad.getMeasurementY(), triad.getMeasurementZ());
 
             assertTrue(estimator.getLastWindowedTriad(lastTriad));
             assertEquals(lastTriad, triad);
-            assertEquals(estimator.getNumberOfProcessedSamples(), i + 1);
+            assertEquals(i + 1, estimator.getNumberOfProcessedSamples());
             assertFalse(estimator.isRunning());
 
             avgFx += valueX;
@@ -1157,8 +1082,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         Acceleration a1 = estimator.getAvgXAsMeasurement();
         assertEquals(avgFx, a1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, a1.getUnit());
-        final Acceleration a2 = new Acceleration(
-                0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration a2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgXAsMeasurement(a2);
         assertEquals(a1, a2);
 
@@ -1187,8 +1111,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration norm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(triad1.getNorm(), norm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, norm1.getUnit());
-        final Acceleration norm2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration norm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAvgNormAsMeasurement(norm2);
         assertEquals(norm1, norm2);
 
@@ -1203,24 +1126,21 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(stdFx, stdX1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdX1.getUnit());
-        final Acceleration stdX2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdX2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
 
         final Acceleration stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(stdFy, stdY1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdY1.getUnit());
-        final Acceleration stdY2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdY2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
 
         final Acceleration stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(stdFz, stdZ1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdZ1.getUnit());
-        final Acceleration stdZ2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdZ2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
 
@@ -1237,8 +1157,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(stdTriad1.getNorm(), stdNorm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, stdNorm1.getUnit());
-        final Acceleration stdNorm2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration stdNorm2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
 
@@ -1247,8 +1166,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final Acceleration avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(avgStd, avgStd1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, avgStd1.getUnit());
-        final Acceleration avgStd2 = new Acceleration(
-                1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration avgStd2 = new Acceleration(1.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
 
@@ -1271,48 +1189,44 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final double avgPsd = (psdX + psdY + psdZ) / 3.0;
         assertEquals(avgPsd, estimator.getAvgNoisePsd(), ABSOLUTE_ERROR);
 
-        final double normRootPsd = Math.sqrt(rootPsdX * rootPsdX
-                + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
+        final double normRootPsd = Math.sqrt(rootPsdX * rootPsdX + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
         assertEquals(normRootPsd, estimator.getNoiseRootPsdNorm(), ABSOLUTE_ERROR);
-        assertEquals(estimator.getNoiseRootPsdNorm(),
-                estimator.getAccelerometerBaseNoiseLevelRootPsd(), 0.0);
+        assertEquals(estimator.getNoiseRootPsdNorm(), estimator.getAccelerometerBaseNoiseLevelRootPsd(), 0.0);
 
         assertEquals(windowSize, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, windowSize);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize, mTriadAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
         // if we add more triads, window filled is not called again
-        BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                errors, random, kinematics);
+        BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
         kinematics.getSpecificForceTriad(triad);
 
         triads.add(new AccelerationTriad(triad));
 
-        estimator.addTriadAndProcess(
-                triad.getMeasurementX(), triad.getMeasurementY(), triad.getMeasurementZ());
+        estimator.addTriadAndProcess(triad.getMeasurementX(), triad.getMeasurementY(), triad.getMeasurementZ());
 
         assertEquals(windowSize + 1, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isWindowFilled());
 
-        assertEquals(triads.size(), windowSize + 1);
+        assertEquals(windowSize + 1, triads.size());
         assertEquals(triads.get(1), estimator.getFirstWindowedTriad());
         assertEquals(triads.get(windowSize), estimator.getLastWindowedTriad());
 
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, windowSize + 1);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize + 1, mTriadAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(mReset, 1);
+        assertEquals(1, mReset);
 
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
@@ -1353,34 +1267,30 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
         final double omegaX = 0.0;
         final double omegaY = 0.0;
         final double omegaZ = 0.0;
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final WindowedAccelerationTriadNoiseEstimator estimator =
-                new WindowedAccelerationTriadNoiseEstimator(this);
+        final WindowedAccelerationTriadNoiseEstimator estimator = new WindowedAccelerationTriadNoiseEstimator(
+                this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mTriadAdded, 0);
-        assertEquals(mWindowFilled, 0);
-        assertEquals(mReset, 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mTriadAdded);
+        assertEquals(0, mWindowFilled);
+        assertEquals(0, mReset);
         assertFalse(estimator.isWindowFilled());
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.isRunning());
@@ -1403,8 +1313,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
                 assertEquals(lastTriad, triad);
             }
 
-            BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                    errors, random, kinematics);
+            BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
 
             if (i == 0) {
                 firstKinematics.copyFrom(kinematics);
@@ -1416,16 +1325,16 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
 
             assertTrue(estimator.getLastWindowedTriad(lastTriad));
             assertEquals(lastTriad, triad);
-            assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+            assertEquals(0, estimator.getNumberOfProcessedSamples());
             assertFalse(estimator.isRunning());
         }
 
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, windowSize);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize, mTriadAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
-        assertEquals(triads.size(), windowSize);
+        assertEquals(windowSize, triads.size());
         assertEquals(triads.get(0), estimator.getFirstWindowedTriad());
         assertEquals(triads.get(windowSize - 1), estimator.getLastWindowedTriad());
         assertEquals(0.0, estimator.getAvgX(), 0.0);
@@ -1465,34 +1374,30 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
         final double omegaX = 0.0;
         final double omegaY = 0.0;
         final double omegaZ = 0.0;
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final WindowedAccelerationTriadNoiseEstimator estimator =
-                new WindowedAccelerationTriadNoiseEstimator(this);
+        final WindowedAccelerationTriadNoiseEstimator estimator = new WindowedAccelerationTriadNoiseEstimator(
+                this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mTriadAdded, 0);
-        assertEquals(mWindowFilled, 0);
-        assertEquals(mReset, 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mTriadAdded);
+        assertEquals(0, mWindowFilled);
+        assertEquals(0, mReset);
         assertFalse(estimator.isWindowFilled());
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.isRunning());
@@ -1507,16 +1412,15 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final List<AccelerationTriad> triads = new ArrayList<>();
         for (int i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedTriad(firstTriad)) {
-                assertEquals(estimator.getFirstWindowedTriad(), firstTriad);
+                assertEquals(firstTriad, estimator.getFirstWindowedTriad());
                 assertEquals(firstTriad, firstKinematics.getSpecificForceTriad());
             }
             if (estimator.getLastWindowedTriad(lastTriad)) {
-                assertEquals(estimator.getLastWindowedTriad(), lastTriad);
+                assertEquals(lastTriad, estimator.getLastWindowedTriad());
                 assertEquals(lastTriad, triad);
             }
 
-            BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                    errors, random, kinematics);
+            BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
 
             if (i == 0) {
                 firstKinematics.copyFrom(kinematics);
@@ -1528,16 +1432,16 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
 
             assertTrue(estimator.getLastWindowedTriad(lastTriad));
             assertEquals(lastTriad, triad);
-            assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+            assertEquals(0, estimator.getNumberOfProcessedSamples());
             assertFalse(estimator.isRunning());
         }
 
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, windowSize);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize, mTriadAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
-        assertEquals(triads.size(), windowSize);
+        assertEquals(windowSize, triads.size());
         assertEquals(triads.get(0), estimator.getFirstWindowedTriad());
         assertEquals(triads.get(windowSize - 1), estimator.getLastWindowedTriad());
         assertEquals(0.0, estimator.getAvgX(), 0.0);
@@ -1577,34 +1481,30 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
-        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
-        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE,
-                MAX_ACCELEROMETER_VALUE);
+        final double fx = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fy = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
+        final double fz = randomizer.nextDouble(MIN_ACCELEROMETER_VALUE, MAX_ACCELEROMETER_VALUE);
         final double omegaX = 0.0;
         final double omegaY = 0.0;
         final double omegaZ = 0.0;
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final WindowedAccelerationTriadNoiseEstimator estimator =
-                new WindowedAccelerationTriadNoiseEstimator(this);
+        final WindowedAccelerationTriadNoiseEstimator estimator = new WindowedAccelerationTriadNoiseEstimator(
+                this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mTriadAdded, 0);
-        assertEquals(mWindowFilled, 0);
-        assertEquals(mReset, 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mTriadAdded);
+        assertEquals(0, mWindowFilled);
+        assertEquals(0, mReset);
         assertFalse(estimator.isWindowFilled());
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getFirstWindowedTriad());
         assertNull(estimator.getLastWindowedTriad());
         assertFalse(estimator.isRunning());
@@ -1619,7 +1519,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         final List<AccelerationTriad> triads = new ArrayList<>();
         for (int i = 0; i < windowSize; i++) {
             if (estimator.getFirstWindowedTriad(firstTriad)) {
-                assertEquals(estimator.getFirstWindowedTriad(), firstTriad);
+                assertEquals(firstTriad, estimator.getFirstWindowedTriad());
                 assertEquals(firstTriad, firstKinematics.getSpecificForceTriad());
             }
             if (estimator.getLastWindowedTriad(lastTriad)) {
@@ -1627,8 +1527,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
                 assertEquals(lastTriad, triad);
             }
 
-            BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                    errors, random, kinematics);
+            BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
 
             if (i == 0) {
                 firstKinematics.copyFrom(kinematics);
@@ -1636,21 +1535,20 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
 
             kinematics.getSpecificForceTriad(triad);
             triads.add(new AccelerationTriad(triad));
-            estimator.addTriad(
-                    triad.getMeasurementX(), triad.getMeasurementY(), triad.getMeasurementZ());
+            estimator.addTriad(triad.getMeasurementX(), triad.getMeasurementY(), triad.getMeasurementZ());
 
             assertTrue(estimator.getLastWindowedTriad(lastTriad));
             assertEquals(lastTriad, triad);
-            assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+            assertEquals(0, estimator.getNumberOfProcessedSamples());
             assertFalse(estimator.isRunning());
         }
 
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, windowSize);
-        assertEquals(mWindowFilled, 1);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(windowSize, mTriadAdded);
+        assertEquals(1, mWindowFilled);
+        assertEquals(0, mReset);
 
-        assertEquals(triads.size(), windowSize);
+        assertEquals(windowSize, triads.size());
         assertEquals(triads.get(0), estimator.getFirstWindowedTriad());
         assertEquals(triads.get(windowSize - 1), estimator.getLastWindowedTriad());
         assertEquals(0.0, estimator.getAvgX(), 0.0);
@@ -1708,79 +1606,35 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
 
     private void checkLocked(final WindowedAccelerationTriadNoiseEstimator estimator) {
         assertTrue(estimator.isRunning());
-        try {
-            estimator.setWindowSize(3);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setTimeInterval(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setTimeInterval(new Time(0.0, TimeUnit.SECOND));
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setListener(this);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.addTriadAndProcess(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.addTriadAndProcess(0.0, 0.0, 0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
+        assertThrows(LockedException.class, () -> estimator.setWindowSize(3));
+        assertThrows(LockedException.class, () -> estimator.setTimeInterval(0.0));
+        assertThrows(LockedException.class, () -> estimator.setTimeInterval(new Time(0.0, TimeUnit.SECOND)));
+        assertThrows(LockedException.class, () -> estimator.setListener(this));
+        assertThrows(LockedException.class, () -> estimator.addTriadAndProcess(null));
+        assertThrows(LockedException.class, () -> estimator.addTriadAndProcess(0.0, 0.0, 0.0));
         final Acceleration a = new Acceleration(0.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        try {
-            estimator.addTriadAndProcess(a, a, a);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.addTriad(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.addTriad(0.0, 0.0, 0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.addTriad(a, a, a);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.reset();
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
+        assertThrows(LockedException.class, () -> estimator.addTriadAndProcess(a, a, a));
+        assertThrows(LockedException.class, () -> estimator.addTriad(null));
+        assertThrows(LockedException.class, () -> estimator.addTriad(0.0, 0.0, 0.0));
+        assertThrows(LockedException.class, () -> estimator.addTriad(a, a, a));
+        assertThrows(LockedException.class, estimator::reset);
     }
 
-    private Matrix generateBa() {
+    private static Matrix generateBa() {
         return Matrix.newFromArray(new double[]{
                 900 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 -1300 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 800 * MICRO_G_TO_METERS_PER_SECOND_SQUARED});
     }
 
-    private Matrix generateBg() {
+    private static Matrix generateBg() {
         return Matrix.newFromArray(new double[]{
                 -9 * DEG_TO_RAD / 3600.0,
                 13 * DEG_TO_RAD / 3600.0,
                 -8 * DEG_TO_RAD / 3600.0});
     }
 
-    private Matrix generateMa() throws WrongSizeException {
+    private static Matrix generateMa() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
@@ -1791,7 +1645,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         return result;
     }
 
-    private Matrix generateMg() throws WrongSizeException {
+    private static Matrix generateMg() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
@@ -1802,7 +1656,7 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         return result;
     }
 
-    private Matrix generateGg() throws WrongSizeException {
+    private static Matrix generateGg() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         final double tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
@@ -1814,11 +1668,11 @@ public class WindowedAccelerationTriadNoiseEstimatorTest implements WindowedAcce
         return result;
     }
 
-    private double getAccelNoiseRootPsd() {
+    private static double getAccelNoiseRootPsd() {
         return 100.0 * MICRO_G_TO_METERS_PER_SECOND_SQUARED;
     }
 
-    private double getGyroNoiseRootPsd() {
+    private static double getGyroNoiseRootPsd() {
         return 0.01 * DEG_TO_RAD / 60.0;
     }
 }

@@ -27,7 +27,6 @@ import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.gnss.ECEFPositionAndVelocity;
-import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
@@ -56,26 +55,25 @@ public class INSLooselyCoupledKalmanStateTest {
     private static final double THRESHOLD = 1e-8;
 
     @Test
-    public void testConstructor() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor() throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException {
 
         // test empty constructor
         INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default values
         assertNull(state.getBodyToEcefCoordinateTransformationMatrix());
-        assertEquals(state.getVx(), 0.0, 0.0);
-        assertEquals(state.getVy(), 0.0, 0.0);
-        assertEquals(state.getVz(), 0.0, 0.0);
-        assertEquals(state.getX(), 0.0, 0.0);
-        assertEquals(state.getY(), 0.0, 0.0);
-        assertEquals(state.getZ(), 0.0, 0.0);
-        assertEquals(state.getAccelerationBiasX(), 0.0, 0.0);
-        assertEquals(state.getAccelerationBiasY(), 0.0, 0.0);
-        assertEquals(state.getAccelerationBiasZ(), 0.0, 0.0);
-        assertEquals(state.getGyroBiasX(), 0.0, 0.0);
-        assertEquals(state.getGyroBiasY(), 0.0, 0.0);
-        assertEquals(state.getGyroBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, state.getVx(), 0.0);
+        assertEquals(0.0, state.getVy(), 0.0);
+        assertEquals(0.0, state.getVz(), 0.0);
+        assertEquals(0.0, state.getX(), 0.0);
+        assertEquals(0.0, state.getY(), 0.0);
+        assertEquals(0.0, state.getZ(), 0.0);
+        assertEquals(0.0, state.getAccelerationBiasX(), 0.0);
+        assertEquals(0.0, state.getAccelerationBiasY(), 0.0);
+        assertEquals(0.0, state.getAccelerationBiasZ(), 0.0);
+        assertEquals(0.0, state.getGyroBiasX(), 0.0);
+        assertEquals(0.0, state.getGyroBiasY(), 0.0);
+        assertEquals(0.0, state.getGyroBiasZ(), 0.0);
         assertNull(state.getCovariance());
 
         // test constructor with values
@@ -85,8 +83,8 @@ public class INSLooselyCoupledKalmanStateTest {
         final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw,
-                FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
+        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
         final Matrix bodyToEcefCoordinateTransformationMatrix = c.getMatrix();
         final double vx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double vy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -103,10 +101,8 @@ public class INSLooselyCoupledKalmanStateTest {
         final Matrix covariance = Matrix.identity(INSLooselyCoupledKalmanState.NUM_PARAMS,
                 INSLooselyCoupledKalmanState.NUM_PARAMS);
 
-        state = new INSLooselyCoupledKalmanState(
-                bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+        state = new INSLooselyCoupledKalmanState(bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
 
         // check default values
         assertSame(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
@@ -125,25 +121,13 @@ public class INSLooselyCoupledKalmanStateTest {
         assertSame(covariance, state.getCovariance());
 
         // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(
-                    new Matrix(1, 1), vx, vy, vz, x, y, z,
-                    accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                    gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            state = new INSLooselyCoupledKalmanState(
-                    bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,
-                    accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                    gyroBiasX, gyroBiasY, gyroBiasZ, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
-        
+        final var m = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(m, vx, vy, vz, x, y, z,
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance));
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(
+                bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, m));
+
         // test constructor with measurement values
         final Speed speedX = new Speed(vx, SpeedUnit.METERS_PER_SECOND);
         final Speed speedY = new Speed(vy, SpeedUnit.METERS_PER_SECOND);
@@ -152,9 +136,8 @@ public class INSLooselyCoupledKalmanStateTest {
         final Distance distanceY = new Distance(y, DistanceUnit.METER);
         final Distance distanceZ = new Distance(z, DistanceUnit.METER);
 
-        state = new INSLooselyCoupledKalmanState(c, speedX, speedY, speedZ,
-                distanceX, distanceY, distanceZ, accelerationBiasX, accelerationBiasY,
-                accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+        state = new INSLooselyCoupledKalmanState(c, speedX, speedY, speedZ, distanceX, distanceY, distanceZ,
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
 
         // check default values
         assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
@@ -173,23 +156,15 @@ public class INSLooselyCoupledKalmanStateTest {
         assertSame(covariance, state.getCovariance());
 
         // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(c, speedX, speedY, speedZ,
-                    distanceX, distanceY, distanceZ, accelerationBiasX, accelerationBiasY,
-                    accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ,
-                    new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(c, speedX, speedY, speedZ,
+                distanceX, distanceY, distanceZ, accelerationBiasX, accelerationBiasY, accelerationBiasZ,
+                gyroBiasX, gyroBiasY, gyroBiasZ, m));
+
         // test constructor with point position
         final Point3D position = new InhomogeneousPoint3D(x, y, z);
 
         state = new INSLooselyCoupledKalmanState(c, speedX, speedY, speedZ, position,
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
 
         // check default values
         assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
@@ -208,23 +183,16 @@ public class INSLooselyCoupledKalmanStateTest {
         assertSame(covariance, state.getCovariance());
 
         // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(c, speedX, speedY, speedZ, position,
-                    accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                    gyroBiasX, gyroBiasY, gyroBiasZ, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
-        
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(c, speedX, speedY, speedZ,
+                position, accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ,
+                m));
+
         // test constructor with ECEF velocity and position
         final ECEFVelocity ecefVelocity = new ECEFVelocity(vx, vy, vz);
         final ECEFPosition ecefPosition = new ECEFPosition(x, y, z);
 
         state = new INSLooselyCoupledKalmanState(c, ecefVelocity, ecefPosition,
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
 
         // check default values
         assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
@@ -243,23 +211,15 @@ public class INSLooselyCoupledKalmanStateTest {
         assertSame(covariance, state.getCovariance());
 
         // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(c, ecefVelocity, ecefPosition,
-                    accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                    gyroBiasX, gyroBiasY, gyroBiasZ, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(c, ecefVelocity,
+                ecefPosition, accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ,
+                m));
 
         // test constructor with ECEF position and velocity
-        final ECEFPositionAndVelocity positionAndVelocity =
-                new ECEFPositionAndVelocity(x, y, z, vx, vy, vz);
+        final ECEFPositionAndVelocity positionAndVelocity = new ECEFPositionAndVelocity(x, y, z, vx, vy, vz);
 
         state = new INSLooselyCoupledKalmanState(c, positionAndVelocity,
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
 
         // check default values
         assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
@@ -278,22 +238,14 @@ public class INSLooselyCoupledKalmanStateTest {
         assertSame(covariance, state.getCovariance());
 
         // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(c, positionAndVelocity,
-                    accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                    gyroBiasX, gyroBiasY, gyroBiasZ, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(c, positionAndVelocity,
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, m));
 
         // test constructor with frame
         final ECEFFrame frame = new ECEFFrame(ecefPosition, ecefVelocity, c);
 
-        state = new INSLooselyCoupledKalmanState(frame, accelerationBiasX,
-                accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY,
-                gyroBiasZ, covariance);
+        state = new INSLooselyCoupledKalmanState(frame, accelerationBiasX, accelerationBiasY, accelerationBiasZ,
+                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
 
         // check default values
         assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
@@ -312,34 +264,202 @@ public class INSLooselyCoupledKalmanStateTest {
         assertSame(covariance, state.getCovariance());
 
         // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(frame, accelerationBiasX,
-                    accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY,
-                    gyroBiasZ, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(frame, accelerationBiasX,
+                accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, m));
 
         // test constructor with measurements
-        final Acceleration accelerationX = new Acceleration(
-                accelerationBiasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationY = new Acceleration(
-                accelerationBiasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final Acceleration accelerationZ = new Acceleration(
-                accelerationBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration accelerationX = new Acceleration(accelerationBiasX,
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration accelerationY = new Acceleration(accelerationBiasY,
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration accelerationZ = new Acceleration(accelerationBiasZ,
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final AngularSpeed gyroX = new AngularSpeed(
-                gyroBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed gyroY = new AngularSpeed(
-                gyroBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed gyroZ = new AngularSpeed(
-                gyroBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed gyroX = new AngularSpeed(gyroBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed gyroY = new AngularSpeed(gyroBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed gyroZ = new AngularSpeed(gyroBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
 
-        state = new INSLooselyCoupledKalmanState(c, speedX, speedY, speedZ,
-                distanceX, distanceY, distanceZ, accelerationX,
-                accelerationY, accelerationZ, gyroX, gyroY, gyroZ,
+        state = new INSLooselyCoupledKalmanState(c, speedX, speedY, speedZ, distanceX, distanceY, distanceZ,
+                accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ, covariance);
+
+        // check default values
+        assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
+        assertEquals(vx, state.getVx(), 0.0);
+        assertEquals(vy, state.getVy(), 0.0);
+        assertEquals(vz, state.getVz(), 0.0);
+        assertEquals(x, state.getX(), 0.0);
+        assertEquals(y, state.getY(), 0.0);
+        assertEquals(z, state.getZ(), 0.0);
+        assertEquals(accelerationBiasX, state.getAccelerationBiasX(), 0.0);
+        assertEquals(accelerationBiasY, state.getAccelerationBiasY(), 0.0);
+        assertEquals(accelerationBiasZ, state.getAccelerationBiasZ(), 0.0);
+        assertEquals(gyroBiasX, state.getGyroBiasX(), 0.0);
+        assertEquals(gyroBiasY, state.getGyroBiasY(), 0.0);
+        assertEquals(gyroBiasZ, state.getGyroBiasZ(), 0.0);
+        assertSame(covariance, state.getCovariance());
+
+        // Force IllegalArgumentException
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(c, speedX, speedY, speedZ,
+                distanceX, distanceY, distanceZ, accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ, m));
+
+        // test constructor with point
+        state = new INSLooselyCoupledKalmanState(c, speedX, speedY, speedZ, position,
+                accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ, covariance);
+
+        // check default values
+        assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
+        assertEquals(vx, state.getVx(), 0.0);
+        assertEquals(vy, state.getVy(), 0.0);
+        assertEquals(vz, state.getVz(), 0.0);
+        assertEquals(x, state.getX(), 0.0);
+        assertEquals(y, state.getY(), 0.0);
+        assertEquals(z, state.getZ(), 0.0);
+        assertEquals(accelerationBiasX, state.getAccelerationBiasX(), 0.0);
+        assertEquals(accelerationBiasY, state.getAccelerationBiasY(), 0.0);
+        assertEquals(accelerationBiasZ, state.getAccelerationBiasZ(), 0.0);
+        assertEquals(gyroBiasX, state.getGyroBiasX(), 0.0);
+        assertEquals(gyroBiasY, state.getGyroBiasY(), 0.0);
+        assertEquals(gyroBiasZ, state.getGyroBiasZ(), 0.0);
+        assertSame(covariance, state.getCovariance());
+
+        // Force IllegalArgumentException
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(c, speedX, speedY, speedZ,
+                position, accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ, m));
+
+        // test constructor with velocity and position
+        state = new INSLooselyCoupledKalmanState(c, ecefVelocity, ecefPosition,
+                accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ, covariance);
+
+        // check default values
+        assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
+        assertEquals(vx, state.getVx(), 0.0);
+        assertEquals(vy, state.getVy(), 0.0);
+        assertEquals(vz, state.getVz(), 0.0);
+        assertEquals(x, state.getX(), 0.0);
+        assertEquals(y, state.getY(), 0.0);
+        assertEquals(z, state.getZ(), 0.0);
+        assertEquals(accelerationBiasX, state.getAccelerationBiasX(), 0.0);
+        assertEquals(accelerationBiasY, state.getAccelerationBiasY(), 0.0);
+        assertEquals(accelerationBiasZ, state.getAccelerationBiasZ(), 0.0);
+        assertEquals(gyroBiasX, state.getGyroBiasX(), 0.0);
+        assertEquals(gyroBiasY, state.getGyroBiasY(), 0.0);
+        assertEquals(gyroBiasZ, state.getGyroBiasZ(), 0.0);
+        assertSame(covariance, state.getCovariance());
+
+        // Force IllegalArgumentException
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(c, ecefVelocity,
+                ecefPosition, accelerationX, accelerationY, accelerationZ,
+                gyroX, gyroY, gyroZ, m));
+
+        // test constructor with ECEF position and velocity
+        state = new INSLooselyCoupledKalmanState(c, positionAndVelocity, accelerationX, accelerationY, accelerationZ,
+                gyroX, gyroY, gyroZ, covariance);
+
+        // check default values
+        assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
+        assertEquals(vx, state.getVx(), 0.0);
+        assertEquals(vy, state.getVy(), 0.0);
+        assertEquals(vz, state.getVz(), 0.0);
+        assertEquals(x, state.getX(), 0.0);
+        assertEquals(y, state.getY(), 0.0);
+        assertEquals(z, state.getZ(), 0.0);
+        assertEquals(accelerationBiasX, state.getAccelerationBiasX(), 0.0);
+        assertEquals(accelerationBiasY, state.getAccelerationBiasY(), 0.0);
+        assertEquals(accelerationBiasZ, state.getAccelerationBiasZ(), 0.0);
+        assertEquals(gyroBiasX, state.getGyroBiasX(), 0.0);
+        assertEquals(gyroBiasY, state.getGyroBiasY(), 0.0);
+        assertEquals(gyroBiasZ, state.getGyroBiasZ(), 0.0);
+        assertSame(covariance, state.getCovariance());
+
+        // Force IllegalArgumentException
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(c, positionAndVelocity,
+                accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ, m));
+
+        // test constructor with frame
+        state = new INSLooselyCoupledKalmanState(frame, accelerationX, accelerationY, accelerationZ,
+                gyroX, gyroY, gyroZ, covariance);
+
+        // check default values
+        assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
+        assertEquals(vx, state.getVx(), 0.0);
+        assertEquals(vy, state.getVy(), 0.0);
+        assertEquals(vz, state.getVz(), 0.0);
+        assertEquals(x, state.getX(), 0.0);
+        assertEquals(y, state.getY(), 0.0);
+        assertEquals(z, state.getZ(), 0.0);
+        assertEquals(accelerationBiasX, state.getAccelerationBiasX(), 0.0);
+        assertEquals(accelerationBiasY, state.getAccelerationBiasY(), 0.0);
+        assertEquals(accelerationBiasZ, state.getAccelerationBiasZ(), 0.0);
+        assertEquals(gyroBiasX, state.getGyroBiasX(), 0.0);
+        assertEquals(gyroBiasY, state.getGyroBiasY(), 0.0);
+        assertEquals(gyroBiasZ, state.getGyroBiasZ(), 0.0);
+        assertSame(covariance, state.getCovariance());
+
+        // Force IllegalArgumentException
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(frame,
+                accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ, m));
+
+        // test constructor
+        state = new INSLooselyCoupledKalmanState(bodyToEcefCoordinateTransformationMatrix, speedX, speedY, speedZ,
+                distanceX, distanceY, distanceZ, accelerationBiasX, accelerationBiasY, accelerationBiasZ,
+                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+
+        // check default values
+        assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
+        assertEquals(vx, state.getVx(), 0.0);
+        assertEquals(vy, state.getVy(), 0.0);
+        assertEquals(vz, state.getVz(), 0.0);
+        assertEquals(x, state.getX(), 0.0);
+        assertEquals(y, state.getY(), 0.0);
+        assertEquals(z, state.getZ(), 0.0);
+        assertEquals(accelerationBiasX, state.getAccelerationBiasX(), 0.0);
+        assertEquals(accelerationBiasY, state.getAccelerationBiasY(), 0.0);
+        assertEquals(accelerationBiasZ, state.getAccelerationBiasZ(), 0.0);
+        assertEquals(gyroBiasX, state.getGyroBiasX(), 0.0);
+        assertEquals(gyroBiasY, state.getGyroBiasY(), 0.0);
+        assertEquals(gyroBiasZ, state.getGyroBiasZ(), 0.0);
+        assertSame(covariance, state.getCovariance());
+
+        // Force IllegalArgumentException
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(m, speedX, speedY, speedZ,
+                distanceX, distanceY, distanceZ, accelerationBiasX, accelerationBiasY, accelerationBiasZ,
+                gyroBiasX, gyroBiasY, gyroBiasZ, covariance));
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(
+                bodyToEcefCoordinateTransformationMatrix, speedX, speedY, speedZ, distanceX, distanceY, distanceZ,
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, m));
+
+        // test constructor
+        state = new INSLooselyCoupledKalmanState(bodyToEcefCoordinateTransformationMatrix,
+                speedX, speedY, speedZ, position, accelerationBiasX, accelerationBiasY, accelerationBiasZ,
+                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+
+        // check default values
+        assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
+        assertEquals(vx, state.getVx(), 0.0);
+        assertEquals(vy, state.getVy(), 0.0);
+        assertEquals(vz, state.getVz(), 0.0);
+        assertEquals(x, state.getX(), 0.0);
+        assertEquals(y, state.getY(), 0.0);
+        assertEquals(z, state.getZ(), 0.0);
+        assertEquals(accelerationBiasX, state.getAccelerationBiasX(), 0.0);
+        assertEquals(accelerationBiasY, state.getAccelerationBiasY(), 0.0);
+        assertEquals(accelerationBiasZ, state.getAccelerationBiasZ(), 0.0);
+        assertEquals(gyroBiasX, state.getGyroBiasX(), 0.0);
+        assertEquals(gyroBiasY, state.getGyroBiasY(), 0.0);
+        assertEquals(gyroBiasZ, state.getGyroBiasZ(), 0.0);
+        assertSame(covariance, state.getCovariance());
+
+        // Force IllegalArgumentException
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(m, speedX, speedY, speedZ,
+                position, accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ,
+                covariance));
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(
+                bodyToEcefCoordinateTransformationMatrix, speedX, speedY, speedZ, position,
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, m));
+
+        // test constructor
+        state = new INSLooselyCoupledKalmanState(bodyToEcefCoordinateTransformationMatrix, ecefVelocity,
+                ecefPosition, accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ,
                 covariance);
 
         // check default values
@@ -359,150 +479,16 @@ public class INSLooselyCoupledKalmanStateTest {
         assertSame(covariance, state.getCovariance());
 
         // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(c, speedX, speedY, speedZ,
-                    distanceX, distanceY, distanceZ, accelerationX,
-                    accelerationY, accelerationZ, gyroX, gyroY, gyroZ,
-                    new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
-
-        // test constructor with point
-        state = new INSLooselyCoupledKalmanState(c, speedX, speedY, speedZ,
-                position, accelerationX, accelerationY, accelerationZ,
-                gyroX, gyroY, gyroZ, covariance);
-
-        // check default values
-        assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
-        assertEquals(vx, state.getVx(), 0.0);
-        assertEquals(vy, state.getVy(), 0.0);
-        assertEquals(vz, state.getVz(), 0.0);
-        assertEquals(x, state.getX(), 0.0);
-        assertEquals(y, state.getY(), 0.0);
-        assertEquals(z, state.getZ(), 0.0);
-        assertEquals(accelerationBiasX, state.getAccelerationBiasX(), 0.0);
-        assertEquals(accelerationBiasY, state.getAccelerationBiasY(), 0.0);
-        assertEquals(accelerationBiasZ, state.getAccelerationBiasZ(), 0.0);
-        assertEquals(gyroBiasX, state.getGyroBiasX(), 0.0);
-        assertEquals(gyroBiasY, state.getGyroBiasY(), 0.0);
-        assertEquals(gyroBiasZ, state.getGyroBiasZ(), 0.0);
-        assertSame(covariance, state.getCovariance());
-
-        // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(c, speedX, speedY, speedZ,
-                    position, accelerationX, accelerationY, accelerationZ,
-                    gyroX, gyroY, gyroZ, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
-
-        // test constructor with velocity and position
-        state = new INSLooselyCoupledKalmanState(c, ecefVelocity,
-                ecefPosition, accelerationX, accelerationY, accelerationZ,
-                gyroX, gyroY, gyroZ, covariance);
-
-        // check default values
-        assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
-        assertEquals(vx, state.getVx(), 0.0);
-        assertEquals(vy, state.getVy(), 0.0);
-        assertEquals(vz, state.getVz(), 0.0);
-        assertEquals(x, state.getX(), 0.0);
-        assertEquals(y, state.getY(), 0.0);
-        assertEquals(z, state.getZ(), 0.0);
-        assertEquals(accelerationBiasX, state.getAccelerationBiasX(), 0.0);
-        assertEquals(accelerationBiasY, state.getAccelerationBiasY(), 0.0);
-        assertEquals(accelerationBiasZ, state.getAccelerationBiasZ(), 0.0);
-        assertEquals(gyroBiasX, state.getGyroBiasX(), 0.0);
-        assertEquals(gyroBiasY, state.getGyroBiasY(), 0.0);
-        assertEquals(gyroBiasZ, state.getGyroBiasZ(), 0.0);
-        assertSame(covariance, state.getCovariance());
-
-        // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(c, ecefVelocity,
-                    ecefPosition, accelerationX, accelerationY, accelerationZ,
-                    gyroX, gyroY, gyroZ, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
-
-        // test constructor with ECEF position and velocity
-        state = new INSLooselyCoupledKalmanState(c, positionAndVelocity,
-                accelerationX, accelerationY, accelerationZ,
-                gyroX, gyroY, gyroZ, covariance);
-
-        // check default values
-        assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
-        assertEquals(vx, state.getVx(), 0.0);
-        assertEquals(vy, state.getVy(), 0.0);
-        assertEquals(vz, state.getVz(), 0.0);
-        assertEquals(x, state.getX(), 0.0);
-        assertEquals(y, state.getY(), 0.0);
-        assertEquals(z, state.getZ(), 0.0);
-        assertEquals(accelerationBiasX, state.getAccelerationBiasX(), 0.0);
-        assertEquals(accelerationBiasY, state.getAccelerationBiasY(), 0.0);
-        assertEquals(accelerationBiasZ, state.getAccelerationBiasZ(), 0.0);
-        assertEquals(gyroBiasX, state.getGyroBiasX(), 0.0);
-        assertEquals(gyroBiasY, state.getGyroBiasY(), 0.0);
-        assertEquals(gyroBiasZ, state.getGyroBiasZ(), 0.0);
-        assertSame(covariance, state.getCovariance());
-
-        // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(c, positionAndVelocity,
-                    accelerationX, accelerationY, accelerationZ,
-                    gyroX, gyroY, gyroZ, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
-
-        // test constructor with frame
-        state = new INSLooselyCoupledKalmanState(frame, accelerationX,
-                accelerationY, accelerationZ, gyroX, gyroY, gyroZ, covariance);
-
-        // check default values
-        assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
-        assertEquals(vx, state.getVx(), 0.0);
-        assertEquals(vy, state.getVy(), 0.0);
-        assertEquals(vz, state.getVz(), 0.0);
-        assertEquals(x, state.getX(), 0.0);
-        assertEquals(y, state.getY(), 0.0);
-        assertEquals(z, state.getZ(), 0.0);
-        assertEquals(accelerationBiasX, state.getAccelerationBiasX(), 0.0);
-        assertEquals(accelerationBiasY, state.getAccelerationBiasY(), 0.0);
-        assertEquals(accelerationBiasZ, state.getAccelerationBiasZ(), 0.0);
-        assertEquals(gyroBiasX, state.getGyroBiasX(), 0.0);
-        assertEquals(gyroBiasY, state.getGyroBiasY(), 0.0);
-        assertEquals(gyroBiasZ, state.getGyroBiasZ(), 0.0);
-        assertSame(covariance, state.getCovariance());
-
-        // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(frame, accelerationX,
-                    accelerationY, accelerationZ, gyroX, gyroY, gyroZ,
-                    new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(m, ecefVelocity,
+                ecefPosition, accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ,
+                covariance));
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(
+                bodyToEcefCoordinateTransformationMatrix, ecefVelocity, ecefPosition,
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, m));
 
         // test constructor
-        state = new INSLooselyCoupledKalmanState(
-                bodyToEcefCoordinateTransformationMatrix,
-                speedX, speedY, speedZ, distanceX, distanceY, distanceZ,
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+        state = new INSLooselyCoupledKalmanState(bodyToEcefCoordinateTransformationMatrix, positionAndVelocity,
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
 
         // check default values
         assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
@@ -521,119 +507,16 @@ public class INSLooselyCoupledKalmanStateTest {
         assertSame(covariance, state.getCovariance());
 
         // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(
-                    new Matrix(1, 1),
-                    speedX, speedY, speedZ, distanceX, distanceY, distanceZ,
-                    accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                    gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            state = new INSLooselyCoupledKalmanState(
-                    bodyToEcefCoordinateTransformationMatrix,
-                    speedX, speedY, speedZ, distanceX, distanceY, distanceZ,
-                    accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                    gyroBiasX, gyroBiasY, gyroBiasZ, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
-
-        // test constructor
-        state = new INSLooselyCoupledKalmanState(
-                bodyToEcefCoordinateTransformationMatrix,
-                speedX, speedY, speedZ, position,
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
-
-        // check default values
-        assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
-        assertEquals(vx, state.getVx(), 0.0);
-        assertEquals(vy, state.getVy(), 0.0);
-        assertEquals(vz, state.getVz(), 0.0);
-        assertEquals(x, state.getX(), 0.0);
-        assertEquals(y, state.getY(), 0.0);
-        assertEquals(z, state.getZ(), 0.0);
-        assertEquals(accelerationBiasX, state.getAccelerationBiasX(), 0.0);
-        assertEquals(accelerationBiasY, state.getAccelerationBiasY(), 0.0);
-        assertEquals(accelerationBiasZ, state.getAccelerationBiasZ(), 0.0);
-        assertEquals(gyroBiasX, state.getGyroBiasX(), 0.0);
-        assertEquals(gyroBiasY, state.getGyroBiasY(), 0.0);
-        assertEquals(gyroBiasZ, state.getGyroBiasZ(), 0.0);
-        assertSame(covariance, state.getCovariance());
-
-        // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(
-                    new Matrix(1, 1),
-                    speedX, speedY, speedZ, position,
-                    accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                    gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            state = new INSLooselyCoupledKalmanState(
-                    bodyToEcefCoordinateTransformationMatrix,
-                    speedX, speedY, speedZ, position,
-                    accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                    gyroBiasX, gyroBiasY, gyroBiasZ, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
-
-        // test constructor
-        state = new INSLooselyCoupledKalmanState(
-                bodyToEcefCoordinateTransformationMatrix, ecefVelocity,
-                ecefPosition, accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
-
-        // check default values
-        assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
-        assertEquals(vx, state.getVx(), 0.0);
-        assertEquals(vy, state.getVy(), 0.0);
-        assertEquals(vz, state.getVz(), 0.0);
-        assertEquals(x, state.getX(), 0.0);
-        assertEquals(y, state.getY(), 0.0);
-        assertEquals(z, state.getZ(), 0.0);
-        assertEquals(accelerationBiasX, state.getAccelerationBiasX(), 0.0);
-        assertEquals(accelerationBiasY, state.getAccelerationBiasY(), 0.0);
-        assertEquals(accelerationBiasZ, state.getAccelerationBiasZ(), 0.0);
-        assertEquals(gyroBiasX, state.getGyroBiasX(), 0.0);
-        assertEquals(gyroBiasY, state.getGyroBiasY(), 0.0);
-        assertEquals(gyroBiasZ, state.getGyroBiasZ(), 0.0);
-        assertSame(covariance, state.getCovariance());
-
-        // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(
-                    new Matrix(1, 1), ecefVelocity,
-                    ecefPosition, accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                    gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            state = new INSLooselyCoupledKalmanState(
-                    bodyToEcefCoordinateTransformationMatrix, ecefVelocity,
-                    ecefPosition, accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                    gyroBiasX, gyroBiasY, gyroBiasZ, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
-
-        // test constructor
-        state = new INSLooselyCoupledKalmanState(
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(m, positionAndVelocity,
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance));
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix, positionAndVelocity,
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, m));
+
+        // test constructor
+        state = new INSLooselyCoupledKalmanState(bodyToEcefCoordinateTransformationMatrix, speedX, speedY, speedZ,
+                distanceX, distanceY, distanceZ, accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ,
+                covariance);
 
         // check default values
         assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
@@ -652,30 +535,16 @@ public class INSLooselyCoupledKalmanStateTest {
         assertSame(covariance, state.getCovariance());
 
         // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(
-                    new Matrix(1, 1), positionAndVelocity,
-                    accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                    gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            state = new INSLooselyCoupledKalmanState(
-                    bodyToEcefCoordinateTransformationMatrix, positionAndVelocity,
-                    accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                    gyroBiasX, gyroBiasY, gyroBiasZ, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(m, speedX, speedY, speedZ,
+                distanceX, distanceY, distanceZ, accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ,
+                covariance));
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(
+                bodyToEcefCoordinateTransformationMatrix, speedX, speedY, speedZ, distanceX, distanceY, distanceZ,
+                accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ, m));
 
         // test constructor
-        state = new INSLooselyCoupledKalmanState(
-                bodyToEcefCoordinateTransformationMatrix, speedX, speedY, speedZ,
-                distanceX, distanceY, distanceZ, accelerationX, accelerationY,
-                accelerationZ, gyroX, gyroY, gyroZ, covariance);
+        state = new INSLooselyCoupledKalmanState(bodyToEcefCoordinateTransformationMatrix, speedX, speedY, speedZ,
+                position, accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ, covariance);
 
         // check default values
         assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
@@ -694,31 +563,15 @@ public class INSLooselyCoupledKalmanStateTest {
         assertSame(covariance, state.getCovariance());
 
         // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(
-                    new Matrix(1, 1), speedX, speedY, speedZ,
-                    distanceX, distanceY, distanceZ, accelerationX, accelerationY,
-                    accelerationZ, gyroX, gyroY, gyroZ, covariance);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            state = new INSLooselyCoupledKalmanState(
-                    bodyToEcefCoordinateTransformationMatrix, speedX, speedY, speedZ,
-                    distanceX, distanceY, distanceZ, accelerationX, accelerationY,
-                    accelerationZ, gyroX, gyroY, gyroZ,
-                    new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(m, speedX, speedY, speedZ,
+                position, accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ, covariance));
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(
+                bodyToEcefCoordinateTransformationMatrix, speedX, speedY, speedZ, position,
+                accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ, m));
 
         // test constructor
-        state = new INSLooselyCoupledKalmanState(
-                bodyToEcefCoordinateTransformationMatrix, speedX, speedY, speedZ,
-                position, accelerationX, accelerationY, accelerationZ,
-                gyroX, gyroY, gyroZ, covariance);
+        state = new INSLooselyCoupledKalmanState(bodyToEcefCoordinateTransformationMatrix, ecefVelocity,
+                ecefPosition, accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ, covariance);
 
         // check default values
         assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
@@ -737,30 +590,15 @@ public class INSLooselyCoupledKalmanStateTest {
         assertSame(covariance, state.getCovariance());
 
         // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(
-                    new Matrix(1, 1), speedX, speedY, speedZ,
-                    position, accelerationX, accelerationY, accelerationZ,
-                    gyroX, gyroY, gyroZ, covariance);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            state = new INSLooselyCoupledKalmanState(
-                    bodyToEcefCoordinateTransformationMatrix, speedX, speedY, speedZ,
-                    position, accelerationX, accelerationY, accelerationZ,
-                    gyroX, gyroY, gyroZ, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(m, ecefVelocity,
+                ecefPosition, accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ, covariance));
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(
+                bodyToEcefCoordinateTransformationMatrix, ecefVelocity, ecefPosition,
+                accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ, m));
 
         // test constructor
-        state = new INSLooselyCoupledKalmanState(
-                bodyToEcefCoordinateTransformationMatrix, ecefVelocity,
-                ecefPosition, accelerationX, accelerationY, accelerationZ,
-                gyroX, gyroY, gyroZ, covariance);
+        state = new INSLooselyCoupledKalmanState(bodyToEcefCoordinateTransformationMatrix, positionAndVelocity,
+                accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ, covariance);
 
         // check default values
         assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
@@ -779,75 +617,17 @@ public class INSLooselyCoupledKalmanStateTest {
         assertSame(covariance, state.getCovariance());
 
         // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(
-                    new Matrix(1, 1), ecefVelocity,
-                    ecefPosition, accelerationX, accelerationY, accelerationZ,
-                    gyroX, gyroY, gyroZ, covariance);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            state = new INSLooselyCoupledKalmanState(
-                    bodyToEcefCoordinateTransformationMatrix, ecefVelocity,
-                    ecefPosition, accelerationX, accelerationY, accelerationZ,
-                    gyroX, gyroY, gyroZ, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
-
-        // test constructor
-        state = new INSLooselyCoupledKalmanState(
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(m, positionAndVelocity,
+                accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ, covariance));
+        assertThrows(IllegalArgumentException.class, () -> new INSLooselyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix, positionAndVelocity,
-                accelerationX, accelerationY, accelerationZ,
-                gyroX, gyroY, gyroZ, covariance);
-
-        // check default values
-        assertEquals(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
-        assertEquals(vx, state.getVx(), 0.0);
-        assertEquals(vy, state.getVy(), 0.0);
-        assertEquals(vz, state.getVz(), 0.0);
-        assertEquals(x, state.getX(), 0.0);
-        assertEquals(y, state.getY(), 0.0);
-        assertEquals(z, state.getZ(), 0.0);
-        assertEquals(accelerationBiasX, state.getAccelerationBiasX(), 0.0);
-        assertEquals(accelerationBiasY, state.getAccelerationBiasY(), 0.0);
-        assertEquals(accelerationBiasZ, state.getAccelerationBiasZ(), 0.0);
-        assertEquals(gyroBiasX, state.getGyroBiasX(), 0.0);
-        assertEquals(gyroBiasY, state.getGyroBiasY(), 0.0);
-        assertEquals(gyroBiasZ, state.getGyroBiasZ(), 0.0);
-        assertSame(covariance, state.getCovariance());
-
-        // Force IllegalArgumentException
-        state = null;
-        try {
-            state = new INSLooselyCoupledKalmanState(
-                    new Matrix(1, 1), positionAndVelocity,
-                    accelerationX, accelerationY, accelerationZ,
-                    gyroX, gyroY, gyroZ, covariance);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            state = new INSLooselyCoupledKalmanState(
-                    bodyToEcefCoordinateTransformationMatrix, positionAndVelocity,
-                    accelerationX, accelerationY, accelerationZ,
-                    gyroX, gyroY, gyroZ, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(state);
+                accelerationX, accelerationY, accelerationZ, gyroX, gyroY, gyroZ, m));
 
         // test copy constructor
-        state = new INSLooselyCoupledKalmanState(
-                bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+        state = new INSLooselyCoupledKalmanState(bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
 
-        final INSLooselyCoupledKalmanState state2 =
-                new INSLooselyCoupledKalmanState(state);
+        final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState(state);
 
         // check default values
         assertEquals(bodyToEcefCoordinateTransformationMatrix, state2.getBodyToEcefCoordinateTransformationMatrix());
@@ -867,8 +647,7 @@ public class INSLooselyCoupledKalmanStateTest {
     }
 
     @Test
-    public void testGetSetBodyToEcefCoordinateTransformationMatrix()
-            throws WrongSizeException {
+    public void testGetSetBodyToEcefCoordinateTransformationMatrix() throws WrongSizeException {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default value
@@ -881,30 +660,20 @@ public class INSLooselyCoupledKalmanStateTest {
         final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw,
-                FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
+        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
         final Matrix bodyToEcefCoordinateTransformationMatrix = c.getMatrix();
 
-        state.setBodyToEcefCoordinateTransformationMatrix(
-                bodyToEcefCoordinateTransformationMatrix);
+        state.setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);
 
         // check
-        assertSame(state.getBodyToEcefCoordinateTransformationMatrix(),
-                bodyToEcefCoordinateTransformationMatrix);
+        assertSame(bodyToEcefCoordinateTransformationMatrix, state.getBodyToEcefCoordinateTransformationMatrix());
 
         // Force IllegalArgumentException
-        try {
-            state.setBodyToEcefCoordinateTransformationMatrix(
-                    new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            state.setBodyToEcefCoordinateTransformationMatrix(
-                    new Matrix(CoordinateTransformation.ROWS, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var m1 = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> state.setBodyToEcefCoordinateTransformationMatrix(m1));
+        final var m2 = new Matrix(CoordinateTransformation.ROWS, 1);
+        assertThrows(IllegalArgumentException.class, () -> state.setBodyToEcefCoordinateTransformationMatrix(m2));
     }
 
     @Test
@@ -912,7 +681,7 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default value
-        assertEquals(state.getVx(), 0.0, 0.0);
+        assertEquals(0.0, state.getVx(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -921,7 +690,7 @@ public class INSLooselyCoupledKalmanStateTest {
         state.setVx(vx);
 
         // check
-        assertEquals(state.getVx(), vx, 0.0);
+        assertEquals(vx, state.getVx(), 0.0);
     }
 
     @Test
@@ -929,7 +698,7 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default value
-        assertEquals(state.getVy(), 0.0, 0.0);
+        assertEquals(0.0, state.getVy(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -938,7 +707,7 @@ public class INSLooselyCoupledKalmanStateTest {
         state.setVy(vy);
 
         // check
-        assertEquals(state.getVy(), vy, 0.0);
+        assertEquals(vy, state.getVy(), 0.0);
     }
 
     @Test
@@ -946,7 +715,7 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default value
-        assertEquals(state.getVz(), 0.0, 0.0);
+        assertEquals(0.0, state.getVz(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -955,7 +724,7 @@ public class INSLooselyCoupledKalmanStateTest {
         state.setVz(vz);
 
         // check
-        assertEquals(state.getVz(), vz, 0.0);
+        assertEquals(vz, state.getVz(), 0.0);
     }
 
     @Test
@@ -963,9 +732,9 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default values
-        assertEquals(state.getVx(), 0.0, 0.0);
-        assertEquals(state.getVy(), 0.0, 0.0);
-        assertEquals(state.getVz(), 0.0, 0.0);
+        assertEquals(0.0, state.getVx(), 0.0);
+        assertEquals(0.0, state.getVy(), 0.0);
+        assertEquals(0.0, state.getVz(), 0.0);
 
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -976,9 +745,9 @@ public class INSLooselyCoupledKalmanStateTest {
         state.setVelocityCoordinates(vx, vy, vz);
 
         // check
-        assertEquals(state.getVx(), vx, 0.0);
-        assertEquals(state.getVy(), vy, 0.0);
-        assertEquals(state.getVz(), vz, 0.0);
+        assertEquals(vx, state.getVx(), 0.0);
+        assertEquals(vy, state.getVy(), 0.0);
+        assertEquals(vz, state.getVz(), 0.0);
     }
 
     @Test
@@ -986,7 +755,7 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default value
-        assertEquals(state.getX(), 0.0, 0.0);
+        assertEquals(0.0, state.getX(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -995,7 +764,7 @@ public class INSLooselyCoupledKalmanStateTest {
         state.setX(x);
 
         // check
-        assertEquals(state.getX(), x, 0.0);
+        assertEquals(x, state.getX(), 0.0);
     }
 
     @Test
@@ -1003,7 +772,7 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default value
-        assertEquals(state.getY(), 0.0, 0.0);
+        assertEquals(0.0, state.getY(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1012,7 +781,7 @@ public class INSLooselyCoupledKalmanStateTest {
         state.setY(y);
 
         // check
-        assertEquals(state.getY(), y, 0.0);
+        assertEquals(y, state.getY(), 0.0);
     }
 
     @Test
@@ -1020,7 +789,7 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default value
-        assertEquals(state.getZ(), 0.0, 0.0);
+        assertEquals(0.0, state.getZ(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1029,7 +798,7 @@ public class INSLooselyCoupledKalmanStateTest {
         state.setZ(z);
 
         // check
-        assertEquals(state.getZ(), z, 0.0);
+        assertEquals(z, state.getZ(), 0.0);
     }
 
     @Test
@@ -1037,9 +806,9 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default values
-        assertEquals(state.getX(), 0.0, 0.0);
-        assertEquals(state.getY(), 0.0, 0.0);
-        assertEquals(state.getZ(), 0.0, 0.0);
+        assertEquals(0.0, state.getX(), 0.0);
+        assertEquals(0.0, state.getY(), 0.0);
+        assertEquals(0.0, state.getZ(), 0.0);
 
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1060,7 +829,7 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default value
-        assertEquals(state.getAccelerationBiasX(), 0.0, 0.0);
+        assertEquals(0.0, state.getAccelerationBiasX(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1069,7 +838,7 @@ public class INSLooselyCoupledKalmanStateTest {
         state.setAccelerationBiasX(accelerationBiasX);
 
         // check
-        assertEquals(state.getAccelerationBiasX(), accelerationBiasX, 0.0);
+        assertEquals(accelerationBiasX, state.getAccelerationBiasX(), 0.0);
     }
 
     @Test
@@ -1077,7 +846,7 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default value
-        assertEquals(state.getAccelerationBiasY(), 0.0, 0.0);
+        assertEquals(0.0, state.getAccelerationBiasY(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1086,7 +855,7 @@ public class INSLooselyCoupledKalmanStateTest {
         state.setAccelerationBiasY(accelerationBiasY);
 
         // check
-        assertEquals(state.getAccelerationBiasY(), accelerationBiasY, 0.0);
+        assertEquals(accelerationBiasY, state.getAccelerationBiasY(), 0.0);
     }
 
     @Test
@@ -1094,7 +863,7 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default value
-        assertEquals(state.getAccelerationBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, state.getAccelerationBiasZ(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1103,7 +872,7 @@ public class INSLooselyCoupledKalmanStateTest {
         state.setAccelerationBiasZ(accelerationBiasZ);
 
         // check
-        assertEquals(state.getAccelerationBiasZ(), accelerationBiasZ, 0.0);
+        assertEquals(accelerationBiasZ, state.getAccelerationBiasZ(), 0.0);
     }
 
     @Test
@@ -1111,9 +880,9 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default value
-        assertEquals(state.getAccelerationBiasX(), 0.0, 0.0);
-        assertEquals(state.getAccelerationBiasY(), 0.0, 0.0);
-        assertEquals(state.getAccelerationBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, state.getAccelerationBiasX(), 0.0);
+        assertEquals(0.0, state.getAccelerationBiasY(), 0.0);
+        assertEquals(0.0, state.getAccelerationBiasZ(), 0.0);
 
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1121,13 +890,12 @@ public class INSLooselyCoupledKalmanStateTest {
         final double accelerationBiasY = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double accelerationBiasZ = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        state.setAccelerationBiasCoordinates(
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ);
+        state.setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);
 
         // check
-        assertEquals(state.getAccelerationBiasX(), accelerationBiasX, 0.0);
-        assertEquals(state.getAccelerationBiasY(), accelerationBiasY, 0.0);
-        assertEquals(state.getAccelerationBiasZ(), accelerationBiasZ, 0.0);
+        assertEquals(accelerationBiasX, state.getAccelerationBiasX(), 0.0);
+        assertEquals(accelerationBiasY, state.getAccelerationBiasY(), 0.0);
+        assertEquals(accelerationBiasZ, state.getAccelerationBiasZ(), 0.0);
     }
 
     @Test
@@ -1135,7 +903,7 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default value
-        assertEquals(state.getGyroBiasX(), 0.0, 0.0);
+        assertEquals(0.0, state.getGyroBiasX(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1144,7 +912,7 @@ public class INSLooselyCoupledKalmanStateTest {
         state.setGyroBiasX(gyroBiasX);
 
         // check
-        assertEquals(state.getGyroBiasX(), gyroBiasX, 0.0);
+        assertEquals(gyroBiasX, state.getGyroBiasX(), 0.0);
     }
 
     @Test
@@ -1152,7 +920,7 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default value
-        assertEquals(state.getGyroBiasY(), 0.0, 0.0);
+        assertEquals(0.0, state.getGyroBiasY(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1161,7 +929,7 @@ public class INSLooselyCoupledKalmanStateTest {
         state.setGyroBiasY(gyroBiasY);
 
         // check
-        assertEquals(state.getGyroBiasY(), gyroBiasY, 0.0);
+        assertEquals(gyroBiasY, state.getGyroBiasY(), 0.0);
     }
 
     @Test
@@ -1169,7 +937,7 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default value
-        assertEquals(state.getGyroBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, state.getGyroBiasZ(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1178,7 +946,7 @@ public class INSLooselyCoupledKalmanStateTest {
         state.setGyroBiasZ(gyroBiasZ);
 
         // check
-        assertEquals(state.getGyroBiasZ(), gyroBiasZ, 0.0);
+        assertEquals(gyroBiasZ, state.getGyroBiasZ(), 0.0);
     }
 
     @Test
@@ -1186,9 +954,9 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default values
-        assertEquals(state.getGyroBiasX(), 0.0, 0.0);
-        assertEquals(state.getGyroBiasY(), 0.0, 0.0);
-        assertEquals(state.getGyroBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, state.getGyroBiasX(), 0.0);
+        assertEquals(0.0, state.getGyroBiasY(), 0.0);
+        assertEquals(0.0, state.getGyroBiasZ(), 0.0);
 
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1199,9 +967,9 @@ public class INSLooselyCoupledKalmanStateTest {
         state.setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);
 
         // check
-        assertEquals(state.getGyroBiasX(), gyroBiasX, 0.0);
-        assertEquals(state.getGyroBiasY(), gyroBiasY, 0.0);
-        assertEquals(state.getGyroBiasZ(), gyroBiasZ, 0.0);
+        assertEquals(gyroBiasX, state.getGyroBiasX(), 0.0);
+        assertEquals(gyroBiasY, state.getGyroBiasY(), 0.0);
+        assertEquals(gyroBiasZ, state.getGyroBiasZ(), 0.0);
     }
 
     @Test
@@ -1213,8 +981,7 @@ public class INSLooselyCoupledKalmanStateTest {
         assertNull(state.getCovariance());
 
         // set new value
-        final Matrix covariance1 = Matrix.identity(
-                INSLooselyCoupledKalmanState.NUM_PARAMS,
+        final Matrix covariance1 = Matrix.identity(INSLooselyCoupledKalmanState.NUM_PARAMS,
                 INSLooselyCoupledKalmanState.NUM_PARAMS);
         state.setCovariance(covariance1);
 
@@ -1235,8 +1002,7 @@ public class INSLooselyCoupledKalmanStateTest {
         assertNull(state.getC());
         assertNull(state.getC(THRESHOLD));
 
-        final CoordinateTransformation c1 = new CoordinateTransformation(
-                FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
+        final CoordinateTransformation c1 = new CoordinateTransformation(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
                 FrameType.EARTH_CENTERED_INERTIAL_FRAME);
         assertFalse(state.getC(c1));
         assertFalse(state.getC(c1, THRESHOLD));
@@ -1245,55 +1011,42 @@ public class INSLooselyCoupledKalmanStateTest {
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-        final double roll1 = Math.toRadians(randomizer.nextDouble(
-                MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(randomizer.nextDouble(
-                MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(randomizer.nextDouble(
-                MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c2 = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+        final CoordinateTransformation c2 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
                 FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
         state.setC(c2);
 
         // check
-        final CoordinateTransformation c3 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
+        final CoordinateTransformation c3 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
                 FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(state.getC(c3));
 
-        final CoordinateTransformation c4 = new CoordinateTransformation(
-                FrameType.LOCAL_NAVIGATION_FRAME,
+        final CoordinateTransformation c4 = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
                 FrameType.LOCAL_NAVIGATION_FRAME);
         assertTrue(state.getC(c4, THRESHOLD));
 
-        assertEquals(c3.getSourceType(), FrameType.BODY_FRAME);
-        assertEquals(c3.getDestinationType(),
-                FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
+        assertEquals(FrameType.BODY_FRAME, c3.getSourceType());
+        assertEquals(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME, c3.getDestinationType());
         assertEquals(c3.getMatrix(), c2.getMatrix());
-        assertEquals(c2.getMatrix(),
-                state.getBodyToEcefCoordinateTransformationMatrix());
+        assertEquals(c2.getMatrix(), state.getBodyToEcefCoordinateTransformationMatrix());
 
         assertEquals(c2, c3);
         assertEquals(c2, c4);
 
         // set again
-        final double roll2 = Math.toRadians(randomizer.nextDouble(
-                MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch2 = Math.toRadians(randomizer.nextDouble(
-                MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw2 = Math.toRadians(randomizer.nextDouble(
-                MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c5 = new CoordinateTransformation(
-                roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+        final CoordinateTransformation c5 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
                 FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
         state.setC(c5);
 
         assertTrue(c5.equals(state.getC(), THRESHOLD));
-        assertEquals(c5.getMatrix(),
-                state.getBodyToEcefCoordinateTransformationMatrix());
+        assertEquals(c5.getMatrix(), state.getBodyToEcefCoordinateTransformationMatrix());
 
         state.setC(null);
 
@@ -1301,13 +1054,9 @@ public class INSLooselyCoupledKalmanStateTest {
         assertNull(state.getBodyToEcefCoordinateTransformationMatrix());
 
         // Force IllegalArgumentException
-        try {
-            state.setC(new CoordinateTransformation(
-                    FrameType.LOCAL_NAVIGATION_FRAME,
-                    FrameType.EARTH_CENTERED_INERTIAL_FRAME));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var c = new CoordinateTransformation(FrameType.LOCAL_NAVIGATION_FRAME,
+                FrameType.EARTH_CENTERED_INERTIAL_FRAME);
+        assertThrows(IllegalArgumentException.class, () -> state.setC(c));
     }
 
     @Test
@@ -1317,8 +1066,8 @@ public class INSLooselyCoupledKalmanStateTest {
         // check default value
         final Speed speedX1 = state.getSpeedX();
 
-        assertEquals(speedX1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(speedX1.getUnit(), SpeedUnit.METERS_PER_SECOND);
+        assertEquals(0.0, speedX1.getValue().doubleValue(), 0.0);
+        assertEquals(SpeedUnit.METERS_PER_SECOND, speedX1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1344,8 +1093,8 @@ public class INSLooselyCoupledKalmanStateTest {
         // check default value
         final Speed speedY1 = state.getSpeedY();
 
-        assertEquals(speedY1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(speedY1.getUnit(), SpeedUnit.METERS_PER_SECOND);
+        assertEquals(0.0, speedY1.getValue().doubleValue(), 0.0);
+        assertEquals(SpeedUnit.METERS_PER_SECOND, speedY1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1371,8 +1120,8 @@ public class INSLooselyCoupledKalmanStateTest {
         // check default value
         final Speed speedZ1 = state.getSpeedZ();
 
-        assertEquals(speedZ1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(speedZ1.getUnit(), SpeedUnit.METERS_PER_SECOND);
+        assertEquals(0.0, speedZ1.getValue().doubleValue(), 0.0);
+        assertEquals(SpeedUnit.METERS_PER_SECOND, speedZ1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1396,9 +1145,9 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default values
-        assertEquals(state.getVx(), 0.0, 0.0);
-        assertEquals(state.getVy(), 0.0, 0.0);
-        assertEquals(state.getVz(), 0.0, 0.0);
+        assertEquals(0.0, state.getVx(), 0.0);
+        assertEquals(0.0, state.getVy(), 0.0);
+        assertEquals(0.0, state.getVz(), 0.0);
 
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1413,9 +1162,9 @@ public class INSLooselyCoupledKalmanStateTest {
         state.setVelocityCoordinates(speedX, speedY, speedZ);
 
         // check
-        assertEquals(state.getVx(), vx, 0.0);
-        assertEquals(state.getVy(), vy, 0.0);
-        assertEquals(state.getVz(), vz, 0.0);
+        assertEquals(vx, state.getVx(), 0.0);
+        assertEquals(vy, state.getVy(), 0.0);
+        assertEquals(vz, state.getVz(), 0.0);
     }
 
     @Test
@@ -1425,7 +1174,7 @@ public class INSLooselyCoupledKalmanStateTest {
         // check default value
         final ECEFVelocity velocity1 = state.getEcefVelocity();
 
-        assertEquals(velocity1, new ECEFVelocity());
+        assertEquals(new ECEFVelocity(), velocity1);
 
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1452,8 +1201,8 @@ public class INSLooselyCoupledKalmanStateTest {
         // check default value
         final Distance distanceX1 = state.getDistanceX();
 
-        assertEquals(distanceX1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(distanceX1.getUnit(), DistanceUnit.METER);
+        assertEquals(0.0, distanceX1.getValue().doubleValue(), 0.0);
+        assertEquals(DistanceUnit.METER, distanceX1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1479,8 +1228,8 @@ public class INSLooselyCoupledKalmanStateTest {
         // check default value
         final Distance distanceY1 = state.getDistanceY();
 
-        assertEquals(distanceY1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(distanceY1.getUnit(), DistanceUnit.METER);
+        assertEquals(0.0, distanceY1.getValue().doubleValue(), 0.0);
+        assertEquals(DistanceUnit.METER, distanceY1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1506,8 +1255,8 @@ public class INSLooselyCoupledKalmanStateTest {
         // check default value
         final Distance distanceZ1 = state.getDistanceZ();
 
-        assertEquals(distanceZ1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(distanceZ1.getUnit(), DistanceUnit.METER);
+        assertEquals(0.0, distanceZ1.getValue().doubleValue(), 0.0);
+        assertEquals(DistanceUnit.METER, distanceZ1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1531,9 +1280,9 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default values
-        assertEquals(state.getX(), 0.0, 0.0);
-        assertEquals(state.getY(), 0.0, 0.0);
-        assertEquals(state.getZ(), 0.0, 0.0);
+        assertEquals(0.0, state.getX(), 0.0);
+        assertEquals(0.0, state.getY(), 0.0);
+        assertEquals(0.0, state.getZ(), 0.0);
 
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1548,9 +1297,9 @@ public class INSLooselyCoupledKalmanStateTest {
         state.setPositionCoordinates(distanceX, distanceY, distanceZ);
 
         // check
-        assertEquals(state.getX(), x, 0.0);
-        assertEquals(state.getY(), y, 0.0);
-        assertEquals(state.getZ(), z, 0.0);
+        assertEquals(x, state.getX(), 0.0);
+        assertEquals(y, state.getY(), 0.0);
+        assertEquals(z, state.getZ(), 0.0);
     }
 
     @Test
@@ -1612,8 +1361,7 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default value
-        final ECEFPositionAndVelocity positionAndVelocity1 =
-                state.getPositionAndVelocity();
+        final ECEFPositionAndVelocity positionAndVelocity1 = state.getPositionAndVelocity();
 
         assertEquals(positionAndVelocity1, new ECEFPositionAndVelocity());
 
@@ -1626,24 +1374,20 @@ public class INSLooselyCoupledKalmanStateTest {
         final double vy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double vz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final ECEFPositionAndVelocity positionAndVelocity2 =
-                new ECEFPositionAndVelocity(x, y, z, vx, vy, vz);
+        final ECEFPositionAndVelocity positionAndVelocity2 = new ECEFPositionAndVelocity(x, y, z, vx, vy, vz);
         state.setPositionAndVelocity(positionAndVelocity2);
 
         // check
-        final ECEFPositionAndVelocity positionAndVelocity3 =
-                new ECEFPositionAndVelocity();
+        final ECEFPositionAndVelocity positionAndVelocity3 = new ECEFPositionAndVelocity();
         state.getPositionAndVelocity(positionAndVelocity3);
-        final ECEFPositionAndVelocity positionAndVelocity4 =
-                state.getPositionAndVelocity();
+        final ECEFPositionAndVelocity positionAndVelocity4 = state.getPositionAndVelocity();
 
         assertEquals(positionAndVelocity2, positionAndVelocity3);
         assertEquals(positionAndVelocity2, positionAndVelocity4);
     }
 
     @Test
-    public void testGetSetFrame()
-            throws InvalidSourceAndDestinationFrameTypeException {
+    public void testGetSetFrame() throws InvalidSourceAndDestinationFrameTypeException {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default value
@@ -1653,15 +1397,11 @@ public class INSLooselyCoupledKalmanStateTest {
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-        final double roll1 = Math.toRadians(randomizer.nextDouble(
-                MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(randomizer.nextDouble(
-                MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(randomizer.nextDouble(
-                MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c1 = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+        final CoordinateTransformation c1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
                 FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
         final double x1 = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -1685,15 +1425,11 @@ public class INSLooselyCoupledKalmanStateTest {
         assertEquals(frame2, frame3);
 
         // set new frame
-        final double roll2 = Math.toRadians(randomizer.nextDouble(
-                MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double pitch2 = Math.toRadians(randomizer.nextDouble(
-                MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-        final double yaw2 = Math.toRadians(randomizer.nextDouble(
-                MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c2 = new CoordinateTransformation(
-                roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+        final CoordinateTransformation c2 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
                 FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
         final double x2 = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -1717,22 +1453,19 @@ public class INSLooselyCoupledKalmanStateTest {
         // check default value
         final Acceleration accelerationX1 = state.getAccelerationBiasXAsAcceleration();
 
-        assertEquals(accelerationX1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(accelerationX1.getUnit(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, accelerationX1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationX1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double accelerationX = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final Acceleration accelerationX2 = new Acceleration(accelerationX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration accelerationX2 = new Acceleration(accelerationX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         state.setAccelerationBiasX(accelerationX2);
 
         // check
-        final Acceleration accelerationX3 = new Acceleration(0.0,
-                AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration accelerationX3 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         state.getAccelerationBiasXAsAcceleration(accelerationX3);
         final Acceleration accelerationX4 = state.getAccelerationBiasXAsAcceleration();
 
@@ -1747,22 +1480,19 @@ public class INSLooselyCoupledKalmanStateTest {
         // check default value
         final Acceleration accelerationY1 = state.getAccelerationBiasYAsAcceleration();
 
-        assertEquals(accelerationY1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(accelerationY1.getUnit(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, accelerationY1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationY1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double accelerationY = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final Acceleration accelerationY2 = new Acceleration(accelerationY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration accelerationY2 = new Acceleration(accelerationY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         state.setAccelerationBiasY(accelerationY2);
 
         // check
-        final Acceleration accelerationY3 = new Acceleration(0.0,
-                AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration accelerationY3 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         state.getAccelerationBiasYAsAcceleration(accelerationY3);
         final Acceleration accelerationY4 = state.getAccelerationBiasYAsAcceleration();
 
@@ -1777,22 +1507,19 @@ public class INSLooselyCoupledKalmanStateTest {
         // check default value
         final Acceleration accelerationZ1 = state.getAccelerationBiasZAsAcceleration();
 
-        assertEquals(accelerationZ1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(accelerationZ1.getUnit(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, accelerationZ1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, accelerationZ1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double accelerationZ = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final Acceleration accelerationZ2 = new Acceleration(accelerationZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        final Acceleration accelerationZ2 = new Acceleration(accelerationZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
         state.setAccelerationBiasZ(accelerationZ2);
 
         // check
-        final Acceleration accelerationZ3 = new Acceleration(0.0,
-                AccelerationUnit.FEET_PER_SQUARED_SECOND);
+        final Acceleration accelerationZ3 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         state.getAccelerationBiasZAsAcceleration(accelerationZ3);
         final Acceleration accelerationZ4 = state.getAccelerationBiasZAsAcceleration();
 
@@ -1805,9 +1532,9 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default values
-        assertEquals(state.getAccelerationBiasX(), 0.0, 0.0);
-        assertEquals(state.getAccelerationBiasY(), 0.0, 0.0);
-        assertEquals(state.getAccelerationBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, state.getAccelerationBiasX(), 0.0);
+        assertEquals(0.0, state.getAccelerationBiasY(), 0.0);
+        assertEquals(0.0, state.getAccelerationBiasZ(), 0.0);
 
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1822,13 +1549,12 @@ public class INSLooselyCoupledKalmanStateTest {
         final Acceleration accelerationZ = new Acceleration(accelerationBiasZ,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        state.setAccelerationBiasCoordinates(
-                accelerationX, accelerationY, accelerationZ);
+        state.setAccelerationBiasCoordinates(accelerationX, accelerationY, accelerationZ);
 
         // check
-        assertEquals(state.getAccelerationBiasX(), accelerationBiasX, 0.0);
-        assertEquals(state.getAccelerationBiasY(), accelerationBiasY, 0.0);
-        assertEquals(state.getAccelerationBiasZ(), accelerationBiasZ, 0.0);
+        assertEquals(accelerationBiasX, state.getAccelerationBiasX(), 0.0);
+        assertEquals(accelerationBiasY, state.getAccelerationBiasY(), 0.0);
+        assertEquals(accelerationBiasZ, state.getAccelerationBiasZ(), 0.0);
     }
 
     @Test
@@ -1838,21 +1564,19 @@ public class INSLooselyCoupledKalmanStateTest {
         // check default value
         final AngularSpeed angularSpeedX1 = state.getAngularSpeedGyroBiasX();
 
-        assertEquals(angularSpeedX1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(angularSpeedX1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(0.0, angularSpeedX1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedX1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double gyroBiasX = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final AngularSpeed angularSpeedX2 = new AngularSpeed(gyroBiasX,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed angularSpeedX2 = new AngularSpeed(gyroBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         state.setGyroBiasX(angularSpeedX2);
 
         // check
-        final AngularSpeed angularSpeedX3 = new AngularSpeed(0.0,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed angularSpeedX3 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         state.getAngularSpeedGyroBiasX(angularSpeedX3);
         final AngularSpeed angularSpeedX4 = state.getAngularSpeedGyroBiasX();
 
@@ -1867,21 +1591,19 @@ public class INSLooselyCoupledKalmanStateTest {
         // check default value
         final AngularSpeed angularSpeedY1 = state.getAngularSpeedGyroBiasY();
 
-        assertEquals(angularSpeedY1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(angularSpeedY1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(0.0, angularSpeedY1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedY1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double gyroBiasY = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final AngularSpeed angularSpeedY2 = new AngularSpeed(gyroBiasY,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed angularSpeedY2 = new AngularSpeed(gyroBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         state.setGyroBiasY(angularSpeedY2);
 
         // check
-        final AngularSpeed angularSpeedY3 = new AngularSpeed(0.0,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed angularSpeedY3 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         state.getAngularSpeedGyroBiasY(angularSpeedY3);
         final AngularSpeed angularSpeedY4 = state.getAngularSpeedGyroBiasY();
 
@@ -1896,21 +1618,19 @@ public class INSLooselyCoupledKalmanStateTest {
         // check default value
         final AngularSpeed angularSpeedZ1 = state.getAngularSpeedGyroBiasZ();
 
-        assertEquals(angularSpeedZ1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(angularSpeedZ1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(0.0, angularSpeedZ1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeedZ1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double gyroBiasZ = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final AngularSpeed angularSpeedZ2 = new AngularSpeed(gyroBiasZ,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed angularSpeedZ2 = new AngularSpeed(gyroBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         state.setGyroBiasZ(angularSpeedZ2);
 
         // check
-        final AngularSpeed angularSpeedZ3 = new AngularSpeed(0.0,
-                AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed angularSpeedZ3 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         state.getAngularSpeedGyroBiasZ(angularSpeedZ3);
         final AngularSpeed angularSpeedZ4 = state.getAngularSpeedGyroBiasZ();
 
@@ -1923,9 +1643,9 @@ public class INSLooselyCoupledKalmanStateTest {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default value
-        assertEquals(state.getGyroBiasX(), 0.0, 0.0);
-        assertEquals(state.getGyroBiasY(), 0.0, 0.0);
-        assertEquals(state.getGyroBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, state.getGyroBiasX(), 0.0);
+        assertEquals(0.0, state.getGyroBiasY(), 0.0);
+        assertEquals(0.0, state.getGyroBiasZ(), 0.0);
 
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1933,32 +1653,28 @@ public class INSLooselyCoupledKalmanStateTest {
         final double gyroBiasY = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double gyroBiasZ = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final AngularSpeed angularSpeedX = new AngularSpeed(gyroBiasX,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed angularSpeedY = new AngularSpeed(gyroBiasY,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
-        final AngularSpeed angularSpeedZ = new AngularSpeed(gyroBiasZ,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed angularSpeedX = new AngularSpeed(gyroBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed angularSpeedY = new AngularSpeed(gyroBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed angularSpeedZ = new AngularSpeed(gyroBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         state.setGyroBiasCoordinates(angularSpeedX, angularSpeedY, angularSpeedZ);
 
         // check
-        assertEquals(state.getGyroBiasX(), gyroBiasX, 0.0);
-        assertEquals(state.getGyroBiasY(), gyroBiasY, 0.0);
-        assertEquals(state.getGyroBiasZ(), gyroBiasZ, 0.0);
+        assertEquals(gyroBiasX, state.getGyroBiasX(), 0.0);
+        assertEquals(gyroBiasY, state.getGyroBiasY(), 0.0);
+        assertEquals(gyroBiasZ, state.getGyroBiasZ(), 0.0);
     }
 
     @Test
-    public void testCopyToWhenInputHasValuesAndOutputDoesNotHaveValues()
-            throws WrongSizeException {
+    public void testCopyToWhenInputHasValuesAndOutputDoesNotHaveValues() throws WrongSizeException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw,
-                FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
+        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
         final Matrix bodyToEcefCoordinateTransformationMatrix = c.getMatrix();
         final double vx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double vy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -1977,8 +1693,7 @@ public class INSLooselyCoupledKalmanStateTest {
 
         final INSLooselyCoupledKalmanState state1 = new INSLooselyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
 
         final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState();
         state1.copyTo(state2);
@@ -2001,25 +1716,24 @@ public class INSLooselyCoupledKalmanStateTest {
     }
 
     @Test
-    public void testCopyToWhenInputHasNoValuesAndOutputHasValues()
-            throws WrongSizeException {
+    public void testCopyToWhenInputHasNoValuesAndOutputHasValues() throws WrongSizeException {
 
         final INSLooselyCoupledKalmanState state1 = new INSLooselyCoupledKalmanState();
 
         // check default values
         assertNull(state1.getBodyToEcefCoordinateTransformationMatrix());
-        assertEquals(state1.getVx(), 0.0, 0.0);
-        assertEquals(state1.getVy(), 0.0, 0.0);
-        assertEquals(state1.getVz(), 0.0, 0.0);
-        assertEquals(state1.getX(), 0.0, 0.0);
-        assertEquals(state1.getY(), 0.0, 0.0);
-        assertEquals(state1.getZ(), 0.0, 0.0);
-        assertEquals(state1.getAccelerationBiasX(), 0.0, 0.0);
-        assertEquals(state1.getAccelerationBiasY(), 0.0, 0.0);
-        assertEquals(state1.getAccelerationBiasZ(), 0.0, 0.0);
-        assertEquals(state1.getGyroBiasX(), 0.0, 0.0);
-        assertEquals(state1.getGyroBiasY(), 0.0, 0.0);
-        assertEquals(state1.getGyroBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, state1.getVx(), 0.0);
+        assertEquals(0.0, state1.getVy(), 0.0);
+        assertEquals(0.0, state1.getVz(), 0.0);
+        assertEquals(0.0, state1.getX(), 0.0);
+        assertEquals(0.0, state1.getY(), 0.0);
+        assertEquals(0.0, state1.getZ(), 0.0);
+        assertEquals(0.0, state1.getAccelerationBiasX(), 0.0);
+        assertEquals(0.0, state1.getAccelerationBiasY(), 0.0);
+        assertEquals(0.0, state1.getAccelerationBiasZ(), 0.0);
+        assertEquals(0.0, state1.getGyroBiasX(), 0.0);
+        assertEquals(0.0, state1.getGyroBiasY(), 0.0);
+        assertEquals(0.0, state1.getGyroBiasZ(), 0.0);
         assertNull(state1.getCovariance());
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -2028,8 +1742,8 @@ public class INSLooselyCoupledKalmanStateTest {
         final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw,
-                FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
+        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
         final Matrix bodyToEcefCoordinateTransformationMatrix = c.getMatrix();
         final double vx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double vy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -2048,25 +1762,24 @@ public class INSLooselyCoupledKalmanStateTest {
 
         final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
 
         state1.copyTo(state2);
 
         // check
         assertNull(state2.getBodyToEcefCoordinateTransformationMatrix());
-        assertEquals(state2.getVx(), 0.0, 0.0);
-        assertEquals(state2.getVy(), 0.0, 0.0);
-        assertEquals(state2.getVz(), 0.0, 0.0);
-        assertEquals(state2.getX(), 0.0, 0.0);
-        assertEquals(state2.getY(), 0.0, 0.0);
-        assertEquals(state2.getZ(), 0.0, 0.0);
-        assertEquals(state2.getAccelerationBiasX(), 0.0, 0.0);
-        assertEquals(state2.getAccelerationBiasY(), 0.0, 0.0);
-        assertEquals(state2.getAccelerationBiasZ(), 0.0, 0.0);
-        assertEquals(state2.getGyroBiasX(), 0.0, 0.0);
-        assertEquals(state2.getGyroBiasY(), 0.0, 0.0);
-        assertEquals(state2.getGyroBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, state2.getVx(), 0.0);
+        assertEquals(0.0, state2.getVy(), 0.0);
+        assertEquals(0.0, state2.getVz(), 0.0);
+        assertEquals(0.0, state2.getX(), 0.0);
+        assertEquals(0.0, state2.getY(), 0.0);
+        assertEquals(0.0, state2.getZ(), 0.0);
+        assertEquals(0.0, state2.getAccelerationBiasX(), 0.0);
+        assertEquals(0.0, state2.getAccelerationBiasY(), 0.0);
+        assertEquals(0.0, state2.getAccelerationBiasZ(), 0.0);
+        assertEquals(0.0, state2.getGyroBiasX(), 0.0);
+        assertEquals(0.0, state2.getGyroBiasY(), 0.0);
+        assertEquals(0.0, state2.getGyroBiasZ(), 0.0);
         assertNull(state2.getCovariance());
     }
 
@@ -2076,18 +1789,18 @@ public class INSLooselyCoupledKalmanStateTest {
 
         // check default values
         assertNull(state1.getBodyToEcefCoordinateTransformationMatrix());
-        assertEquals(state1.getVx(), 0.0, 0.0);
-        assertEquals(state1.getVy(), 0.0, 0.0);
-        assertEquals(state1.getVz(), 0.0, 0.0);
-        assertEquals(state1.getX(), 0.0, 0.0);
-        assertEquals(state1.getY(), 0.0, 0.0);
-        assertEquals(state1.getZ(), 0.0, 0.0);
-        assertEquals(state1.getAccelerationBiasX(), 0.0, 0.0);
-        assertEquals(state1.getAccelerationBiasY(), 0.0, 0.0);
-        assertEquals(state1.getAccelerationBiasZ(), 0.0, 0.0);
-        assertEquals(state1.getGyroBiasX(), 0.0, 0.0);
-        assertEquals(state1.getGyroBiasY(), 0.0, 0.0);
-        assertEquals(state1.getGyroBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, state1.getVx(), 0.0);
+        assertEquals(0.0, state1.getVy(), 0.0);
+        assertEquals(0.0, state1.getVz(), 0.0);
+        assertEquals(0.0, state1.getX(), 0.0);
+        assertEquals(0.0, state1.getY(), 0.0);
+        assertEquals(0.0, state1.getZ(), 0.0);
+        assertEquals(0.0, state1.getAccelerationBiasX(), 0.0);
+        assertEquals(0.0, state1.getAccelerationBiasY(), 0.0);
+        assertEquals(0.0, state1.getAccelerationBiasZ(), 0.0);
+        assertEquals(0.0, state1.getGyroBiasX(), 0.0);
+        assertEquals(0.0, state1.getGyroBiasY(), 0.0);
+        assertEquals(0.0, state1.getGyroBiasZ(), 0.0);
         assertNull(state1.getCovariance());
 
         final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState();
@@ -2095,18 +1808,18 @@ public class INSLooselyCoupledKalmanStateTest {
 
         // check
         assertNull(state2.getBodyToEcefCoordinateTransformationMatrix());
-        assertEquals(state2.getVx(), 0.0, 0.0);
-        assertEquals(state2.getVy(), 0.0, 0.0);
-        assertEquals(state2.getVz(), 0.0, 0.0);
-        assertEquals(state2.getX(), 0.0, 0.0);
-        assertEquals(state2.getY(), 0.0, 0.0);
-        assertEquals(state2.getZ(), 0.0, 0.0);
-        assertEquals(state2.getAccelerationBiasX(), 0.0, 0.0);
-        assertEquals(state2.getAccelerationBiasY(), 0.0, 0.0);
-        assertEquals(state2.getAccelerationBiasZ(), 0.0, 0.0);
-        assertEquals(state2.getGyroBiasX(), 0.0, 0.0);
-        assertEquals(state2.getGyroBiasY(), 0.0, 0.0);
-        assertEquals(state2.getGyroBiasZ(), 0.0, 0.0);
+        assertEquals(0.0, state2.getVx(), 0.0);
+        assertEquals(0.0, state2.getVy(), 0.0);
+        assertEquals(0.0, state2.getVz(), 0.0);
+        assertEquals(0.0, state2.getX(), 0.0);
+        assertEquals(0.0, state2.getY(), 0.0);
+        assertEquals(0.0, state2.getZ(), 0.0);
+        assertEquals(0.0, state2.getAccelerationBiasX(), 0.0);
+        assertEquals(0.0, state2.getAccelerationBiasY(), 0.0);
+        assertEquals(0.0, state2.getAccelerationBiasZ(), 0.0);
+        assertEquals(0.0, state2.getGyroBiasX(), 0.0);
+        assertEquals(0.0, state2.getGyroBiasY(), 0.0);
+        assertEquals(0.0, state2.getGyroBiasZ(), 0.0);
         assertNull(state2.getCovariance());
     }
 
@@ -2118,8 +1831,8 @@ public class INSLooselyCoupledKalmanStateTest {
         final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
+        final CoordinateTransformation c1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
         final Matrix bodyToEcefCoordinateTransformationMatrix1 = c1.getMatrix();
         final double vx1 = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double vy1 = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -2138,15 +1851,15 @@ public class INSLooselyCoupledKalmanStateTest {
 
         final INSLooselyCoupledKalmanState state1 = new INSLooselyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix1, vx1, vy1, vz1, x1, y1, z1,
-                accelerationBiasX1, accelerationBiasY1, accelerationBiasZ1,
-                gyroBiasX1, gyroBiasY1, gyroBiasZ1, covariance1);
+                accelerationBiasX1, accelerationBiasY1, accelerationBiasZ1, gyroBiasX1, gyroBiasY1, gyroBiasZ1,
+                covariance1);
 
         final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c2 = new CoordinateTransformation(roll2, pitch2, yaw2,
-                FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
+        final CoordinateTransformation c2 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+                FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
         final Matrix bodyToEcefCoordinateTransformationMatrix2 = c2.getMatrix();
         final double vx2 = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double vy2 = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -2165,8 +1878,8 @@ public class INSLooselyCoupledKalmanStateTest {
 
         final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix2, vx2, vy2, vz2, x2, y2, z2,
-                accelerationBiasX2, accelerationBiasY2, accelerationBiasZ2,
-                gyroBiasX2, gyroBiasY2, gyroBiasZ2, covariance2);
+                accelerationBiasX2, accelerationBiasY2, accelerationBiasZ2, gyroBiasX2, gyroBiasY2, gyroBiasZ2,
+                covariance2);
 
         state1.copyTo(state2);
 
@@ -2195,8 +1908,8 @@ public class INSLooselyCoupledKalmanStateTest {
         final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c1 = new CoordinateTransformation(roll1, pitch1, yaw1,
-                FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
+        final CoordinateTransformation c1 = new CoordinateTransformation(roll1, pitch1, yaw1, FrameType.BODY_FRAME,
+                FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
         final Matrix bodyToEcefCoordinateTransformationMatrix1 = c1.getMatrix();
         final double vx1 = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double vy1 = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -2215,15 +1928,15 @@ public class INSLooselyCoupledKalmanStateTest {
 
         final INSLooselyCoupledKalmanState state1 = new INSLooselyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix1, vx1, vy1, vz1, x1, y1, z1,
-                accelerationBiasX1, accelerationBiasY1, accelerationBiasZ1,
-                gyroBiasX1, gyroBiasY1, gyroBiasZ1, covariance1);
+                accelerationBiasX1, accelerationBiasY1, accelerationBiasZ1, gyroBiasX1, gyroBiasY1, gyroBiasZ1,
+                covariance1);
 
         final double roll2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double pitch2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double yaw2 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c2 = new CoordinateTransformation(roll2, pitch2, yaw2,
-                FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
+        final CoordinateTransformation c2 = new CoordinateTransformation(roll2, pitch2, yaw2, FrameType.BODY_FRAME,
+                FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
         final Matrix bodyToEcefCoordinateTransformationMatrix2 = c2.getMatrix();
         final double vx2 = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double vy2 = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -2242,8 +1955,8 @@ public class INSLooselyCoupledKalmanStateTest {
 
         final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix2, vx2, vy2, vz2, x2, y2, z2,
-                accelerationBiasX2, accelerationBiasY2, accelerationBiasZ2,
-                gyroBiasX2, gyroBiasY2, gyroBiasZ2, covariance2);
+                accelerationBiasX2, accelerationBiasY2, accelerationBiasZ2, gyroBiasX2, gyroBiasY2, gyroBiasZ2,
+                covariance2);
 
         state2.copyFrom(state1);
 
@@ -2272,8 +1985,8 @@ public class INSLooselyCoupledKalmanStateTest {
         final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw,
-                FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
+        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
         final Matrix bodyToEcefCoordinateTransformationMatrix = c.getMatrix();
         final double vx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double vy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -2292,12 +2005,10 @@ public class INSLooselyCoupledKalmanStateTest {
 
         final INSLooselyCoupledKalmanState state1 = new INSLooselyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
         final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
         final INSLooselyCoupledKalmanState state3 = new INSLooselyCoupledKalmanState();
 
         assertEquals(state1.hashCode(), state2.hashCode());
@@ -2332,25 +2043,21 @@ public class INSLooselyCoupledKalmanStateTest {
 
         final INSLooselyCoupledKalmanState state1 = new INSLooselyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
         final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
         final INSLooselyCoupledKalmanState state3 = new INSLooselyCoupledKalmanState();
 
-        //noinspection ConstantConditions,SimplifiableJUnitAssertion
-        assertTrue(state1.equals((Object) state1));
+        //noinspection EqualsWithItself
+        assertEquals(state1, state1);
         //noinspection EqualsWithItself
         assertTrue(state1.equals(state1));
         assertTrue(state1.equals(state2));
         assertFalse(state1.equals(state3));
-        //noinspection SimplifiableJUnitAssertion,ConstantConditions
-        assertFalse(state1.equals((Object) null));
+        assertNotEquals(state1, null);
         assertFalse(state1.equals(null));
-        //noinspection SimplifiableJUnitAssertion
-        assertFalse(state1.equals(new Object()));
+        assertNotEquals(state1, new Object());
     }
 
     @Test
@@ -2361,8 +2068,8 @@ public class INSLooselyCoupledKalmanStateTest {
         final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw,
-                FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
+        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
         final Matrix bodyToEcefCoordinateTransformationMatrix = c.getMatrix();
         final double vx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double vy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -2381,12 +2088,10 @@ public class INSLooselyCoupledKalmanStateTest {
 
         final INSLooselyCoupledKalmanState state1 = new INSLooselyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
         final INSLooselyCoupledKalmanState state2 = new INSLooselyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
         final INSLooselyCoupledKalmanState state3 = new INSLooselyCoupledKalmanState();
 
         assertTrue(state1.equals(state1, THRESHOLD));
@@ -2403,8 +2108,8 @@ public class INSLooselyCoupledKalmanStateTest {
         final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw,
-                FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
+        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
         final Matrix bodyToEcefCoordinateTransformationMatrix = c.getMatrix();
         final double vx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double vy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -2423,8 +2128,7 @@ public class INSLooselyCoupledKalmanStateTest {
 
         final INSLooselyCoupledKalmanState state1 = new INSLooselyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
 
         final Object state2 = state1.clone();
 
@@ -2439,8 +2143,8 @@ public class INSLooselyCoupledKalmanStateTest {
         final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
         final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw,
-                FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
+        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw, FrameType.BODY_FRAME,
+                FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
         final Matrix bodyToEcefCoordinateTransformationMatrix = c.getMatrix();
         final double vx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double vy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -2459,8 +2163,7 @@ public class INSLooselyCoupledKalmanStateTest {
 
         final INSLooselyCoupledKalmanState state1 = new INSLooselyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,
-                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
-                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ, gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
 
         final byte[] bytes = SerializationHelper.serialize(state1);
         final INSLooselyCoupledKalmanState state2 = SerializationHelper.deserialize(bytes);

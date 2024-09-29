@@ -41,54 +41,34 @@ class ECEFInertialNavigator2 {
 
     private static final int ROWS = 3;
 
-    public static void navigateECEF(final double timeInterval,
-                                    final ECEFFrame oldFrame,
-                                    final BodyKinematics kinematics,
-                                    final ECEFFrame result)
-            throws InertialNavigatorException {
+    public static void navigateECEF(
+            final double timeInterval, final ECEFFrame oldFrame, final BodyKinematics kinematics,
+            final ECEFFrame result) throws InertialNavigatorException {
         try {
             navigateECEF(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),
-                    oldFrame.getCoordinateTransformation(),
-                    oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), kinematics,
-                    result);
+                    oldFrame.getCoordinateTransformation(), oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(),
+                    kinematics, result);
         } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
             // never happens
         }
     }
 
-    public static void navigateECEF(final double timeInterval,
-                                    final double oldX,
-                                    final double oldY,
-                                    final double oldZ,
-                                    final CoordinateTransformation oldC,
-                                    final double oldVx,
-                                    final double oldVy,
-                                    final double oldVz,
-                                    final BodyKinematics kinematics,
-                                    final ECEFFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+    public static void navigateECEF(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final BodyKinematics kinematics, final ECEFFrame result) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
         navigateECEF(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,
                 kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),
-                kinematics.getAngularRateX(), kinematics.getAngularRateY(),
-                kinematics.getAngularRateZ(), result);
+                kinematics.getAngularRateX(), kinematics.getAngularRateY(), kinematics.getAngularRateZ(), result);
     }
 
-    public static void navigateECEF(final double timeInterval,
-                                    final double oldX,
-                                    final double oldY,
-                                    final double oldZ,
-                                    final CoordinateTransformation oldC,
-                                    final double oldVx,
-                                    final double oldVy,
-                                    final double oldVz,
-                                    final double fx,
-                                    final double fy,
-                                    final double fz,
-                                    final double angularRateX,
-                                    final double angularRateY,
-                                    final double angularRateZ,
-                                    final ECEFFrame result)
-            throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
+    public static void navigateECEF(
+            final double timeInterval, final double oldX, final double oldY, final double oldZ,
+            final CoordinateTransformation oldC, final double oldVx, final double oldVy, final double oldVz,
+            final double fx, final double fy, final double fz, final double angularRateX, final double angularRateY,
+            final double angularRateZ, final ECEFFrame result) throws InertialNavigatorException,
+            InvalidSourceAndDestinationFrameTypeException {
 
         if (!isValidBodyToEcefCoordinateTransformationMatrix(oldC)) {
             throw new InvalidSourceAndDestinationFrameTypeException();
@@ -183,8 +163,7 @@ class ECEFInertialNavigator2 {
             oldVebe.setElementAtIndex(1, oldVy);
             oldVebe.setElementAtIndex(2, oldVz);
 
-            final Matrix skewOmegaIe = Utils.skewMatrix(
-                    new double[]{0.0, 0.0, EARTH_ROTATION_RATE});
+            final Matrix skewOmegaIe = Utils.skewMatrix(new double[]{0.0, 0.0, EARTH_ROTATION_RATE});
             final Matrix vebe = oldVebe.addAndReturnNew(
                     fibe.addAndReturnNew(g).subtractAndReturnNew(
                                     skewOmegaIe.multiplyAndReturnNew(oldVebe)
@@ -201,9 +180,8 @@ class ECEFInertialNavigator2 {
             final double newY = oldY + (newVy + oldVy) * 0.5 * timeInterval;
             final double newZ = oldZ + (newVz + oldVz) * 0.5 * timeInterval;
 
-            final CoordinateTransformation newC =
-                    new CoordinateTransformation(FrameType.BODY_FRAME,
-                            FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
+            final CoordinateTransformation newC = new CoordinateTransformation(FrameType.BODY_FRAME,
+                    FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             newC.setMatrix(cbe);
             result.setCoordinateTransformation(newC);
             result.setVelocityCoordinates(newVx, newVy, newVz);

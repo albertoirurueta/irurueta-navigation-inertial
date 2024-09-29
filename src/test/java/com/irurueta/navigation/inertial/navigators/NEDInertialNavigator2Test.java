@@ -62,22 +62,19 @@ public class NEDInertialNavigator2Test {
 
     @Test(expected = InvalidSourceAndDestinationFrameTypeException.class)
     public void testNavigateNEDWhenInvalidCoordinateTransformationMatrix()
-            throws InvalidSourceAndDestinationFrameTypeException,
-            InertialNavigatorException {
+            throws InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
 
-        final CoordinateTransformation c = new CoordinateTransformation(
-                FrameType.BODY_FRAME, FrameType.BODY_FRAME);
+        final CoordinateTransformation c = new CoordinateTransformation(FrameType.BODY_FRAME, FrameType.BODY_FRAME);
         final NEDFrame result = new NEDFrame();
-        NEDInertialNavigator2.navigateNED(0.0,
-                0.0, 0.0, 0.0, c,
-                0.0, 0.0, 0.0,
-                0.0, 0.0, 0.0,
+        NEDInertialNavigator2.navigateNED(0.0, 0.0, 0.0, 0.0, c,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                 0.0, 0.0, 0.0, NEDInertialNavigator2.DEFAULT_ACCURACY_THRESHOLD,
                 result);
     }
 
     @Test
-    public void testNavigateNED() throws InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
+    public void testNavigateNED() throws InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException,
+            InertialNavigatorException {
 
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -89,33 +86,26 @@ public class NEDInertialNavigator2Test {
             final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
             final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
 
-            final double roll = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double pitch = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double yaw = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
             final Quaternion q = new Quaternion(roll, pitch, yaw);
 
             final Matrix m = q.asInhomogeneousMatrix();
-            final CoordinateTransformation oldC = new CoordinateTransformation(
-                    m, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+            final CoordinateTransformation oldC = new CoordinateTransformation(m, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
 
-            final NEDFrame oldFrame = new NEDFrame(oldLatitude, oldLongitude, HEIGHT,
-                    oldVn, oldVe, oldVd, oldC);
+            final NEDFrame oldFrame = new NEDFrame(oldLatitude, oldLongitude, HEIGHT, oldVn, oldVe, oldVd, oldC);
 
             final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
             final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
             final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-            final double angularRateXDegreesPerSecond = randomizer.nextDouble(
-                    MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final double angularRateXDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateYDegreesPerSecond = randomizer.nextDouble(
-                    MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final double angularRateYDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
-            final double angularRateZDegreesPerSecond = randomizer.nextDouble(
-                    MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
+            final double angularRateZDegreesPerSecond = randomizer.nextDouble(MIN_ANGULAR_RATE_DEGREES_PER_SECOND,
                     MAX_ANGULAR_RATE_DEGREES_PER_SECOND);
 
             final AngularSpeed angularSpeedX = new AngularSpeed(angularRateXDegreesPerSecond,
@@ -125,25 +115,19 @@ public class NEDInertialNavigator2Test {
             final AngularSpeed angularSpeedZ = new AngularSpeed(angularRateZDegreesPerSecond,
                     AngularSpeedUnit.DEGREES_PER_SECOND);
 
-            final double angularRateX = AngularSpeedConverter.convert(
-                    angularSpeedX.getValue().doubleValue(), angularSpeedX.getUnit(),
-                    AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateY = AngularSpeedConverter.convert(
-                    angularSpeedY.getValue().doubleValue(), angularSpeedY.getUnit(),
-                    AngularSpeedUnit.RADIANS_PER_SECOND);
-            final double angularRateZ = AngularSpeedConverter.convert(
-                    angularSpeedZ.getValue().doubleValue(), angularSpeedZ.getUnit(),
-                    AngularSpeedUnit.RADIANS_PER_SECOND);
+            final double angularRateX = AngularSpeedConverter.convert(angularSpeedX.getValue().doubleValue(),
+                    angularSpeedX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+            final double angularRateY = AngularSpeedConverter.convert(angularSpeedY.getValue().doubleValue(),
+                    angularSpeedY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+            final double angularRateZ = AngularSpeedConverter.convert(angularSpeedZ.getValue().doubleValue(),
+                    angularSpeedZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-            final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz,
-                    angularRateX, angularRateY, angularRateZ);
+            final BodyKinematics kinematics = new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
 
             final NEDFrame result1 = new NEDFrame();
             final NEDFrame result2 = new NEDFrame();
-            NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldFrame, kinematics,
-                    ACCURACY_THRESHOLD, result1);
-            NEDInertialNavigator2.navigateNED(TIME_INTERVAL_SECONDS, oldFrame, kinematics,
-                    ACCURACY_THRESHOLD, result2);
+            NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldFrame, kinematics, ACCURACY_THRESHOLD, result1);
+            NEDInertialNavigator2.navigateNED(TIME_INTERVAL_SECONDS, oldFrame, kinematics, ACCURACY_THRESHOLD, result2);
 
             assertTrue(result1.equals(result2, ABSOLUTE_ERROR));
         }

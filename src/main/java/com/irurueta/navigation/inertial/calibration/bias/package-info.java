@@ -49,7 +49,6 @@
  * - com.irurueta.navigation.inertial.calibration.magnetometer.RobustKnownPositionAndInstantMagnetometerCalibrator
  * and any of its subclasses.
  * <p>
- * <p>
  * On the other hand, it can be simply be assumed that estimated biases are
  * accurate enough and can be used by calibrators such as:
  * - com.irurueta.navigation.inertial.calibration.accelerometer.KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator

@@ -33,209 +33,188 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
 
         // RANSAC
         RobustKnownFrameAccelerometerCalibrator calibrator =
-                RobustKnownFrameAccelerometerCalibrator.create(
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownFrameAccelerometerCalibrator.create(RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownFrameAccelerometerCalibrator);
 
         // LMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownFrameAccelerometerCalibrator);
 
         // MSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownFrameAccelerometerCalibrator);
 
         // PROSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownFrameAccelerometerCalibrator);
 
         // PROMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
 
         // test create with listener and method
         calibrator =
-                RobustKnownFrameAccelerometerCalibrator.create(this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownFrameAccelerometerCalibrator.create(this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with measurements and method
 
         // RANSAC
-        final List<StandardDeviationFrameBodyKinematics> measurements =
-                Collections.emptyList();
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                RobustEstimatorMethod.RANSAC);
+        final List<StandardDeviationFrameBodyKinematics> measurements = Collections.emptyList();
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // LMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // MSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // PROSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // PROMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // test create with measurements, listener and method
 
         // RANSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                this, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
-
-        // LMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                this, RobustEstimatorMethod.LMedS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
-
-        // MSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
-
-        // PROSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
-
-        // PROMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                this, RobustEstimatorMethod.PROMedS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
-
-        // test create with common axis used and method
-
-        // RANSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true,
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, this,
                 RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownFrameAccelerometerCalibrator);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, this,
+                RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertTrue(calibrator instanceof LMedSRobustKnownFrameAccelerometerCalibrator);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, this,
+                RobustEstimatorMethod.MSAC);
+
+        // check
+        assertTrue(calibrator instanceof MSACRobustKnownFrameAccelerometerCalibrator);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, this,
+                RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertTrue(calibrator instanceof PROSACRobustKnownFrameAccelerometerCalibrator);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, this,
+                RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+
+        // test create with common axis used and method
+
+        // RANSAC
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertTrue(calibrator instanceof RANSACRobustKnownFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
@@ -244,344 +223,338 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         // test create with common axis used, listener and method
 
         // RANSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true,
-                this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true,
-                this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true,
-                this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true,
-                this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true,
-                this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with measurements, common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                true, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, true,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                true, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, true,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                true, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, true,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                true, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, true,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                true, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, true,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with measurements, common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                true, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, true, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                true, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, true, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                true, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, true, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                true, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, true, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                true, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, true, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores and method
-        final double[] qualityScores = new double[
-                RobustKnownFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS];
+        final double[] qualityScores = new double[RobustKnownFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS];
 
         // RANSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertTrue(calibrator instanceof RANSACRobustKnownFrameAccelerometerCalibrator);
+        assertNull(calibrator.getQualityScores());
+
+        // LMedS
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, RobustEstimatorMethod.LMEDS);
+
+        // check
+        assertTrue(calibrator instanceof LMedSRobustKnownFrameAccelerometerCalibrator);
+        assertNull(calibrator.getQualityScores());
+
+        // MSAC
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertTrue(calibrator instanceof MSACRobustKnownFrameAccelerometerCalibrator);
+        assertNull(calibrator.getQualityScores());
+
+        // PROSAC
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertTrue(calibrator instanceof PROSACRobustKnownFrameAccelerometerCalibrator);
+        assertSame(qualityScores, calibrator.getQualityScores());
+
+        // PROMedS
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, RobustEstimatorMethod.PROMEDS);
+
+        // check
+        assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
+        assertSame(qualityScores, calibrator.getQualityScores());
+
+        // test create with quality scores, listener and method
+
+        // RANSAC
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, this,
                 RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, this,
                 RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, this,
                 RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-
-        // test create with quality scores, listener and method
-
-        // RANSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                this, RobustEstimatorMethod.RANSAC);
-
-        // check
-        assertTrue(calibrator instanceof RANSACRobustKnownFrameAccelerometerCalibrator);
-        assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getListener(), this);
-
-        // LMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                this, RobustEstimatorMethod.LMedS);
-
-        // check
-        assertTrue(calibrator instanceof LMedSRobustKnownFrameAccelerometerCalibrator);
-        assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getListener(), this);
-
-        // MSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                this, RobustEstimatorMethod.MSAC);
-
-        // check
-        assertTrue(calibrator instanceof MSACRobustKnownFrameAccelerometerCalibrator);
-        assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getListener(), this);
-
-        // PROSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                this, RobustEstimatorMethod.PROSAC);
-
-        // check
-        assertTrue(calibrator instanceof PROSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getListener(), this);
-
-        // PROMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                this, RobustEstimatorMethod.PROMedS);
-
-        // check
-        assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, measurements and method
 
         // RANSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // LMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // MSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // PROSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
 
         // PROMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
 
         // test create with quality scores, measurements, listener and method
 
         // RANSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                true, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, true,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownFrameAccelerometerCalibrator);
@@ -589,8 +562,8 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                true, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, true,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownFrameAccelerometerCalibrator);
@@ -598,8 +571,8 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                true, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, true,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownFrameAccelerometerCalibrator);
@@ -607,350 +580,331 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                true, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, true,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                true, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, true,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with quality scores, common axis used, listener and method
 
         // RANSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                true, this, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, true, this,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                true, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, true, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                true, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, true, this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                true, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, true, this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                true, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, true, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(qualityScores, calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, measurements, common axis used and method
 
         // RANSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, true, RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements, true,
+                RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, true, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements, true,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, true, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements, true,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, true, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements, true,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, true, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements, true,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with quality scores, measurements, common axis used, listener and
         // method
 
         // RANSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, true, this,
-                RobustEstimatorMethod.RANSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements, true,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, true, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements, true,
+                this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, true, this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements, true,
+                this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownFrameAccelerometerCalibrator);
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, true, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements, true,
+                this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, true, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements, true,
+                this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
-        assertSame(calibrator.getQualityScores(), qualityScores);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(qualityScores, calibrator.getQualityScores());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create();
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
 
         // test create with listener and default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create(this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(this, calibrator.getListener());
 
         // test create with measurements and default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
 
         // test create with measurements, listener and default method
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                this);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // test create with common axis used and default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create(true);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with common axis used, listener and default method
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true,
-                this);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(true, this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with measurements, common axis used and default method
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                true);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, true);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
 
         // test create with measurements, common axis used, listener and default method
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
-                true, this);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements, true, this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores and default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
 
         // test create with quality scores, listener and default method
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                this);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, measurements and default method
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // test create with quality scores, measurements, listener and default method
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, this);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements, this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, common axis used and default method
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                true);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, true);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with quality scores, common axis used, listener and default method
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                true, this);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, true, this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, measurements, common axis used and default
         // method
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, true);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements, true);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // test create with quality scores, measurements, common axis used, listener
         // and default method
-        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
-                measurements, true, this);
+        calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores, measurements, true,
+                this);
 
         // check
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertNull(calibrator.getQualityScores());
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
     }
 
     @Override
-    public void onCalibrateStart(
-            final RobustKnownFrameAccelerometerCalibrator calibrator) {
+    public void onCalibrateStart(final RobustKnownFrameAccelerometerCalibrator calibrator) {
     }
 
     @Override
-    public void onCalibrateEnd(
-            final RobustKnownFrameAccelerometerCalibrator calibrator) {
+    public void onCalibrateEnd(final RobustKnownFrameAccelerometerCalibrator calibrator) {
     }
 
     @Override
     public void onCalibrateNextIteration(
-            final RobustKnownFrameAccelerometerCalibrator calibrator,
-            final int iteration) {
+            final RobustKnownFrameAccelerometerCalibrator calibrator, final int iteration) {
     }
 
     @Override
     public void onCalibrateProgressChange(
-            final RobustKnownFrameAccelerometerCalibrator calibrator,
-            final float progress) {
+            final RobustKnownFrameAccelerometerCalibrator calibrator, final float progress) {
     }
 }

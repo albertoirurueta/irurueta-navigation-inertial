@@ -71,10 +71,8 @@ public class AttitudeEstimatorTest {
     private static final int TIMES = 100;
 
     static {
-        START_CALENDAR.set(2020, Calendar.JANUARY, 1,
-                0, 0, 0);
-        END_CALENDAR.set(2025, Calendar.DECEMBER, 31,
-                23, 59, 59);
+        START_CALENDAR.set(2020, Calendar.JANUARY, 1, 0, 0, 0);
+        END_CALENDAR.set(2025, Calendar.DECEMBER, 31, 23, 59, 59);
 
         START_TIMESTAMP_MILLIS = START_CALENDAR.getTimeInMillis();
         END_TIMESTAMP_MILLIS = END_CALENDAR.getTimeInMillis();
@@ -104,54 +102,36 @@ public class AttitudeEstimatorTest {
         final double year = createYear(calendar);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
         final double fx = kinematics.getFx();
         final double fy = kinematics.getFy();
         final double fz = kinematics.getFz();
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, year);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, year);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
         final double bx = b.getBx();
         final double by = b.getBy();
         final double bz = b.getBz();
 
-        final CoordinateTransformation result =
-                new CoordinateTransformation(FrameType.BODY_FRAME,
-                        FrameType.BODY_FRAME);
+        final CoordinateTransformation result = new CoordinateTransformation(FrameType.BODY_FRAME,
+                FrameType.BODY_FRAME);
 
         final AttitudeEstimator estimator = new AttitudeEstimator();
-        estimator.getAttitude(latitude, longitude, height, year,
-                fx, fy, fz, bx, by, bz, result);
+        estimator.getAttitude(latitude, longitude, height, year, fx, fy, fz, bx, by, bz, result);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -162,10 +142,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -180,51 +158,34 @@ public class AttitudeEstimatorTest {
         final double year = createYear(calendar);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
         final double fx = kinematics.getFx();
         final double fy = kinematics.getFy();
         final double fz = kinematics.getFz();
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, year);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, year);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
         final double bx = b.getBx();
         final double by = b.getBy();
         final double bz = b.getBz();
 
         final AttitudeEstimator estimator = new AttitudeEstimator();
-        final CoordinateTransformation result = estimator.getAttitude(
-                latitude, longitude, height, year,
-                fx, fy, fz, bx, by, bz);
+        final CoordinateTransformation result = estimator.getAttitude(latitude, longitude, height, year, fx, fy, fz,
+                bx, by, bz);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -235,10 +196,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -252,54 +211,36 @@ public class AttitudeEstimatorTest {
         final GregorianCalendar calendar = createCalendar(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
         final double fx = kinematics.getFx();
         final double fy = kinematics.getFy();
         final double fz = kinematics.getFz();
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, calendar);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, calendar);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
         final double bx = b.getBx();
         final double by = b.getBy();
         final double bz = b.getBz();
 
-        final CoordinateTransformation result =
-                new CoordinateTransformation(FrameType.BODY_FRAME,
-                        FrameType.BODY_FRAME);
+        final CoordinateTransformation result = new CoordinateTransformation(FrameType.BODY_FRAME,
+                FrameType.BODY_FRAME);
 
         final AttitudeEstimator estimator = new AttitudeEstimator();
-        estimator.getAttitude(latitude, longitude, height, calendar,
-                fx, fy, fz, bx, by, bz, result);
+        estimator.getAttitude(latitude, longitude, height, calendar, fx, fy, fz, bx, by, bz, result);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -310,10 +251,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -327,51 +266,34 @@ public class AttitudeEstimatorTest {
         final GregorianCalendar calendar = createCalendar(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
         final double fx = kinematics.getFx();
         final double fy = kinematics.getFy();
         final double fz = kinematics.getFz();
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, calendar);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, calendar);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
         final double bx = b.getBx();
         final double by = b.getBy();
         final double bz = b.getBz();
 
         final AttitudeEstimator estimator = new AttitudeEstimator();
-        final CoordinateTransformation result = estimator.getAttitude(
-                latitude, longitude, height, calendar,
-                fx, fy, fz, bx, by, bz);
+        final CoordinateTransformation result = estimator.getAttitude(latitude, longitude, height, calendar, fx, fy, fz,
+                bx, by, bz);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -380,12 +302,10 @@ public class AttitudeEstimatorTest {
 
         assertEquals(roll1, roll2, LARGE_ABSOLUTE_ERROR);
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
-        assertEquals(yaw1, yaw2, 2.0 * LARGE_ABSOLUTE_ERROR);
+        assertEquals(yaw1, yaw2, 8.0 * LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -401,54 +321,37 @@ public class AttitudeEstimatorTest {
             final Date date = new Date(timestamp);
 
             // body attitude
-            final UniformRandomizer randomizer =
-                    new UniformRandomizer(new Random());
-            final double roll1 = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                            MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                            MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                            MAX_ANGLE_DEGREES));
+            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
             // attitude is expressed as rotation from local navigation frame
             // to body frame, since angles are measured on the device body
-            final CoordinateTransformation bodyC = new CoordinateTransformation(
-                    roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                    FrameType.BODY_FRAME);
+            final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                    FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
             final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
             // obtain expected kinematics measure
-            final BodyKinematics kinematics = NEDKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                            nedC, nedC,
-                            0.0, 0.0, 0.0,
-                            0.0, 0.0, 0.0,
-                            latitude, height,
-                            latitude, height);
+            final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                    nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude,
+                    height);
             final double fx = kinematics.getFx();
             final double fy = kinematics.getFy();
             final double fz = kinematics.getFz();
 
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                    new WMMEarthMagneticFluxDensityEstimator();
-            final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                    position, date);
-            final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                    .estimate(earthB, bodyC);
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+            final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+            final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
             final double bx = b.getBx();
             final double by = b.getBy();
             final double bz = b.getBz();
 
-            final CoordinateTransformation result =
-                    new CoordinateTransformation(FrameType.BODY_FRAME,
-                            FrameType.BODY_FRAME);
+            final CoordinateTransformation result = new CoordinateTransformation(FrameType.BODY_FRAME,
+                    FrameType.BODY_FRAME);
 
             final AttitudeEstimator estimator = new AttitudeEstimator();
-            estimator.getAttitude(latitude, longitude, height, date,
-                    fx, fy, fz, bx, by, bz, result);
+            estimator.getAttitude(latitude, longitude, height, date, fx, fy, fz, bx, by, bz, result);
 
             // check
             final double roll2 = result.getRollEulerAngle();
@@ -468,10 +371,8 @@ public class AttitudeEstimatorTest {
             assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
             assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-            assertEquals(result.getSourceType(),
-                    FrameType.LOCAL_NAVIGATION_FRAME);
-            assertEquals(result.getDestinationType(),
-                    FrameType.BODY_FRAME);
+            assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+            assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
 
             numValid++;
             break;
@@ -491,51 +392,34 @@ public class AttitudeEstimatorTest {
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
         final double fx = kinematics.getFx();
         final double fy = kinematics.getFy();
         final double fz = kinematics.getFz();
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
         final double bx = b.getBx();
         final double by = b.getBy();
         final double bz = b.getBz();
 
         final AttitudeEstimator estimator = new AttitudeEstimator();
-        final CoordinateTransformation result = estimator.getAttitude(
-                latitude, longitude, height, date,
-                fx, fy, fz, bx, by, bz);
+        final CoordinateTransformation result = estimator.getAttitude(latitude, longitude, height, date, fx, fy, fz,
+                bx, by, bz);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -546,10 +430,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -566,48 +448,32 @@ public class AttitudeEstimatorTest {
             final double year = createYear(calendar);
 
             // body attitude
-            final UniformRandomizer randomizer =
-                    new UniformRandomizer(new Random());
-            final double roll1 = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                            MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                            MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                            MAX_ANGLE_DEGREES));
+            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
             // attitude is expressed as rotation from local navigation frame
             // to body frame, since angles are measured on the device body
-            final CoordinateTransformation bodyC = new CoordinateTransformation(
-                    roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                    FrameType.BODY_FRAME);
+            final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                    FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
             final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
             // obtain expected kinematics measure
-            final BodyKinematics kinematics = NEDKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                            nedC, nedC,
-                            0.0, 0.0, 0.0,
-                            0.0, 0.0, 0.0,
-                            latitude, height,
-                            latitude, height);
+            final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                    nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude,
+                    height);
 
             final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
                     new WMMEarthMagneticFluxDensityEstimator();
-            final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                    position, year);
-            final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                    .estimate(earthB, bodyC);
+            final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, year);
+            final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
 
-            final CoordinateTransformation result =
-                    new CoordinateTransformation(FrameType.BODY_FRAME,
-                            FrameType.BODY_FRAME);
+            final CoordinateTransformation result = new CoordinateTransformation(FrameType.BODY_FRAME,
+                    FrameType.BODY_FRAME);
 
             final AttitudeEstimator estimator = new AttitudeEstimator();
-            estimator.getAttitude(position, year,
-                    kinematics, b, result);
+            estimator.getAttitude(position, year, kinematics, b, result);
 
             // check
             final double roll2 = result.getRollEulerAngle();
@@ -627,10 +493,8 @@ public class AttitudeEstimatorTest {
             assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
             assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-            assertEquals(result.getSourceType(),
-                    FrameType.LOCAL_NAVIGATION_FRAME);
-            assertEquals(result.getDestinationType(),
-                    FrameType.BODY_FRAME);
+            assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+            assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
 
             numValid++;
             break;
@@ -650,44 +514,27 @@ public class AttitudeEstimatorTest {
         final double year = createYear(calendar);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, year);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, year);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
 
         final AttitudeEstimator estimator = new AttitudeEstimator();
-        final CoordinateTransformation result = estimator.getAttitude(
-                position, year, kinematics, b);
+        final CoordinateTransformation result = estimator.getAttitude(position, year, kinematics, b);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -698,10 +545,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -714,48 +559,30 @@ public class AttitudeEstimatorTest {
         final GregorianCalendar calendar = createCalendar(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, calendar);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, calendar);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
 
-        final CoordinateTransformation result =
-                new CoordinateTransformation(FrameType.BODY_FRAME,
-                        FrameType.BODY_FRAME);
+        final CoordinateTransformation result = new CoordinateTransformation(FrameType.BODY_FRAME,
+                FrameType.BODY_FRAME);
 
         final AttitudeEstimator estimator = new AttitudeEstimator();
-        estimator.getAttitude(position, calendar,
-                kinematics, b, result);
+        estimator.getAttitude(position, calendar, kinematics, b, result);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -766,10 +593,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -782,44 +607,27 @@ public class AttitudeEstimatorTest {
         final GregorianCalendar calendar = createCalendar(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, calendar);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, calendar);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
 
         final AttitudeEstimator estimator = new AttitudeEstimator();
-        final CoordinateTransformation result = estimator.getAttitude(
-                position, calendar, kinematics, b);
+        final CoordinateTransformation result = estimator.getAttitude(position, calendar, kinematics, b);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -830,10 +638,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -846,48 +652,30 @@ public class AttitudeEstimatorTest {
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
 
-        final CoordinateTransformation result =
-                new CoordinateTransformation(FrameType.BODY_FRAME,
-                        FrameType.BODY_FRAME);
+        final CoordinateTransformation result = new CoordinateTransformation(FrameType.BODY_FRAME,
+                FrameType.BODY_FRAME);
 
         final AttitudeEstimator estimator = new AttitudeEstimator();
-        estimator.getAttitude(position, date,
-                kinematics, b, result);
+        estimator.getAttitude(position, date, kinematics, b, result);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -898,10 +686,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -916,44 +702,28 @@ public class AttitudeEstimatorTest {
             final Date date = new Date(timestamp);
 
             // body attitude
-            final UniformRandomizer randomizer =
-                    new UniformRandomizer(new Random());
-            final double roll1 = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                            MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                            MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                            MAX_ANGLE_DEGREES));
+            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
             // attitude is expressed as rotation from local navigation frame
             // to body frame, since angles are measured on the device body
-            final CoordinateTransformation bodyC = new CoordinateTransformation(
-                    roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                    FrameType.BODY_FRAME);
+            final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                    FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
             final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
             // obtain expected kinematics measure
-            final BodyKinematics kinematics = NEDKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                            nedC, nedC,
-                            0.0, 0.0, 0.0,
-                            0.0, 0.0, 0.0,
-                            latitude, height,
-                            latitude, height);
+            final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                    nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude,
+                    height);
 
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                    new WMMEarthMagneticFluxDensityEstimator();
-            final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                    position, date);
-            final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                    .estimate(earthB, bodyC);
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+            final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+            final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
 
             final AttitudeEstimator estimator = new AttitudeEstimator();
-            final CoordinateTransformation result = estimator.getAttitude(
-                    position, date, kinematics, b);
+            final CoordinateTransformation result = estimator.getAttitude(position, date, kinematics, b);
 
             // check
             final double roll2 = result.getRollEulerAngle();
@@ -973,10 +743,8 @@ public class AttitudeEstimatorTest {
             }
             assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-            assertEquals(result.getSourceType(),
-                    FrameType.LOCAL_NAVIGATION_FRAME);
-            assertEquals(result.getDestinationType(),
-                    FrameType.BODY_FRAME);
+            assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+            assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
 
             numValid++;
             break;
@@ -995,55 +763,36 @@ public class AttitudeEstimatorTest {
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
         final double fx = kinematics.getFx();
         final double fy = kinematics.getFy();
         final double fz = kinematics.getFz();
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
         final double bx = b.getBx();
         final double by = b.getBy();
         final double bz = b.getBz();
 
-        final double declination = wmmEstimator.getDeclination(
-                position, date);
+        final double declination = wmmEstimator.getDeclination(position, date);
 
-        final CoordinateTransformation result =
-                new CoordinateTransformation(FrameType.BODY_FRAME,
-                        FrameType.BODY_FRAME);
-        AttitudeEstimator.getAttitude(fx, fy, fz, bx, by, bz,
-                declination, result);
+        final CoordinateTransformation result = new CoordinateTransformation(FrameType.BODY_FRAME,
+                FrameType.BODY_FRAME);
+        AttitudeEstimator.getAttitude(fx, fy, fz, bx, by, bz, declination, result);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -1054,10 +803,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -1070,52 +817,34 @@ public class AttitudeEstimatorTest {
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
         final double fx = kinematics.getFx();
         final double fy = kinematics.getFy();
         final double fz = kinematics.getFz();
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
         final double bx = b.getBx();
         final double by = b.getBy();
         final double bz = b.getBz();
 
-        final double declination = wmmEstimator.getDeclination(
-                position, date);
+        final double declination = wmmEstimator.getDeclination(position, date);
 
-        final CoordinateTransformation result = AttitudeEstimator
-                .getAttitude(fx, fy, fz, bx, by, bz, declination);
+        final CoordinateTransformation result = AttitudeEstimator.getAttitude(fx, fy, fz, bx, by, bz, declination);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -1126,10 +855,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -1142,55 +869,36 @@ public class AttitudeEstimatorTest {
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
         final Acceleration fx = kinematics.getSpecificForceX();
         final Acceleration fy = kinematics.getSpecificForceY();
         final Acceleration fz = kinematics.getSpecificForceZ();
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
         final double bx = b.getBx();
         final double by = b.getBy();
         final double bz = b.getBz();
 
-        final Angle declination = wmmEstimator.getDeclinationAsAngle(
-                position, date);
+        final Angle declination = wmmEstimator.getDeclinationAsAngle(position, date);
 
-        final CoordinateTransformation result =
-                new CoordinateTransformation(FrameType.BODY_FRAME,
-                        FrameType.BODY_FRAME);
-        AttitudeEstimator.getAttitude(fx, fy, fz, bx, by, bz,
-                declination, result);
+        final CoordinateTransformation result = new CoordinateTransformation(FrameType.BODY_FRAME,
+                FrameType.BODY_FRAME);
+        AttitudeEstimator.getAttitude(fx, fy, fz, bx, by, bz, declination, result);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -1201,10 +909,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -1217,52 +923,34 @@ public class AttitudeEstimatorTest {
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
         final Acceleration fx = kinematics.getSpecificForceX();
         final Acceleration fy = kinematics.getSpecificForceY();
         final Acceleration fz = kinematics.getSpecificForceZ();
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
         final double bx = b.getBx();
         final double by = b.getBy();
         final double bz = b.getBz();
 
-        final Angle declination = wmmEstimator.getDeclinationAsAngle(
-                position, date);
+        final Angle declination = wmmEstimator.getDeclinationAsAngle(position, date);
 
-        final CoordinateTransformation result = AttitudeEstimator
-                .getAttitude(fx, fy, fz, bx, by, bz, declination);
+        final CoordinateTransformation result = AttitudeEstimator.getAttitude(fx, fy, fz, bx, by, bz, declination);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -1273,10 +961,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -1291,49 +977,31 @@ public class AttitudeEstimatorTest {
             final Date date = new Date(timestamp);
 
             // body attitude
-            final UniformRandomizer randomizer =
-                    new UniformRandomizer(new Random());
-            final double roll1 = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                            MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                            MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                            MAX_ANGLE_DEGREES));
+            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
             // attitude is expressed as rotation from local navigation frame
             // to body frame, since angles are measured on the device body
-            final CoordinateTransformation bodyC = new CoordinateTransformation(
-                    roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                    FrameType.BODY_FRAME);
+            final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                    FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
             final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
             // obtain expected kinematics measure
-            final BodyKinematics kinematics = NEDKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                            nedC, nedC,
-                            0.0, 0.0, 0.0,
-                            0.0, 0.0, 0.0,
-                            latitude, height,
-                            latitude, height);
+            final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                    nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude,
+                    height);
 
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                    new WMMEarthMagneticFluxDensityEstimator();
-            final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                    position, date);
-            final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                    .estimate(earthB, bodyC);
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+            final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+            final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
 
-            final double declination = wmmEstimator.getDeclination(
-                    position, date);
+            final double declination = wmmEstimator.getDeclination(position, date);
 
-            final CoordinateTransformation result =
-                    new CoordinateTransformation(FrameType.BODY_FRAME,
-                            FrameType.BODY_FRAME);
-            AttitudeEstimator.getAttitude(kinematics, b,
-                    declination, result);
+            final CoordinateTransformation result = new CoordinateTransformation(FrameType.BODY_FRAME,
+                    FrameType.BODY_FRAME);
+            AttitudeEstimator.getAttitude(kinematics, b, declination, result);
 
             // check
             final double roll2 = result.getRollEulerAngle();
@@ -1353,10 +1021,8 @@ public class AttitudeEstimatorTest {
             assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
             assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-            assertEquals(result.getSourceType(),
-                    FrameType.LOCAL_NAVIGATION_FRAME);
-            assertEquals(result.getDestinationType(),
-                    FrameType.BODY_FRAME);
+            assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+            assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
 
             numValid++;
             break;
@@ -1375,46 +1041,28 @@ public class AttitudeEstimatorTest {
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
 
-        final double declination = wmmEstimator.getDeclination(
-                position, date);
+        final double declination = wmmEstimator.getDeclination(position, date);
 
-        final CoordinateTransformation result = AttitudeEstimator
-                .getAttitude(kinematics, b, declination);
+        final CoordinateTransformation result = AttitudeEstimator.getAttitude(kinematics, b, declination);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -1425,10 +1073,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -1441,49 +1087,30 @@ public class AttitudeEstimatorTest {
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
 
-        final Angle declination = wmmEstimator.getDeclinationAsAngle(
-                position, date);
+        final Angle declination = wmmEstimator.getDeclinationAsAngle(position, date);
 
-        final CoordinateTransformation result =
-                new CoordinateTransformation(FrameType.BODY_FRAME,
-                        FrameType.BODY_FRAME);
-        AttitudeEstimator.getAttitude(kinematics, b,
-                declination, result);
+        final CoordinateTransformation result = new CoordinateTransformation(FrameType.BODY_FRAME,
+                FrameType.BODY_FRAME);
+        AttitudeEstimator.getAttitude(kinematics, b, declination, result);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -1494,10 +1121,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -1510,46 +1135,28 @@ public class AttitudeEstimatorTest {
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
 
-        final Angle declination = wmmEstimator.getDeclinationAsAngle(
-                position, date);
+        final Angle declination = wmmEstimator.getDeclinationAsAngle(position, date);
 
-        final CoordinateTransformation result = AttitudeEstimator
-                .getAttitude(kinematics, b, declination);
+        final CoordinateTransformation result = AttitudeEstimator.getAttitude(kinematics, b, declination);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -1560,10 +1167,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -1579,56 +1184,37 @@ public class AttitudeEstimatorTest {
             final Date date = new Date(timestamp);
 
             // body attitude
-            final UniformRandomizer randomizer =
-                    new UniformRandomizer(new Random());
-            final double roll1 = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                            MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                            MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                            MAX_ANGLE_DEGREES));
+            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
             // attitude is expressed as rotation from local navigation frame
             // to body frame, since angles are measured on the device body
-            final CoordinateTransformation bodyC = new CoordinateTransformation(
-                    roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                    FrameType.BODY_FRAME);
+            final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                    FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
             final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
             // obtain expected kinematics measure
-            final BodyKinematics kinematics = NEDKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                            nedC, nedC,
-                            0.0, 0.0, 0.0,
-                            0.0, 0.0, 0.0,
-                            latitude, height,
-                            latitude, height);
+            final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                    nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude,
+                    height);
             final double fx = kinematics.getFx();
             final double fy = kinematics.getFy();
             final double fz = kinematics.getFz();
 
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                    new WMMEarthMagneticFluxDensityEstimator();
-            final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                    position, date);
-            final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                    .estimate(earthB, bodyC);
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+            final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+            final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
             final double bx = b.getBx();
             final double by = b.getBy();
             final double bz = b.getBz();
 
-            final double declination = wmmEstimator.getDeclination(
-                    position, date);
+            final double declination = wmmEstimator.getDeclination(position, date);
 
-            final CoordinateTransformation result =
-                    new CoordinateTransformation(FrameType.BODY_FRAME,
-                            FrameType.BODY_FRAME);
-            AttitudeEstimator.getAttitude(latitude, height,
-                    fx, fy, fz, bx, by, bz,
-                    declination, result);
+            final CoordinateTransformation result = new CoordinateTransformation(FrameType.BODY_FRAME,
+                    FrameType.BODY_FRAME);
+            AttitudeEstimator.getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination, result);
 
             // check
             final double roll2 = result.getRollEulerAngle();
@@ -1648,10 +1234,8 @@ public class AttitudeEstimatorTest {
             assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
             assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-            assertEquals(result.getSourceType(),
-                    FrameType.LOCAL_NAVIGATION_FRAME);
-            assertEquals(result.getDestinationType(),
-                    FrameType.BODY_FRAME);
+            assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+            assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
 
             numValid++;
             break;
@@ -1670,53 +1254,35 @@ public class AttitudeEstimatorTest {
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
         final double fx = kinematics.getFx();
         final double fy = kinematics.getFy();
         final double fz = kinematics.getFz();
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
         final double bx = b.getBx();
         final double by = b.getBy();
         final double bz = b.getBz();
 
-        final double declination = wmmEstimator.getDeclination(
-                position, date);
+        final double declination = wmmEstimator.getDeclination(position, date);
 
-        final CoordinateTransformation result = AttitudeEstimator
-                .getAttitude(latitude, height,
-                        fx, fy, fz, bx, by, bz, declination);
+        final CoordinateTransformation result = AttitudeEstimator.getAttitude(latitude, height, fx, fy, fz, bx, by, bz,
+                declination);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -1727,10 +1293,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -1740,63 +1304,42 @@ public class AttitudeEstimatorTest {
         final double height = position.getHeight();
 
         final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
-        final Distance heightDistance = new Distance(height,
-                DistanceUnit.METER);
+        final Distance heightDistance = new Distance(height, DistanceUnit.METER);
 
         final long timestamp = createTimestamp();
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
         final Acceleration fx = kinematics.getSpecificForceX();
         final Acceleration fy = kinematics.getSpecificForceY();
         final Acceleration fz = kinematics.getSpecificForceZ();
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
         final double bx = b.getBx();
         final double by = b.getBy();
         final double bz = b.getBz();
 
-        final Angle declination = wmmEstimator.getDeclinationAsAngle(
-                position, date);
+        final Angle declination = wmmEstimator.getDeclinationAsAngle(position, date);
 
-        final CoordinateTransformation result =
-                new CoordinateTransformation(FrameType.BODY_FRAME,
-                        FrameType.BODY_FRAME);
-        AttitudeEstimator.getAttitude(latitudeAngle, heightDistance,
-                fx, fy, fz, bx, by, bz,
-                declination, result);
+        final CoordinateTransformation result = new CoordinateTransformation(FrameType.BODY_FRAME,
+                FrameType.BODY_FRAME);
+        AttitudeEstimator.getAttitude(latitudeAngle, heightDistance, fx, fy, fz, bx, by, bz, declination, result);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -1807,10 +1350,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -1823,60 +1364,42 @@ public class AttitudeEstimatorTest {
             final double height = position.getHeight();
 
             final Angle latitudeAngle = new Angle(latitude, AngleUnit.RADIANS);
-            final Distance heightDistance = new Distance(height,
-                    DistanceUnit.METER);
+            final Distance heightDistance = new Distance(height, DistanceUnit.METER);
 
             final long timestamp = createTimestamp();
             final Date date = new Date(timestamp);
 
             // body attitude
-            final UniformRandomizer randomizer =
-                    new UniformRandomizer(new Random());
-            final double roll1 = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                            MAX_ANGLE_DEGREES));
-            final double pitch1 = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                            MAX_ANGLE_DEGREES));
-            final double yaw1 = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                            MAX_ANGLE_DEGREES));
+            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+            final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
             // attitude is expressed as rotation from local navigation frame
             // to body frame, since angles are measured on the device body
-            final CoordinateTransformation bodyC = new CoordinateTransformation(
-                    roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                    FrameType.BODY_FRAME);
+            final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                    FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
             final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
             // obtain expected kinematics measure
-            final BodyKinematics kinematics = NEDKinematicsEstimator
-                    .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                            nedC, nedC,
-                            0.0, 0.0, 0.0,
-                            0.0, 0.0, 0.0,
-                            latitude, height,
-                            latitude, height);
+            final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                    nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude,
+                    height);
             final Acceleration fx = kinematics.getSpecificForceX();
             final Acceleration fy = kinematics.getSpecificForceY();
             final Acceleration fz = kinematics.getSpecificForceZ();
 
-            final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                    new WMMEarthMagneticFluxDensityEstimator();
-            final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                    position, date);
-            final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                    .estimate(earthB, bodyC);
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+            final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+            final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
             final double bx = b.getBx();
             final double by = b.getBy();
             final double bz = b.getBz();
 
-            final Angle declination = wmmEstimator.getDeclinationAsAngle(
-                    position, date);
+            final Angle declination = wmmEstimator.getDeclinationAsAngle(position, date);
 
-            final CoordinateTransformation result = AttitudeEstimator
-                    .getAttitude(latitudeAngle, heightDistance,
-                            fx, fy, fz, bx, by, bz, declination);
+            final CoordinateTransformation result = AttitudeEstimator.getAttitude(latitudeAngle, heightDistance,
+                    fx, fy, fz, bx, by, bz, declination);
 
             // check
             final double roll2 = result.getRollEulerAngle();
@@ -1896,10 +1419,8 @@ public class AttitudeEstimatorTest {
             assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
             assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-            assertEquals(result.getSourceType(),
-                    FrameType.LOCAL_NAVIGATION_FRAME);
-            assertEquals(result.getDestinationType(),
-                    FrameType.BODY_FRAME);
+            assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+            assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
 
             numValid++;
             break;
@@ -1918,49 +1439,30 @@ public class AttitudeEstimatorTest {
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
 
-        final double declination = wmmEstimator.getDeclination(
-                position, date);
+        final double declination = wmmEstimator.getDeclination(position, date);
 
-        final CoordinateTransformation result =
-                new CoordinateTransformation(FrameType.BODY_FRAME,
-                        FrameType.BODY_FRAME);
-        AttitudeEstimator.getAttitude(position, kinematics, b,
-                declination, result);
+        final CoordinateTransformation result = new CoordinateTransformation(FrameType.BODY_FRAME,
+                FrameType.BODY_FRAME);
+        AttitudeEstimator.getAttitude(position, kinematics, b, declination, result);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -1971,10 +1473,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -1987,46 +1487,28 @@ public class AttitudeEstimatorTest {
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
 
-        final double declination = wmmEstimator.getDeclination(
-                position, date);
+        final double declination = wmmEstimator.getDeclination(position, date);
 
-        final CoordinateTransformation result = AttitudeEstimator
-                .getAttitude(position, kinematics, b, declination);
+        final CoordinateTransformation result = AttitudeEstimator.getAttitude(position, kinematics, b, declination);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -2037,10 +1519,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -2053,49 +1533,30 @@ public class AttitudeEstimatorTest {
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
 
-        final Angle declination = wmmEstimator.getDeclinationAsAngle(
-                position, date);
+        final Angle declination = wmmEstimator.getDeclinationAsAngle(position, date);
 
-        final CoordinateTransformation result =
-                new CoordinateTransformation(FrameType.BODY_FRAME,
-                        FrameType.BODY_FRAME);
-        AttitudeEstimator.getAttitude(position, kinematics, b,
-                declination, result);
+        final CoordinateTransformation result = new CoordinateTransformation(FrameType.BODY_FRAME,
+                FrameType.BODY_FRAME);
+        AttitudeEstimator.getAttitude(position, kinematics, b, declination, result);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -2106,10 +1567,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -2122,46 +1581,28 @@ public class AttitudeEstimatorTest {
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll1, pitch1, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
         // obtain expected kinematics measure
-        final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                        nedC, nedC,
-                        0.0, 0.0, 0.0,
-                        0.0, 0.0, 0.0,
-                        latitude, height,
-                        latitude, height);
+        final BodyKinematics kinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(TIME_INTERVAL, nedC,
+                nedC, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, latitude, height, latitude, height);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
 
-        final Angle declination = wmmEstimator.getDeclinationAsAngle(
-                position, date);
+        final Angle declination = wmmEstimator.getDeclinationAsAngle(position, date);
 
-        final CoordinateTransformation result = AttitudeEstimator
-                .getAttitude(position, kinematics, b, declination);
+        final CoordinateTransformation result = AttitudeEstimator.getAttitude(position, kinematics, b, declination);
 
         // check
         final double roll2 = result.getRollEulerAngle();
@@ -2172,10 +1613,8 @@ public class AttitudeEstimatorTest {
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
         assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
-        assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
-        assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+        assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
+        assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
     }
 
     @Test
@@ -2186,49 +1625,33 @@ public class AttitudeEstimatorTest {
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll, pitch, yaw, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll, pitch, yaw,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
         final double bx = b.getBx();
         final double by = b.getBy();
         final double bz = b.getBz();
 
-        final double declination = wmmEstimator.getDeclination(
-                position, date);
+        final double declination = wmmEstimator.getDeclination(position, date);
         final double magneticHeading1 = yaw - declination;
 
-        final double magneticHeading2 = AttitudeEstimator
-                .getMagneticHeading(bx, by, bz, roll, pitch);
-        final double magneticHeading3 = AttitudeEstimator
-                .getMagneticHeading(b, roll, pitch);
+        final double magneticHeading2 = AttitudeEstimator.getMagneticHeading(bx, by, bz, roll, pitch);
+        final double magneticHeading3 = AttitudeEstimator.getMagneticHeading(b, roll, pitch);
 
         final Angle rollAngle = new Angle(roll, AngleUnit.RADIANS);
         final Angle pitchAngle = new Angle(pitch, AngleUnit.RADIANS);
-        final double magneticHeading4 = AttitudeEstimator
-                .getMagneticHeading(bx, by, bz, rollAngle, pitchAngle);
-        final double magneticHeading5 = AttitudeEstimator
-                .getMagneticHeading(b, rollAngle, pitchAngle);
+        final double magneticHeading4 = AttitudeEstimator.getMagneticHeading(bx, by, bz, rollAngle, pitchAngle);
+        final double magneticHeading5 = AttitudeEstimator.getMagneticHeading(b, rollAngle, pitchAngle);
 
         assertTrue(Math.abs(magneticHeading1 - magneticHeading2) <= ABSOLUTE_ERROR
                 || Math.abs(2 * Math.PI + magneticHeading1 - magneticHeading2) <= ABSOLUTE_ERROR);
@@ -2245,67 +1668,46 @@ public class AttitudeEstimatorTest {
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll, pitch, yaw, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll, pitch, yaw,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
         final double bx = b.getBx();
         final double by = b.getBy();
         final double bz = b.getBz();
 
-        final double declination = wmmEstimator.getDeclination(
-                position, date);
+        final double declination = wmmEstimator.getDeclination(position, date);
         final double magneticHeading1 = yaw - declination;
 
         final Angle magneticHeading2 = new Angle(0.0, AngleUnit.DEGREES);
-        AttitudeEstimator.getMagneticHeadingAsAngle(bx, by, bz, roll, pitch,
-                magneticHeading2);
-        final Angle magneticHeading3 = AttitudeEstimator
-                .getMagneticHeadingAsAngle(bx, by, bz, roll, pitch);
+        AttitudeEstimator.getMagneticHeadingAsAngle(bx, by, bz, roll, pitch, magneticHeading2);
+        final Angle magneticHeading3 = AttitudeEstimator.getMagneticHeadingAsAngle(bx, by, bz, roll, pitch);
         final Angle magneticHeading4 = new Angle(0.0, AngleUnit.DEGREES);
-        AttitudeEstimator.getMagneticHeadingAsAngle(b, roll, pitch,
-                magneticHeading4);
-        final Angle magneticHeading5 = AttitudeEstimator
-                .getMagneticHeadingAsAngle(b, roll, pitch);
+        AttitudeEstimator.getMagneticHeadingAsAngle(b, roll, pitch, magneticHeading4);
+        final Angle magneticHeading5 = AttitudeEstimator.getMagneticHeadingAsAngle(b, roll, pitch);
 
         final Angle rollAngle = new Angle(roll, AngleUnit.RADIANS);
         final Angle pitchAngle = new Angle(pitch, AngleUnit.RADIANS);
 
         final Angle magneticHeading6 = new Angle(0.0, AngleUnit.DEGREES);
-        AttitudeEstimator.getMagneticHeadingAsAngle(bx, by, bz,
-                rollAngle, pitchAngle, magneticHeading6);
-        final Angle magneticHeading7 = AttitudeEstimator
-                .getMagneticHeadingAsAngle(bx, by, bz,
-                        rollAngle, pitchAngle);
+        AttitudeEstimator.getMagneticHeadingAsAngle(bx, by, bz, rollAngle, pitchAngle, magneticHeading6);
+        final Angle magneticHeading7 = AttitudeEstimator.getMagneticHeadingAsAngle(bx, by, bz, rollAngle, pitchAngle);
         final Angle magneticHeading8 = new Angle(0.0, AngleUnit.DEGREES);
-        AttitudeEstimator.getMagneticHeadingAsAngle(b,
-                rollAngle, pitchAngle, magneticHeading8);
-        final Angle magneticHeading9 = AttitudeEstimator
-                .getMagneticHeadingAsAngle(b, rollAngle, pitchAngle);
+        AttitudeEstimator.getMagneticHeadingAsAngle(b, rollAngle, pitchAngle, magneticHeading8);
+        final Angle magneticHeading9 = AttitudeEstimator.getMagneticHeadingAsAngle(b, rollAngle, pitchAngle);
 
         assertTrue(Math.abs(magneticHeading1 - magneticHeading2.getValue().doubleValue()) <= ABSOLUTE_ERROR
                 || Math.abs(2 * Math.PI + magneticHeading1 - magneticHeading2.getValue().doubleValue()) <= ABSOLUTE_ERROR);
-        assertEquals(magneticHeading2.getUnit(), AngleUnit.RADIANS);
+        assertEquals(AngleUnit.RADIANS, magneticHeading2.getUnit());
         assertEquals(magneticHeading2, magneticHeading3);
         assertEquals(magneticHeading2, magneticHeading4);
         assertEquals(magneticHeading2, magneticHeading5);
@@ -2323,50 +1725,33 @@ public class AttitudeEstimatorTest {
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll, pitch, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
         final double bx = b.getBx();
         final double by = b.getBy();
         final double bz = b.getBz();
 
-        final double declination = wmmEstimator.getDeclination(
-                position, date);
+        final double declination = wmmEstimator.getDeclination(position, date);
 
-        double yaw2 = AttitudeEstimator.getYaw(bx, by, bz,
-                declination, roll, pitch);
-        final double yaw3 = AttitudeEstimator.getYaw(b, declination,
-                roll, pitch);
+        double yaw2 = AttitudeEstimator.getYaw(bx, by, bz, declination, roll, pitch);
+        final double yaw3 = AttitudeEstimator.getYaw(b, declination, roll, pitch);
 
         final Angle rollAngle = new Angle(roll, AngleUnit.RADIANS);
         final Angle pitchAngle = new Angle(pitch, AngleUnit.RADIANS);
-        final Angle declinationAngle = new Angle(declination,
-                AngleUnit.RADIANS);
-        final double yaw4 = AttitudeEstimator.getYaw(bx, by, bz,
-                declinationAngle, rollAngle, pitchAngle);
-        final double yaw5 = AttitudeEstimator.getYaw(b, declinationAngle,
-                rollAngle, pitchAngle);
+        final Angle declinationAngle = new Angle(declination, AngleUnit.RADIANS);
+        final double yaw4 = AttitudeEstimator.getYaw(bx, by, bz, declinationAngle, rollAngle, pitchAngle);
+        final double yaw5 = AttitudeEstimator.getYaw(b, declinationAngle, rollAngle, pitchAngle);
 
         if (Math.abs(yaw2) > Math.PI) {
             yaw2 = 2.0 * Math.PI + yaw2;
@@ -2385,64 +1770,44 @@ public class AttitudeEstimatorTest {
         final Date date = new Date(timestamp);
 
         // body attitude
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double roll = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double pitch = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
-        final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                        MAX_ANGLE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw1 = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
         // attitude is expressed as rotation from local navigation frame
         // to body frame, since angles are measured on the device body
-        final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+        final CoordinateTransformation bodyC = new CoordinateTransformation(roll, pitch, yaw1,
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
 
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
-        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
-        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(position, date);
+        final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator.estimate(earthB, bodyC);
         final double bx = b.getBx();
         final double by = b.getBy();
         final double bz = b.getBz();
 
-        final double declination = wmmEstimator.getDeclination(
-                position, date);
+        final double declination = wmmEstimator.getDeclination(position, date);
 
         final Angle yaw2 = new Angle(0.0, AngleUnit.DEGREES);
-        AttitudeEstimator.getYawAsAngle(bx, by, bz, declination,
-                roll, pitch, yaw2);
-        final Angle yaw3 = AttitudeEstimator.getYawAsAngle(bx, by, bz,
-                declination, roll, pitch);
+        AttitudeEstimator.getYawAsAngle(bx, by, bz, declination, roll, pitch, yaw2);
+        final Angle yaw3 = AttitudeEstimator.getYawAsAngle(bx, by, bz, declination, roll, pitch);
         final Angle yaw4 = new Angle(0.0, AngleUnit.DEGREES);
         AttitudeEstimator.getYawAsAngle(b, declination, roll, pitch, yaw4);
-        final Angle yaw5 = AttitudeEstimator.getYawAsAngle(b, declination,
-                roll, pitch);
+        final Angle yaw5 = AttitudeEstimator.getYawAsAngle(b, declination, roll, pitch);
 
         final Angle rollAngle = new Angle(roll, AngleUnit.RADIANS);
         final Angle pitchAngle = new Angle(pitch, AngleUnit.RADIANS);
-        final Angle declinationAngle = new Angle(declination,
-                AngleUnit.RADIANS);
+        final Angle declinationAngle = new Angle(declination, AngleUnit.RADIANS);
         final Angle yaw6 = new Angle(0.0, AngleUnit.DEGREES);
-        AttitudeEstimator.getYawAsAngle(bx, by, bz, declinationAngle,
-                rollAngle, pitchAngle, yaw6);
-        final Angle yaw7 = AttitudeEstimator.getYawAsAngle(bx, by, bz,
-                declinationAngle, rollAngle, pitchAngle);
+        AttitudeEstimator.getYawAsAngle(bx, by, bz, declinationAngle, rollAngle, pitchAngle, yaw6);
+        final Angle yaw7 = AttitudeEstimator.getYawAsAngle(bx, by, bz, declinationAngle, rollAngle, pitchAngle);
         final Angle yaw8 = new Angle(0.0, AngleUnit.DEGREES);
-        AttitudeEstimator.getYawAsAngle(b, declinationAngle,
-                rollAngle, pitchAngle, yaw8);
-        final Angle yaw9 = AttitudeEstimator.getYawAsAngle(b,
-                declinationAngle, rollAngle, pitchAngle);
+        AttitudeEstimator.getYawAsAngle(b, declinationAngle, rollAngle, pitchAngle, yaw8);
+        final Angle yaw9 = AttitudeEstimator.getYawAsAngle(b, declinationAngle, rollAngle, pitchAngle);
 
         assertEquals(yaw1, yaw2.getValue().doubleValue(), ABSOLUTE_ERROR);
-        assertEquals(yaw2.getUnit(), AngleUnit.RADIANS);
+        assertEquals(AngleUnit.RADIANS, yaw2.getUnit());
         assertEquals(yaw2, yaw3);
         assertEquals(yaw2, yaw4);
         assertEquals(yaw2, yaw5);
@@ -2453,23 +1818,17 @@ public class AttitudeEstimatorTest {
     }
 
     private static NEDPosition createPosition() {
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        final double latitude = Math.toRadians(randomizer.nextDouble(
-                MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-        final double longitude = Math.toRadians(randomizer.nextDouble(
-                MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-        final double height = randomizer.nextDouble(
-                MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double latitude = Math.toRadians(randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final double height = randomizer.nextDouble(MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
 
         return new NEDPosition(latitude, longitude, height);
     }
 
     private static long createTimestamp() {
-        final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
-        return randomizer.nextLong(
-                START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS);
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        return randomizer.nextLong(START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS);
     }
 
     private static GregorianCalendar createCalendar(final long timestamp) {

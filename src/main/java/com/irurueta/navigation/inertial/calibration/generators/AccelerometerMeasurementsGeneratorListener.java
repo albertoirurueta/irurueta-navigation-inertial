@@ -23,6 +23,5 @@ import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyKinemat
  */
 public interface AccelerometerMeasurementsGeneratorListener extends
         MeasurementsGeneratorListener<StandardDeviationBodyKinematics,
-                AccelerometerMeasurementsGenerator,
-                AccelerometerMeasurementsGeneratorListener, BodyKinematics> {
+                AccelerometerMeasurementsGenerator, AccelerometerMeasurementsGeneratorListener, BodyKinematics> {
 }

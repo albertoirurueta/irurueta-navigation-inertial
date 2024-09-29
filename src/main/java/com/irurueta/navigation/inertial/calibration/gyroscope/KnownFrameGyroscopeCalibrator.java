@@ -44,7 +44,7 @@ public interface KnownFrameGyroscopeCalibrator<T extends FrameBodyKinematics,
      * @return a collection of body kinematics measurements taken at different
      * frames (positions, orientations and velocities).
      */
-    Collection<? extends T> getMeasurements();
+    Collection<T> getMeasurements();
 
     /**
      * Sets a collection of body kinematics measurements taken at different
@@ -63,8 +63,7 @@ public interface KnownFrameGyroscopeCalibrator<T extends FrameBodyKinematics,
      *                     frames (positions, orientations and velocities).
      * @throws LockedException if calibrator is currently running.
      */
-    void setMeasurements(final Collection<? extends T> measurements)
-            throws LockedException;
+    void setMeasurements(final Collection<? extends T> measurements) throws LockedException;
 
     /**
      * Gets listener to handle events raised by this calibrator.

@@ -51,27 +51,27 @@ public class StandardDeviationTimedBodyKinematicsTest {
                 new StandardDeviationTimedBodyKinematics();
 
         // check default values
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(0.0, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
         assertNull(standardDeviationTimedBodyKinematics.getKinematics());
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
-        assertEquals(time1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(time1.getUnit(), TimeUnit.SECOND);
+        assertEquals(0.0, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
         standardDeviationTimedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
@@ -84,27 +84,27 @@ public class StandardDeviationTimedBodyKinematicsTest {
                 new StandardDeviationTimedBodyKinematics(kinematics);
 
         // check default values
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(0.0, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
-        assertSame(standardDeviationTimedBodyKinematics.getKinematics(), kinematics);
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0, 0.0);
+        assertSame(kinematics, standardDeviationTimedBodyKinematics.getKinematics());
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
-        assertEquals(time1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(time1.getUnit(), TimeUnit.SECOND);
+        assertEquals(0.0, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
         standardDeviationTimedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
@@ -119,27 +119,27 @@ public class StandardDeviationTimedBodyKinematicsTest {
                 new StandardDeviationTimedBodyKinematics(timestampSeconds);
 
         // check default values
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(0.0, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
         assertNull(standardDeviationTimedBodyKinematics.getKinematics());
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertEquals(timestampSeconds, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
-        assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
-        assertEquals(time1.getUnit(), TimeUnit.SECOND);
+        assertEquals(timestampSeconds, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
         standardDeviationTimedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
@@ -155,24 +155,24 @@ public class StandardDeviationTimedBodyKinematicsTest {
                 new StandardDeviationTimedBodyKinematics(time);
 
         // check default values
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(0.0, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
         assertNull(standardDeviationTimedBodyKinematics.getKinematics());
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertEquals(timestampSeconds, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
         assertEquals(time, time1);
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
@@ -190,27 +190,27 @@ public class StandardDeviationTimedBodyKinematicsTest {
                 new StandardDeviationTimedBodyKinematics(kinematics, timestampSeconds);
 
         // check default values
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(0.0, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
-        assertSame(standardDeviationTimedBodyKinematics.getKinematics(), kinematics);
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertSame(kinematics, standardDeviationTimedBodyKinematics.getKinematics());
+        assertEquals(timestampSeconds, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
-        assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
-        assertEquals(time1.getUnit(), TimeUnit.SECOND);
+        assertEquals(timestampSeconds, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
         standardDeviationTimedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
@@ -227,24 +227,24 @@ public class StandardDeviationTimedBodyKinematicsTest {
                 new StandardDeviationTimedBodyKinematics(kinematics, time);
 
         // check default values
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(0.0, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
-        assertSame(standardDeviationTimedBodyKinematics.getKinematics(), kinematics);
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertSame(kinematics, standardDeviationTimedBodyKinematics.getKinematics());
+        assertEquals(timestampSeconds, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
         assertEquals(time, time1);
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
@@ -255,12 +255,10 @@ public class StandardDeviationTimedBodyKinematicsTest {
     @Test
     public void testConstructor7() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
-        StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
+        final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
                 new StandardDeviationTimedBodyKinematics(specificForceStandardDeviation, angularRateStandardDeviation);
 
         // check default values
@@ -268,197 +266,161 @@ public class StandardDeviationTimedBodyKinematicsTest {
                 specificForceStandardDeviation, 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), specificForceStandardDeviation, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(specificForceStandardDeviation, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(),
-                angularRateStandardDeviation, 0.0);
+        assertEquals(angularRateStandardDeviation,
+                standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), angularRateStandardDeviation, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(angularRateStandardDeviation, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
         assertNull(standardDeviationTimedBodyKinematics.getKinematics());
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
-        assertEquals(time1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(time1.getUnit(), TimeUnit.SECOND);
+        assertEquals(0.0, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
         standardDeviationTimedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
 
         // Force IllegalArgumentException
-        standardDeviationTimedBodyKinematics = null;
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(
-                    -1.0, angularRateStandardDeviation);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(
-                    specificForceStandardDeviation, -1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(standardDeviationTimedBodyKinematics);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(
+                -1.0, angularRateStandardDeviation));
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(
+                specificForceStandardDeviation, -1.0));
     }
 
     @Test
     public void testConstructor8() {
         final BodyKinematics kinematics = createBodyKinematics();
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
-        StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
+        final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
                 new StandardDeviationTimedBodyKinematics(kinematics, specificForceStandardDeviation,
                         angularRateStandardDeviation);
 
         // check default values
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(),
-                specificForceStandardDeviation, 0.0);
+        assertEquals(specificForceStandardDeviation,
+                standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), specificForceStandardDeviation, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(specificForceStandardDeviation, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(),
-                angularRateStandardDeviation, 0.0);
+        assertEquals(angularRateStandardDeviation,
+                standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), angularRateStandardDeviation, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(angularRateStandardDeviation, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
-        assertSame(standardDeviationTimedBodyKinematics.getKinematics(), kinematics);
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0, 0.0);
+        assertSame(kinematics, standardDeviationTimedBodyKinematics.getKinematics());
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
-        assertEquals(time1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(time1.getUnit(), TimeUnit.SECOND);
+        assertEquals(0.0, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
         standardDeviationTimedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
 
         // Force IllegalArgumentException
-        standardDeviationTimedBodyKinematics = null;
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(kinematics,
-                    -1.0, angularRateStandardDeviation);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(kinematics,
-                    specificForceStandardDeviation, -1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(standardDeviationTimedBodyKinematics);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(kinematics,
+                -1.0, angularRateStandardDeviation));
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(kinematics,
+                specificForceStandardDeviation, -1.0));
     }
 
     @Test
     public void testConstructor9() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
-        StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
+        final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
                 new StandardDeviationTimedBodyKinematics(timestampSeconds, specificForceStandardDeviation,
                         angularRateStandardDeviation);
 
         // check default values
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(),
-                specificForceStandardDeviation, 0.0);
+        assertEquals(specificForceStandardDeviation,
+                standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), specificForceStandardDeviation, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(specificForceStandardDeviation, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(),
-                angularRateStandardDeviation, 0.0);
+        assertEquals(angularRateStandardDeviation,
+                standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), angularRateStandardDeviation, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(angularRateStandardDeviation, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
         assertNull(standardDeviationTimedBodyKinematics.getKinematics());
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertEquals(timestampSeconds, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
-        assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
-        assertEquals(time1.getUnit(), TimeUnit.SECOND);
+        assertEquals(timestampSeconds, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
         standardDeviationTimedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
 
         // Force IllegalArgumentException
-        standardDeviationTimedBodyKinematics = null;
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(timestampSeconds,
-                    -1.0, angularRateStandardDeviation);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(timestampSeconds,
-                    specificForceStandardDeviation, -1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(standardDeviationTimedBodyKinematics);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(timestampSeconds,
+                -1.0, angularRateStandardDeviation));
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(timestampSeconds,
+                specificForceStandardDeviation, -1.0));
     }
 
     @Test
     public void testConstructor10() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
         final Time time = new Time(timestampSeconds, TimeUnit.SECOND);
 
-        StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
+        final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
                 new StandardDeviationTimedBodyKinematics(time, specificForceStandardDeviation,
                         angularRateStandardDeviation);
 
         // check default values
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(),
-                specificForceStandardDeviation, 0.0);
+        assertEquals(specificForceStandardDeviation,
+                standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), specificForceStandardDeviation, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(specificForceStandardDeviation, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(),
-                angularRateStandardDeviation, 0.0);
+        assertEquals(angularRateStandardDeviation,
+                standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), angularRateStandardDeviation, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(angularRateStandardDeviation, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
         assertNull(standardDeviationTimedBodyKinematics.getKinematics());
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertEquals(timestampSeconds, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
         assertEquals(time, time1);
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
@@ -466,20 +428,10 @@ public class StandardDeviationTimedBodyKinematicsTest {
         assertEquals(time1, time2);
 
         // Force IllegalArgumentException
-        standardDeviationTimedBodyKinematics = null;
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(time,
-                    -1.0, angularRateStandardDeviation);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(time,
-                    specificForceStandardDeviation, -1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(standardDeviationTimedBodyKinematics);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(time,
+                -1.0, angularRateStandardDeviation));
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(time,
+                specificForceStandardDeviation, -1.0));
     }
 
     @Test
@@ -487,60 +439,46 @@ public class StandardDeviationTimedBodyKinematicsTest {
         final BodyKinematics kinematics = createBodyKinematics();
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
-        StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
-                new StandardDeviationTimedBodyKinematics(kinematics, timestampSeconds,
-                        specificForceStandardDeviation, angularRateStandardDeviation);
+        final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
+                new StandardDeviationTimedBodyKinematics(kinematics, timestampSeconds, specificForceStandardDeviation,
+                        angularRateStandardDeviation);
 
         // check default values
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(),
-                specificForceStandardDeviation, 0.0);
+        assertEquals(specificForceStandardDeviation,
+                standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), specificForceStandardDeviation, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(specificForceStandardDeviation, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(),
-                angularRateStandardDeviation, 0.0);
+        assertEquals(angularRateStandardDeviation,
+                standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), angularRateStandardDeviation, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(angularRateStandardDeviation, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
-        assertSame(standardDeviationTimedBodyKinematics.getKinematics(), kinematics);
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertSame(kinematics, standardDeviationTimedBodyKinematics.getKinematics());
+        assertEquals(timestampSeconds, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
-        assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
-        assertEquals(time1.getUnit(), TimeUnit.SECOND);
+        assertEquals(timestampSeconds, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
         standardDeviationTimedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
 
         // Force IllegalArgumentException
-        standardDeviationTimedBodyKinematics = null;
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(
-                    kinematics, timestampSeconds,
-                    -1.0, angularRateStandardDeviation);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(
-                    kinematics, timestampSeconds,
-                    specificForceStandardDeviation, -1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(standardDeviationTimedBodyKinematics);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(
+                kinematics, timestampSeconds, -1.0, angularRateStandardDeviation));
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(
+                kinematics, timestampSeconds, specificForceStandardDeviation, -1.0));
     }
 
     @Test
@@ -548,37 +486,35 @@ public class StandardDeviationTimedBodyKinematicsTest {
         final BodyKinematics kinematics = createBodyKinematics();
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
         final Time time = new Time(timestampSeconds, TimeUnit.SECOND);
 
-        StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
-                new StandardDeviationTimedBodyKinematics(kinematics, time,
-                        specificForceStandardDeviation, angularRateStandardDeviation);
+        final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
+                new StandardDeviationTimedBodyKinematics(kinematics, time, specificForceStandardDeviation,
+                        angularRateStandardDeviation);
 
         // check default values
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(),
-                specificForceStandardDeviation, 0.0);
+        assertEquals(specificForceStandardDeviation,
+                standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), specificForceStandardDeviation, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(specificForceStandardDeviation, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(),
-                angularRateStandardDeviation, 0.0);
+        assertEquals(angularRateStandardDeviation,
+                standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), angularRateStandardDeviation, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(angularRateStandardDeviation, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
-        assertSame(standardDeviationTimedBodyKinematics.getKinematics(), kinematics);
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertSame(kinematics, standardDeviationTimedBodyKinematics.getKinematics());
+        assertEquals(timestampSeconds, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
         assertEquals(time, time1);
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
@@ -586,245 +522,192 @@ public class StandardDeviationTimedBodyKinematicsTest {
         assertEquals(time1, time2);
 
         // Force IllegalArgumentException
-        standardDeviationTimedBodyKinematics = null;
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(kinematics, time,
-                    -1.0, angularRateStandardDeviation);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(kinematics, time,
-                    specificForceStandardDeviation, -1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(standardDeviationTimedBodyKinematics);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(kinematics, time,
+                -1.0, angularRateStandardDeviation));
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(kinematics, time,
+                specificForceStandardDeviation, -1.0));
     }
 
     @Test
     public void testConstructor13() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
         final Acceleration a = new Acceleration(specificForceStandardDeviation,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final AngularSpeed w = new AngularSpeed(angularRateStandardDeviation,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed w = new AngularSpeed(angularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);
 
-        StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
+        final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
                 new StandardDeviationTimedBodyKinematics(a, w);
 
         // check default values
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(),
-                specificForceStandardDeviation, 0.0);
+        assertEquals(specificForceStandardDeviation,
+                standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), specificForceStandardDeviation, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(specificForceStandardDeviation, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(),
-                angularRateStandardDeviation, 0.0);
+        assertEquals(angularRateStandardDeviation,
+                standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), angularRateStandardDeviation, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(angularRateStandardDeviation, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
         assertNull(standardDeviationTimedBodyKinematics.getKinematics());
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
-        assertEquals(time1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(time1.getUnit(), TimeUnit.SECOND);
+        assertEquals(0.0, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
         standardDeviationTimedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
 
         // Force IllegalArgumentException
-        standardDeviationTimedBodyKinematics = null;
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(
-                    new Acceleration(-1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND),
-                    w);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(
-                    a, new AngularSpeed(-1.0, AngularSpeedUnit.RADIANS_PER_SECOND));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(standardDeviationTimedBodyKinematics);
+        final var a2 = new Acceleration(-1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(a2, w));
+        final var w2 = new AngularSpeed(-1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(a, w2));
     }
 
     @Test
     public void testConstructor14() {
         final BodyKinematics kinematics = createBodyKinematics();
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
         final Acceleration a = new Acceleration(specificForceStandardDeviation,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final AngularSpeed w = new AngularSpeed(angularRateStandardDeviation,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed w = new AngularSpeed(angularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);
 
-        StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
-                new StandardDeviationTimedBodyKinematics(kinematics, a,
-                        w);
+        final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
+                new StandardDeviationTimedBodyKinematics(kinematics, a, w);
 
         // check default values
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(),
-                specificForceStandardDeviation, 0.0);
+        assertEquals(specificForceStandardDeviation,
+                standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), specificForceStandardDeviation, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(specificForceStandardDeviation, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(),
-                angularRateStandardDeviation, 0.0);
+        assertEquals(angularRateStandardDeviation,
+                standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), angularRateStandardDeviation, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(angularRateStandardDeviation, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
-        assertSame(standardDeviationTimedBodyKinematics.getKinematics(), kinematics);
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0, 0.0);
+        assertSame(kinematics, standardDeviationTimedBodyKinematics.getKinematics());
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
-        assertEquals(time1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(time1.getUnit(), TimeUnit.SECOND);
+        assertEquals(0.0, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
         standardDeviationTimedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
 
         // Force IllegalArgumentException
-        standardDeviationTimedBodyKinematics = null;
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(kinematics,
-                    new Acceleration(-1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), w);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(kinematics,
-                    a, new AngularSpeed(-1.0, AngularSpeedUnit.RADIANS_PER_SECOND));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(standardDeviationTimedBodyKinematics);
+        final var a2 = new Acceleration(-1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(kinematics, a2, w));
+        final var w2 = new AngularSpeed(-1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(kinematics, a, w2));
     }
 
     @Test
     public void testConstructor15() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
         final Acceleration a = new Acceleration(specificForceStandardDeviation,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final AngularSpeed w = new AngularSpeed(angularRateStandardDeviation,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed w = new AngularSpeed(angularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);
 
-        StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
-                new StandardDeviationTimedBodyKinematics(timestampSeconds, a,
-                        w);
+        final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
+                new StandardDeviationTimedBodyKinematics(timestampSeconds, a, w);
 
         // check default values
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(),
-                specificForceStandardDeviation, 0.0);
+        assertEquals(specificForceStandardDeviation,
+                standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), specificForceStandardDeviation, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(specificForceStandardDeviation, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(),
-                angularRateStandardDeviation, 0.0);
+        assertEquals(angularRateStandardDeviation,
+                standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), angularRateStandardDeviation, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(angularRateStandardDeviation, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
         assertNull(standardDeviationTimedBodyKinematics.getKinematics());
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertEquals(timestampSeconds, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
-        assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
-        assertEquals(time1.getUnit(), TimeUnit.SECOND);
+        assertEquals(timestampSeconds, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
         standardDeviationTimedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
 
         // Force IllegalArgumentException
-        standardDeviationTimedBodyKinematics = null;
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(timestampSeconds,
-                    new Acceleration(-1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), w);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(timestampSeconds,
-                    a, new AngularSpeed(-1.0, AngularSpeedUnit.RADIANS_PER_SECOND));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(standardDeviationTimedBodyKinematics);
+        final var a2 = new Acceleration(-1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(timestampSeconds,
+                a2, w));
+        final var w2 = new AngularSpeed(-1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(timestampSeconds,
+                a, w2));
     }
 
     @Test
     public void testConstructor16() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
         final Time time = new Time(timestampSeconds, TimeUnit.SECOND);
         final Acceleration a = new Acceleration(specificForceStandardDeviation,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final AngularSpeed w = new AngularSpeed(angularRateStandardDeviation,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed w = new AngularSpeed(angularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);
 
-        StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
+        final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
                 new StandardDeviationTimedBodyKinematics(time, a, w);
 
         // check default values
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(),
-                specificForceStandardDeviation, 0.0);
+        assertEquals(specificForceStandardDeviation,
+                standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), specificForceStandardDeviation, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(specificForceStandardDeviation, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(),
-                angularRateStandardDeviation, 0.0);
+        assertEquals(angularRateStandardDeviation,
+                standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), angularRateStandardDeviation, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals( angularRateStandardDeviation, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
         assertNull(standardDeviationTimedBodyKinematics.getKinematics());
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertEquals(timestampSeconds, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
         assertEquals(time, time1);
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
@@ -832,20 +715,10 @@ public class StandardDeviationTimedBodyKinematicsTest {
         assertEquals(time1, time2);
 
         // Force IllegalArgumentException
-        standardDeviationTimedBodyKinematics = null;
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(time,
-                    new Acceleration(-1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), w);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(time,
-                    a, new AngularSpeed(-1.0, AngularSpeedUnit.RADIANS_PER_SECOND));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(standardDeviationTimedBodyKinematics);
+        final var a2 = new Acceleration(-1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(time, a2, w));
+        final var w2 = new AngularSpeed(-1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(time, a, w2));
     }
 
     @Test
@@ -853,64 +726,50 @@ public class StandardDeviationTimedBodyKinematicsTest {
         final BodyKinematics kinematics = createBodyKinematics();
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
         final Acceleration a = new Acceleration(specificForceStandardDeviation,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final AngularSpeed w = new AngularSpeed(angularRateStandardDeviation,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed w = new AngularSpeed(angularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);
 
-        StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
-                new StandardDeviationTimedBodyKinematics(kinematics, timestampSeconds,
-                        a, w);
+        final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
+                new StandardDeviationTimedBodyKinematics(kinematics, timestampSeconds, a, w);
 
         // check default values
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(),
-                specificForceStandardDeviation, 0.0);
+        assertEquals(specificForceStandardDeviation,
+                standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), specificForceStandardDeviation, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(specificForceStandardDeviation, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(),
-                angularRateStandardDeviation, 0.0);
+        assertEquals(angularRateStandardDeviation,
+                standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), angularRateStandardDeviation, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(angularRateStandardDeviation, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
-        assertSame(standardDeviationTimedBodyKinematics.getKinematics(), kinematics);
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertSame(kinematics, standardDeviationTimedBodyKinematics.getKinematics());
+        assertEquals(timestampSeconds, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
-        assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
-        assertEquals(time1.getUnit(), TimeUnit.SECOND);
+        assertEquals(timestampSeconds, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
         standardDeviationTimedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
 
         // Force IllegalArgumentException
-        standardDeviationTimedBodyKinematics = null;
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(
-                    kinematics, timestampSeconds,
-                    new Acceleration(-1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), w);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(
-                    kinematics, timestampSeconds,
-                    a, new AngularSpeed(-1.0, AngularSpeedUnit.RADIANS_PER_SECOND));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(standardDeviationTimedBodyKinematics);
+        final var a2 = new Acceleration(-1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(kinematics,
+                timestampSeconds, a2, w));
+        final var w2 = new AngularSpeed(-1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(kinematics,
+                timestampSeconds, a, w2));
     }
 
     @Test
@@ -918,41 +777,37 @@ public class StandardDeviationTimedBodyKinematicsTest {
         final BodyKinematics kinematics = createBodyKinematics();
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
         final Time time = new Time(timestampSeconds, TimeUnit.SECOND);
         final Acceleration a = new Acceleration(specificForceStandardDeviation,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final AngularSpeed w = new AngularSpeed(angularRateStandardDeviation,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed w = new AngularSpeed(angularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);
 
-        StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
-                new StandardDeviationTimedBodyKinematics(kinematics, time,
-                        a, w);
+        final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics =
+                new StandardDeviationTimedBodyKinematics(kinematics, time, a, w);
 
         // check default values
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(),
-                specificForceStandardDeviation, 0.0);
+        assertEquals(specificForceStandardDeviation,
+                standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), specificForceStandardDeviation, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(specificForceStandardDeviation, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(),
-                angularRateStandardDeviation, 0.0);
+        assertEquals(angularRateStandardDeviation,
+                standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), angularRateStandardDeviation, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(angularRateStandardDeviation, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
-        assertSame(standardDeviationTimedBodyKinematics.getKinematics(), kinematics);
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertSame(kinematics, standardDeviationTimedBodyKinematics.getKinematics());
+        assertEquals(timestampSeconds, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
         assertEquals(time, time1);
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
@@ -960,20 +815,12 @@ public class StandardDeviationTimedBodyKinematicsTest {
         assertEquals(time1, time2);
 
         // Force IllegalArgumentException
-        standardDeviationTimedBodyKinematics = null;
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(kinematics, time,
-                    new Acceleration(-1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND), w);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            standardDeviationTimedBodyKinematics = new StandardDeviationTimedBodyKinematics(kinematics, time,
-                    a, new AngularSpeed(-1.0, AngularSpeedUnit.RADIANS_PER_SECOND));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(standardDeviationTimedBodyKinematics);
+        final var a2 = new Acceleration(-1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(kinematics, time,
+                a2, w));
+        final var w2 = new AngularSpeed(-1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationTimedBodyKinematics(kinematics, time,
+                a, w2));
     }
 
     @Test
@@ -981,43 +828,39 @@ public class StandardDeviationTimedBodyKinematicsTest {
         final BodyKinematics kinematics = createBodyKinematics();
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
         final Time time = new Time(timestampSeconds, TimeUnit.SECOND);
         final Acceleration a = new Acceleration(specificForceStandardDeviation,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
-        final AngularSpeed w = new AngularSpeed(angularRateStandardDeviation,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed w = new AngularSpeed(angularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);
 
         final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics1 =
-                new StandardDeviationTimedBodyKinematics(kinematics, time,
-                        a, w);
+                new StandardDeviationTimedBodyKinematics(kinematics, time, a, w);
         final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics2 =
                 new StandardDeviationTimedBodyKinematics(standardDeviationTimedBodyKinematics1);
 
         // check default values
-        assertEquals(standardDeviationTimedBodyKinematics2.getSpecificForceStandardDeviation(),
-                specificForceStandardDeviation, 0.0);
+        assertEquals(specificForceStandardDeviation,
+                standardDeviationTimedBodyKinematics2.getSpecificForceStandardDeviation(), 0.0);
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics2
                 .getSpecificForceStandardDeviationAsAcceleration();
-        assertEquals(acceleration1.getValue().doubleValue(), specificForceStandardDeviation, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(specificForceStandardDeviation, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
         final Acceleration acceleration2 = new Acceleration(0.0, AccelerationUnit.FEET_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics2.getSpecificForceStandardDeviationAsAcceleration(acceleration2);
         assertEquals(acceleration1, acceleration2);
-        assertEquals(standardDeviationTimedBodyKinematics2.getAngularRateStandardDeviation(),
-                angularRateStandardDeviation, 0.0);
+        assertEquals(angularRateStandardDeviation,
+                standardDeviationTimedBodyKinematics2.getAngularRateStandardDeviation(), 0.0);
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics2
                 .getAngularRateStandardDeviationAsAngularSpeed();
-        assertEquals(angularSpeed1.getValue().doubleValue(), angularRateStandardDeviation, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(angularRateStandardDeviation, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
         final AngularSpeed angularSpeed2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         standardDeviationTimedBodyKinematics2.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
-        assertEquals(standardDeviationTimedBodyKinematics2.getKinematics(), kinematics);
-        assertEquals(standardDeviationTimedBodyKinematics2.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertEquals(kinematics, standardDeviationTimedBodyKinematics2.getKinematics());
+        assertEquals(timestampSeconds, standardDeviationTimedBodyKinematics2.getTimestampSeconds(), 0.0);
         final Time time1 = standardDeviationTimedBodyKinematics2.getTimestamp();
         assertEquals(time, time1);
         final Time time2 = new Time(0.0, TimeUnit.HOUR);
@@ -1031,25 +874,21 @@ public class StandardDeviationTimedBodyKinematicsTest {
                 new StandardDeviationTimedBodyKinematics();
 
         // check default value
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
 
         standardDeviationTimedBodyKinematics.setSpecificForceStandardDeviation(specificForceStandardDeviation);
 
         // check
-        assertEquals(standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(),
-                specificForceStandardDeviation, 0.0);
+        assertEquals(specificForceStandardDeviation,
+                standardDeviationTimedBodyKinematics.getSpecificForceStandardDeviation(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            standardDeviationTimedBodyKinematics.setSpecificForceStandardDeviation(-1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class,
+                () -> standardDeviationTimedBodyKinematics.setSpecificForceStandardDeviation(-1.0));
     }
 
     @Test
@@ -1061,13 +900,12 @@ public class StandardDeviationTimedBodyKinematicsTest {
         final Acceleration acceleration1 = standardDeviationTimedBodyKinematics
                 .getSpecificForceStandardDeviationAsAcceleration();
 
-        assertEquals(acceleration1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(acceleration1.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertEquals(0.0, acceleration1.getValue().doubleValue(), 0.0);
+        assertEquals(AccelerationUnit.METERS_PER_SQUARED_SECOND, acceleration1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
         final Acceleration acceleration2 = new Acceleration(specificForceStandardDeviation,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         standardDeviationTimedBodyKinematics.setSpecificForceStandardDeviation(acceleration2);
@@ -1081,11 +919,9 @@ public class StandardDeviationTimedBodyKinematicsTest {
         assertEquals(acceleration2, acceleration4);
 
         // Force IllegalArgumentException
-        try {
-            standardDeviationTimedBodyKinematics.setSpecificForceStandardDeviation(
-                    new Acceleration(-1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND));
-        } catch (final IllegalArgumentException ignore) {
-        }
+        final var a = new Acceleration(-1.0, AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        assertThrows(IllegalArgumentException.class,
+                () -> standardDeviationTimedBodyKinematics.setSpecificForceStandardDeviation(a));
     }
 
     @Test
@@ -1094,24 +930,20 @@ public class StandardDeviationTimedBodyKinematicsTest {
                 new StandardDeviationTimedBodyKinematics();
 
         // check default value
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(),
-                0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
         standardDeviationTimedBodyKinematics.setAngularRateStandardDeviation(angularRateStandardDeviation);
 
         // check
-        assertEquals(standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(),
-                angularRateStandardDeviation, 0.0);
+        assertEquals(angularRateStandardDeviation,
+                standardDeviationTimedBodyKinematics.getAngularRateStandardDeviation(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            standardDeviationTimedBodyKinematics.setAngularRateStandardDeviation(-1.0);
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class,
+                () -> standardDeviationTimedBodyKinematics.setAngularRateStandardDeviation(-1.0));
     }
 
     @Test
@@ -1123,13 +955,12 @@ public class StandardDeviationTimedBodyKinematicsTest {
         final AngularSpeed angularSpeed1 = standardDeviationTimedBodyKinematics
                 .getAngularRateStandardDeviationAsAngularSpeed();
 
-        assertEquals(angularSpeed1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(angularSpeed1.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        assertEquals(0.0, angularSpeed1.getValue().doubleValue(), 0.0);
+        assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, angularSpeed1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
         final AngularSpeed angularSpeed2 = new AngularSpeed(angularRateStandardDeviation,
                 AngularSpeedUnit.RADIANS_PER_SECOND);
         standardDeviationTimedBodyKinematics.setAngularRateStandardDeviation(angularSpeed2);
@@ -1157,7 +988,7 @@ public class StandardDeviationTimedBodyKinematicsTest {
         standardDeviationTimedBodyKinematics.setKinematics(kinematics);
 
         // check
-        assertSame(standardDeviationTimedBodyKinematics.getKinematics(), kinematics);
+        assertSame(kinematics, standardDeviationTimedBodyKinematics.getKinematics());
     }
 
     @Test
@@ -1166,7 +997,7 @@ public class StandardDeviationTimedBodyKinematicsTest {
                 new StandardDeviationTimedBodyKinematics();
 
         // check default value
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1175,7 +1006,7 @@ public class StandardDeviationTimedBodyKinematicsTest {
         standardDeviationTimedBodyKinematics.setTimestampSeconds(timestampSeconds);
 
         // check
-        assertEquals(standardDeviationTimedBodyKinematics.getTimestampSeconds(), timestampSeconds, 0.0);
+        assertEquals(timestampSeconds, standardDeviationTimedBodyKinematics.getTimestampSeconds(), 0.0);
     }
 
     @Test
@@ -1186,8 +1017,8 @@ public class StandardDeviationTimedBodyKinematicsTest {
         // check default value
         final Time time1 = standardDeviationTimedBodyKinematics.getTimestamp();
 
-        assertEquals(time1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(time1.getUnit(), TimeUnit.SECOND);
+        assertEquals(0.0, time1.getValue().doubleValue(), 0.0);
+        assertEquals(TimeUnit.SECOND, time1.getUnit());
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1211,14 +1042,12 @@ public class StandardDeviationTimedBodyKinematicsTest {
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
         final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics1 =
-                new StandardDeviationTimedBodyKinematics(kinematics, timestampSeconds,
-                        specificForceStandardDeviation, angularRateStandardDeviation);
+                new StandardDeviationTimedBodyKinematics(kinematics, timestampSeconds, specificForceStandardDeviation,
+                        angularRateStandardDeviation);
         final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics2 =
                 new StandardDeviationTimedBodyKinematics();
 
@@ -1239,24 +1068,22 @@ public class StandardDeviationTimedBodyKinematicsTest {
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
         final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics1 =
                 new StandardDeviationTimedBodyKinematics();
         final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics2 =
-                new StandardDeviationTimedBodyKinematics(kinematics, timestampSeconds,
-                        specificForceStandardDeviation, angularRateStandardDeviation);
+                new StandardDeviationTimedBodyKinematics(kinematics, timestampSeconds, specificForceStandardDeviation,
+                        angularRateStandardDeviation);
 
         standardDeviationTimedBodyKinematics2.copyFrom(standardDeviationTimedBodyKinematics1);
 
         // check
         assertNull(standardDeviationTimedBodyKinematics2.getKinematics());
-        assertEquals(standardDeviationTimedBodyKinematics2.getTimestampSeconds(), 0.0, 0.0);
-        assertEquals(standardDeviationTimedBodyKinematics2.getSpecificForceStandardDeviation(), 0.0, 0.0);
-        assertEquals(standardDeviationTimedBodyKinematics2.getAngularRateStandardDeviation(), 0.0, 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics2.getTimestampSeconds(), 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics2.getSpecificForceStandardDeviation(), 0.0);
+        assertEquals(0.0, standardDeviationTimedBodyKinematics2.getAngularRateStandardDeviation(), 0.0);
     }
 
     @Test
@@ -1268,15 +1095,11 @@ public class StandardDeviationTimedBodyKinematicsTest {
         final double timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
         final double timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final double specificForceStandardDeviation1 =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double specificForceStandardDeviation2 =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double specificForceStandardDeviation1 = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double specificForceStandardDeviation2 = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
 
-        final double angularRateStandardDeviation1 =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateStandardDeviation2 =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double angularRateStandardDeviation1 = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double angularRateStandardDeviation2 = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
         final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics1 =
                 new StandardDeviationTimedBodyKinematics(kinematics1, timestampSeconds1,
@@ -1288,12 +1111,12 @@ public class StandardDeviationTimedBodyKinematicsTest {
         standardDeviationTimedBodyKinematics2.copyFrom(standardDeviationTimedBodyKinematics1);
 
         // check
-        assertEquals(standardDeviationTimedBodyKinematics2.getKinematics(), kinematics1);
-        assertEquals(standardDeviationTimedBodyKinematics2.getTimestampSeconds(), timestampSeconds1, 0.0);
-        assertEquals(standardDeviationTimedBodyKinematics2.getSpecificForceStandardDeviation(),
-                specificForceStandardDeviation1, 0.0);
-        assertEquals(standardDeviationTimedBodyKinematics2.getAngularRateStandardDeviation(),
-                angularRateStandardDeviation1, 0.0);
+        assertEquals(kinematics1, standardDeviationTimedBodyKinematics2.getKinematics());
+        assertEquals(timestampSeconds1, standardDeviationTimedBodyKinematics2.getTimestampSeconds(), 0.0);
+        assertEquals(specificForceStandardDeviation1,
+                standardDeviationTimedBodyKinematics2.getSpecificForceStandardDeviation(), 0.0);
+        assertEquals(angularRateStandardDeviation1,
+                standardDeviationTimedBodyKinematics2.getAngularRateStandardDeviation(), 0.0);
     }
 
     @Test
@@ -1305,15 +1128,11 @@ public class StandardDeviationTimedBodyKinematicsTest {
         final double timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
         final double timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final double specificForceStandardDeviation1 =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double specificForceStandardDeviation2 =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double specificForceStandardDeviation1 = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double specificForceStandardDeviation2 = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
 
-        final double angularRateStandardDeviation1 =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateStandardDeviation2 =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double angularRateStandardDeviation1 = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double angularRateStandardDeviation2 = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
         final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics1 =
                 new StandardDeviationTimedBodyKinematics(kinematics1, timestampSeconds1,
@@ -1325,12 +1144,12 @@ public class StandardDeviationTimedBodyKinematicsTest {
         standardDeviationTimedBodyKinematics1.copyTo(standardDeviationTimedBodyKinematics2);
 
         // check
-        assertEquals(standardDeviationTimedBodyKinematics2.getKinematics(), kinematics1);
-        assertEquals(standardDeviationTimedBodyKinematics2.getTimestampSeconds(), timestampSeconds1, 0.0);
-        assertEquals(standardDeviationTimedBodyKinematics2.getSpecificForceStandardDeviation(),
-                specificForceStandardDeviation1, 0.0);
-        assertEquals(standardDeviationTimedBodyKinematics2.getAngularRateStandardDeviation(),
-                angularRateStandardDeviation1, 0.0);
+        assertEquals(kinematics1, standardDeviationTimedBodyKinematics2.getKinematics());
+        assertEquals(timestampSeconds1, standardDeviationTimedBodyKinematics2.getTimestampSeconds(), 0.0);
+        assertEquals(specificForceStandardDeviation1,
+                standardDeviationTimedBodyKinematics2.getSpecificForceStandardDeviation(), 0.0);
+        assertEquals(angularRateStandardDeviation1,
+                standardDeviationTimedBodyKinematics2.getAngularRateStandardDeviation(), 0.0);
     }
 
     @Test
@@ -1342,15 +1161,11 @@ public class StandardDeviationTimedBodyKinematicsTest {
         final double timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
         final double timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final double specificForceStandardDeviation1 =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double specificForceStandardDeviation2 =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double specificForceStandardDeviation1 = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double specificForceStandardDeviation2 = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
 
-        final double angularRateStandardDeviation1 =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateStandardDeviation2 =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double angularRateStandardDeviation1 = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double angularRateStandardDeviation2 = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
         final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics1 =
                 new StandardDeviationTimedBodyKinematics(kinematics1, timestampSeconds1,
@@ -1377,15 +1192,11 @@ public class StandardDeviationTimedBodyKinematicsTest {
         final double timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
         final double timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final double specificForceStandardDeviation1 =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double specificForceStandardDeviation2 =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double specificForceStandardDeviation1 = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double specificForceStandardDeviation2 = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
 
-        final double angularRateStandardDeviation1 =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateStandardDeviation2 =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double angularRateStandardDeviation1 = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double angularRateStandardDeviation2 = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
         final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics1 =
                 new StandardDeviationTimedBodyKinematics(kinematics1, timestampSeconds1,
@@ -1397,17 +1208,14 @@ public class StandardDeviationTimedBodyKinematicsTest {
                 new StandardDeviationTimedBodyKinematics(kinematics2, timestampSeconds2,
                         specificForceStandardDeviation2, angularRateStandardDeviation2);
 
-        // noinspection ConstantConditions,SimplifiableJUnitAssertion
-        assertTrue(standardDeviationTimedBodyKinematics1.equals((Object) standardDeviationTimedBodyKinematics1));
+        //noinspection EqualsWithItself
+        assertEquals(standardDeviationTimedBodyKinematics1, standardDeviationTimedBodyKinematics1);
         //noinspection EqualsWithItself
         assertTrue(standardDeviationTimedBodyKinematics1.equals(standardDeviationTimedBodyKinematics1));
         assertTrue(standardDeviationTimedBodyKinematics1.equals(standardDeviationTimedBodyKinematics2));
         assertFalse(standardDeviationTimedBodyKinematics1.equals(standardDeviationTimedBodyKinematics3));
-        // noinspection ConstantConditions,SimplifiableJUnitAssertion
-        assertFalse(standardDeviationTimedBodyKinematics1.equals((Object) null));
-        assertFalse(standardDeviationTimedBodyKinematics1.equals(null));
-        //noinspection SimplifiableJUnitAssertion
-        assertFalse(standardDeviationTimedBodyKinematics1.equals(new Object()));
+        assertNotEquals(standardDeviationTimedBodyKinematics1, null);
+        assertNotEquals(standardDeviationTimedBodyKinematics1, new Object());
     }
 
     @Test
@@ -1419,15 +1227,11 @@ public class StandardDeviationTimedBodyKinematicsTest {
         final double timestampSeconds1 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
         final double timestampSeconds2 = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
 
-        final double specificForceStandardDeviation1 =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double specificForceStandardDeviation2 =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double specificForceStandardDeviation1 = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double specificForceStandardDeviation2 = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
 
-        final double angularRateStandardDeviation1 =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
-        final double angularRateStandardDeviation2 =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double angularRateStandardDeviation1 = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double angularRateStandardDeviation2 = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
         final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics1 =
                 new StandardDeviationTimedBodyKinematics(kinematics1, timestampSeconds1,
@@ -1451,14 +1255,12 @@ public class StandardDeviationTimedBodyKinematicsTest {
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
         final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics1 =
-                new StandardDeviationTimedBodyKinematics(kinematics, timestampSeconds,
-                        specificForceStandardDeviation, angularRateStandardDeviation);
+                new StandardDeviationTimedBodyKinematics(kinematics, timestampSeconds, specificForceStandardDeviation,
+                        angularRateStandardDeviation);
 
         final Object standardDeviationTimedBodyKinematics2 = standardDeviationTimedBodyKinematics1.clone();
 
@@ -1472,14 +1274,12 @@ public class StandardDeviationTimedBodyKinematicsTest {
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
-        final double specificForceStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-        final double angularRateStandardDeviation =
-                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+        final double specificForceStandardDeviation = randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double angularRateStandardDeviation = randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
 
         final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics1 =
-                new StandardDeviationTimedBodyKinematics(kinematics, timestampSeconds,
-                        specificForceStandardDeviation, angularRateStandardDeviation);
+                new StandardDeviationTimedBodyKinematics(kinematics, timestampSeconds, specificForceStandardDeviation,
+                        angularRateStandardDeviation);
 
         final byte[] bytes = SerializationHelper.serialize(standardDeviationTimedBodyKinematics1);
 
@@ -1498,20 +1298,16 @@ public class StandardDeviationTimedBodyKinematicsTest {
         assertEquals(0L, field.get(null));
     }
 
-    private BodyKinematics createBodyKinematics() {
+    private static BodyKinematics createBodyKinematics() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
         final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
         final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
 
-        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
-                MAX_ANGULAR_RATE_VALUE);
-        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
-                MAX_ANGULAR_RATE_VALUE);
-        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
-                MAX_ANGULAR_RATE_VALUE);
+        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
+        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE, MAX_ANGULAR_RATE_VALUE);
 
-        return new BodyKinematics(fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+        return new BodyKinematics(fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 }

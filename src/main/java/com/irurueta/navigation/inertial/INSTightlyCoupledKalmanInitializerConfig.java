@@ -17,6 +17,7 @@ package com.irurueta.navigation.inertial;
 
 import com.irurueta.units.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -30,6 +31,7 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -92,19 +94,12 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      *                                           expressed in meters per second (m/s).
      */
     public INSTightlyCoupledKalmanInitializerConfig(
-            final double initialAttitudeUncertainty,
-            final double initialVelocityUncertainty,
-            final double initialPositionUncertainty,
-            final double initialAccelerationBiasUncertainty,
-            final double initialGyroscopeBiasUncertainty,
-            final double initialClockOffsetUncertainty,
+            final double initialAttitudeUncertainty, final double initialVelocityUncertainty,
+            final double initialPositionUncertainty, final double initialAccelerationBiasUncertainty,
+            final double initialGyroscopeBiasUncertainty, final double initialClockOffsetUncertainty,
             final double initialClockDriftUncertainty) {
-        setValues(initialAttitudeUncertainty,
-                initialVelocityUncertainty,
-                initialPositionUncertainty,
-                initialAccelerationBiasUncertainty,
-                initialGyroscopeBiasUncertainty,
-                initialClockOffsetUncertainty,
+        setValues(initialAttitudeUncertainty, initialVelocityUncertainty, initialPositionUncertainty,
+                initialAccelerationBiasUncertainty, initialGyroscopeBiasUncertainty, initialClockOffsetUncertainty,
                 initialClockDriftUncertainty);
     }
 
@@ -120,19 +115,12 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialClockDriftUncertainty       initial clock drift uncertainty per axis.
      */
     public INSTightlyCoupledKalmanInitializerConfig(
-            final Angle initialAttitudeUncertainty,
-            final Speed initialVelocityUncertainty,
-            final Distance initialPositionUncertainty,
-            final Acceleration initialAccelerationBiasUncertainty,
-            final AngularSpeed initialGyroscopeBiasUncertainty,
-            final Distance initialClockOffsetUncertainty,
+            final Angle initialAttitudeUncertainty, final Speed initialVelocityUncertainty,
+            final Distance initialPositionUncertainty, final Acceleration initialAccelerationBiasUncertainty,
+            final AngularSpeed initialGyroscopeBiasUncertainty, final Distance initialClockOffsetUncertainty,
             final Speed initialClockDriftUncertainty) {
-        setValues(initialAttitudeUncertainty,
-                initialVelocityUncertainty,
-                initialPositionUncertainty,
-                initialAccelerationBiasUncertainty,
-                initialGyroscopeBiasUncertainty,
-                initialClockOffsetUncertainty,
+        setValues(initialAttitudeUncertainty, initialVelocityUncertainty, initialPositionUncertainty,
+                initialAccelerationBiasUncertainty, initialGyroscopeBiasUncertainty, initialClockOffsetUncertainty,
                 initialClockDriftUncertainty);
     }
 
@@ -189,8 +177,7 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialAttitudeUncertainty initial attitude uncertainty per axis.
      */
     public void setInitialAttitudeUncertainty(final Angle initialAttitudeUncertainty) {
-        mInitialAttitudeUncertainty = AngleConverter.convert(
-                initialAttitudeUncertainty.getValue().doubleValue(),
+        mInitialAttitudeUncertainty = AngleConverter.convert(initialAttitudeUncertainty.getValue().doubleValue(),
                 initialAttitudeUncertainty.getUnit(), AngleUnit.RADIANS);
     }
 
@@ -239,8 +226,8 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      */
     public void setInitialVelocityUncertainty(final Speed initialVelocityUncertainty) {
         mInitialVelocityUncertainty = SpeedConverter.convert(
-                initialVelocityUncertainty.getValue().doubleValue(),
-                initialVelocityUncertainty.getUnit(), SpeedUnit.METERS_PER_SECOND);
+                initialVelocityUncertainty.getValue().doubleValue(), initialVelocityUncertainty.getUnit(),
+                SpeedUnit.METERS_PER_SECOND);
     }
 
     /**
@@ -287,8 +274,7 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialPositionUncertainty initial position uncertainty per axis.
      */
     public void setInitialPositionUncertainty(final Distance initialPositionUncertainty) {
-        mInitialPositionUncertainty = DistanceConverter.convert(
-                initialPositionUncertainty.getValue().doubleValue(),
+        mInitialPositionUncertainty = DistanceConverter.convert(initialPositionUncertainty.getValue().doubleValue(),
                 initialPositionUncertainty.getUnit(), DistanceUnit.METER);
     }
 
@@ -307,8 +293,7 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialAccelerationBiasUncertainty initial acceleration bias uncertainty expressed in
      *                                           meters per squared second (m/s^2).
      */
-    public void setInitialAccelerationBiasUncertainty(
-            final double initialAccelerationBiasUncertainty) {
+    public void setInitialAccelerationBiasUncertainty(final double initialAccelerationBiasUncertainty) {
         mInitialAccelerationBiasUncertainty = initialAccelerationBiasUncertainty;
     }
 
@@ -328,8 +313,7 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      * @return initial acceleration bias uncertainty.
      */
     public Acceleration getInitialAccelerationBiasUncertaintyAcceleration() {
-        return new Acceleration(mInitialAccelerationBiasUncertainty,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mInitialAccelerationBiasUncertainty, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -337,11 +321,9 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      *
      * @param initialAccelerationUncertainty initial acceleration bias uncertainty.
      */
-    public void setInitialAccelerationBiasUncertainty(
-            final Acceleration initialAccelerationUncertainty) {
+    public void setInitialAccelerationBiasUncertainty(final Acceleration initialAccelerationUncertainty) {
         mInitialAccelerationBiasUncertainty = AccelerationConverter.convert(
-                initialAccelerationUncertainty.getValue().doubleValue(),
-                initialAccelerationUncertainty.getUnit(),
+                initialAccelerationUncertainty.getValue().doubleValue(), initialAccelerationUncertainty.getUnit(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -360,8 +342,7 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialGyroscopeBiasUncertainty initial gyroscope bias uncertainty expressed
      *                                        in radians per second (rad/s).
      */
-    public void setInitialGyroscopeBiasUncertainty(
-            final double initialGyroscopeBiasUncertainty) {
+    public void setInitialGyroscopeBiasUncertainty(final double initialGyroscopeBiasUncertainty) {
         mInitialGyroscopeBiasUncertainty = initialGyroscopeBiasUncertainty;
     }
 
@@ -370,8 +351,7 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      *
      * @param result instance where initial gyroscope bias uncertainty will be stored.
      */
-    public void getInitialGyroscopeBiasUncertaintyAngularSpeed(
-            final AngularSpeed result) {
+    public void getInitialGyroscopeBiasUncertaintyAngularSpeed(final AngularSpeed result) {
         result.setValue(mInitialGyroscopeBiasUncertainty);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
@@ -382,8 +362,7 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      * @return initial gyroscope bias uncertainty.
      */
     public AngularSpeed getInitialGyroscopeBiasUncertaintyAngularSpeed() {
-        return new AngularSpeed(mInitialGyroscopeBiasUncertainty,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mInitialGyroscopeBiasUncertainty, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -391,11 +370,9 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      *
      * @param initialGyroscopeBiasUncertainty initial gyroscope bias uncertainty.
      */
-    public void setInitialGyroscopeBiasUncertainty(
-            final AngularSpeed initialGyroscopeBiasUncertainty) {
+    public void setInitialGyroscopeBiasUncertainty(final AngularSpeed initialGyroscopeBiasUncertainty) {
         mInitialGyroscopeBiasUncertainty = AngularSpeedConverter.convert(
-                initialGyroscopeBiasUncertainty.getValue().doubleValue(),
-                initialGyroscopeBiasUncertainty.getUnit(),
+                initialGyroscopeBiasUncertainty.getValue().doubleValue(), initialGyroscopeBiasUncertainty.getUnit(),
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -414,8 +391,7 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialClockOffsetUncertainty initial clock offset uncertainty per
      *                                      axis expressed in meters (m).
      */
-    public void setInitialClockOffsetUncertainty(
-            final double initialClockOffsetUncertainty) {
+    public void setInitialClockOffsetUncertainty(final double initialClockOffsetUncertainty) {
         mInitialClockOffsetUncertainty = initialClockOffsetUncertainty;
     }
 
@@ -443,11 +419,10 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      *
      * @param initialClockOffsetUncertainty initial clock offset uncertainty per axis.
      */
-    public void setInitialClockOffsetUncertainty(
-            final Distance initialClockOffsetUncertainty) {
+    public void setInitialClockOffsetUncertainty(final Distance initialClockOffsetUncertainty) {
         mInitialClockOffsetUncertainty = DistanceConverter.convert(
-                initialClockOffsetUncertainty.getValue().doubleValue(),
-                initialClockOffsetUncertainty.getUnit(), DistanceUnit.METER);
+                initialClockOffsetUncertainty.getValue().doubleValue(), initialClockOffsetUncertainty.getUnit(),
+                DistanceUnit.METER);
     }
 
     /**
@@ -465,8 +440,7 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialClockDriftUncertainty initial clock drift uncertainty per axis expressed
      *                                     in meters per second (m/s).
      */
-    public void setInitialClockDriftUncertainty(
-            final double initialClockDriftUncertainty) {
+    public void setInitialClockDriftUncertainty(final double initialClockDriftUncertainty) {
         mInitialClockDriftUncertainty = initialClockDriftUncertainty;
     }
 
@@ -495,8 +469,7 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialClockDriftUncertainty initial clock drift uncertainty per axis.
      */
     public void setInitialClockDriftUncertainty(final Speed initialClockDriftUncertainty) {
-        mInitialClockDriftUncertainty = SpeedConverter.convert(
-                initialClockDriftUncertainty.getValue().doubleValue(),
+        mInitialClockDriftUncertainty = SpeedConverter.convert(initialClockDriftUncertainty.getValue().doubleValue(),
                 initialClockDriftUncertainty.getUnit(), SpeedUnit.METERS_PER_SECOND);
     }
 
@@ -518,13 +491,11 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialClockDriftUncertainty       initial clock drift uncertainty per axis
      *                                           expressed in meters per second (m/s).
      */
-    public void setValues(final double initialAttitudeUncertainty,
-                          final double initialVelocityUncertainty,
-                          final double initialPositionUncertainty,
-                          final double initialAccelerationBiasUncertainty,
-                          final double initialGyroscopeBiasUncertainty,
-                          final double initialClockOffsetUncertainty,
-                          final double initialClockDriftUncertainty) {
+    public void setValues(
+            final double initialAttitudeUncertainty, final double initialVelocityUncertainty,
+            final double initialPositionUncertainty, final double initialAccelerationBiasUncertainty,
+            final double initialGyroscopeBiasUncertainty, final double initialClockOffsetUncertainty,
+            final double initialClockDriftUncertainty) {
         mInitialAttitudeUncertainty = initialAttitudeUncertainty;
         mInitialVelocityUncertainty = initialVelocityUncertainty;
         mInitialPositionUncertainty = initialPositionUncertainty;
@@ -545,13 +516,11 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialClockOffsetUncertainty      initial clock offset uncertainty per axis.
      * @param initialClockDriftUncertainty       initial clock drift uncertainty per axis.
      */
-    public void setValues(final Angle initialAttitudeUncertainty,
-                          final Speed initialVelocityUncertainty,
-                          final Distance initialPositionUncertainty,
-                          final Acceleration initialAccelerationBiasUncertainty,
-                          final AngularSpeed initialGyroscopeBiasUncertainty,
-                          final Distance initialClockOffsetUncertainty,
-                          final Speed initialClockDriftUncertainty) {
+    public void setValues(
+            final Angle initialAttitudeUncertainty, final Speed initialVelocityUncertainty,
+            final Distance initialPositionUncertainty, final Acceleration initialAccelerationBiasUncertainty,
+            final AngularSpeed initialGyroscopeBiasUncertainty, final Distance initialClockOffsetUncertainty,
+            final Speed initialClockDriftUncertainty) {
         setInitialAttitudeUncertainty(initialAttitudeUncertainty);
         setInitialVelocityUncertainty(initialVelocityUncertainty);
         setInitialPositionUncertainty(initialPositionUncertainty);
@@ -619,8 +588,7 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final INSTightlyCoupledKalmanInitializerConfig other =
-                (INSTightlyCoupledKalmanInitializerConfig) obj;
+        final INSTightlyCoupledKalmanInitializerConfig other = (INSTightlyCoupledKalmanInitializerConfig) obj;
         return equals(other);
     }
 
@@ -643,8 +611,7 @@ public class INSTightlyCoupledKalmanInitializerConfig implements Serializable, C
      * @return true if both instances are considered to be equal (up to provided threshold),
      * false otherwise.
      */
-    public boolean equals(
-            final INSTightlyCoupledKalmanInitializerConfig other, final double threshold) {
+    public boolean equals(final INSTightlyCoupledKalmanInitializerConfig other, final double threshold) {
         if (other == null) {
             return false;
         }

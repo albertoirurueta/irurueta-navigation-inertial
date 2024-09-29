@@ -46,8 +46,7 @@ import com.irurueta.units.AccelerationUnit;
  */
 public class WindowedAccelerationTriadNoiseEstimator extends
         WindowedTriadNoiseEstimator<AccelerationUnit, Acceleration, AccelerationTriad,
-                WindowedAccelerationTriadNoiseEstimator,
-                WindowedAccelerationTriadNoiseEstimatorListener>
+                WindowedAccelerationTriadNoiseEstimator, WindowedAccelerationTriadNoiseEstimatorListener>
         implements AccelerometerNoiseRootPsdSource {
 
     /**
@@ -62,8 +61,7 @@ public class WindowedAccelerationTriadNoiseEstimator extends
      *
      * @param listener listener to handle events raised by this estimator.
      */
-    public WindowedAccelerationTriadNoiseEstimator(
-            final WindowedAccelerationTriadNoiseEstimatorListener listener) {
+    public WindowedAccelerationTriadNoiseEstimator(final WindowedAccelerationTriadNoiseEstimatorListener listener) {
         super(listener);
     }
 
@@ -89,8 +87,7 @@ public class WindowedAccelerationTriadNoiseEstimator extends
      */
     @Override
     protected AccelerationTriad createTriad(
-            final double valueX, final double valueY, final double valueZ,
-            final AccelerationUnit unit) {
+            final double valueX, final double valueY, final double valueZ, final AccelerationUnit unit) {
         return new AccelerationTriad(unit, valueX, valueY, valueZ);
     }
 

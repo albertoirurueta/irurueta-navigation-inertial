@@ -63,16 +63,14 @@ public interface AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorListe
      *
      * @param generator generator that raised the event.
      */
-    void onStaticIntervalDetected(
-            final AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator generator);
+    void onStaticIntervalDetected(final AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator generator);
 
     /**
      * Called when a dynamic interval has been detected after initialization.
      *
      * @param generator generator that raised the event.
      */
-    void onDynamicIntervalDetected(
-            final AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator generator);
+    void onDynamicIntervalDetected(final AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator generator);
 
     /**
      * Called when a detected static interval is skipped because there are not
@@ -80,8 +78,7 @@ public interface AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorListe
      *
      * @param generator generator that raised the event.
      */
-    void onStaticIntervalSkipped(
-            final AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator generator);
+    void onStaticIntervalSkipped(final AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator generator);
 
     /**
      * Called when a detected static interval is skipped because it has too
@@ -89,8 +86,7 @@ public interface AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorListe
      *
      * @param generator generator that raised the event.
      */
-    void onDynamicIntervalSkipped(
-            final AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator generator);
+    void onDynamicIntervalSkipped(final AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator generator);
 
     /**
      * Called when a new measurement for accelerometer calibration is generated.
@@ -127,6 +123,5 @@ public interface AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorListe
      *
      * @param generator generator that raised the event.
      */
-    void onReset(
-            final AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator generator);
+    void onReset(final AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator generator);
 }

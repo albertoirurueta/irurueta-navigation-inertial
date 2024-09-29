@@ -39,40 +39,27 @@ public class EarthMagneticFluxDensityEstimatorTest {
 
     @Test
     public void testEstimate() {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double magnitude = randomizer.nextDouble(MIN_MAGNITUDE,
-                MAX_MAGNITUDE);
-        final double dip = Math.toRadians(
-                randomizer.nextDouble(MIN_DIP_DEGREES, MAX_DIP_DEGREES));
-        final double declination = Math.toRadians(
-                randomizer.nextDouble(MIN_DECLINATION, MAX_DECLINATION));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double magnitude = randomizer.nextDouble(MIN_MAGNITUDE, MAX_MAGNITUDE);
+        final double dip = Math.toRadians(randomizer.nextDouble(MIN_DIP_DEGREES, MAX_DIP_DEGREES));
+        final double declination = Math.toRadians(randomizer.nextDouble(MIN_DECLINATION, MAX_DECLINATION));
 
         final NEDMagneticFluxDensity b1 = new NEDMagneticFluxDensity();
-        EarthMagneticFluxDensityEstimator.estimate(magnitude, declination,
-                dip, b1);
-        final NEDMagneticFluxDensity b2 = EarthMagneticFluxDensityEstimator
-                .estimate(magnitude, declination, dip);
+        EarthMagneticFluxDensityEstimator.estimate(magnitude, declination, dip, b1);
+        final NEDMagneticFluxDensity b2 = EarthMagneticFluxDensityEstimator.estimate(magnitude, declination, dip);
 
-        assertEquals(b1.getBn(),
-                Math.cos(declination) * Math.cos(dip) * magnitude,
-                0.0);
-        assertEquals(b1.getBe(),
-                Math.sin(declination) * Math.cos(dip) * magnitude,
-                0.0);
-        assertEquals(b1.getBd(), Math.sin(dip) * magnitude,
-                0.0);
+        assertEquals(Math.cos(declination) * Math.cos(dip) * magnitude, b1.getBn(), 0.0);
+        assertEquals(Math.sin(declination) * Math.cos(dip) * magnitude, b1.getBe(), 0.0);
+        assertEquals(Math.sin(dip) * magnitude, b1.getBd(), 0.0);
         assertEquals(b1, b2);
 
         final Angle dipAngle = new Angle(dip, AngleUnit.RADIANS);
-        final Angle declinationAngle = new Angle(declination,
-                AngleUnit.RADIANS);
+        final Angle declinationAngle = new Angle(declination, AngleUnit.RADIANS);
 
         final NEDMagneticFluxDensity b3 = new NEDMagneticFluxDensity();
-        EarthMagneticFluxDensityEstimator.estimate(magnitude, declinationAngle,
-                dipAngle, b3);
-        final NEDMagneticFluxDensity b4 = EarthMagneticFluxDensityEstimator
-                .estimate(magnitude, declinationAngle, dipAngle);
+        EarthMagneticFluxDensityEstimator.estimate(magnitude, declinationAngle, dipAngle, b3);
+        final NEDMagneticFluxDensity b4 = EarthMagneticFluxDensityEstimator.estimate(magnitude, declinationAngle,
+                dipAngle);
 
         assertEquals(b1, b3);
         assertEquals(b1, b4);
@@ -80,52 +67,37 @@ public class EarthMagneticFluxDensityEstimatorTest {
 
     @Test
     public void testDeclination() {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double magnitude = randomizer.nextDouble(MIN_MAGNITUDE,
-                MAX_MAGNITUDE);
-        final double dip = Math.toRadians(
-                randomizer.nextDouble(MIN_DIP_DEGREES, MAX_DIP_DEGREES));
-        final double declination1 = Math.toRadians(
-                randomizer.nextDouble(MIN_DECLINATION, MAX_DECLINATION));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double magnitude = randomizer.nextDouble(MIN_MAGNITUDE, MAX_MAGNITUDE);
+        final double dip = Math.toRadians(randomizer.nextDouble(MIN_DIP_DEGREES, MAX_DIP_DEGREES));
+        final double declination1 = Math.toRadians(randomizer.nextDouble(MIN_DECLINATION, MAX_DECLINATION));
 
-        final NEDMagneticFluxDensity b = EarthMagneticFluxDensityEstimator
-                .estimate(magnitude, declination1, dip);
+        final NEDMagneticFluxDensity b = EarthMagneticFluxDensityEstimator.estimate(magnitude, declination1, dip);
 
         // get declination
-        final double declination2 = EarthMagneticFluxDensityEstimator
-                .getDeclination(b);
-        final Angle declination3 = EarthMagneticFluxDensityEstimator
-                .getDeclinationAsAngle(b);
+        final double declination2 = EarthMagneticFluxDensityEstimator.getDeclination(b);
+        final Angle declination3 = EarthMagneticFluxDensityEstimator.getDeclinationAsAngle(b);
         final Angle declination4 = new Angle(0.0, AngleUnit.DEGREES);
-        EarthMagneticFluxDensityEstimator.getDeclinationAsAngle(b,
-                declination4);
+        EarthMagneticFluxDensityEstimator.getDeclinationAsAngle(b, declination4);
 
         assertEquals(declination1, declination2, ABSOLUTE_ERROR);
         assertEquals(AngleUnit.RADIANS, declination3.getUnit());
-        assertEquals(declination2, declination3.getValue().doubleValue(),
-                0.0);
+        assertEquals(declination2, declination3.getValue().doubleValue(), 0.0);
         assertEquals(declination3, declination4);
     }
 
     @Test
     public void testDip() {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double magnitude = randomizer.nextDouble(MIN_MAGNITUDE,
-                MAX_MAGNITUDE);
-        final double dip1 = Math.toRadians(
-                randomizer.nextDouble(MIN_DIP_DEGREES, MAX_DIP_DEGREES));
-        final double declination = Math.toRadians(
-                randomizer.nextDouble(MIN_DECLINATION, MAX_DECLINATION));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double magnitude = randomizer.nextDouble(MIN_MAGNITUDE, MAX_MAGNITUDE);
+        final double dip1 = Math.toRadians(randomizer.nextDouble(MIN_DIP_DEGREES, MAX_DIP_DEGREES));
+        final double declination = Math.toRadians(randomizer.nextDouble(MIN_DECLINATION, MAX_DECLINATION));
 
-        final NEDMagneticFluxDensity b = EarthMagneticFluxDensityEstimator
-                .estimate(magnitude, declination, dip1);
+        final NEDMagneticFluxDensity b = EarthMagneticFluxDensityEstimator.estimate(magnitude, declination, dip1);
 
         // get dip
         final double dip2 = EarthMagneticFluxDensityEstimator.getDip(b);
-        final Angle dip3 = EarthMagneticFluxDensityEstimator
-                .getDipAsAngle(b);
+        final Angle dip3 = EarthMagneticFluxDensityEstimator.getDipAsAngle(b);
         final Angle dip4 = new Angle(0.0, AngleUnit.DEGREES);
         EarthMagneticFluxDensityEstimator.getDipAsAngle(b, dip4);
 

@@ -96,9 +96,8 @@ import java.util.List;
  * Implement Method for IMU Calibration without External Equipments.
  */
 public class EasyGyroscopeCalibrator implements
-        GyroscopeNonLinearCalibrator, UnknownBiasGyroscopeCalibrator,
-        GyroscopeCalibrationSource, GyroscopeBiasUncertaintySource,
-        OrderedBodyKinematicsSequenceGyroscopeCalibrator,
+        GyroscopeNonLinearCalibrator, UnknownBiasGyroscopeCalibrator, GyroscopeCalibrationSource,
+        GyroscopeBiasUncertaintySource, OrderedBodyKinematicsSequenceGyroscopeCalibrator,
         AccelerometerDependentGyroscopeCalibrator {
 
     /**
@@ -156,21 +155,18 @@ public class EasyGyroscopeCalibrator implements
      * Required minimum number of sequences when common z-axis is assumed
      * and G-dependent cross biases are being ignored.
      */
-    public static final int MINIMUM_SEQUENCES_COMMON_Z_AXIS =
-            COMMON_Z_AXIS_UNKNOWNS + 1;
+    public static final int MINIMUM_SEQUENCES_COMMON_Z_AXIS = COMMON_Z_AXIS_UNKNOWNS + 1;
 
     /**
      * Required minimum number of sequences for the general case and
      * G-dependent cross biases are being ignored.
      */
-    public static final int MINIMUM_SEQUENCES_GENERAL =
-            GENERAL_UNKNOWNS + 1;
+    public static final int MINIMUM_SEQUENCES_GENERAL = GENERAL_UNKNOWNS + 1;
 
     /**
      * Levenberg-Marquardt fitter to find a non-linear solution.
      */
-    private final LevenbergMarquardtMultiDimensionFitter mFitter =
-            new LevenbergMarquardtMultiDimensionFitter();
+    private final LevenbergMarquardtMultiDimensionFitter mFitter = new LevenbergMarquardtMultiDimensionFitter();
 
     /**
      * Known x-coordinate of accelerometer bias to be used to fix measured
@@ -335,8 +331,7 @@ public class EasyGyroscopeCalibrator implements
      * estimated or not.
      * When enabled, this adds 9 variables from Gg matrix.
      */
-    private boolean mEstimateGDependentCrossBiases =
-            DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES;
+    private boolean mEstimateGDependentCrossBiases = DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES;
 
     /**
      * Listener to handle events raised by this calibrator.
@@ -420,8 +415,7 @@ public class EasyGyroscopeCalibrator implements
     /**
      * Acceleration fixer.
      */
-    private final AccelerationFixer mAccelerationFixer =
-            new AccelerationFixer();
+    private final AccelerationFixer mAccelerationFixer = new AccelerationFixer();
 
     /**
      * Index of current point being evaluated.
@@ -521,8 +515,7 @@ public class EasyGyroscopeCalibrator implements
      */
     public EasyGyroscopeCalibrator() {
         try {
-            mInitialGg = new Matrix(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            mInitialGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         } catch (final WrongSizeException ignore) {
             // never happens
         }
@@ -546,9 +539,7 @@ public class EasyGyroscopeCalibrator implements
      */
     public EasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg) {
         this();
         mSequences = sequences;
         try {
@@ -580,9 +571,7 @@ public class EasyGyroscopeCalibrator implements
      */
     public EasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg,
             final EasyGyroscopeCalibratorListener listener) {
         this(sequences, initialBias, initialMg, initialGg);
         mListener = listener;
@@ -606,9 +595,7 @@ public class EasyGyroscopeCalibrator implements
      */
     public EasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg) {
         this();
         mSequences = sequences;
         try {
@@ -640,9 +627,7 @@ public class EasyGyroscopeCalibrator implements
      */
     public EasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
             final EasyGyroscopeCalibratorListener listener) {
         this(sequences, initialBias, initialMg, initialGg);
         mListener = listener;
@@ -672,11 +657,8 @@ public class EasyGyroscopeCalibrator implements
      */
     public EasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa) {
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
+            final double[] accelerometerBias, final Matrix accelerometerMa) {
         this(sequences, initialBias, initialMg, initialGg);
         try {
             setAccelerometerBias(accelerometerBias);
@@ -712,14 +694,10 @@ public class EasyGyroscopeCalibrator implements
      */
     public EasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
+            final double[] initialBias, final Matrix initialMg, final Matrix initialGg,
+            final double[] accelerometerBias, final Matrix accelerometerMa,
             final EasyGyroscopeCalibratorListener listener) {
-        this(sequences, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+        this(sequences, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
         mListener = listener;
     }
 
@@ -746,11 +724,8 @@ public class EasyGyroscopeCalibrator implements
      */
     public EasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa) {
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg,
+            final Matrix accelerometerBias, final Matrix accelerometerMa) {
         this(sequences, initialBias, initialMg, initialGg);
         try {
             setAccelerometerBias(accelerometerBias);
@@ -785,14 +760,9 @@ public class EasyGyroscopeCalibrator implements
      */
     public EasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final EasyGyroscopeCalibratorListener listener) {
-        this(sequences, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final EasyGyroscopeCalibratorListener listener) {
+        this(sequences, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
         mListener = listener;
     }
 
@@ -820,11 +790,8 @@ public class EasyGyroscopeCalibrator implements
      */
     public EasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases,
+            final Matrix initialBias, final Matrix initialMg, final Matrix initialGg) {
         this(sequences, initialBias, initialMg, initialGg);
         mCommonAxisUsed = commonAxisUsed;
         mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
@@ -856,14 +823,9 @@ public class EasyGyroscopeCalibrator implements
      */
     public EasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final EasyGyroscopeCalibratorListener listener) {
-        this(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                initialBias, initialMg, initialGg);
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final EasyGyroscopeCalibratorListener listener) {
+        this(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
         mListener = listener;
     }
 
@@ -891,11 +853,8 @@ public class EasyGyroscopeCalibrator implements
      */
     public EasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg) {
         this(sequences, initialBias, initialMg, initialGg);
         mCommonAxisUsed = commonAxisUsed;
         mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
@@ -927,14 +886,9 @@ public class EasyGyroscopeCalibrator implements
      */
     public EasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final EasyGyroscopeCalibratorListener listener) {
-        this(sequences, commonAxisUsed, estimateGDependentCrossBiases,
-                initialBias, initialMg, initialGg);
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final EasyGyroscopeCalibratorListener listener) {
+        this(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
         mListener = listener;
     }
 
@@ -969,15 +923,10 @@ public class EasyGyroscopeCalibrator implements
      */
     public EasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-        this(sequences, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+        this(sequences, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
         mCommonAxisUsed = commonAxisUsed;
         mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
     }
@@ -1015,17 +964,11 @@ public class EasyGyroscopeCalibrator implements
      */
     public EasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final EasyGyroscopeCalibratorListener listener) {
-        this(sequences, commonAxisUsed,
-                estimateGDependentCrossBiases, initialBias, initialMg,
-                initialGg, accelerometerBias, accelerometerMa);
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
+            final Matrix accelerometerMa, final EasyGyroscopeCalibratorListener listener) {
+        this(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
         mListener = listener;
     }
 
@@ -1060,15 +1003,10 @@ public class EasyGyroscopeCalibrator implements
      */
     public EasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-        this(sequences, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+        this(sequences, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
         mCommonAxisUsed = commonAxisUsed;
         mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
     }
@@ -1106,17 +1044,11 @@ public class EasyGyroscopeCalibrator implements
      */
     public EasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final EasyGyroscopeCalibratorListener listener) {
-        this(sequences, commonAxisUsed,
-                estimateGDependentCrossBiases, initialBias, initialMg,
-                initialGg, accelerometerBias, accelerometerMa);
+            final boolean commonAxisUsed, final boolean estimateGDependentCrossBiases, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final EasyGyroscopeCalibratorListener listener) {
+        this(sequences, commonAxisUsed, estimateGDependentCrossBiases, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
         mListener = listener;
     }
 
@@ -1143,8 +1075,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerBiasX(final double accelerometerBiasX)
-            throws LockedException {
+    public void setAccelerometerBiasX(final double accelerometerBiasX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1174,8 +1105,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerBiasY(final double accelerometerBiasY)
-            throws LockedException {
+    public void setAccelerometerBiasY(final double accelerometerBiasY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1205,8 +1135,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerBiasZ(final double accelerometerBiasZ)
-            throws LockedException {
+    public void setAccelerometerBiasZ(final double accelerometerBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1222,8 +1151,7 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public Acceleration getAccelerometerBiasXAsAcceleration() {
-        return new Acceleration(mAccelerometerBiasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mAccelerometerBiasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1248,8 +1176,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerBiasX(final Acceleration accelerometerBiasX)
-            throws LockedException {
+    public void setAccelerometerBiasX(final Acceleration accelerometerBiasX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1265,8 +1192,7 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public Acceleration getAccelerometerBiasYAsAcceleration() {
-        return new Acceleration(mAccelerometerBiasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mAccelerometerBiasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1291,8 +1217,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerBiasY(final Acceleration accelerometerBiasY)
-            throws LockedException {
+    public void setAccelerometerBiasY(final Acceleration accelerometerBiasY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1308,8 +1233,7 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public Acceleration getAccelerometerBiasZAsAcceleration() {
-        return new Acceleration(mAccelerometerBiasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mAccelerometerBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1334,8 +1258,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerBiasZ(final Acceleration accelerometerBiasZ)
-            throws LockedException {
+    public void setAccelerometerBiasZ(final Acceleration accelerometerBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1354,9 +1277,8 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerBias(
-            final double accelerometerBiasX,
-            final double accelerometerBiasY,
-            final double accelerometerBiasZ) throws LockedException {
+            final double accelerometerBiasX, final double accelerometerBiasY, final double accelerometerBiasZ)
+            throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1434,8 +1356,7 @@ public class EasyGyroscopeCalibrator implements
      *                                  length 3.
      */
     @Override
-    public void setAccelerometerBias(final double[] accelerometerBias)
-            throws LockedException {
+    public void setAccelerometerBias(final double[] accelerometerBias) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1479,8 +1400,7 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public void getAccelerometerBiasAsMatrix(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mAccelerometerBiasX);
@@ -1498,13 +1418,11 @@ public class EasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     @Override
-    public void setAccelerometerBias(final Matrix accelerometerBias)
-            throws LockedException {
+    public void setAccelerometerBias(final Matrix accelerometerBias) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
-        if (accelerometerBias.getRows() != BodyKinematics.COMPONENTS
-                || accelerometerBias.getColumns() != 1) {
+        if (accelerometerBias.getRows() != BodyKinematics.COMPONENTS || accelerometerBias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -1532,8 +1450,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerSx(final double accelerometerSx)
-            throws LockedException {
+    public void setAccelerometerSx(final double accelerometerSx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1559,8 +1476,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerSy(final double accelerometerSy)
-            throws LockedException {
+    public void setAccelerometerSy(final double accelerometerSy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1586,8 +1502,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerSz(final double accelerometerSz)
-            throws LockedException {
+    public void setAccelerometerSz(final double accelerometerSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1615,8 +1530,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerMxy(final double accelerometerMxy)
-            throws LockedException {
+    public void setAccelerometerMxy(final double accelerometerMxy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1644,8 +1558,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerMxz(final double accelerometerMxz)
-            throws LockedException {
+    public void setAccelerometerMxz(final double accelerometerMxz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1674,8 +1587,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerMyx(final double accelerometerMyx)
-            throws LockedException {
+    public void setAccelerometerMyx(final double accelerometerMyx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1704,8 +1616,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerMyz(final double accelerometerMyz)
-            throws LockedException {
+    public void setAccelerometerMyz(final double accelerometerMyz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1734,8 +1645,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerMzx(final double accelerometerMzx)
-            throws LockedException {
+    public void setAccelerometerMzx(final double accelerometerMzx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1764,8 +1674,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerMzy(final double accelerometerMzy)
-            throws LockedException {
+    public void setAccelerometerMzy(final double accelerometerMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1784,8 +1693,8 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerScalingFactors(
-            final double accelerometerSx, final double accelerometerSy,
-            final double accelerometerSz) throws LockedException {
+            final double accelerometerSx, final double accelerometerSy, final double accelerometerSz)
+            throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1817,8 +1726,7 @@ public class EasyGyroscopeCalibrator implements
     public void setAccelerometerCrossCouplingErrors(
             final double accelerometerMxy, final double accelerometerMxz,
             final double accelerometerMyx, final double accelerometerMyz,
-            final double accelerometerMzx, final double accelerometerMzy)
-            throws LockedException {
+            final double accelerometerMzx, final double accelerometerMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1862,12 +1770,9 @@ public class EasyGyroscopeCalibrator implements
         if (mRunning) {
             throw new LockedException();
         }
-        setAccelerometerScalingFactors(accelerometerSx, accelerometerSy,
-                accelerometerSz);
-        setAccelerometerCrossCouplingErrors(accelerometerMxy,
-                accelerometerMxz, accelerometerMyx,
-                accelerometerMyz, accelerometerMzx,
-                accelerometerMzy);
+        setAccelerometerScalingFactors(accelerometerSx, accelerometerSy, accelerometerSz);
+        setAccelerometerCrossCouplingErrors(accelerometerMxy, accelerometerMxz, accelerometerMyx,
+                accelerometerMyz, accelerometerMzx, accelerometerMzy);
     }
 
     /**
@@ -1881,8 +1786,7 @@ public class EasyGyroscopeCalibrator implements
     public Matrix getAccelerometerMa() {
         Matrix result;
         try {
-            result = new Matrix(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            result = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             getAccelerometerMa(result);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -1900,8 +1804,7 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public void getAccelerometerMa(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS ||
-                result.getColumns() != BodyKinematics.COMPONENTS) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mAccelerometerSx);
@@ -1969,8 +1872,7 @@ public class EasyGyroscopeCalibrator implements
      * @param initialBiasX initial x-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasX(final double initialBiasX)
-            throws LockedException {
+    public void setInitialBiasX(final double initialBiasX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1996,8 +1898,7 @@ public class EasyGyroscopeCalibrator implements
      * @param initialBiasY initial y-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasY(final double initialBiasY)
-            throws LockedException {
+    public void setInitialBiasY(final double initialBiasY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2023,8 +1924,7 @@ public class EasyGyroscopeCalibrator implements
      * @param initialBiasZ initial z-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasZ(final double initialBiasZ)
-            throws LockedException {
+    public void setInitialBiasZ(final double initialBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2038,8 +1938,7 @@ public class EasyGyroscopeCalibrator implements
      * @return initial x-coordinate of gyroscope bias.
      */
     public AngularSpeed getInitialBiasAngularSpeedX() {
-        return new AngularSpeed(mInitialBiasX,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mInitialBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2060,8 +1959,7 @@ public class EasyGyroscopeCalibrator implements
      * @param initialBiasX initial x-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasX(final AngularSpeed initialBiasX)
-            throws LockedException {
+    public void setInitialBiasX(final AngularSpeed initialBiasX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2075,8 +1973,7 @@ public class EasyGyroscopeCalibrator implements
      * @return initial y-coordinate of gyroscope bias.
      */
     public AngularSpeed getInitialBiasAngularSpeedY() {
-        return new AngularSpeed(mInitialBiasY,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mInitialBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2097,8 +1994,7 @@ public class EasyGyroscopeCalibrator implements
      * @param initialBiasY initial y-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasY(final AngularSpeed initialBiasY)
-            throws LockedException {
+    public void setInitialBiasY(final AngularSpeed initialBiasY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2112,8 +2008,7 @@ public class EasyGyroscopeCalibrator implements
      * @return initial z-coordinate of gyroscope bias.
      */
     public AngularSpeed getInitialBiasAngularSpeedZ() {
-        return new AngularSpeed(mInitialBiasZ,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mInitialBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2134,8 +2029,7 @@ public class EasyGyroscopeCalibrator implements
      * @param initialBiasZ initial z-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasZ(final AngularSpeed initialBiasZ)
-            throws LockedException {
+    public void setInitialBiasZ(final AngularSpeed initialBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2152,8 +2046,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     public void setInitialBias(
-            final double initialBiasX, final double initialBiasY,
-            final double initialBiasZ) throws LockedException {
+            final double initialBiasX, final double initialBiasY, final double initialBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2171,9 +2064,8 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     public void setInitialBias(
-            final AngularSpeed initialBiasX,
-            final AngularSpeed initialBiasY,
-            final AngularSpeed initialBiasZ) throws LockedException {
+            final AngularSpeed initialBiasX, final AngularSpeed initialBiasY, final AngularSpeed initialBiasZ)
+            throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2199,8 +2091,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSx(final double initialSx)
-            throws LockedException {
+    public void setInitialSx(final double initialSx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2224,8 +2115,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSy(final double initialSy)
-            throws LockedException {
+    public void setInitialSy(final double initialSy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2249,8 +2139,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSz(final double initialSz)
-            throws LockedException {
+    public void setInitialSz(final double initialSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2274,8 +2163,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMxy(final double initialMxy)
-            throws LockedException {
+    public void setInitialMxy(final double initialMxy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2299,8 +2187,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMxz(final double initialMxz)
-            throws LockedException {
+    public void setInitialMxz(final double initialMxz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2324,8 +2211,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMyx(final double initialMyx)
-            throws LockedException {
+    public void setInitialMyx(final double initialMyx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2349,8 +2235,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMyz(final double initialMyz)
-            throws LockedException {
+    public void setInitialMyz(final double initialMyz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2374,8 +2259,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMzx(final double initialMzx)
-            throws LockedException {
+    public void setInitialMzx(final double initialMzx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2399,8 +2283,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMzy(final double initialMzy)
-            throws LockedException {
+    public void setInitialMzy(final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2417,8 +2300,7 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx, final double initialSy,
-            final double initialSz) throws LockedException {
+            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2441,8 +2323,7 @@ public class EasyGyroscopeCalibrator implements
     @Override
     public void setInitialCrossCouplingErrors(
             final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy)
-            throws LockedException {
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2473,14 +2354,12 @@ public class EasyGyroscopeCalibrator implements
     public void setInitialScalingFactorsAndCrossCouplingErrors(
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy)
-            throws LockedException {
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
+        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
     }
 
     /**
@@ -2522,8 +2401,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public void setInitialBias(final double[] initialBias)
-            throws LockedException {
+    public void setInitialBias(final double[] initialBias) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2565,8 +2443,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public void getInitialBiasAsMatrix(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mInitialBiasX);
@@ -2587,8 +2464,7 @@ public class EasyGyroscopeCalibrator implements
         if (mRunning) {
             throw new LockedException();
         }
-        if (initialBias.getRows() != BodyKinematics.COMPONENTS
-                || initialBias.getColumns() != 1) {
+        if (initialBias.getRows() != BodyKinematics.COMPONENTS || initialBias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -2603,8 +2479,7 @@ public class EasyGyroscopeCalibrator implements
      * @return initial bias coordinates.
      */
     public AngularSpeedTriad getInitialBiasAsTriad() {
-        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,
-                mInitialBiasX, mInitialBiasY, mInitialBiasZ);
+        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND, mInitialBiasX, mInitialBiasY, mInitialBiasZ);
     }
 
     /**
@@ -2613,8 +2488,7 @@ public class EasyGyroscopeCalibrator implements
      * @param result instance where result will be stored.
      */
     public void getInitialBiasAsTriad(AngularSpeedTriad result) {
-        result.setValueCoordinatesAndUnit(
-                mInitialBiasX, mInitialBiasY, mInitialBiasZ,
+        result.setValueCoordinatesAndUnit(mInitialBiasX, mInitialBiasY, mInitialBiasZ,
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -2629,12 +2503,9 @@ public class EasyGyroscopeCalibrator implements
             throw new LockedException();
         }
 
-        mInitialBiasX = convertAngularSpeed(
-                initialBias.getValueX(), initialBias.getUnit());
-        mInitialBiasY = convertAngularSpeed(
-                initialBias.getValueY(), initialBias.getUnit());
-        mInitialBiasZ = convertAngularSpeed(
-                initialBias.getValueZ(), initialBias.getUnit());
+        mInitialBiasX = convertAngularSpeed(initialBias.getValueX(), initialBias.getUnit());
+        mInitialBiasY = convertAngularSpeed(initialBias.getValueY(), initialBias.getUnit());
+        mInitialBiasZ = convertAngularSpeed(initialBias.getValueZ(), initialBias.getUnit());
     }
 
     /**
@@ -2648,8 +2519,7 @@ public class EasyGyroscopeCalibrator implements
     public Matrix getInitialMg() {
         Matrix result;
         try {
-            result = new Matrix(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            result = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             getInitialMg(result);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -2667,8 +2537,7 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public void getInitialMg(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS ||
-                result.getColumns() != BodyKinematics.COMPONENTS) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mInitialSx);
@@ -2696,8 +2565,7 @@ public class EasyGyroscopeCalibrator implements
         if (mRunning) {
             throw new LockedException();
         }
-        if (initialMg.getRows() != BodyKinematics.COMPONENTS ||
-                initialMg.getColumns() != BodyKinematics.COMPONENTS) {
+        if (initialMg.getRows() != BodyKinematics.COMPONENTS || initialMg.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -2735,8 +2603,7 @@ public class EasyGyroscopeCalibrator implements
     @Override
     public void getInitialGg(final Matrix result) {
 
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != BodyKinematics.COMPONENTS) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -2757,8 +2624,7 @@ public class EasyGyroscopeCalibrator implements
             throw new LockedException();
         }
 
-        if (initialGg.getRows() != BodyKinematics.COMPONENTS
-                || initialGg.getColumns() != BodyKinematics.COMPONENTS) {
+        if (initialGg.getRows() != BodyKinematics.COMPONENTS || initialGg.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -2789,8 +2655,7 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public void setSequences(
-            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences)
-            throws LockedException {
+            final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2882,9 +2747,7 @@ public class EasyGyroscopeCalibrator implements
      *                                      false otherwise.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setGDependentCrossBiasesEstimated(
-            final boolean estimateGDependentCrossBiases)
-            throws LockedException {
+    public void setGDependentCrossBiasesEstimated(final boolean estimateGDependentCrossBiases) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2907,9 +2770,7 @@ public class EasyGyroscopeCalibrator implements
      * @param listener listener to handle events raised by this estimator.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setListener(
-            final EasyGyroscopeCalibratorListener listener)
-            throws LockedException {
+    public void setListener(final EasyGyroscopeCalibratorListener listener) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2946,8 +2807,7 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public boolean isReady() {
-        return mSequences != null
-                && mSequences.size() >= getMinimumRequiredMeasurementsOrSequences();
+        return mSequences != null && mSequences.size() >= getMinimumRequiredMeasurementsOrSequences();
     }
 
     /**
@@ -2969,8 +2829,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws CalibrationException if estimation fails for numerical reasons.
      */
     @Override
-    public void calibrate() throws LockedException, NotReadyException,
-            CalibrationException {
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3006,9 +2865,7 @@ public class EasyGyroscopeCalibrator implements
                 mListener.onCalibrateEnd(this);
             }
 
-        } catch (final FittingException
-                | AlgebraException
-                | com.irurueta.numerical.NotReadyException e) {
+        } catch (final FittingException | AlgebraException | com.irurueta.numerical.NotReadyException e) {
             throw new CalibrationException(e);
         } finally {
             mRunning = false;
@@ -3066,8 +2923,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws WrongSizeException if provided result instance has invalid size.
      */
     @Override
-    public boolean getEstimatedBiasesAsMatrix(final Matrix result)
-            throws WrongSizeException {
+    public boolean getEstimatedBiasesAsMatrix(final Matrix result) throws WrongSizeException {
         if (mEstimatedBiases != null) {
             result.fromArray(mEstimatedBiases);
             return true;
@@ -3117,8 +2973,7 @@ public class EasyGyroscopeCalibrator implements
     @Override
     public AngularSpeed getEstimatedBiasAngularSpeedX() {
         return mEstimatedBiases != null ?
-                new AngularSpeed(mEstimatedBiases[0],
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+                new AngularSpeed(mEstimatedBiases[0], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -3146,8 +3001,7 @@ public class EasyGyroscopeCalibrator implements
     @Override
     public AngularSpeed getEstimatedBiasAngularSpeedY() {
         return mEstimatedBiases != null ?
-                new AngularSpeed(mEstimatedBiases[1],
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+                new AngularSpeed(mEstimatedBiases[1], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -3175,8 +3029,7 @@ public class EasyGyroscopeCalibrator implements
     @Override
     public AngularSpeed getEstimatedBiasAngularSpeedZ() {
         return mEstimatedBiases != null ?
-                new AngularSpeed(mEstimatedBiases[2],
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+                new AngularSpeed(mEstimatedBiases[2], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -3219,8 +3072,7 @@ public class EasyGyroscopeCalibrator implements
     public boolean getEstimatedBiasAsTriad(final AngularSpeedTriad result) {
         if (mEstimatedBiases != null) {
             result.setValueCoordinatesAndUnit(
-                    mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2],
-                    AngularSpeedUnit.RADIANS_PER_SECOND);
+                    mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2], AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
         } else {
             return false;
@@ -3282,8 +3134,7 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(0, 0) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 0) : null;
     }
 
     /**
@@ -3294,8 +3145,7 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(1, 1) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 1) : null;
     }
 
     /**
@@ -3306,8 +3156,7 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(2, 2) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 2) : null;
     }
 
     /**
@@ -3318,8 +3167,7 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(0, 1) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 1) : null;
     }
 
     /**
@@ -3330,8 +3178,7 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(0, 2) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 2) : null;
     }
 
     /**
@@ -3342,8 +3189,7 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(1, 0) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 0) : null;
     }
 
     /**
@@ -3354,8 +3200,7 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(1, 2) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 2) : null;
     }
 
     /**
@@ -3366,8 +3211,7 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(2, 0) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 0) : null;
     }
 
     /**
@@ -3378,8 +3222,7 @@ public class EasyGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(2, 1) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 1) : null;
     }
 
     /**
@@ -3620,8 +3463,7 @@ public class EasyGyroscopeCalibrator implements
      */
     public Double getEstimatedBiasStandardDeviationAverage() {
         return mEstimatedCovariance != null ?
-                (getEstimatedBiasXStandardDeviation() +
-                        getEstimatedBiasYStandardDeviation() +
+                (getEstimatedBiasXStandardDeviation() + getEstimatedBiasYStandardDeviation() +
                         getEstimatedBiasZStandardDeviation()) / 3.0 : null;
     }
 
@@ -3679,8 +3521,7 @@ public class EasyGyroscopeCalibrator implements
      */
     public AngularSpeed getEstimatedBiasStandardDeviationNormAsAngularSpeed() {
         return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasStandardDeviationNorm(),
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+                new AngularSpeed(getEstimatedBiasStandardDeviationNorm(), AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -3712,8 +3553,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws FittingException                         if no convergence to solution is found.
      * @throws com.irurueta.numerical.NotReadyException if fitter is not ready.
      */
-    private void calibrateCommonAxisAndGDependentCrossBiases()
-            throws AlgebraException, FittingException,
+    private void calibrateCommonAxisAndGDependentCrossBiases() throws AlgebraException, FittingException,
             com.irurueta.numerical.NotReadyException {
         // The gyroscope model is
         // Ωmeas = bg + (I + Mg) * Ωtrue + Gg * ftrue + w
@@ -3742,16 +3582,9 @@ public class EasyGyroscopeCalibrator implements
         // when common axis is assumed
 
         final GradientEstimator gradientEstimator = new GradientEstimator(
-                new MultiDimensionFunctionEvaluatorListener() {
-                    @Override
-                    public double evaluate(final double[] params)
-                            throws EvaluationException {
-                        return evaluateCommonAxisWithGDependentCrossBiases(mI, params);
-                    }
-                });
+                params -> evaluateCommonAxisWithGDependentCrossBiases(mI, params));
 
-        final Matrix initialM = Matrix.identity(
-                BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        final Matrix initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         initialM.add(getInitialMg());
 
         // Force initial M to be upper diagonal
@@ -3775,8 +3608,7 @@ public class EasyGyroscopeCalibrator implements
 
                     @Override
                     public double[] createInitialParametersArray() {
-                        final double[] initial =
-                                new double[COMMON_Z_AXIS_UNKNOWNS_AND_CROSS_BIASES];
+                        final double[] initial = new double[COMMON_Z_AXIS_UNKNOWNS_AND_CROSS_BIASES];
 
                         // biases b
                         for (int i = 0; i < BodyKinematics.COMPONENTS; i++) {
@@ -3805,8 +3637,7 @@ public class EasyGyroscopeCalibrator implements
 
                     @Override
                     public double evaluate(
-                            final int i, final double[] point,
-                            final double[] params, final double[] derivatives)
+                            final int i, final double[] point, final double[] params, final double[] derivatives)
                             throws EvaluationException {
                         mI = i;
 
@@ -3856,8 +3687,7 @@ public class EasyGyroscopeCalibrator implements
         b.setElementAtIndex(1, by);
         b.setElementAtIndex(2, bz);
 
-        final Matrix m = new Matrix(BodyKinematics.COMPONENTS,
-                BodyKinematics.COMPONENTS);
+        final Matrix m = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         m.setElementAtIndex(0, m11);
         m.setElementAtIndex(1, 0.0);
         m.setElementAtIndex(2, 0.0);
@@ -3870,8 +3700,7 @@ public class EasyGyroscopeCalibrator implements
         m.setElementAtIndex(7, m23);
         m.setElementAtIndex(8, m33);
 
-        final Matrix g = new Matrix(BodyKinematics.COMPONENTS,
-                BodyKinematics.COMPONENTS);
+        final Matrix g = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         g.setElementAtIndex(0, g11);
         g.setElementAtIndex(1, g21);
         g.setElementAtIndex(2, g31);
@@ -4052,8 +3881,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws FittingException                         if no convergence to solution is found.
      * @throws com.irurueta.numerical.NotReadyException if fitter is not ready.
      */
-    private void calibrateGeneralAndGDependentCrossBiases()
-            throws AlgebraException, FittingException,
+    private void calibrateGeneralAndGDependentCrossBiases() throws AlgebraException, FittingException,
             com.irurueta.numerical.NotReadyException {
         // The gyroscope model is
         // Ωmeas = bg + (I + Mg) * Ωtrue + Gg * ftrue + w
@@ -4077,16 +3905,9 @@ public class EasyGyroscopeCalibrator implements
         // M^-1 * (Ωmeas - M*b - M*G*ftrue) = Ωtrue
 
         final GradientEstimator gradientEstimator = new GradientEstimator(
-                new MultiDimensionFunctionEvaluatorListener() {
-                    @Override
-                    public double evaluate(final double[] params)
-                            throws EvaluationException {
-                        return evaluateGeneralWithGDependentCrossBiases(mI, params);
-                    }
-                });
+                params -> evaluateGeneralWithGDependentCrossBiases(mI, params));
 
-        final Matrix initialM = Matrix.identity(
-                BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        final Matrix initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         initialM.add(getInitialMg());
 
         final Matrix invInitialM = Utils.inverse(initialM);
@@ -4105,8 +3926,7 @@ public class EasyGyroscopeCalibrator implements
 
                     @Override
                     public double[] createInitialParametersArray() {
-                        final double[] initial =
-                                new double[GENERAL_UNKNOWNS_AND_CROSS_BIASES];
+                        final double[] initial = new double[GENERAL_UNKNOWNS_AND_CROSS_BIASES];
 
                         // biases b
                         for (int i = 0; i < BodyKinematics.COMPONENTS; i++) {
@@ -4129,8 +3949,7 @@ public class EasyGyroscopeCalibrator implements
 
                     @Override
                     public double evaluate(
-                            final int i, final double[] point,
-                            final double[] params, final double[] derivatives)
+                            final int i, final double[] point, final double[] params, final double[] derivatives)
                             throws EvaluationException {
                         mI = i;
 
@@ -4197,8 +4016,7 @@ public class EasyGyroscopeCalibrator implements
         m.setElementAtIndex(7, m23);
         m.setElementAtIndex(8, m33);
 
-        final Matrix g = new Matrix(BodyKinematics.COMPONENTS,
-                BodyKinematics.COMPONENTS);
+        final Matrix g = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         g.setElementAtIndex(0, g11);
         g.setElementAtIndex(1, g21);
         g.setElementAtIndex(2, g31);
@@ -4407,8 +4225,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws FittingException                         if no convergence to solution is found.
      * @throws com.irurueta.numerical.NotReadyException if fitter is not ready.
      */
-    private void calibrateCommonAxis()
-            throws AlgebraException, FittingException,
+    private void calibrateCommonAxis() throws AlgebraException, FittingException,
             com.irurueta.numerical.NotReadyException {
         // The gyroscope model is
         // Ωmeas = bg + (I + Mg) * Ωtrue + Gg * ftrue + w
@@ -4441,17 +4258,9 @@ public class EasyGyroscopeCalibrator implements
         // Notice that M is upper diagonal because Mg is upper diagonal
         // when common axis is assumed
 
-        final GradientEstimator gradientEstimator = new GradientEstimator(
-                new MultiDimensionFunctionEvaluatorListener() {
-                    @Override
-                    public double evaluate(final double[] params)
-                            throws EvaluationException {
-                        return evaluateCommonAxis(mI, params);
-                    }
-                });
+        final GradientEstimator gradientEstimator = new GradientEstimator(params -> evaluateCommonAxis(mI, params));
 
-        final Matrix initialM = Matrix.identity(
-                BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        final Matrix initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         initialM.add(getInitialMg());
 
         // Force initial M to be upper diagonal
@@ -4496,8 +4305,7 @@ public class EasyGyroscopeCalibrator implements
 
                     @Override
                     public double evaluate(
-                            final int i, final double[] point,
-                            final double[] params, final double[] derivatives)
+                            final int i, final double[] point, final double[] params, final double[] derivatives)
                             throws EvaluationException {
                         mI = i;
 
@@ -4535,8 +4343,7 @@ public class EasyGyroscopeCalibrator implements
         b.setElementAtIndex(1, by);
         b.setElementAtIndex(2, bz);
 
-        final Matrix m = new Matrix(BodyKinematics.COMPONENTS,
-                BodyKinematics.COMPONENTS);
+        final Matrix m = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         m.setElementAtIndex(0, m11);
         m.setElementAtIndex(1, 0.0);
         m.setElementAtIndex(2, 0.0);
@@ -4672,8 +4479,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws FittingException                         if no convergence to solution is found.
      * @throws com.irurueta.numerical.NotReadyException if fitter is not ready.
      */
-    private void calibrateGeneral()
-            throws AlgebraException, FittingException,
+    private void calibrateGeneral() throws AlgebraException, FittingException,
             com.irurueta.numerical.NotReadyException {
         // The gyroscope model is
         // Ωmeas = bg + (I + Mg) * Ωtrue + Gg * ftrue + w
@@ -4701,17 +4507,9 @@ public class EasyGyroscopeCalibrator implements
 
         // M^-1 * (Ωmeas - M*b) = Ωtrue
 
-        final GradientEstimator gradientEstimator = new GradientEstimator(
-                new MultiDimensionFunctionEvaluatorListener() {
-                    @Override
-                    public double evaluate(final double[] params)
-                            throws EvaluationException {
-                        return evaluateGeneral(mI, params);
-                    }
-                });
+        final GradientEstimator gradientEstimator = new GradientEstimator(params -> evaluateGeneral(mI, params));
 
-        final Matrix initialM = Matrix.identity(
-                BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        final Matrix initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         initialM.add(getInitialMg());
 
         final Matrix invInitialM = Utils.inverse(initialM);
@@ -4746,8 +4544,7 @@ public class EasyGyroscopeCalibrator implements
 
                     @Override
                     public double evaluate(
-                            final int i, final double[] point,
-                            final double[] params, final double[] derivatives)
+                            final int i, final double[] point, final double[] params, final double[] derivatives)
                             throws EvaluationException {
                         mI = i;
 
@@ -4788,8 +4585,7 @@ public class EasyGyroscopeCalibrator implements
         b.setElementAtIndex(1, by);
         b.setElementAtIndex(2, bz);
 
-        final Matrix m = new Matrix(BodyKinematics.COMPONENTS,
-                BodyKinematics.COMPONENTS);
+        final Matrix m = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         m.setElementAtIndex(0, m11);
         m.setElementAtIndex(1, m21);
         m.setElementAtIndex(2, m31);
@@ -4942,8 +4738,7 @@ public class EasyGyroscopeCalibrator implements
         final double[] fixedAfterF = new double[BodyKinematics.COMPONENTS];
 
         final int numSequences = mSequences.size();
-        final Matrix x = new Matrix(numSequences,
-                2 * BodyKinematics.COMPONENTS);
+        final Matrix x = new Matrix(numSequences, 2 * BodyKinematics.COMPONENTS);
         final double[] y = new double[numSequences];
         final double[] standardDeviations = new double[numSequences];
 
@@ -4979,15 +4774,12 @@ public class EasyGyroscopeCalibrator implements
             ArrayUtils.normalize(fixedBeforeF);
             ArrayUtils.normalize(fixedAfterF);
 
-            x.setSubmatrix(i, 0, i, 2,
-                    fixedBeforeF);
-            x.setSubmatrix(i, 3, i, 5,
-                    fixedAfterF);
+            x.setSubmatrix(i, 0, i, 2, fixedBeforeF);
+            x.setSubmatrix(i, 3, i, 5, fixedAfterF);
 
             y[i] = 0.0;
 
-            standardDeviations[i] = computeAverageAngularRateStandardDeviation(
-                    sequence);
+            standardDeviations[i] = computeAverageAngularRateStandardDeviation(sequence);
             i++;
         }
 
@@ -5044,8 +4836,7 @@ public class EasyGyroscopeCalibrator implements
      * @return converted value.
      */
     private static double convertAngularSpeed(final AngularSpeed angularSpeed) {
-        return convertAngularSpeed(angularSpeed.getValue().doubleValue(),
-                angularSpeed.getUnit());
+        return convertAngularSpeed(angularSpeed.getValue().doubleValue(), angularSpeed.getUnit());
     }
 
     /**
@@ -5057,8 +4848,7 @@ public class EasyGyroscopeCalibrator implements
      * @param g internal g-dependent cross bias matrix.
      * @throws AlgebraException if a numerical instability occurs.
      */
-    private void setResult(final Matrix m, final Matrix b, final Matrix g)
-            throws AlgebraException {
+    private void setResult(final Matrix m, final Matrix b, final Matrix g) throws AlgebraException {
         setResult(m, b);
 
         // Gg = M*G
@@ -5095,13 +4885,11 @@ public class EasyGyroscopeCalibrator implements
         }
 
         for (int i = 0; i < BodyKinematics.COMPONENTS; i++) {
-            mEstimatedMg.setElementAt(i, i,
-                    mEstimatedMg.getElementAt(i, i) - 1.0);
+            mEstimatedMg.setElementAt(i, i, mEstimatedMg.getElementAt(i, i) - 1.0);
         }
 
         if (mEstimatedGg == null) {
-            mEstimatedGg = new Matrix(
-                    BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            mEstimatedGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         } else {
             mEstimatedGg.initialize(0.0);
         }
@@ -5124,8 +4912,7 @@ public class EasyGyroscopeCalibrator implements
      * @return error between estimated and measured gravity versor.
      * @throws EvaluationException if there are numerical instabilities.
      */
-    private double evaluateGeneralWithGDependentCrossBiases(
-            final int i, final double[] params)
+    private double evaluateGeneralWithGDependentCrossBiases(final int i, final double[] params)
             throws EvaluationException {
 
         final double bx = params[0];
@@ -5156,9 +4943,8 @@ public class EasyGyroscopeCalibrator implements
         final double g23 = params[19];
         final double g33 = params[20];
 
-        return evaluate(i, bx, by, bz, m11, m21, m31, m12, m22, m32,
-                m13, m23, m33, g11, g21, g31, g12, g22, g32,
-                g13, g23, g33);
+        return evaluate(i, bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33,
+                g11, g21, g31, g12, g22, g32, g13, g23, g33);
     }
 
     /**
@@ -5174,8 +4960,7 @@ public class EasyGyroscopeCalibrator implements
      * @return error between estimated and measured gravity versor.
      * @throws EvaluationException if there are numerical instabilities.
      */
-    private double evaluateCommonAxisWithGDependentCrossBiases(
-            final int i, final double[] params)
+    private double evaluateCommonAxisWithGDependentCrossBiases(final int i, final double[] params)
             throws EvaluationException {
 
         final double bx = params[0];
@@ -5203,9 +4988,8 @@ public class EasyGyroscopeCalibrator implements
         final double g23 = params[16];
         final double g33 = params[17];
 
-        return evaluate(i, bx, by, bz, m11, 0.0, 0.0, m12, m22, 0.0,
-                m13, m23, m33, g11, g21, g31, g12, g22, g32,
-                g13, g23, g33);
+        return evaluate(i, bx, by, bz, m11, 0.0, 0.0, m12, m22, 0.0, m13, m23, m33,
+                g11, g21, g31, g12, g22, g32, g13, g23, g33);
     }
 
     /**
@@ -5220,9 +5004,7 @@ public class EasyGyroscopeCalibrator implements
      * @return error between estimated and measured gravity versor.
      * @throws EvaluationException if there are numerical instabilities.
      */
-    private double evaluateGeneral(
-            final int i, final double[] params)
-            throws EvaluationException {
+    private double evaluateGeneral(final int i, final double[] params) throws EvaluationException {
 
         final double bx = params[0];
         final double by = params[1];
@@ -5240,9 +5022,8 @@ public class EasyGyroscopeCalibrator implements
         final double m23 = params[10];
         final double m33 = params[11];
 
-        return evaluate(i, bx, by, bz, m11, m21, m31, m12, m22, m32,
-                m13, m23, m33, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                0.0, 0.0, 0.0);
+        return evaluate(i, bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     }
 
     /**
@@ -5257,9 +5038,7 @@ public class EasyGyroscopeCalibrator implements
      * @return error between estimated and measured gravity versor.
      * @throws EvaluationException if there are numerical instabilities.
      */
-    private double evaluateCommonAxis(
-            final int i, final double[] params)
-            throws EvaluationException {
+    private double evaluateCommonAxis(final int i, final double[] params) throws EvaluationException {
         final double bx = params[0];
         final double by = params[1];
         final double bz = params[2];
@@ -5273,9 +5052,8 @@ public class EasyGyroscopeCalibrator implements
         final double m23 = params[7];
         final double m33 = params[8];
 
-        return evaluate(i, bx, by, bz, m11, 0.0, 0.0, m12, m22, 0.0,
-                m13, m23, m33, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-                0.0, 0.0, 0.0);
+        return evaluate(i, bx, by, bz, m11, 0.0, 0.0, m12, m22, 0.0, m13, m23, m33,
+                0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     }
 
     /**
@@ -5310,55 +5088,44 @@ public class EasyGyroscopeCalibrator implements
      * @throws EvaluationException if there are numerical instabilities.
      */
     private double evaluate(
-            final int i,
-            final double bx, final double by, final double bz,
+            final int i, final double bx, final double by, final double bz,
             final double m11, final double m21, final double m31,
             final double m12, final double m22, final double m32,
             final double m13, final double m23, final double m33,
             final double g11, final double g21, final double g31,
             final double g12, final double g22, final double g32,
-            final double g13, final double g23, final double g33)
-            throws EvaluationException {
+            final double g13, final double g23, final double g33) throws EvaluationException {
 
         try {
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> measuredSequence =
-                    mSequences.get(i);
-            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> fixedSequence =
-                    mFixedSequences.get(i);
+            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> measuredSequence = mSequences.get(i);
+            final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> fixedSequence = mFixedSequences.get(i);
 
             // generate new sequence using current parameters to fix angular rate measurements
             if (mMeasuredSpecificForce == null) {
-                mMeasuredSpecificForce = new Matrix(
-                        BodyKinematics.COMPONENTS, 1);
+                mMeasuredSpecificForce = new Matrix(BodyKinematics.COMPONENTS, 1);
             }
             if (mTrueSpecificForce == null) {
-                mTrueSpecificForce = new Matrix(
-                        BodyKinematics.COMPONENTS, 1);
+                mTrueSpecificForce = new Matrix(BodyKinematics.COMPONENTS, 1);
             }
 
             if (mMeasuredAngularRate == null) {
-                mMeasuredAngularRate = new Matrix(
-                        BodyKinematics.COMPONENTS, 1);
+                mMeasuredAngularRate = new Matrix(BodyKinematics.COMPONENTS, 1);
             }
             if (mTrueAngularRate == null) {
-                mTrueAngularRate = new Matrix(
-                        BodyKinematics.COMPONENTS, 1);
+                mTrueAngularRate = new Matrix(BodyKinematics.COMPONENTS, 1);
             }
 
             if (mM == null) {
-                mM = new Matrix(BodyKinematics.COMPONENTS,
-                        BodyKinematics.COMPONENTS);
+                mM = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             }
             if (mInvM == null) {
-                mInvM = new Matrix(BodyKinematics.COMPONENTS,
-                        BodyKinematics.COMPONENTS);
+                mInvM = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             }
             if (mB == null) {
                 mB = new Matrix(BodyKinematics.COMPONENTS, 1);
             }
             if (mG == null) {
-                mG = new Matrix(BodyKinematics.COMPONENTS,
-                        BodyKinematics.COMPONENTS);
+                mG = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             }
             if (mTmp == null) {
                 mTmp = new Matrix(BodyKinematics.COMPONENTS, 1);
@@ -5409,13 +5176,11 @@ public class EasyGyroscopeCalibrator implements
             // integrate fixed sequence to obtain attitude change
             QuaternionIntegrator.integrateGyroSequence(fixedSequence, QuaternionStepIntegratorType.RUNGE_KUTTA, mQ);
 
-            mStartPoint.setInhomogeneousCoordinates(
-                    mPoint[0], mPoint[1], mPoint[2]);
+            mStartPoint.setInhomogeneousCoordinates(mPoint[0], mPoint[1], mPoint[2]);
             mQ.inverse();
             mQ.rotate(mStartPoint, mEndPoint);
 
-            mExpectedEndPoint.setInhomogeneousCoordinates(
-                    mPoint[3], mPoint[4], mPoint[5]);
+            mExpectedEndPoint.setInhomogeneousCoordinates(mPoint[3], mPoint[4], mPoint[5]);
 
             return mExpectedEndPoint.distanceTo(mEndPoint);
 
@@ -5433,8 +5198,7 @@ public class EasyGyroscopeCalibrator implements
      * @throws AlgebraException if for some reason kinematics
      */
     private void fixKinematics(
-            final BodyKinematics kinematics,
-            final BodyKinematics result) throws AlgebraException {
+            final BodyKinematics kinematics, final BodyKinematics result) throws AlgebraException {
 
         // Ωmeas = bg + (I + Mg) * Ωtrue + Gg * ftrue
         // Ωmeas = M*(Ωtrue + b + G * ftrue)

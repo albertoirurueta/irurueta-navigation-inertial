@@ -97,11 +97,9 @@ import java.util.Collection;
  * - ftrue is ground-truth specific force. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
-public class TurntableGyroscopeCalibrator implements
-        GyroscopeNonLinearCalibrator, UnknownBiasGyroscopeCalibrator,
+public class TurntableGyroscopeCalibrator implements GyroscopeNonLinearCalibrator, UnknownBiasGyroscopeCalibrator,
         GyroscopeCalibrationSource, GyroscopeBiasUncertaintySource,
-        UnorderedStandardDeviationBodyKinematicsGyroscopeCalibrator,
-        AccelerometerDependentGyroscopeCalibrator {
+        UnorderedStandardDeviationBodyKinematicsGyroscopeCalibrator, AccelerometerDependentGyroscopeCalibrator {
 
     /**
      * Indicates whether by default a common z-axis is assumed for both the accelerometer
@@ -151,28 +149,24 @@ public class TurntableGyroscopeCalibrator implements
      * Required minimum number of measurements for the general case and
      * G-dependent cross biases are being estimated.
      */
-    public static final int MINIMUM_MEASUREMENTS_GENERAL_AND_CROSS_BIASES =
-            GENERAL_UNKNOWNS_AND_CROSS_BIASES + 1;
+    public static final int MINIMUM_MEASUREMENTS_GENERAL_AND_CROSS_BIASES = GENERAL_UNKNOWNS_AND_CROSS_BIASES + 1;
 
     /**
      * Required minimum number of measurements when common z-axis is assumed
      * and G-dependent cross biases are being ignored.
      */
-    public static final int MINIMUM_MEASUREMENTS_COMMON_Z_AXIS =
-            COMMON_Z_AXIS_UNKNOWNS + 1;
+    public static final int MINIMUM_MEASUREMENTS_COMMON_Z_AXIS = COMMON_Z_AXIS_UNKNOWNS + 1;
 
     /**
      * Required minimum number of measurements for the general case and
      * G-dependent cross biases are being ignored.
      */
-    public static final int MINIMUM_MEASUREMENTS_GENERAL =
-            GENERAL_UNKNOWNS + 1;
+    public static final int MINIMUM_MEASUREMENTS_GENERAL = GENERAL_UNKNOWNS + 1;
 
     /**
      * Default turntable rotation rate.
      */
-    public static final double DEFAULT_TURNTABLE_ROTATION_RATE =
-            Constants.EARTH_ROTATION_RATE;
+    public static final double DEFAULT_TURNTABLE_ROTATION_RATE = Constants.EARTH_ROTATION_RATE;
 
     /**
      * Default time interval between measurements expressed in seconds (s).
@@ -183,8 +177,7 @@ public class TurntableGyroscopeCalibrator implements
     /**
      * Levenberg-Marquardt fitter to find a non-linear solution.
      */
-    private final LevenbergMarquardtMultiDimensionFitter mFitter =
-            new LevenbergMarquardtMultiDimensionFitter();
+    private final LevenbergMarquardtMultiDimensionFitter mFitter = new LevenbergMarquardtMultiDimensionFitter();
 
     /**
      * Known x-coordinate of accelerometer bias to be used to fix measured
@@ -366,8 +359,7 @@ public class TurntableGyroscopeCalibrator implements
      * estimated or not.
      * When enabled, this adds 9 variables from Gg matrix.
      */
-    private boolean mEstimateGDependentCrossBiases =
-            DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES;
+    private boolean mEstimateGDependentCrossBiases = DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES;
 
     /**
      * Listener to handle events raised by this calibrator.
@@ -539,16 +531,14 @@ public class TurntableGyroscopeCalibrator implements
     /**
      * Acceleration fixer.
      */
-    private final AccelerationFixer mAccelerationFixer =
-            new AccelerationFixer();
+    private final AccelerationFixer mAccelerationFixer = new AccelerationFixer();
 
     /**
      * Constructor.
      */
     public TurntableGyroscopeCalibrator() {
         try {
-            mInitialGg = new Matrix(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            mInitialGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         } catch (final WrongSizeException ignore) {
             // never happens
         }
@@ -586,13 +576,9 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg) {
         this();
         mPosition = position;
         mMeasurements = measurements;
@@ -641,16 +627,10 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final TurntableGyroscopeCalibratorListener listener) {
-        this(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final TurntableGyroscopeCalibratorListener listener) {
+        this(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg);
         mListener = listener;
     }
 
@@ -686,13 +666,9 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg) {
         this();
         mPosition = position;
         mMeasurements = measurements;
@@ -741,16 +717,10 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final TurntableGyroscopeCalibratorListener listener) {
-        this(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final TurntableGyroscopeCalibratorListener listener) {
+        this(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg);
         mListener = listener;
     }
 
@@ -792,17 +762,11 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-        this(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg);
+        this(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg);
         try {
             setAccelerometerBias(accelerometerBias);
             setAccelerometerMa(accelerometerMa);
@@ -850,19 +814,13 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final TurntableGyroscopeCalibratorListener listener) {
-        this(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa);
+        this(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
         mListener = listener;
     }
 
@@ -903,17 +861,11 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-        this(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg);
+        this(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg);
         try {
             setAccelerometerBias(accelerometerBias);
             setAccelerometerMa(accelerometerMa);
@@ -961,19 +913,12 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final TurntableGyroscopeCalibratorListener listener) {
-        this(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final TurntableGyroscopeCalibratorListener listener) {
+        this(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
         mListener = listener;
     }
 
@@ -1019,17 +964,11 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix initialBias, final Matrix initialMg,
             final Matrix initialGg) {
-        this(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg);
+        this(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg);
         mCommonAxisUsed = commonAxisUsed;
         mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
     }
@@ -1077,19 +1016,12 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final TurntableGyroscopeCalibratorListener listener) {
-        this(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix initialBias, final Matrix initialMg,
+            final Matrix initialGg, final TurntableGyroscopeCalibratorListener listener) {
+        this(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
         mListener = listener;
     }
 
@@ -1136,17 +1068,11 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] initialBias, final Matrix initialMg,
             final Matrix initialGg) {
-        this(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg);
+        this(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg);
         mCommonAxisUsed = commonAxisUsed;
         mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
     }
@@ -1196,19 +1122,12 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final TurntableGyroscopeCalibratorListener listener) {
-        this(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] initialBias, final Matrix initialMg,
+            final Matrix initialGg, final TurntableGyroscopeCalibratorListener listener) {
+        this(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed, estimateGDependentCrossBiases,
+                initialBias, initialMg, initialGg);
         mListener = listener;
     }
 
@@ -1262,20 +1181,12 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa) {
-        this(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] initialBias, final Matrix initialMg,
+            final Matrix initialGg, final double[] accelerometerBias, final Matrix accelerometerMa) {
+        this(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
         mCommonAxisUsed = commonAxisUsed;
         mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
     }
@@ -1331,21 +1242,13 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] initialBias, final Matrix initialMg,
+            final Matrix initialGg, final double[] accelerometerBias, final Matrix accelerometerMa,
             final TurntableGyroscopeCalibratorListener listener) {
-        this(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa);
+        this(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed, estimateGDependentCrossBiases,
+                initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
         mListener = listener;
     }
 
@@ -1397,20 +1300,12 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa) {
-        this(position, turntableRotationRate, timeInterval, measurements,
-                initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa);
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix initialBias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa) {
+        this(position, turntableRotationRate, timeInterval, measurements, initialBias, initialMg, initialGg,
+                accelerometerBias, accelerometerMa);
         mCommonAxisUsed = commonAxisUsed;
         mEstimateGDependentCrossBiases = estimateGDependentCrossBiases;
     }
@@ -1465,21 +1360,13 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final ECEFPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
+            final ECEFPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix initialBias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa,
             final TurntableGyroscopeCalibratorListener listener) {
-        this(position, turntableRotationRate, timeInterval, measurements,
-                commonAxisUsed, estimateGDependentCrossBiases, initialBias,
-                initialMg, initialGg, accelerometerBias, accelerometerMa);
+        this(position, turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
         mListener = listener;
     }
 
@@ -1515,15 +1402,11 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
-        this(convertPosition(position), turntableRotationRate, timeInterval,
-                measurements, initialBias, initialMg, initialGg);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg) {
+        this(convertPosition(position), turntableRotationRate, timeInterval, measurements, initialBias, initialMg,
+                initialGg);
     }
 
     /**
@@ -1560,16 +1443,11 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final TurntableGyroscopeCalibratorListener listener) {
-        this(convertPosition(position), turntableRotationRate, timeInterval,
-                measurements, initialBias, initialMg, initialGg, listener);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final TurntableGyroscopeCalibratorListener listener) {
+        this(convertPosition(position), turntableRotationRate, timeInterval, measurements, initialBias, initialMg,
+                initialGg, listener);
     }
 
     /**
@@ -1604,15 +1482,11 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg) {
-        this(convertPosition(position), turntableRotationRate, timeInterval,
-                measurements, initialBias, initialMg, initialGg);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg) {
+        this(convertPosition(position), turntableRotationRate, timeInterval, measurements, initialBias, initialMg,
+                initialGg);
     }
 
     /**
@@ -1649,16 +1523,11 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final TurntableGyroscopeCalibratorListener listener) {
-        this(convertPosition(position), turntableRotationRate, timeInterval,
-                measurements, initialBias, initialMg, initialGg, listener);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final TurntableGyroscopeCalibratorListener listener) {
+        this(convertPosition(position), turntableRotationRate, timeInterval, measurements, initialBias, initialMg,
+                initialGg, listener);
     }
 
     /**
@@ -1699,18 +1568,12 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-        this(convertPosition(position), turntableRotationRate, timeInterval,
-                measurements, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+        this(convertPosition(position), turntableRotationRate, timeInterval, measurements, initialBias, initialMg,
+                initialGg, accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -1752,19 +1615,12 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
-            final TurntableGyroscopeCalibratorListener listener) {
-        this(convertPosition(position), turntableRotationRate, timeInterval,
-                measurements, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, listener);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final double[] initialBias,
+            final Matrix initialMg, final Matrix initialGg, final double[] accelerometerBias,
+            final Matrix accelerometerMa, final TurntableGyroscopeCalibratorListener listener) {
+        this(convertPosition(position), turntableRotationRate, timeInterval, measurements, initialBias, initialMg,
+                initialGg, accelerometerBias, accelerometerMa, listener);
     }
 
     /**
@@ -1805,18 +1661,12 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-        this(convertPosition(position), turntableRotationRate, timeInterval,
-                measurements, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa);
+        this(convertPosition(position), turntableRotationRate, timeInterval, measurements, initialBias, initialMg,
+                initialGg, accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -1858,19 +1708,12 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
-            final TurntableGyroscopeCalibratorListener listener) {
-        this(convertPosition(position), turntableRotationRate, timeInterval,
-                measurements, initialBias, initialMg, initialGg,
-                accelerometerBias, accelerometerMa, listener);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final Matrix initialBias,
+            final Matrix initialMg, final Matrix initialGg, final Matrix accelerometerBias,
+            final Matrix accelerometerMa, final TurntableGyroscopeCalibratorListener listener) {
+        this(convertPosition(position), turntableRotationRate, timeInterval, measurements, initialBias, initialMg,
+                initialGg, accelerometerBias, accelerometerMa, listener);
     }
 
     /**
@@ -1915,18 +1758,12 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix initialBias, final Matrix initialMg,
             final Matrix initialGg) {
-        this(convertPosition(position), turntableRotationRate, timeInterval,
-                measurements, commonAxisUsed, estimateGDependentCrossBiases,
-                initialBias, initialMg, initialGg);
+        this(convertPosition(position), turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
     }
 
     /**
@@ -1972,19 +1809,12 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final TurntableGyroscopeCalibratorListener listener) {
-        this(convertPosition(position), turntableRotationRate, timeInterval,
-                measurements, commonAxisUsed, estimateGDependentCrossBiases,
-                initialBias, initialMg, initialGg, listener);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix initialBias, final Matrix initialMg,
+            final Matrix initialGg, final TurntableGyroscopeCalibratorListener listener) {
+        this(convertPosition(position), turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
     }
 
     /**
@@ -2030,18 +1860,12 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] initialBias, final Matrix initialMg,
             final Matrix initialGg) {
-        this(convertPosition(position), turntableRotationRate, timeInterval,
-                measurements, commonAxisUsed, estimateGDependentCrossBiases,
-                initialBias, initialMg, initialGg);
+        this(convertPosition(position), turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg);
     }
 
     /**
@@ -2089,19 +1913,12 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final TurntableGyroscopeCalibratorListener listener) {
-        this(convertPosition(position), turntableRotationRate, timeInterval,
-                measurements, commonAxisUsed, estimateGDependentCrossBiases,
-                initialBias, initialMg, initialGg, listener);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] initialBias, final Matrix initialMg,
+            final Matrix initialGg, final TurntableGyroscopeCalibratorListener listener) {
+        this(convertPosition(position), turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, listener);
     }
 
     /**
@@ -2154,21 +1971,12 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa) {
-        this(convertPosition(position), turntableRotationRate, timeInterval,
-                measurements, commonAxisUsed, estimateGDependentCrossBiases,
-                initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] initialBias, final Matrix initialMg,
+            final Matrix initialGg, final double[] accelerometerBias, final Matrix accelerometerMa) {
+        this(convertPosition(position), turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -2222,22 +2030,14 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final double[] initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final double[] accelerometerBias,
-            final Matrix accelerometerMa,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final double[] initialBias, final Matrix initialMg,
+            final Matrix initialGg, final double[] accelerometerBias, final Matrix accelerometerMa,
             final TurntableGyroscopeCalibratorListener listener) {
-        this(convertPosition(position), turntableRotationRate, timeInterval,
-                measurements, commonAxisUsed, estimateGDependentCrossBiases,
-                initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, listener);
+        this(convertPosition(position), turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                listener);
     }
 
     /**
@@ -2288,21 +2088,12 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa) {
-        this(convertPosition(position), turntableRotationRate, timeInterval,
-                measurements, commonAxisUsed, estimateGDependentCrossBiases,
-                initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa);
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix initialBias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa) {
+        this(convertPosition(position), turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa);
     }
 
     /**
@@ -2355,22 +2146,14 @@ public class TurntableGyroscopeCalibrator implements
      *                                  time interval is zero or negative.
      */
     public TurntableGyroscopeCalibrator(
-            final NEDPosition position,
-            final double turntableRotationRate,
-            final double timeInterval,
-            final Collection<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final boolean estimateGDependentCrossBiases,
-            final Matrix initialBias,
-            final Matrix initialMg,
-            final Matrix initialGg,
-            final Matrix accelerometerBias,
-            final Matrix accelerometerMa,
+            final NEDPosition position, final double turntableRotationRate, final double timeInterval,
+            final Collection<StandardDeviationBodyKinematics> measurements, final boolean commonAxisUsed,
+            final boolean estimateGDependentCrossBiases, final Matrix initialBias, final Matrix initialMg,
+            final Matrix initialGg, final Matrix accelerometerBias, final Matrix accelerometerMa,
             final TurntableGyroscopeCalibratorListener listener) {
-        this(convertPosition(position), turntableRotationRate, timeInterval,
-                measurements, commonAxisUsed, estimateGDependentCrossBiases,
-                initialBias, initialMg, initialGg, accelerometerBias,
-                accelerometerMa, listener);
+        this(convertPosition(position), turntableRotationRate, timeInterval, measurements, commonAxisUsed,
+                estimateGDependentCrossBiases, initialBias, initialMg, initialGg, accelerometerBias, accelerometerMa,
+                listener);
     }
 
     /**
@@ -2396,8 +2179,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerBiasX(final double accelerometerBiasX)
-            throws LockedException {
+    public void setAccelerometerBiasX(final double accelerometerBiasX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2427,8 +2209,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerBiasY(final double accelerometerBiasY)
-            throws LockedException {
+    public void setAccelerometerBiasY(final double accelerometerBiasY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2458,8 +2239,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerBiasZ(final double accelerometerBiasZ)
-            throws LockedException {
+    public void setAccelerometerBiasZ(final double accelerometerBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2475,8 +2255,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public Acceleration getAccelerometerBiasXAsAcceleration() {
-        return new Acceleration(mAccelerometerBiasX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mAccelerometerBiasX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2501,8 +2280,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerBiasX(final Acceleration accelerometerBiasX)
-            throws LockedException {
+    public void setAccelerometerBiasX(final Acceleration accelerometerBiasX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2518,8 +2296,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public Acceleration getAccelerometerBiasYAsAcceleration() {
-        return new Acceleration(mAccelerometerBiasY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mAccelerometerBiasY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2544,8 +2321,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerBiasY(final Acceleration accelerometerBiasY)
-            throws LockedException {
+    public void setAccelerometerBiasY(final Acceleration accelerometerBiasY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2561,8 +2337,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public Acceleration getAccelerometerBiasZAsAcceleration() {
-        return new Acceleration(mAccelerometerBiasZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mAccelerometerBiasZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2587,8 +2362,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerBiasZ(final Acceleration accelerometerBiasZ)
-            throws LockedException {
+    public void setAccelerometerBiasZ(final Acceleration accelerometerBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2607,9 +2381,8 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerBias(
-            final double accelerometerBiasX,
-            final double accelerometerBiasY,
-            final double accelerometerBiasZ) throws LockedException {
+            final double accelerometerBiasX, final double accelerometerBiasY, final double accelerometerBiasZ)
+            throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2630,8 +2403,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerBias(
-            final Acceleration accelerometerBiasX,
-            final Acceleration accelerometerBiasY,
+            final Acceleration accelerometerBiasX, final Acceleration accelerometerBiasY,
             final Acceleration accelerometerBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -2687,8 +2459,7 @@ public class TurntableGyroscopeCalibrator implements
      *                                  length 3.
      */
     @Override
-    public void setAccelerometerBias(final double[] accelerometerBias)
-            throws LockedException {
+    public void setAccelerometerBias(final double[] accelerometerBias) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2732,8 +2503,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public void getAccelerometerBiasAsMatrix(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mAccelerometerBiasX);
@@ -2751,13 +2521,11 @@ public class TurntableGyroscopeCalibrator implements
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     @Override
-    public void setAccelerometerBias(final Matrix accelerometerBias)
-            throws LockedException {
+    public void setAccelerometerBias(final Matrix accelerometerBias) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
-        if (accelerometerBias.getRows() != BodyKinematics.COMPONENTS
-                || accelerometerBias.getColumns() != 1) {
+        if (accelerometerBias.getRows() != BodyKinematics.COMPONENTS || accelerometerBias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -2785,8 +2553,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerSx(final double accelerometerSx)
-            throws LockedException {
+    public void setAccelerometerSx(final double accelerometerSx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2812,8 +2579,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerSy(final double accelerometerSy)
-            throws LockedException {
+    public void setAccelerometerSy(final double accelerometerSy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2839,8 +2605,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerSz(final double accelerometerSz)
-            throws LockedException {
+    public void setAccelerometerSz(final double accelerometerSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2868,8 +2633,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerMxy(final double accelerometerMxy)
-            throws LockedException {
+    public void setAccelerometerMxy(final double accelerometerMxy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2897,8 +2661,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerMxz(final double accelerometerMxz)
-            throws LockedException {
+    public void setAccelerometerMxz(final double accelerometerMxz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2927,8 +2690,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerMyx(final double accelerometerMyx)
-            throws LockedException {
+    public void setAccelerometerMyx(final double accelerometerMyx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2957,8 +2719,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerMyz(final double accelerometerMyz)
-            throws LockedException {
+    public void setAccelerometerMyz(final double accelerometerMyz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -2987,8 +2748,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerMzx(final double accelerometerMzx)
-            throws LockedException {
+    public void setAccelerometerMzx(final double accelerometerMzx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3017,8 +2777,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setAccelerometerMzy(final double accelerometerMzy)
-            throws LockedException {
+    public void setAccelerometerMzy(final double accelerometerMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3037,8 +2796,8 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerScalingFactors(
-            final double accelerometerSx, final double accelerometerSy,
-            final double accelerometerSz) throws LockedException {
+            final double accelerometerSx, final double accelerometerSy, final double accelerometerSz)
+            throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3068,9 +2827,8 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerCrossCouplingErrors(
-            final double accelerometerMxy, final double accelerometerMxz,
-            final double accelerometerMyx, final double accelerometerMyz,
-            final double accelerometerMzx, final double accelerometerMzy)
+            final double accelerometerMxy, final double accelerometerMxz, final double accelerometerMyx,
+            final double accelerometerMyz, final double accelerometerMzx, final double accelerometerMzy)
             throws LockedException {
         if (mRunning) {
             throw new LockedException();
@@ -3107,20 +2865,16 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public void setAccelerometerScalingFactorsAndCrossCouplingErrors(
-            final double accelerometerSx, final double accelerometerSy,
-            final double accelerometerSz, final double accelerometerMxy,
-            final double accelerometerMxz, final double accelerometerMyx,
-            final double accelerometerMyz, final double accelerometerMzx,
-            final double accelerometerMzy) throws LockedException {
+            final double accelerometerSx, final double accelerometerSy, final double accelerometerSz,
+            final double accelerometerMxy, final double accelerometerMxz, final double accelerometerMyx,
+            final double accelerometerMyz, final double accelerometerMzx, final double accelerometerMzy)
+            throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
-        setAccelerometerScalingFactors(accelerometerSx, accelerometerSy,
-                accelerometerSz);
-        setAccelerometerCrossCouplingErrors(accelerometerMxy,
-                accelerometerMxz, accelerometerMyx,
-                accelerometerMyz, accelerometerMzx,
-                accelerometerMzy);
+        setAccelerometerScalingFactors(accelerometerSx, accelerometerSy, accelerometerSz);
+        setAccelerometerCrossCouplingErrors(accelerometerMxy, accelerometerMxz, accelerometerMyx,
+                accelerometerMyz, accelerometerMzx, accelerometerMzy);
     }
 
     /**
@@ -3134,8 +2888,7 @@ public class TurntableGyroscopeCalibrator implements
     public Matrix getAccelerometerMa() {
         Matrix result;
         try {
-            result = new Matrix(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            result = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             getAccelerometerMa(result);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -3153,8 +2906,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public void getAccelerometerMa(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS ||
-                result.getColumns() != BodyKinematics.COMPONENTS) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mAccelerometerSx);
@@ -3180,8 +2932,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws IllegalArgumentException if provided matrix is not 3x3.
      */
     @Override
-    public void setAccelerometerMa(final Matrix accelerometerMa)
-            throws LockedException {
+    public void setAccelerometerMa(final Matrix accelerometerMa) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3222,8 +2973,7 @@ public class TurntableGyroscopeCalibrator implements
      * @param initialBiasX initial x-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasX(final double initialBiasX)
-            throws LockedException {
+    public void setInitialBiasX(final double initialBiasX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3249,8 +2999,7 @@ public class TurntableGyroscopeCalibrator implements
      * @param initialBiasY initial y-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasY(final double initialBiasY)
-            throws LockedException {
+    public void setInitialBiasY(final double initialBiasY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3276,8 +3025,7 @@ public class TurntableGyroscopeCalibrator implements
      * @param initialBiasZ initial z-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasZ(final double initialBiasZ)
-            throws LockedException {
+    public void setInitialBiasZ(final double initialBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3291,8 +3039,7 @@ public class TurntableGyroscopeCalibrator implements
      * @return initial x-coordinate of gyroscope bias.
      */
     public AngularSpeed getInitialBiasAngularSpeedX() {
-        return new AngularSpeed(mInitialBiasX,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mInitialBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -3313,8 +3060,7 @@ public class TurntableGyroscopeCalibrator implements
      * @param initialBiasX initial x-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasX(final AngularSpeed initialBiasX)
-            throws LockedException {
+    public void setInitialBiasX(final AngularSpeed initialBiasX) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3328,8 +3074,7 @@ public class TurntableGyroscopeCalibrator implements
      * @return initial y-coordinate of gyroscope bias.
      */
     public AngularSpeed getInitialBiasAngularSpeedY() {
-        return new AngularSpeed(mInitialBiasY,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mInitialBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -3350,8 +3095,7 @@ public class TurntableGyroscopeCalibrator implements
      * @param initialBiasY initial y-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasY(final AngularSpeed initialBiasY)
-            throws LockedException {
+    public void setInitialBiasY(final AngularSpeed initialBiasY) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3365,8 +3109,7 @@ public class TurntableGyroscopeCalibrator implements
      * @return initial z-coordinate of gyroscope bias.
      */
     public AngularSpeed getInitialBiasAngularSpeedZ() {
-        return new AngularSpeed(mInitialBiasZ,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mInitialBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -3387,8 +3130,7 @@ public class TurntableGyroscopeCalibrator implements
      * @param initialBiasZ initial z-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasZ(final AngularSpeed initialBiasZ)
-            throws LockedException {
+    public void setInitialBiasZ(final AngularSpeed initialBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3405,8 +3147,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     public void setInitialBias(
-            final double initialBiasX, final double initialBiasY,
-            final double initialBiasZ) throws LockedException {
+            final double initialBiasX, final double initialBiasY, final double initialBiasZ) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3424,9 +3165,8 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     public void setInitialBias(
-            final AngularSpeed initialBiasX,
-            final AngularSpeed initialBiasY,
-            final AngularSpeed initialBiasZ) throws LockedException {
+            final AngularSpeed initialBiasX, final AngularSpeed initialBiasY, final AngularSpeed initialBiasZ)
+            throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3452,8 +3192,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSx(final double initialSx)
-            throws LockedException {
+    public void setInitialSx(final double initialSx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3477,8 +3216,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSy(final double initialSy)
-            throws LockedException {
+    public void setInitialSy(final double initialSy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3502,8 +3240,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialSz(final double initialSz)
-            throws LockedException {
+    public void setInitialSz(final double initialSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3527,8 +3264,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMxy(final double initialMxy)
-            throws LockedException {
+    public void setInitialMxy(final double initialMxy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3552,8 +3288,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMxz(final double initialMxz)
-            throws LockedException {
+    public void setInitialMxz(final double initialMxz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3577,8 +3312,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMyx(final double initialMyx)
-            throws LockedException {
+    public void setInitialMyx(final double initialMyx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3602,8 +3336,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMyz(final double initialMyz)
-            throws LockedException {
+    public void setInitialMyz(final double initialMyz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3627,8 +3360,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMzx(final double initialMzx)
-            throws LockedException {
+    public void setInitialMzx(final double initialMzx) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3652,8 +3384,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialMzy(final double initialMzy)
-            throws LockedException {
+    public void setInitialMzy(final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3670,8 +3401,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public void setInitialScalingFactors(
-            final double initialSx, final double initialSy,
-            final double initialSz) throws LockedException {
+            final double initialSx, final double initialSy, final double initialSz) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3694,8 +3424,7 @@ public class TurntableGyroscopeCalibrator implements
     @Override
     public void setInitialCrossCouplingErrors(
             final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy)
-            throws LockedException {
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3726,14 +3455,12 @@ public class TurntableGyroscopeCalibrator implements
     public void setInitialScalingFactorsAndCrossCouplingErrors(
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
-            final double initialMyz, final double initialMzx, final double initialMzy)
-            throws LockedException {
+            final double initialMyz, final double initialMzx, final double initialMzy) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
         setInitialScalingFactors(initialSx, initialSy, initialSz);
-        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx,
-                initialMyz, initialMzx, initialMzy);
+        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
     }
 
     /**
@@ -3775,8 +3502,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException          if calibrator is currently running.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public void setInitialBias(final double[] initialBias)
-            throws LockedException {
+    public void setInitialBias(final double[] initialBias) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -3816,8 +3542,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public void getInitialBiasAsMatrix(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mInitialBiasX);
@@ -3837,8 +3562,7 @@ public class TurntableGyroscopeCalibrator implements
         if (mRunning) {
             throw new LockedException();
         }
-        if (initialBias.getRows() != BodyKinematics.COMPONENTS
-                || initialBias.getColumns() != 1) {
+        if (initialBias.getRows() != BodyKinematics.COMPONENTS || initialBias.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -3853,8 +3577,7 @@ public class TurntableGyroscopeCalibrator implements
      * @return initial bias coordinates.
      */
     public AngularSpeedTriad getInitialBiasAsTriad() {
-        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,
-                mInitialBiasX, mInitialBiasY, mInitialBiasZ);
+        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND, mInitialBiasX, mInitialBiasY, mInitialBiasZ);
     }
 
     /**
@@ -3863,8 +3586,7 @@ public class TurntableGyroscopeCalibrator implements
      * @param result instance where result will be stored.
      */
     public void getInitialBiasAsTriad(final AngularSpeedTriad result) {
-        result.setValueCoordinatesAndUnit(
-                mInitialBiasX, mInitialBiasY, mInitialBiasZ,
+        result.setValueCoordinatesAndUnit(mInitialBiasX, mInitialBiasY, mInitialBiasZ,
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -3879,12 +3601,9 @@ public class TurntableGyroscopeCalibrator implements
             throw new LockedException();
         }
 
-        mInitialBiasX = convertAngularSpeed(
-                initialBias.getValueX(), initialBias.getUnit());
-        mInitialBiasY = convertAngularSpeed(
-                initialBias.getValueY(), initialBias.getUnit());
-        mInitialBiasZ = convertAngularSpeed(
-                initialBias.getValueZ(), initialBias.getUnit());
+        mInitialBiasX = convertAngularSpeed(initialBias.getValueX(), initialBias.getUnit());
+        mInitialBiasY = convertAngularSpeed(initialBias.getValueY(), initialBias.getUnit());
+        mInitialBiasZ = convertAngularSpeed(initialBias.getValueZ(), initialBias.getUnit());
     }
 
     /**
@@ -3898,8 +3617,7 @@ public class TurntableGyroscopeCalibrator implements
     public Matrix getInitialMg() {
         Matrix result;
         try {
-            result = new Matrix(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            result = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             getInitialMg(result);
         } catch (final WrongSizeException ignore) {
             // never happens
@@ -3917,8 +3635,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public void getInitialMg(final Matrix result) {
-        if (result.getRows() != BodyKinematics.COMPONENTS ||
-                result.getColumns() != BodyKinematics.COMPONENTS) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
         result.setElementAtIndex(0, mInitialSx);
@@ -3946,8 +3663,7 @@ public class TurntableGyroscopeCalibrator implements
         if (mRunning) {
             throw new LockedException();
         }
-        if (initialMg.getRows() != BodyKinematics.COMPONENTS ||
-                initialMg.getColumns() != BodyKinematics.COMPONENTS) {
+        if (initialMg.getRows() != BodyKinematics.COMPONENTS || initialMg.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -3985,8 +3701,7 @@ public class TurntableGyroscopeCalibrator implements
     @Override
     public void getInitialGg(final Matrix result) {
 
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != BodyKinematics.COMPONENTS) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -4007,8 +3722,7 @@ public class TurntableGyroscopeCalibrator implements
             throw new LockedException();
         }
 
-        if (initialGg.getRows() != BodyKinematics.COMPONENTS
-                || initialGg.getColumns() != BodyKinematics.COMPONENTS) {
+        if (initialGg.getRows() != BodyKinematics.COMPONENTS || initialGg.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
@@ -4034,8 +3748,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws IllegalArgumentException if provided value is zero or
      *                                  negative.
      */
-    public void setTurntableRotationRate(
-            final double turntableRotationRate) throws LockedException {
+    public void setTurntableRotationRate(final double turntableRotationRate) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -4052,8 +3765,7 @@ public class TurntableGyroscopeCalibrator implements
      * @return constant rotation rate of turntable.
      */
     public AngularSpeed getTurntableRotationRateAsAngularSpeed() {
-        return new AngularSpeed(mTurntableRotationRate,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mTurntableRotationRate, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -4061,8 +3773,7 @@ public class TurntableGyroscopeCalibrator implements
      *
      * @param result instance where result will be stored.
      */
-    public void getTurntableRotationRateAsAngularSpeed(
-            final AngularSpeed result) {
+    public void getTurntableRotationRateAsAngularSpeed(final AngularSpeed result) {
         result.setValue(mTurntableRotationRate);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
@@ -4075,14 +3786,11 @@ public class TurntableGyroscopeCalibrator implements
      * @throws IllegalArgumentException if provided value is zero or
      *                                  negative.
      */
-    public void setTurntableRotationRate(
-            final AngularSpeed turntableRotationRate)
-            throws LockedException {
+    public void setTurntableRotationRate(final AngularSpeed turntableRotationRate) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
-        setTurntableRotationRate(
-                convertAngularSpeed(turntableRotationRate));
+        setTurntableRotationRate(convertAngularSpeed(turntableRotationRate));
     }
 
     /**
@@ -4104,8 +3812,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws IllegalArgumentException if provided value is zero or
      *                                  negative.
      */
-    public void setTimeInterval(final double timeInterval)
-            throws LockedException {
+    public void setTimeInterval(final double timeInterval) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -4141,8 +3848,7 @@ public class TurntableGyroscopeCalibrator implements
      * @param timeInterval time interval between measurements.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setTimeInterval(final Time timeInterval)
-            throws LockedException {
+    public void setTimeInterval(final Time timeInterval) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -4172,9 +3878,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setMeasurements(
-            final Collection<StandardDeviationBodyKinematics> measurements)
-            throws LockedException {
+    public void setMeasurements(final Collection<StandardDeviationBodyKinematics> measurements) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -4308,8 +4012,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setCommonAxisUsed(final boolean commonAxisUsed)
-            throws LockedException {
+    public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -4339,9 +4042,7 @@ public class TurntableGyroscopeCalibrator implements
      *                                      false otherwise.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setGDependentCrossBiasesEstimated(
-            final boolean estimateGDependentCrossBiases)
-            throws LockedException {
+    public void setGDependentCrossBiasesEstimated(final boolean estimateGDependentCrossBiases) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -4364,9 +4065,7 @@ public class TurntableGyroscopeCalibrator implements
      * @param listener listener to handle events raised by this estimator.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setListener(
-            final TurntableGyroscopeCalibratorListener listener)
-            throws LockedException {
+    public void setListener(final TurntableGyroscopeCalibratorListener listener) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -4403,8 +4102,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public boolean isReady() {
-        return mMeasurements != null
-                && mMeasurements.size() >= getMinimumRequiredMeasurementsOrSequences();
+        return mMeasurements != null && mMeasurements.size() >= getMinimumRequiredMeasurementsOrSequences();
     }
 
     /**
@@ -4426,8 +4124,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws CalibrationException if estimation fails for numerical reasons.
      */
     @Override
-    public void calibrate() throws LockedException, NotReadyException,
-            CalibrationException {
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -4461,8 +4158,7 @@ public class TurntableGyroscopeCalibrator implements
                 mListener.onCalibrateEnd(this);
             }
 
-        } catch (final AlgebraException | FittingException
-                | com.irurueta.numerical.NotReadyException |
+        } catch (final AlgebraException | FittingException | com.irurueta.numerical.NotReadyException |
                 InvalidSourceAndDestinationFrameTypeException e) {
             throw new CalibrationException(e);
         } finally {
@@ -4492,8 +4188,7 @@ public class TurntableGyroscopeCalibrator implements
     @Override
     public boolean getEstimatedBiases(final double[] result) {
         if (mEstimatedBiases != null) {
-            System.arraycopy(mEstimatedBiases, 0, result,
-                    0, mEstimatedBiases.length);
+            System.arraycopy(mEstimatedBiases, 0, result, 0, mEstimatedBiases.length);
             return true;
         } else {
             return false;
@@ -4521,8 +4216,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws WrongSizeException if provided result instance has invalid size.
      */
     @Override
-    public boolean getEstimatedBiasesAsMatrix(final Matrix result)
-            throws WrongSizeException {
+    public boolean getEstimatedBiasesAsMatrix(final Matrix result) throws WrongSizeException {
         if (mEstimatedBiases != null) {
             result.fromArray(mEstimatedBiases);
             return true;
@@ -4572,8 +4266,7 @@ public class TurntableGyroscopeCalibrator implements
     @Override
     public AngularSpeed getEstimatedBiasAngularSpeedX() {
         return mEstimatedBiases != null ?
-                new AngularSpeed(mEstimatedBiases[0],
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+                new AngularSpeed(mEstimatedBiases[0], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -4601,8 +4294,7 @@ public class TurntableGyroscopeCalibrator implements
     @Override
     public AngularSpeed getEstimatedBiasAngularSpeedY() {
         return mEstimatedBiases != null ?
-                new AngularSpeed(mEstimatedBiases[1],
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+                new AngularSpeed(mEstimatedBiases[1], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -4630,8 +4322,7 @@ public class TurntableGyroscopeCalibrator implements
     @Override
     public AngularSpeed getEstimatedBiasAngularSpeedZ() {
         return mEstimatedBiases != null ?
-                new AngularSpeed(mEstimatedBiases[2],
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+                new AngularSpeed(mEstimatedBiases[2], AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -4673,8 +4364,7 @@ public class TurntableGyroscopeCalibrator implements
     @Override
     public boolean getEstimatedBiasAsTriad(final AngularSpeedTriad result) {
         if (mEstimatedBiases != null) {
-            result.setValueCoordinatesAndUnit(
-                    mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2],
+            result.setValueCoordinatesAndUnit(mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2],
                     AngularSpeedUnit.RADIANS_PER_SECOND);
             return true;
         } else {
@@ -4737,8 +4427,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedSx() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(0, 0) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 0) : null;
     }
 
     /**
@@ -4749,8 +4438,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedSy() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(1, 1) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 1) : null;
     }
 
     /**
@@ -4761,8 +4449,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedSz() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(2, 2) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 2) : null;
     }
 
     /**
@@ -4773,8 +4460,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMxy() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(0, 1) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 1) : null;
     }
 
     /**
@@ -4785,8 +4471,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMxz() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(0, 2) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(0, 2) : null;
     }
 
     /**
@@ -4797,8 +4482,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMyx() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(1, 0) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 0) : null;
     }
 
     /**
@@ -4809,8 +4493,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMyz() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(1, 2) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(1, 2) : null;
     }
 
     /**
@@ -4821,8 +4504,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMzx() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(2, 0) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 0) : null;
     }
 
     /**
@@ -4833,8 +4515,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     @Override
     public Double getEstimatedMzy() {
-        return mEstimatedMg != null ?
-                mEstimatedMg.getElementAt(2, 1) : null;
+        return mEstimatedMg != null ? mEstimatedMg.getElementAt(2, 1) : null;
     }
 
     /**
@@ -5075,8 +4756,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     public Double getEstimatedBiasStandardDeviationAverage() {
         return mEstimatedCovariance != null ?
-                (getEstimatedBiasXStandardDeviation() +
-                        getEstimatedBiasYStandardDeviation() +
+                (getEstimatedBiasXStandardDeviation() + getEstimatedBiasYStandardDeviation() +
                         getEstimatedBiasZStandardDeviation()) / 3.0 : null;
     }
 
@@ -5134,8 +4814,7 @@ public class TurntableGyroscopeCalibrator implements
      */
     public AngularSpeed getEstimatedBiasStandardDeviationNormAsAngularSpeed() {
         return mEstimatedCovariance != null ?
-                new AngularSpeed(getEstimatedBiasStandardDeviationNorm(),
-                        AngularSpeedUnit.RADIANS_PER_SECOND) : null;
+                new AngularSpeed(getEstimatedBiasStandardDeviationNorm(), AngularSpeedUnit.RADIANS_PER_SECOND) : null;
     }
 
     /**
@@ -5167,10 +4846,8 @@ public class TurntableGyroscopeCalibrator implements
      * @throws com.irurueta.numerical.NotReadyException      if fitter is not ready.
      * @throws InvalidSourceAndDestinationFrameTypeException never happens
      */
-    private void calibrateCommonAxisAndGDependentCrossBiases()
-            throws AlgebraException, FittingException,
-            com.irurueta.numerical.NotReadyException,
-            InvalidSourceAndDestinationFrameTypeException {
+    private void calibrateCommonAxisAndGDependentCrossBiases() throws AlgebraException, FittingException,
+            com.irurueta.numerical.NotReadyException, InvalidSourceAndDestinationFrameTypeException {
 
         // The gyroscope model is
         // Ωmeas = bg + (I + Mg) * Ωtrue + Gg * ftrue + w
@@ -5221,16 +4898,9 @@ public class TurntableGyroscopeCalibrator implements
         //         [fturez]
 
         final GradientEstimator gradientEstimator = new GradientEstimator(
-                new MultiDimensionFunctionEvaluatorListener() {
-                    @Override
-                    public double evaluate(final double[] point)
-                            throws EvaluationException {
-                        return evaluateCommonAxisWithGDependentCrossBiases(point);
-                    }
-                });
+                this::evaluateCommonAxisWithGDependentCrossBiases);
 
-        final Matrix initialM = Matrix.identity(
-                BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        final Matrix initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         initialM.add(getInitialMg());
 
         // Force initial M to be upper diagonal
@@ -5255,8 +4925,7 @@ public class TurntableGyroscopeCalibrator implements
 
                     @Override
                     public double[] createInitialParametersArray() {
-                        final double[] initial =
-                                new double[COMMON_Z_AXIS_UNKNOWNS_AND_CROSS_BIASES];
+                        final double[] initial = new double[COMMON_Z_AXIS_UNKNOWNS_AND_CROSS_BIASES];
 
                         // biases b
                         for (int i = 0; i < BodyKinematics.COMPONENTS; i++) {
@@ -5285,8 +4954,7 @@ public class TurntableGyroscopeCalibrator implements
 
                     @Override
                     public double evaluate(
-                            final int i, final double[] point,
-                            final double[] params, final double[] derivatives)
+                            final int i, final double[] point, final double[] params, final double[] derivatives)
                             throws EvaluationException {
 
                         mMeasAngularRateX = point[0];
@@ -5339,8 +5007,7 @@ public class TurntableGyroscopeCalibrator implements
         b.setElementAtIndex(1, by);
         b.setElementAtIndex(2, bz);
 
-        final Matrix m = new Matrix(BodyKinematics.COMPONENTS,
-                BodyKinematics.COMPONENTS);
+        final Matrix m = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         m.setElementAtIndex(0, m11);
         m.setElementAtIndex(1, 0.0);
         m.setElementAtIndex(2, 0.0);
@@ -5353,8 +5020,7 @@ public class TurntableGyroscopeCalibrator implements
         m.setElementAtIndex(7, m23);
         m.setElementAtIndex(8, m33);
 
-        final Matrix g = new Matrix(BodyKinematics.COMPONENTS,
-                BodyKinematics.COMPONENTS);
+        final Matrix g = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         g.setElementAtIndex(0, g11);
         g.setElementAtIndex(1, g21);
         g.setElementAtIndex(2, g31);
@@ -5535,10 +5201,8 @@ public class TurntableGyroscopeCalibrator implements
      * @throws com.irurueta.numerical.NotReadyException      if fitter is not ready.
      * @throws InvalidSourceAndDestinationFrameTypeException never happens
      */
-    private void calibrateGeneralAndGDependentCrossBiases()
-            throws AlgebraException, FittingException,
-            com.irurueta.numerical.NotReadyException,
-            InvalidSourceAndDestinationFrameTypeException {
+    private void calibrateGeneralAndGDependentCrossBiases() throws AlgebraException, FittingException,
+            com.irurueta.numerical.NotReadyException, InvalidSourceAndDestinationFrameTypeException {
 
         // The gyroscope model is
         // Ωmeas = bg + (I + Mg) * Ωtrue + Gg * ftrue + w
@@ -5589,16 +5253,9 @@ public class TurntableGyroscopeCalibrator implements
         //         [fturez]
 
         final GradientEstimator gradientEstimator = new GradientEstimator(
-                new MultiDimensionFunctionEvaluatorListener() {
-                    @Override
-                    public double evaluate(final double[] point)
-                            throws EvaluationException {
-                        return evaluateGeneralWithGDependentCrossBiases(point);
-                    }
-                });
+                this::evaluateGeneralWithGDependentCrossBiases);
 
-        final Matrix initialM = Matrix.identity(
-                BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        final Matrix initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         initialM.add(getInitialMg());
 
         final Matrix invInitialM = Utils.inverse(initialM);
@@ -5618,8 +5275,7 @@ public class TurntableGyroscopeCalibrator implements
 
                     @Override
                     public double[] createInitialParametersArray() {
-                        final double[] initial =
-                                new double[GENERAL_UNKNOWNS_AND_CROSS_BIASES];
+                        final double[] initial = new double[GENERAL_UNKNOWNS_AND_CROSS_BIASES];
 
                         // biases b
                         for (int i = 0; i < BodyKinematics.COMPONENTS; i++) {
@@ -5642,8 +5298,7 @@ public class TurntableGyroscopeCalibrator implements
 
                     @Override
                     public double evaluate(
-                            final int i, final double[] point,
-                            final double[] params, final double[] derivatives)
+                            final int i, final double[] point, final double[] params, final double[] derivatives)
                             throws EvaluationException {
 
                         mMeasAngularRateX = point[0];
@@ -5699,8 +5354,7 @@ public class TurntableGyroscopeCalibrator implements
         b.setElementAtIndex(1, by);
         b.setElementAtIndex(2, bz);
 
-        final Matrix m = new Matrix(BodyKinematics.COMPONENTS,
-                BodyKinematics.COMPONENTS);
+        final Matrix m = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         m.setElementAtIndex(0, m11);
         m.setElementAtIndex(1, m21);
         m.setElementAtIndex(2, m31);
@@ -5713,8 +5367,7 @@ public class TurntableGyroscopeCalibrator implements
         m.setElementAtIndex(7, m23);
         m.setElementAtIndex(8, m33);
 
-        final Matrix g = new Matrix(BodyKinematics.COMPONENTS,
-                BodyKinematics.COMPONENTS);
+        final Matrix g = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         g.setElementAtIndex(0, g11);
         g.setElementAtIndex(1, g21);
         g.setElementAtIndex(2, g31);
@@ -5922,10 +5575,8 @@ public class TurntableGyroscopeCalibrator implements
      * @throws com.irurueta.numerical.NotReadyException      if fitter is not ready.
      * @throws InvalidSourceAndDestinationFrameTypeException never happens.
      */
-    private void calibrateCommonAxis()
-            throws AlgebraException, FittingException,
-            com.irurueta.numerical.NotReadyException,
-            InvalidSourceAndDestinationFrameTypeException {
+    private void calibrateCommonAxis() throws AlgebraException, FittingException,
+            com.irurueta.numerical.NotReadyException, InvalidSourceAndDestinationFrameTypeException {
 
         // The gyroscope model is
         // Ωmeas = bg + (I + Mg) * Ωtrue + Gg * ftrue + w
@@ -5972,17 +5623,9 @@ public class TurntableGyroscopeCalibrator implements
         //     [0 		m22 	m23]
         //     [0 	 	0 		m33]
 
-        final GradientEstimator gradientEstimator = new GradientEstimator(
-                new MultiDimensionFunctionEvaluatorListener() {
-                    @Override
-                    public double evaluate(final double[] point)
-                            throws EvaluationException {
-                        return evaluateCommonAxis(point);
-                    }
-                });
+        final GradientEstimator gradientEstimator = new GradientEstimator(this::evaluateCommonAxis);
 
-        final Matrix initialM = Matrix.identity(
-                BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        final Matrix initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         initialM.add(getInitialMg());
 
         // Force initial M to be upper diagonal
@@ -6027,8 +5670,7 @@ public class TurntableGyroscopeCalibrator implements
 
                     @Override
                     public double evaluate(
-                            final int i, final double[] point,
-                            final double[] params, final double[] derivatives)
+                            final int i, final double[] point, final double[] params, final double[] derivatives)
                             throws EvaluationException {
 
                         mMeasAngularRateX = point[0];
@@ -6065,8 +5707,7 @@ public class TurntableGyroscopeCalibrator implements
         b.setElementAtIndex(1, by);
         b.setElementAtIndex(2, bz);
 
-        final Matrix m = new Matrix(BodyKinematics.COMPONENTS,
-                BodyKinematics.COMPONENTS);
+        final Matrix m = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         m.setElementAtIndex(0, m11);
         m.setElementAtIndex(1, 0.0);
         m.setElementAtIndex(2, 0.0);
@@ -6202,9 +5843,7 @@ public class TurntableGyroscopeCalibrator implements
      * @throws com.irurueta.numerical.NotReadyException      if fitter is not ready.
      * @throws InvalidSourceAndDestinationFrameTypeException never happens.
      */
-    private void calibrateGeneral()
-            throws AlgebraException, FittingException,
-            com.irurueta.numerical.NotReadyException,
+    private void calibrateGeneral() throws AlgebraException, FittingException, com.irurueta.numerical.NotReadyException,
             InvalidSourceAndDestinationFrameTypeException {
 
         // The gyroscope model is
@@ -6252,17 +5891,9 @@ public class TurntableGyroscopeCalibrator implements
         //     [m21 	m22 	m23]
         //     [m31 	m32 	m33]
 
-        final GradientEstimator gradientEstimator = new GradientEstimator(
-                new MultiDimensionFunctionEvaluatorListener() {
-                    @Override
-                    public double evaluate(final double[] point)
-                            throws EvaluationException {
-                        return evaluateGeneral(point);
-                    }
-                });
+        final GradientEstimator gradientEstimator = new GradientEstimator(this::evaluateGeneral);
 
-        final Matrix initialM = Matrix.identity(
-                BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+        final Matrix initialM = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         initialM.add(getInitialMg());
 
         final Matrix invInitialM = Utils.inverse(initialM);
@@ -6297,8 +5928,7 @@ public class TurntableGyroscopeCalibrator implements
 
                     @Override
                     public double evaluate(
-                            final int i, final double[] point,
-                            final double[] params, final double[] derivatives)
+                            final int i, final double[] point, final double[] params, final double[] derivatives)
                             throws EvaluationException {
 
                         mMeasAngularRateX = point[0];
@@ -6483,19 +6113,16 @@ public class TurntableGyroscopeCalibrator implements
      *                                                       errors are not valid.
      * @throws InvalidSourceAndDestinationFrameTypeException never happens
      */
-    private void setInputDataWithGDependentCrossBiases()
-            throws AlgebraException,
+    private void setInputDataWithGDependentCrossBiases() throws AlgebraException,
             InvalidSourceAndDestinationFrameTypeException {
         // compute reference frame at current position
         final NEDPosition nedPosition = getNedPosition();
         final CoordinateTransformation nedC = new CoordinateTransformation(
                 FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
-        final BodyKinematics refKinematics = ECEFKinematicsEstimator
-                .estimateKinematicsAndReturnNew(mTimeInterval, ecefFrame,
-                        ecefFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final BodyKinematics refKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(mTimeInterval,
+                ecefFrame, ecefFrame);
 
         final double refAngularRateX = refKinematics.getAngularRateX();
         final double refAngularRateY = refKinematics.getAngularRateY();
@@ -6529,8 +6156,7 @@ public class TurntableGyroscopeCalibrator implements
 
             y[i] = w2;
 
-            angularRateStandardDeviations[i] =
-                    measurement.getAngularRateStandardDeviation();
+            angularRateStandardDeviations[i] = measurement.getAngularRateStandardDeviation();
 
             i++;
         }
@@ -6551,19 +6177,16 @@ public class TurntableGyroscopeCalibrator implements
      *                                                       errors are not valid.
      * @throws InvalidSourceAndDestinationFrameTypeException never happens.
      */
-    private void setInputData() throws AlgebraException,
-            InvalidSourceAndDestinationFrameTypeException {
+    private void setInputData() throws AlgebraException, InvalidSourceAndDestinationFrameTypeException {
 
         // compute reference frame at current position
         final NEDPosition nedPosition = getNedPosition();
         final CoordinateTransformation nedC = new CoordinateTransformation(
                 FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
         final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
-        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-                .convertNEDtoECEFAndReturnNew(nedFrame);
-        final BodyKinematics refKinematics = ECEFKinematicsEstimator
-                .estimateKinematicsAndReturnNew(mTimeInterval, ecefFrame,
-                        ecefFrame);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);
+        final BodyKinematics refKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                mTimeInterval, ecefFrame, ecefFrame);
 
         final double refAngularRateX = refKinematics.getAngularRateX();
         final double refAngularRateY = refKinematics.getAngularRateY();
@@ -6583,17 +6206,13 @@ public class TurntableGyroscopeCalibrator implements
             final double angularRateY = measuredKinematics.getAngularRateY();
             final double angularRateZ = measuredKinematics.getAngularRateZ();
 
-            x.setElementAt(i, 0,
-                    angularRateX - refAngularRateX);
-            x.setElementAt(i, 1,
-                    angularRateY - refAngularRateY);
-            x.setElementAt(i, 2,
-                    angularRateZ - refAngularRateZ);
+            x.setElementAt(i, 0, angularRateX - refAngularRateX);
+            x.setElementAt(i, 1, angularRateY - refAngularRateY);
+            x.setElementAt(i, 2, angularRateZ - refAngularRateZ);
 
             y[i] = w2;
 
-            angularRateStandardDeviations[i] =
-                    measurement.getAngularRateStandardDeviation();
+            angularRateStandardDeviations[i] = measurement.getAngularRateStandardDeviation();
 
             i++;
         }
@@ -6617,8 +6236,8 @@ public class TurntableGyroscopeCalibrator implements
         final ECEFVelocity velocity = new ECEFVelocity();
         final ECEFPosition result = new ECEFPosition();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                position.getLatitude(), position.getLongitude(), position.getHeight(),
-                0.0, 0.0, 0.0, result, velocity);
+                position.getLatitude(), position.getLongitude(), position.getHeight(), 0.0, 0.0, 0.0,
+                result, velocity);
         return result;
     }
 
@@ -6651,8 +6270,7 @@ public class TurntableGyroscopeCalibrator implements
      * @return converted value.
      */
     private static double convertAngularSpeed(final AngularSpeed angularSpeed) {
-        return convertAngularSpeed(angularSpeed.getValue().doubleValue(),
-                angularSpeed.getUnit());
+        return convertAngularSpeed(angularSpeed.getValue().doubleValue(), angularSpeed.getUnit());
     }
 
     /**
@@ -6662,8 +6280,7 @@ public class TurntableGyroscopeCalibrator implements
      * @return converted value.
      */
     private static double convertTime(final Time time) {
-        return TimeConverter.convert(time.getValue().doubleValue(),
-                time.getUnit(), TimeUnit.SECOND);
+        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);
     }
 
     /**
@@ -6675,8 +6292,7 @@ public class TurntableGyroscopeCalibrator implements
      * @param g internal g-dependent cross bias matrix.
      * @throws AlgebraException if a numerical instability occurs.
      */
-    private void setResult(final Matrix m, final Matrix b, final Matrix g)
-            throws AlgebraException {
+    private void setResult(final Matrix m, final Matrix b, final Matrix g) throws AlgebraException {
         setResult(m, b);
 
         // Gg = M*G
@@ -6713,13 +6329,11 @@ public class TurntableGyroscopeCalibrator implements
         }
 
         for (int i = 0; i < BodyKinematics.COMPONENTS; i++) {
-            mEstimatedMg.setElementAt(i, i,
-                    mEstimatedMg.getElementAt(i, i) - 1.0);
+            mEstimatedMg.setElementAt(i, i, mEstimatedMg.getElementAt(i, i) - 1.0);
         }
 
         if (mEstimatedGg == null) {
-            mEstimatedGg = new Matrix(
-                    BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            mEstimatedGg = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         } else {
             mEstimatedGg.initialize(0.0);
         }
@@ -6742,8 +6356,7 @@ public class TurntableGyroscopeCalibrator implements
      * @return estimated true angular rate squared norm.
      * @throws EvaluationException if there are numerical instabilities.
      */
-    private double evaluateGeneralWithGDependentCrossBiases(
-            final double[] params) throws EvaluationException {
+    private double evaluateGeneralWithGDependentCrossBiases(final double[] params) throws EvaluationException {
         final double bx = params[0];
         final double by = params[1];
         final double bz = params[2];
@@ -6772,9 +6385,8 @@ public class TurntableGyroscopeCalibrator implements
         final double g23 = params[19];
         final double g33 = params[20];
 
-        return evaluate(bx, by, bz, m11, m21, m31, m12, m22, m32,
-                m13, m23, m33, g11, g21, g31, g12, g22, g32,
-                g13, g23, g33);
+        return evaluate(bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33,
+                g11, g21, g31, g12, g22, g32, g13, g23, g33);
     }
 
     /**
@@ -6791,8 +6403,7 @@ public class TurntableGyroscopeCalibrator implements
      * @return estimated true angular rate squared norm.
      * @throws EvaluationException if there are numerical instabilities.
      */
-    private double evaluateCommonAxisWithGDependentCrossBiases(
-            final double[] params) throws EvaluationException {
+    private double evaluateCommonAxisWithGDependentCrossBiases(final double[] params) throws EvaluationException {
         final double bx = params[0];
         final double by = params[1];
         final double bz = params[2];
@@ -6818,9 +6429,8 @@ public class TurntableGyroscopeCalibrator implements
         final double g23 = params[16];
         final double g33 = params[17];
 
-        return evaluate(bx, by, bz, m11, 0.0, 0.0, m12, m22, 0.0,
-                m13, m23, m33, g11, g21, g31, g12, g22, g32,
-                g13, g23, g33);
+        return evaluate(bx, by, bz, m11, 0.0, 0.0, m12, m22, 0.0, m13, m23, m33,
+                g11, g21, g31, g12, g22, g32, g13, g23, g33);
     }
 
     /**
@@ -6852,8 +6462,7 @@ public class TurntableGyroscopeCalibrator implements
         final double m23 = params[10];
         final double m33 = params[11];
 
-        return evaluate(bx, by, bz, m11, m21, m31, m12, m22, m32,
-                m13, m23, m33);
+        return evaluate(bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33);
     }
 
     /**
@@ -6882,8 +6491,7 @@ public class TurntableGyroscopeCalibrator implements
         final double m23 = params[7];
         final double m33 = params[8];
 
-        return evaluate(bx, by, bz, m11, 0.0, 0.0, m12, m22, 0.0,
-                m13, m23, m33);
+        return evaluate(bx, by, bz, m11, 0.0, 0.0, m12, m22, 0.0, m13, m23, m33);
     }
 
     /**
@@ -6922,8 +6530,7 @@ public class TurntableGyroscopeCalibrator implements
                             final double m13, final double m23, final double m33,
                             final double g11, final double g21, final double g31,
                             final double g12, final double g22, final double g32,
-                            final double g13, final double g23, final double g33)
-            throws EvaluationException {
+                            final double g13, final double g23, final double g33) throws EvaluationException {
 
         // Ωmeas = bg + (I + Mg) * Ωtrue + Gg * ftrue
         // Ωmeas = M*(Ωtrue + b + G * ftrue)
@@ -6936,31 +6543,25 @@ public class TurntableGyroscopeCalibrator implements
 
         try {
             if (mMeasAngularRate == null) {
-                mMeasAngularRate = new Matrix(
-                        BodyKinematics.COMPONENTS, 1);
+                mMeasAngularRate = new Matrix(BodyKinematics.COMPONENTS, 1);
             }
             if (mFmeas == null) {
-                mFmeas = new Matrix(
-                        BodyKinematics.COMPONENTS, 1);
+                mFmeas = new Matrix(BodyKinematics.COMPONENTS, 1);
             }
             if (mM == null) {
-                mM = new Matrix(BodyKinematics.COMPONENTS,
-                        BodyKinematics.COMPONENTS);
+                mM = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             }
             if (mInvM == null) {
-                mInvM = new Matrix(BodyKinematics.COMPONENTS,
-                        BodyKinematics.COMPONENTS);
+                mInvM = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             }
             if (mB == null) {
                 mB = new Matrix(BodyKinematics.COMPONENTS, 1);
             }
             if (mG == null) {
-                mG = new Matrix(BodyKinematics.COMPONENTS,
-                        BodyKinematics.COMPONENTS);
+                mG = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             }
             if (mTrueAngularRate == null) {
-                mTrueAngularRate = new Matrix(
-                        BodyKinematics.COMPONENTS, 1);
+                mTrueAngularRate = new Matrix(BodyKinematics.COMPONENTS, 1);
             }
             if (mFtrue == null) {
                 mFtrue = new Matrix(BodyKinematics.COMPONENTS, 1);
@@ -6969,8 +6570,7 @@ public class TurntableGyroscopeCalibrator implements
                 mBa = new Matrix(BodyKinematics.COMPONENTS, 1);
             }
             if (mMa == null) {
-                mMa = new Matrix(BodyKinematics.COMPONENTS,
-                        BodyKinematics.COMPONENTS);
+                mMa = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             }
             if (mTmp == null) {
                 mTmp = new Matrix(BodyKinematics.COMPONENTS, 1);
@@ -7058,24 +6658,20 @@ public class TurntableGyroscopeCalibrator implements
     private double evaluate(final double bx, final double by, final double bz,
                             final double m11, final double m21, final double m31,
                             final double m12, final double m22, final double m32,
-                            final double m13, final double m23, final double m33)
-            throws EvaluationException {
+                            final double m13, final double m23, final double m33) throws EvaluationException {
 
         // Ωmeas = M*(Ωtrue + b)
         // Ωtrue = M^-1 * Ωmeas - b
 
         try {
             if (mMeasAngularRate == null) {
-                mMeasAngularRate = new Matrix(
-                        BodyKinematics.COMPONENTS, 1);
+                mMeasAngularRate = new Matrix(BodyKinematics.COMPONENTS, 1);
             }
             if (mM == null) {
-                mM = new Matrix(BodyKinematics.COMPONENTS,
-                        BodyKinematics.COMPONENTS);
+                mM = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             }
             if (mInvM == null) {
-                mInvM = new Matrix(BodyKinematics.COMPONENTS,
-                        BodyKinematics.COMPONENTS);
+                mInvM = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             }
             if (mB == null) {
                 mB = new Matrix(BodyKinematics.COMPONENTS, 1);

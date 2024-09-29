@@ -20,6 +20,7 @@ import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -37,6 +38,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -88,8 +90,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @param kinematics       current body kinematics measurement.
      * @param timestampSeconds timestamp value expressed in seconds.
      */
-    public TimedBodyKinematics(final BodyKinematics kinematics,
-                               final double timestampSeconds) {
+    public TimedBodyKinematics(final BodyKinematics kinematics, final double timestampSeconds) {
         this(kinematics);
         mTimestampSeconds = timestampSeconds;
     }
@@ -100,8 +101,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @param kinematics current body kinematics measurement.
      * @param timestamp  timestamp value.
      */
-    public TimedBodyKinematics(final BodyKinematics kinematics,
-                               final Time timestamp) {
+    public TimedBodyKinematics(final BodyKinematics kinematics, final Time timestamp) {
         this(timestamp);
         mKinematics = kinematics;
     }

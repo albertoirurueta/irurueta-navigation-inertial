@@ -27,16 +27,14 @@ public interface RobustKnownHardIronAndFrameMagnetometerCalibratorListener {
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateStart(
-            final RobustKnownHardIronAndFrameMagnetometerCalibrator calibrator);
+    void onCalibrateStart(final RobustKnownHardIronAndFrameMagnetometerCalibrator calibrator);
 
     /**
      * Called when calibration ends.
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateEnd(
-            final RobustKnownHardIronAndFrameMagnetometerCalibrator calibrator);
+    void onCalibrateEnd(final RobustKnownHardIronAndFrameMagnetometerCalibrator calibrator);
 
     /**
      * Called when calibrator iterates to refine a possible solution.
@@ -45,8 +43,7 @@ public interface RobustKnownHardIronAndFrameMagnetometerCalibratorListener {
      * @param iteration  current iteration.
      */
     void onCalibrateNextIteration(
-            final RobustKnownHardIronAndFrameMagnetometerCalibrator calibrator,
-            final int iteration);
+            final RobustKnownHardIronAndFrameMagnetometerCalibrator calibrator, final int iteration);
 
     /**
      * Called when calibration progress changes significantly.
@@ -55,6 +52,5 @@ public interface RobustKnownHardIronAndFrameMagnetometerCalibratorListener {
      * @param progress   progress of calibration expressed as a value between 0.0 and 1.0.
      */
     void onCalibrateProgressChange(
-            final RobustKnownHardIronAndFrameMagnetometerCalibrator calibrator,
-            final float progress);
+            final RobustKnownHardIronAndFrameMagnetometerCalibrator calibrator, final float progress);
 }

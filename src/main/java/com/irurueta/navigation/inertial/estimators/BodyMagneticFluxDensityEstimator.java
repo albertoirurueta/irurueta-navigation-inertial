@@ -55,8 +55,7 @@ public class BodyMagneticFluxDensityEstimator {
     @SuppressWarnings("DuplicatedCode")
     public static void estimate(
             final double magnitude, final double declination, final double dip,
-            final double roll, final double pitch, final double yaw,
-            final BodyMagneticFluxDensity result) {
+            final double roll, final double pitch, final double yaw, final BodyMagneticFluxDensity result) {
 
         final double magneticHeading = yaw - declination;
 
@@ -78,10 +77,8 @@ public class BodyMagneticFluxDensityEstimator {
         final double cosPitch = Math.cos(pitch);
 
         final double bx = cosPitch * bn - sinPitch * bd;
-        final double by = sinRoll * sinPitch * bn - cosRoll * be
-                + sinRoll * cosPitch * bd;
-        final double bz = cosRoll * sinPitch * bn + sinRoll * be
-                + cosRoll * cosPitch * bd;
+        final double by = sinRoll * sinPitch * bn - cosRoll * be + sinRoll * cosPitch * bd;
+        final double bz = cosRoll * sinPitch * bn + sinRoll * be + cosRoll * cosPitch * bd;
 
         result.setCoordinates(bx, by, bz);
     }
@@ -101,8 +98,7 @@ public class BodyMagneticFluxDensityEstimator {
      *                    measured in body coordinates will be stored.
      */
     public static void estimate(
-            final double magnitude, final double declination, final double dip,
-            final CoordinateTransformation c,
+            final double magnitude, final double declination, final double dip, final CoordinateTransformation c,
             final BodyMagneticFluxDensity result) {
         final double roll = c.getRollEulerAngle();
         final double pitch = c.getPitchEulerAngle();
@@ -123,13 +119,11 @@ public class BodyMagneticFluxDensityEstimator {
      *               measured in body coordinates will be stored.
      */
     public static void estimate(
-            final NEDMagneticFluxDensity earthB,
-            final double roll, final double pitch, final double yaw,
+            final NEDMagneticFluxDensity earthB, final double roll, final double pitch, final double yaw,
             final BodyMagneticFluxDensity result) {
 
         final CoordinateTransformation c = new CoordinateTransformation(
-                roll, pitch, yaw, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+                roll, pitch, yaw, FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
         estimate(earthB, c, result);
     }
 
@@ -143,8 +137,7 @@ public class BodyMagneticFluxDensityEstimator {
      *               in body coordinates will be stored.
      */
     public static void estimate(
-            final NEDMagneticFluxDensity earthB,
-            final CoordinateTransformation c,
+            final NEDMagneticFluxDensity earthB, final CoordinateTransformation c,
             final BodyMagneticFluxDensity result) {
 
         try {
@@ -179,11 +172,9 @@ public class BodyMagneticFluxDensityEstimator {
      */
     public static void estimate(
             final double magnitude, final Angle declination, final Angle dip,
-            final Angle roll, final Angle pitch, final Angle yaw,
-            final BodyMagneticFluxDensity result) {
+            final Angle roll, final Angle pitch, final Angle yaw, final BodyMagneticFluxDensity result) {
         estimate(magnitude, convertAngle(declination), convertAngle(dip),
-                convertAngle(roll), convertAngle(pitch), convertAngle(yaw),
-                result);
+                convertAngle(roll), convertAngle(pitch), convertAngle(yaw), result);
     }
 
     /**
@@ -201,10 +192,8 @@ public class BodyMagneticFluxDensityEstimator {
      */
     public static void estimate(
             final double magnitude, final Angle declination, final Angle dip,
-            final CoordinateTransformation c,
-            final BodyMagneticFluxDensity result) {
-        estimate(magnitude, convertAngle(declination), convertAngle(dip),
-                c, result);
+            final CoordinateTransformation c, final BodyMagneticFluxDensity result) {
+        estimate(magnitude, convertAngle(declination), convertAngle(dip), c, result);
     }
 
     /**
@@ -220,10 +209,8 @@ public class BodyMagneticFluxDensityEstimator {
      */
     public static void estimate(
             final NEDMagneticFluxDensity earthB,
-            final Angle roll, final Angle pitch, final Angle yaw,
-            final BodyMagneticFluxDensity result) {
-        estimate(earthB, convertAngle(roll), convertAngle(pitch),
-                convertAngle(yaw), result);
+            final Angle roll, final Angle pitch, final Angle yaw, final BodyMagneticFluxDensity result) {
+        estimate(earthB, convertAngle(roll), convertAngle(pitch), convertAngle(yaw), result);
     }
 
     /**
@@ -262,8 +249,7 @@ public class BodyMagneticFluxDensityEstimator {
      * @return measured magnetic flux density resolved in body coordinates.
      */
     public static BodyMagneticFluxDensity estimate(
-            final double magnitude, final double declination, final double dip,
-            final CoordinateTransformation c) {
+            final double magnitude, final double declination, final double dip, final CoordinateTransformation c) {
         final BodyMagneticFluxDensity result = new BodyMagneticFluxDensity();
         estimate(magnitude, declination, dip, c, result);
         return result;
@@ -280,8 +266,7 @@ public class BodyMagneticFluxDensityEstimator {
      * @return measured magnetic flux density resolved in body coordinates.
      */
     public static BodyMagneticFluxDensity estimate(
-            final NEDMagneticFluxDensity earthB,
-            final double roll, final double pitch, final double yaw) {
+            final NEDMagneticFluxDensity earthB, final double roll, final double pitch, final double yaw) {
         final BodyMagneticFluxDensity result = new BodyMagneticFluxDensity();
         estimate(earthB, roll, pitch, yaw, result);
         return result;
@@ -296,8 +281,7 @@ public class BodyMagneticFluxDensityEstimator {
      * @return measured magnetic flux density resolved in body coordinates.
      */
     public static BodyMagneticFluxDensity estimate(
-            final NEDMagneticFluxDensity earthB,
-            final CoordinateTransformation c) {
+            final NEDMagneticFluxDensity earthB, final CoordinateTransformation c) {
         final BodyMagneticFluxDensity result = new BodyMagneticFluxDensity();
         estimate(earthB, c, result);
         return result;
@@ -337,8 +321,7 @@ public class BodyMagneticFluxDensityEstimator {
      * @return measured magnetic flux density resolved in body coordinates.
      */
     public static BodyMagneticFluxDensity estimate(
-            final double magnitude, final Angle declination, final Angle dip,
-            final CoordinateTransformation c) {
+            final double magnitude, final Angle declination, final Angle dip, final CoordinateTransformation c) {
         final BodyMagneticFluxDensity result = new BodyMagneticFluxDensity();
         estimate(magnitude, declination, dip, c, result);
         return result;
@@ -355,8 +338,7 @@ public class BodyMagneticFluxDensityEstimator {
      * @return measured magnetic flux density resolved in body coordinates.
      */
     public static BodyMagneticFluxDensity estimate(
-            final NEDMagneticFluxDensity earthB,
-            final Angle roll, final Angle pitch, final Angle yaw) {
+            final NEDMagneticFluxDensity earthB, final Angle roll, final Angle pitch, final Angle yaw) {
         final BodyMagneticFluxDensity result = new BodyMagneticFluxDensity();
         estimate(earthB, roll, pitch, yaw, result);
         return result;
@@ -369,7 +351,6 @@ public class BodyMagneticFluxDensityEstimator {
      * @return converted value expressed in radians.
      */
     private static double convertAngle(final Angle angle) {
-        return AngleConverter.convert(angle.getValue().doubleValue(),
-                angle.getUnit(), AngleUnit.RADIANS);
+        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(), AngleUnit.RADIANS);
     }
 }

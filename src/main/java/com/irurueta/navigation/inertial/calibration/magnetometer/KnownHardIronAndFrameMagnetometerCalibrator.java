@@ -47,14 +47,14 @@ public interface KnownHardIronAndFrameMagnetometerCalibrator<T extends FrameBody
      * @return a collection of body magnetic flux density measurements taken at different
      * frames (positions, orientations and velocities).
      */
-    Collection<? extends T> getMeasurements();
+    Collection<T> getMeasurements();
 
     /**
      * Sets a collection of body magnetic flux density measurements taken at different
      * frames (positions, orientations and velocities).
      * If a single device IMU needs to be calibrated, typically all measurements are
      * taken at the same position, with zero velocity and multiple orientations.
-     * However, if we just want to calibrate the a given IMU model (e.g. obtain
+     * However, if we just want to calibrate a given IMU model (e.g. obtain
      * an average and less precise calibration for the IMU of a given phone model),
      * we could take measurements collected throughout the planet at multiple positions
      * while the phone remains static (e.g. while charging), hence each measurement

@@ -36,306 +36,208 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
     @Test
     public void testConstructor() {
         // test empty constructor
-        StandardDeviationBodyMagneticFluxDensity stdMagnetic =
-                new StandardDeviationBodyMagneticFluxDensity();
+        StandardDeviationBodyMagneticFluxDensity stdMagnetic = new StandardDeviationBodyMagneticFluxDensity();
 
         // check default values
         assertNull(stdMagnetic.getMagneticFluxDensity());
-        assertEquals(stdMagnetic.getMagneticFluxDensityStandardDeviation(),
-                0.0, 0.0);
+        assertEquals(0.0, stdMagnetic.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // test constructor with magnetic flux density
-        final BodyMagneticFluxDensity magneticFluxDensity =
-                new BodyMagneticFluxDensity();
-        stdMagnetic = new StandardDeviationBodyMagneticFluxDensity(
-                magneticFluxDensity);
+        final BodyMagneticFluxDensity magneticFluxDensity = new BodyMagneticFluxDensity();
+        stdMagnetic = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity);
 
         // check default values
-        assertSame(stdMagnetic.getMagneticFluxDensity(), magneticFluxDensity);
-        assertEquals(stdMagnetic.getMagneticFluxDensityStandardDeviation(),
-                0.0, 0.0);
+        assertSame(magneticFluxDensity, stdMagnetic.getMagneticFluxDensity());
+        assertEquals(0.0, stdMagnetic.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // test constructor with standard deviation
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double std = randomizer.nextDouble(0.0,
-                MAX_MAGNETIC_FLUX_DENSITY);
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
         stdMagnetic = new StandardDeviationBodyMagneticFluxDensity(std);
 
         // check default values
         assertNull(stdMagnetic.getMagneticFluxDensity());
-        assertEquals(stdMagnetic.getMagneticFluxDensityStandardDeviation(),
-                std, 0.0);
+        assertEquals(std, stdMagnetic.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // Force IllegalArgumentException
-        stdMagnetic = null;
-        try {
-            stdMagnetic = new StandardDeviationBodyMagneticFluxDensity(
-                    -1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(stdMagnetic);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationBodyMagneticFluxDensity(
+                -1.0));
 
         // test constructor with magnetic flux density and standard deviation
-        stdMagnetic = new StandardDeviationBodyMagneticFluxDensity(
-                magneticFluxDensity, std);
+        stdMagnetic = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity, std);
 
         // check default values
-        assertSame(stdMagnetic.getMagneticFluxDensity(), magneticFluxDensity);
-        assertEquals(stdMagnetic.getMagneticFluxDensityStandardDeviation(),
-                std, 0.0);
+        assertSame(magneticFluxDensity, stdMagnetic.getMagneticFluxDensity());
+        assertEquals(std, stdMagnetic.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // Force IllegalArgumentException
-        stdMagnetic = null;
-        try {
-            stdMagnetic = new StandardDeviationBodyMagneticFluxDensity(
-                    magneticFluxDensity, -1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(stdMagnetic);
+        assertThrows(IllegalArgumentException.class, () -> new StandardDeviationBodyMagneticFluxDensity(
+                magneticFluxDensity, -1.0));
 
         // test copy constructor
-        stdMagnetic = new StandardDeviationBodyMagneticFluxDensity(
-                magneticFluxDensity, std);
+        stdMagnetic = new StandardDeviationBodyMagneticFluxDensity(magneticFluxDensity, std);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 =
-                new StandardDeviationBodyMagneticFluxDensity(stdMagnetic);
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(
+                stdMagnetic);
 
         // check
-        assertEquals(stdMagnetic.getMagneticFluxDensity(),
-                stdMagnetic2.getMagneticFluxDensity());
+        assertEquals(stdMagnetic.getMagneticFluxDensity(), stdMagnetic2.getMagneticFluxDensity());
         assertEquals(stdMagnetic.getMagneticFluxDensityStandardDeviation(),
-                stdMagnetic2.getMagneticFluxDensityStandardDeviation(),
-                0.0);
+                stdMagnetic2.getMagneticFluxDensityStandardDeviation(), 0.0);
     }
 
     @Test
     public void testGetSetMagneticFluxDensity() {
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic =
-                new StandardDeviationBodyMagneticFluxDensity();
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic = new StandardDeviationBodyMagneticFluxDensity();
 
         // check default value
         assertNull(stdMagnetic.getMagneticFluxDensity());
 
         // set new value
-        final BodyMagneticFluxDensity magneticFluxDensity =
-                new BodyMagneticFluxDensity();
+        final BodyMagneticFluxDensity magneticFluxDensity = new BodyMagneticFluxDensity();
         stdMagnetic.setMagneticFluxDensity(magneticFluxDensity);
 
         // check
-        assertSame(stdMagnetic.getMagneticFluxDensity(),
-                magneticFluxDensity);
+        assertSame(magneticFluxDensity, stdMagnetic.getMagneticFluxDensity());
     }
 
     @Test
     public void testGetSetMagneticFluxDensityStandardDeviation() {
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic =
-                new StandardDeviationBodyMagneticFluxDensity();
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic = new StandardDeviationBodyMagneticFluxDensity();
 
         // check default value
-        assertEquals(stdMagnetic.getMagneticFluxDensityStandardDeviation(),
-                0.0, 0.0);
+        assertEquals(0.0, stdMagnetic.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double std = randomizer.nextDouble(0.0,
-                MAX_MAGNETIC_FLUX_DENSITY);
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
         stdMagnetic.setMagneticFluxDensityStandardDeviation(std);
 
         // check
-        assertEquals(stdMagnetic.getMagneticFluxDensityStandardDeviation(),
-                std, 0.0);
+        assertEquals(std, stdMagnetic.getMagneticFluxDensityStandardDeviation(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            stdMagnetic.setMagneticFluxDensityStandardDeviation(-1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> stdMagnetic.setMagneticFluxDensityStandardDeviation(-1.0));
     }
 
     @Test
     public void testCopyFromWhenBodyMagneticFluxDensityIsAvailableAtSourceAndDestinationIsEmpty() {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double std = randomizer.nextDouble(0.0,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity =
-                new BodyMagneticFluxDensity(bx, by, bz);
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final BodyMagneticFluxDensity magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 =
-                new StandardDeviationBodyMagneticFluxDensity(
-                        magneticFluxDensity, std);
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(
+                magneticFluxDensity, std);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 =
-                new StandardDeviationBodyMagneticFluxDensity();
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity();
 
         stdMagnetic2.copyFrom(stdMagnetic1);
 
         // check
-        assertNotSame(stdMagnetic1.getMagneticFluxDensity(),
-                stdMagnetic2.getMagneticFluxDensity());
-        assertEquals(stdMagnetic1.getMagneticFluxDensity(),
-                stdMagnetic2.getMagneticFluxDensity());
+        assertNotSame(stdMagnetic1.getMagneticFluxDensity(), stdMagnetic2.getMagneticFluxDensity());
+        assertEquals(stdMagnetic1.getMagneticFluxDensity(), stdMagnetic2.getMagneticFluxDensity());
         assertEquals(stdMagnetic1.getMagneticFluxDensityStandardDeviation(),
-                stdMagnetic2.getMagneticFluxDensityStandardDeviation(),
-                0.0);
+                stdMagnetic2.getMagneticFluxDensityStandardDeviation(), 0.0);
     }
 
     @Test
     public void testCopyFromWhenBodyMagneticFluxDensityIsAvailableAtDestinationAndSourceIsEmpty() {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double std = randomizer.nextDouble(0.0,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity =
-                new BodyMagneticFluxDensity(bx, by, bz);
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final BodyMagneticFluxDensity magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 =
-                new StandardDeviationBodyMagneticFluxDensity();
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity();
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 =
-                new StandardDeviationBodyMagneticFluxDensity(
-                        magneticFluxDensity, std);
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(
+                magneticFluxDensity, std);
 
         stdMagnetic2.copyFrom(stdMagnetic1);
 
         // check
         assertNull(stdMagnetic2.getMagneticFluxDensity());
-        assertEquals(stdMagnetic2.getMagneticFluxDensityStandardDeviation(),
-                0.0, 0.0);
+        assertEquals(0.0, stdMagnetic2.getMagneticFluxDensityStandardDeviation(), 0.0);
     }
 
     @Test
     public void testCopyFromWhenBodyMagneticFluxDensityIsAvailableAtSourceAndDestination() {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double bx1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double by1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double std1 = randomizer.nextDouble(0.0,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity1 =
-                new BodyMagneticFluxDensity(bx1, by1, bz1);
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double bx1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double by1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double bz1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double std1 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final BodyMagneticFluxDensity magneticFluxDensity1 = new BodyMagneticFluxDensity(bx1, by1, bz1);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 =
-                new StandardDeviationBodyMagneticFluxDensity(
-                        magneticFluxDensity1, std1);
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(
+                magneticFluxDensity1, std1);
 
-        final double bx2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double by2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double std2 = randomizer.nextDouble(0.0,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity2 =
-                new BodyMagneticFluxDensity(bx2, by2, bz2);
+        final double bx2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double by2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double bz2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double std2 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final BodyMagneticFluxDensity magneticFluxDensity2 = new BodyMagneticFluxDensity(bx2, by2, bz2);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 =
-                new StandardDeviationBodyMagneticFluxDensity(
-                        magneticFluxDensity2, std2);
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(
+                magneticFluxDensity2, std2);
 
         stdMagnetic2.copyFrom(stdMagnetic1);
 
         // check
-        assertNotSame(stdMagnetic1.getMagneticFluxDensity(),
-                stdMagnetic2.getMagneticFluxDensity());
-        assertEquals(stdMagnetic1.getMagneticFluxDensity(),
-                stdMagnetic2.getMagneticFluxDensity());
+        assertNotSame(stdMagnetic1.getMagneticFluxDensity(), stdMagnetic2.getMagneticFluxDensity());
+        assertEquals(stdMagnetic1.getMagneticFluxDensity(), stdMagnetic2.getMagneticFluxDensity());
         assertEquals(stdMagnetic1.getMagneticFluxDensityStandardDeviation(),
-                stdMagnetic2.getMagneticFluxDensityStandardDeviation(),
-                0.0);
+                stdMagnetic2.getMagneticFluxDensityStandardDeviation(), 0.0);
     }
 
     @Test
     public void testCopyTo() {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double bx1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double by1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double std1 = randomizer.nextDouble(0.0,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity1 =
-                new BodyMagneticFluxDensity(bx1, by1, bz1);
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double bx1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double by1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double bz1 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double std1 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final BodyMagneticFluxDensity magneticFluxDensity1 = new BodyMagneticFluxDensity(bx1, by1, bz1);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 =
-                new StandardDeviationBodyMagneticFluxDensity(
-                        magneticFluxDensity1, std1);
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(
+                magneticFluxDensity1, std1);
 
-        final double bx2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double by2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double std2 = randomizer.nextDouble(0.0,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity2 =
-                new BodyMagneticFluxDensity(bx2, by2, bz2);
+        final double bx2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double by2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double bz2 = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double std2 = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final BodyMagneticFluxDensity magneticFluxDensity2 = new BodyMagneticFluxDensity(bx2, by2, bz2);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 =
-                new StandardDeviationBodyMagneticFluxDensity(
-                        magneticFluxDensity2, std2);
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(
+                magneticFluxDensity2, std2);
 
         stdMagnetic1.copyFrom(stdMagnetic2);
 
         // check
-        assertNotSame(stdMagnetic1.getMagneticFluxDensity(),
-                stdMagnetic2.getMagneticFluxDensity());
-        assertEquals(stdMagnetic1.getMagneticFluxDensity(),
-                stdMagnetic2.getMagneticFluxDensity());
+        assertNotSame(stdMagnetic1.getMagneticFluxDensity(), stdMagnetic2.getMagneticFluxDensity());
+        assertEquals(stdMagnetic1.getMagneticFluxDensity(), stdMagnetic2.getMagneticFluxDensity());
         assertEquals(stdMagnetic1.getMagneticFluxDensityStandardDeviation(),
-                stdMagnetic2.getMagneticFluxDensityStandardDeviation(),
-                0.0);
+                stdMagnetic2.getMagneticFluxDensityStandardDeviation(), 0.0);
     }
 
     @Test
     public void testHashCode() {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double std = randomizer.nextDouble(0.0,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity =
-                new BodyMagneticFluxDensity(bx, by, bz);
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final BodyMagneticFluxDensity magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 =
-                new StandardDeviationBodyMagneticFluxDensity(
-                        magneticFluxDensity, std);
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 =
-                new StandardDeviationBodyMagneticFluxDensity(
-                        magneticFluxDensity, std);
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic3 =
-                new StandardDeviationBodyMagneticFluxDensity();
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(
+                magneticFluxDensity, std);
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(
+                magneticFluxDensity, std);
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic3 = new StandardDeviationBodyMagneticFluxDensity();
 
         assertEquals(stdMagnetic1.hashCode(), stdMagnetic2.hashCode());
         assertNotEquals(stdMagnetic1.hashCode(), stdMagnetic3.hashCode());
@@ -343,64 +245,41 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
 
     @Test
     public void testEquals() {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double std = randomizer.nextDouble(0.0,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity =
-                new BodyMagneticFluxDensity(bx, by, bz);
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final BodyMagneticFluxDensity magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 =
-                new StandardDeviationBodyMagneticFluxDensity(
-                        magneticFluxDensity, std);
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 =
-                new StandardDeviationBodyMagneticFluxDensity(
-                        magneticFluxDensity, std);
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic3 =
-                new StandardDeviationBodyMagneticFluxDensity();
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(
+                magneticFluxDensity, std);
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(
+                magneticFluxDensity, std);
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic3 = new StandardDeviationBodyMagneticFluxDensity();
 
-        //noinspection SimplifiableJUnitAssertion,ConstantConditions
-        assertTrue(stdMagnetic1.equals((Object) stdMagnetic1));
         //noinspection EqualsWithItself
-        assertTrue(stdMagnetic1.equals(stdMagnetic1));
+        assertEquals(stdMagnetic1, stdMagnetic1);
         assertTrue(stdMagnetic1.equals(stdMagnetic2));
         assertFalse(stdMagnetic1.equals(stdMagnetic3));
-        //noinspection SimplifiableJUnitAssertion,ConstantConditions
-        assertFalse(stdMagnetic1.equals((Object) null));
-        assertFalse(stdMagnetic1.equals(null));
-        //noinspection SimplifiableJUnitAssertion
-        assertFalse(stdMagnetic1.equals(new Object()));
+        assertNotEquals(stdMagnetic1, null);
+        assertNotEquals(stdMagnetic1, new Object());
     }
 
     @Test
     public void testEqualsWithThreshold() {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double std = randomizer.nextDouble(0.0,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity =
-                new BodyMagneticFluxDensity(bx, by, bz);
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final BodyMagneticFluxDensity magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 =
-                new StandardDeviationBodyMagneticFluxDensity(
-                        magneticFluxDensity, std);
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 =
-                new StandardDeviationBodyMagneticFluxDensity(
-                        magneticFluxDensity, std);
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic3 =
-                new StandardDeviationBodyMagneticFluxDensity();
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(
+                magneticFluxDensity, std);
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 = new StandardDeviationBodyMagneticFluxDensity(
+                magneticFluxDensity, std);
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic3 = new StandardDeviationBodyMagneticFluxDensity();
 
         assertTrue(stdMagnetic1.equals(stdMagnetic1, THRESHOLD));
         assertTrue(stdMagnetic1.equals(stdMagnetic2, THRESHOLD));
@@ -410,22 +289,15 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
 
     @Test
     public void testClone() throws CloneNotSupportedException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double std = randomizer.nextDouble(0.0,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity =
-                new BodyMagneticFluxDensity(bx, by, bz);
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final BodyMagneticFluxDensity magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 =
-                new StandardDeviationBodyMagneticFluxDensity(
-                        magneticFluxDensity, std);
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(
+                magneticFluxDensity, std);
 
         final Object stdMagnetic2 = stdMagnetic1.clone();
 
@@ -435,27 +307,19 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
 
     @Test
     public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final double std = randomizer.nextDouble(0.0,
-                MAX_MAGNETIC_FLUX_DENSITY);
-        final BodyMagneticFluxDensity magneticFluxDensity =
-                new BodyMagneticFluxDensity(bx, by, bz);
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY, MAX_MAGNETIC_FLUX_DENSITY);
+        final double std = randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+        final BodyMagneticFluxDensity magneticFluxDensity = new BodyMagneticFluxDensity(bx, by, bz);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 =
-                new StandardDeviationBodyMagneticFluxDensity(
-                        magneticFluxDensity, std);
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 = new StandardDeviationBodyMagneticFluxDensity(
+                magneticFluxDensity, std);
 
         final byte[] bytes = SerializationHelper.serialize(stdMagnetic1);
 
-        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 =
-                SerializationHelper.deserialize(bytes);
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 = SerializationHelper.deserialize(bytes);
 
         assertEquals(stdMagnetic1, stdMagnetic2);
         assertNotSame(stdMagnetic1, stdMagnetic2);

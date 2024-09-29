@@ -23,6 +23,6 @@ import com.irurueta.units.AccelerationUnit;
  * Interface defining events generated for {@link AccelerationTriadStaticIntervalDetector}.
  */
 public interface AccelerationTriadStaticIntervalDetectorListener extends
-        TriadStaticIntervalDetectorListener<AccelerationUnit, Acceleration,
-                AccelerationTriad, AccelerationTriadStaticIntervalDetector> {
+        TriadStaticIntervalDetectorListener<AccelerationUnit, Acceleration, AccelerationTriad,
+                AccelerationTriadStaticIntervalDetector> {
 }

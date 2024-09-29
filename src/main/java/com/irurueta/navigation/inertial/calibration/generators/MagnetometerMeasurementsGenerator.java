@@ -37,8 +37,8 @@ import com.irurueta.navigation.inertial.calibration.noise.AccumulatedMagneticFlu
  */
 public class MagnetometerMeasurementsGenerator extends
         MeasurementsGenerator<StandardDeviationBodyMagneticFluxDensity,
-                MagnetometerMeasurementsGenerator,
-                MagnetometerMeasurementsGeneratorListener, BodyKinematicsAndMagneticFluxDensity> {
+                MagnetometerMeasurementsGenerator, MagnetometerMeasurementsGeneratorListener,
+                BodyKinematicsAndMagneticFluxDensity> {
 
     /**
      * Accumulated noise estimator for magnetic flux density measurements.
@@ -82,8 +82,7 @@ public class MagnetometerMeasurementsGenerator extends
      *
      * @param listener listener to handle events raised by this generator.
      */
-    public MagnetometerMeasurementsGenerator(
-            final MagnetometerMeasurementsGeneratorListener listener) {
+    public MagnetometerMeasurementsGenerator(final MagnetometerMeasurementsGeneratorListener listener) {
         super(listener);
     }
 
@@ -128,8 +127,7 @@ public class MagnetometerMeasurementsGenerator extends
      * @param sample input sample.
      */
     @Override
-    protected void getAccelerationTriadFromInputSample(
-            final BodyKinematicsAndMagneticFluxDensity sample) {
+    protected void getAccelerationTriadFromInputSample(final BodyKinematicsAndMagneticFluxDensity sample) {
         sample.getKinematics().getSpecificForceTriad(mTriad);
     }
 
@@ -157,19 +155,14 @@ public class MagnetometerMeasurementsGenerator extends
      */
     @Override
     protected void handleStaticToDynamicChange(
-            final double accumulatedAvgX,
-            final double accumulatedAvgY,
-            final double accumulatedAvgZ,
-            final double accumulatedStdX,
-            final double accumulatedStdY,
-            final double accumulatedStdZ) {
+            final double accumulatedAvgX, final double accumulatedAvgY, final double accumulatedAvgZ,
+            final double accumulatedStdX, final double accumulatedStdY, final double accumulatedStdZ) {
 
         if (!isStaticIntervalSkipped()) {
 
             final StandardDeviationBodyMagneticFluxDensity measurement =
                     new StandardDeviationBodyMagneticFluxDensity(
-                            new BodyMagneticFluxDensity(mAvgBx, mAvgBy, mAvgBz),
-                            mStdBNorm);
+                            new BodyMagneticFluxDensity(mAvgBx, mAvgBy, mAvgBz), mStdBNorm);
 
             if (mListener != null) {
                 mListener.onGeneratedMeasurement(this, measurement);

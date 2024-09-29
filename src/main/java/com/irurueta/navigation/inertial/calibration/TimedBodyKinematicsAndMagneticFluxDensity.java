@@ -22,6 +22,7 @@ import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
 
+import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -39,6 +40,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -68,8 +70,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      *
      * @param magneticFluxDensity body magnetic flux density.
      */
-    public TimedBodyKinematicsAndMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity) {
+    public TimedBodyKinematicsAndMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {
         super(magneticFluxDensity);
     }
 
@@ -81,8 +82,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param magneticFluxDensity body magnetic flux density.
      */
     public TimedBodyKinematicsAndMagneticFluxDensity(
-            final BodyKinematics kinematics,
-            final BodyMagneticFluxDensity magneticFluxDensity) {
+            final BodyKinematics kinematics, final BodyMagneticFluxDensity magneticFluxDensity) {
         super(kinematics, magneticFluxDensity);
     }
 
@@ -111,9 +111,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      *                         and angular rate.
      * @param timestampSeconds timestamp value expressed in seconds.
      */
-    public TimedBodyKinematicsAndMagneticFluxDensity(
-            final BodyKinematics kinematics,
-            final double timestampSeconds) {
+    public TimedBodyKinematicsAndMagneticFluxDensity(final BodyKinematics kinematics, final double timestampSeconds) {
         super(kinematics);
         mTimestampSeconds = timestampSeconds;
     }
@@ -125,9 +123,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      *                   and angular rate.
      * @param timestamp  timestamp value.
      */
-    public TimedBodyKinematicsAndMagneticFluxDensity(
-            final BodyKinematics kinematics,
-            final Time timestamp) {
+    public TimedBodyKinematicsAndMagneticFluxDensity(final BodyKinematics kinematics, final Time timestamp) {
         super(kinematics);
         mTimestampSeconds = convertTime(timestamp);
     }
@@ -139,8 +135,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param timestampSeconds    timestamp value expressed in seconds.
      */
     public TimedBodyKinematicsAndMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final double timestampSeconds) {
+            final BodyMagneticFluxDensity magneticFluxDensity, final double timestampSeconds) {
         super(magneticFluxDensity);
         mTimestampSeconds = timestampSeconds;
     }
@@ -152,8 +147,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param timestamp           timestamp value.
      */
     public TimedBodyKinematicsAndMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final Time timestamp) {
+            final BodyMagneticFluxDensity magneticFluxDensity, final Time timestamp) {
         super(magneticFluxDensity);
         mTimestampSeconds = convertTime(timestamp);
     }
@@ -167,8 +161,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param timestampSeconds    timestamp value expressed in seconds.
      */
     public TimedBodyKinematicsAndMagneticFluxDensity(
-            final BodyKinematics kinematics,
-            final BodyMagneticFluxDensity magneticFluxDensity,
+            final BodyKinematics kinematics, final BodyMagneticFluxDensity magneticFluxDensity,
             final double timestampSeconds) {
         super(kinematics, magneticFluxDensity);
         mTimestampSeconds = timestampSeconds;
@@ -184,9 +177,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param timestamp           timestamp value.
      */
     public TimedBodyKinematicsAndMagneticFluxDensity(
-            final BodyKinematics kinematics,
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final Time timestamp) {
+            final BodyKinematics kinematics, final BodyMagneticFluxDensity magneticFluxDensity, final Time timestamp) {
         super(kinematics, magneticFluxDensity);
         mTimestampSeconds = convertTime(timestamp);
     }
@@ -196,8 +187,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      *
      * @param input instance to copy data from.
      */
-    public TimedBodyKinematicsAndMagneticFluxDensity(
-            final TimedBodyKinematicsAndMagneticFluxDensity input) {
+    public TimedBodyKinematicsAndMagneticFluxDensity(final TimedBodyKinematicsAndMagneticFluxDensity input) {
         copyFrom(input);
     }
 
@@ -328,8 +318,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * threshold), false otherwise.
      */
     public boolean equals(final TimedBodyKinematicsAndMagneticFluxDensity other, final double threshold) {
-        return super.equals(other, threshold)
-                && Math.abs(other.mTimestampSeconds - mTimestampSeconds) <= threshold;
+        return super.equals(other, threshold) && Math.abs(other.mTimestampSeconds - mTimestampSeconds) <= threshold;
     }
 
     /**

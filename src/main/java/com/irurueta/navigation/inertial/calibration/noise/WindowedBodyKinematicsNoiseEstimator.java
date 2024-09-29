@@ -50,8 +50,8 @@ import java.util.LinkedList;
  * (variance or standard deviation) can be safely used.
  */
 @SuppressWarnings("DuplicatedCode")
-public class WindowedBodyKinematicsNoiseEstimator
-        implements AccelerometerNoiseRootPsdSource, GyroscopeNoiseRootPsdSource {
+public class WindowedBodyKinematicsNoiseEstimator implements AccelerometerNoiseRootPsdSource,
+        GyroscopeNoiseRootPsdSource {
     /**
      * Number of samples to keep within the window by default.
      * For an accelerometer generating 100 samples/second, this is equivalent to
@@ -72,7 +72,6 @@ public class WindowedBodyKinematicsNoiseEstimator
      */
     public static final double DEFAULT_TIME_INTERVAL_SECONDS =
             WindowedTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS;
-
 
     /**
      * Length of number of samples to keep within the window being processed.
@@ -189,8 +188,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      *
      * @param listener listener to handle events raised by this estimator.
      */
-    public WindowedBodyKinematicsNoiseEstimator(
-            final WindowedBodyKinematicsNoiseEstimatorListener listener) {
+    public WindowedBodyKinematicsNoiseEstimator(final WindowedBodyKinematicsNoiseEstimatorListener listener) {
         mListener = listener;
     }
 
@@ -302,9 +300,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @param listener listener to handle events raised by this estimator.
      * @throws LockedException if this estimator is running.
      */
-    public void setListener(
-            final WindowedBodyKinematicsNoiseEstimatorListener listener)
-            throws LockedException {
+    public void setListener(final WindowedBodyKinematicsNoiseEstimatorListener listener) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -382,8 +378,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return average of x coordinate of sensed specific force.
      */
     public Acceleration getAvgSpecificForceXAsMeasurement() {
-        return new Acceleration(mAvgSpecificForceX,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mAvgSpecificForceX, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -419,8 +414,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return average of y coordinate of sensed specific force.
      */
     public Acceleration getAvgSpecificForceYAsMeasurement() {
-        return new Acceleration(mAvgSpecificForceY,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mAvgSpecificForceY, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -456,8 +450,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return average of z coordinate of sensed specific force.
      */
     public Acceleration getAvgSpecificForceZAsMeasurement() {
-        return new Acceleration(mAvgSpecificForceZ,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mAvgSpecificForceZ, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -491,8 +484,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @param result instance where average accelerometer triad will be stored.
      */
     public void getAvgSpecificForceAsTriad(final AccelerationTriad result) {
-        result.setValueCoordinatesAndUnit(
-                mAvgSpecificForceX, mAvgSpecificForceY, mAvgSpecificForceZ,
+        result.setValueCoordinatesAndUnit(mAvgSpecificForceX, mAvgSpecificForceY, mAvgSpecificForceZ,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -503,8 +495,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return norm of estimated average acceleration.
      */
     public double getAvgSpecificForceNorm() {
-        return Math.sqrt(mAvgSpecificForceX * mAvgSpecificForceX
-                + mAvgSpecificForceY * mAvgSpecificForceY
+        return Math.sqrt(mAvgSpecificForceX * mAvgSpecificForceX + mAvgSpecificForceY * mAvgSpecificForceY
                 + mAvgSpecificForceZ * mAvgSpecificForceZ);
     }
 
@@ -514,8 +505,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return norm of estimated average acceleration.
      */
     public Acceleration getAvgSpecificForceNormAsMeasurement() {
-        return new Acceleration(getAvgSpecificForceNorm(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(getAvgSpecificForceNorm(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -548,8 +538,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return average of x coordinate of sensed angular rate.
      */
     public AngularSpeed getAvgAngularRateXAsMeasurement() {
-        return new AngularSpeed(mAvgAngularRateX,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mAvgAngularRateX, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -585,8 +574,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return average of y coordinate of sensed angular rate.
      */
     public AngularSpeed getAvgAngularRateYAsMeasurement() {
-        return new AngularSpeed(mAvgAngularRateY,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mAvgAngularRateY, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -622,8 +610,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return average of z coordinate of sensed angular rate.
      */
     public AngularSpeed getAvgAngularRateZAsMeasurement() {
-        return new AngularSpeed(mAvgAngularRateZ,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mAvgAngularRateZ, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -657,8 +644,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @param result instance where average angular speed triad will be stored.
      */
     public void getAvgAngularRateTriad(final AngularSpeedTriad result) {
-        result.setValueCoordinatesAndUnit(
-                mAvgAngularRateX, mAvgAngularRateY, mAvgAngularRateZ,
+        result.setValueCoordinatesAndUnit(mAvgAngularRateX, mAvgAngularRateY, mAvgAngularRateZ,
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -681,8 +667,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return norm of estimated average angular speed.
      */
     public AngularSpeed getAvgAngularRateNormAsMeasurement() {
-        return new AngularSpeed(getAvgAngularRateNorm(),
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(getAvgAngularRateNorm(), AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -713,10 +698,8 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @param result instance where estimated average of body kinematics will be stored.
      */
     public void getAvgBodyKinematics(final BodyKinematics result) {
-        result.setSpecificForceCoordinates(
-                getAvgSpecificForceX(), getAvgSpecificForceY(), getAvgSpecificForceZ());
-        result.setAngularRateCoordinates(
-                getAvgAngularRateX(), getAvgAngularRateY(), getAvgAngularRateZ());
+        result.setSpecificForceCoordinates(getAvgSpecificForceX(), getAvgSpecificForceY(), getAvgSpecificForceZ());
+        result.setAngularRateCoordinates(getAvgAngularRateX(), getAvgAngularRateY(), getAvgAngularRateZ());
     }
 
     /**
@@ -798,8 +781,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * force.
      */
     public Acceleration getStandardDeviationSpecificForceXAsMeasurement() {
-        return new Acceleration(getStandardDeviationSpecificForceX(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(getStandardDeviationSpecificForceX(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -809,8 +791,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @param result instance where estimated standard deviation of x
      *               coordinate of sensed specific force will be stored.
      */
-    public void getStandardDeviationSpecificForceXAsMeasurement(
-            final Acceleration result) {
+    public void getStandardDeviationSpecificForceXAsMeasurement(final Acceleration result) {
         result.setValue(getStandardDeviationSpecificForceX());
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
@@ -834,8 +815,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * force.
      */
     public Acceleration getStandardDeviationSpecificForceYAsMeasurement() {
-        return new Acceleration(getStandardDeviationSpecificForceY(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(getStandardDeviationSpecificForceY(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -845,8 +825,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @param result instance where estimated standard deviation of y
      *               coordinate of sensed specific force will be stored.
      */
-    public void getStandardDeviationSpecificForceYAsMeasurement(
-            final Acceleration result) {
+    public void getStandardDeviationSpecificForceYAsMeasurement(final Acceleration result) {
         result.setValue(getStandardDeviationSpecificForceY());
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
@@ -870,8 +849,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * force.
      */
     public Acceleration getStandardDeviationSpecificForceZAsMeasurement() {
-        return new Acceleration(getStandardDeviationSpecificForceZ(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(getStandardDeviationSpecificForceZ(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -881,8 +859,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @param result instance where estimated standard deviation of z
      *               coordinate of sensed specific force will be stored.
      */
-    public void getStandardDeviationSpecificForceZAsMeasurement(
-            final Acceleration result) {
+    public void getStandardDeviationSpecificForceZAsMeasurement(final Acceleration result) {
         result.setValue(getStandardDeviationSpecificForceZ());
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
@@ -893,8 +870,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return estimated standard deviation triad of accelerometer measurements.
      */
     public AccelerationTriad getStandardDeviationSpecificForceTriad() {
-        return new AccelerationTriad(
-                AccelerationUnit.METERS_PER_SQUARED_SECOND,
+        return new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,
                 getStandardDeviationSpecificForceX(),
                 getStandardDeviationSpecificForceY(),
                 getStandardDeviationSpecificForceZ());
@@ -906,10 +882,8 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @param result instance where estimated standard deviation triad of
      *               accelerometer measurements will be stored.
      */
-    public void getStandardDeviationSpecificForceTriad(
-            final AccelerationTriad result) {
-        result.setValueCoordinatesAndUnit(
-                getStandardDeviationSpecificForceX(),
+    public void getStandardDeviationSpecificForceTriad(final AccelerationTriad result) {
+        result.setValueCoordinatesAndUnit(getStandardDeviationSpecificForceX(),
                 getStandardDeviationSpecificForceY(),
                 getStandardDeviationSpecificForceZ(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
@@ -935,8 +909,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return norm of estimated standard deviation of measurements.
      */
     public Acceleration getStandardDeviationSpecificForceNormAsMeasurement() {
-        return new Acceleration(getStandardDeviationSpecificForceNorm(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(getStandardDeviationSpecificForceNorm(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -971,8 +944,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return average of estimated standard deviation coordinates.
      */
     public Acceleration getAverageStandardDeviationSpecificForceAsMeasurement() {
-        return new Acceleration(getAverageStandardDeviationSpecificForce(),
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(getAverageStandardDeviationSpecificForce(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -1004,8 +976,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return estimated standard deviation of x coordinate of gyroscope.
      */
     public AngularSpeed getStandardDeviationAngularRateXAsMeasurement() {
-        return new AngularSpeed(getStandardDeviationAngularRateX(),
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(getStandardDeviationAngularRateX(), AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -1013,8 +984,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      *
      * @param result estimated standard deviation of x coordinate of gyroscope.
      */
-    public void getStandardDeviationAngularRateXAsMeasurement(
-            final AngularSpeed result) {
+    public void getStandardDeviationAngularRateXAsMeasurement(final AngularSpeed result) {
         result.setValue(getStandardDeviationAngularRateX());
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
@@ -1035,8 +1005,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return estimated standard deviation of y coordinate of gyroscope.
      */
     public AngularSpeed getStandardDeviationAngularRateYAsMeasurement() {
-        return new AngularSpeed(getStandardDeviationAngularRateY(),
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(getStandardDeviationAngularRateY(), AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -1044,8 +1013,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      *
      * @param result estimated standard deviation of y coordinate of gyroscope.
      */
-    public void getStandardDeviationAngularRateYAsMeasurement(
-            final AngularSpeed result) {
+    public void getStandardDeviationAngularRateYAsMeasurement(final AngularSpeed result) {
         result.setValue(getStandardDeviationAngularRateY());
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
@@ -1066,8 +1034,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return estimated standard deviation of z coordinate of gyroscope.
      */
     public AngularSpeed getStandardDeviationAngularRateZAsMeasurement() {
-        return new AngularSpeed(getStandardDeviationAngularRateZ(),
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(getStandardDeviationAngularRateZ(), AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -1075,8 +1042,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      *
      * @param result estimated standard deviation of z coordinate of gyroscope.
      */
-    public void getStandardDeviationAngularRateZAsMeasurement(
-            final AngularSpeed result) {
+    public void getStandardDeviationAngularRateZAsMeasurement(final AngularSpeed result) {
         result.setValue(getStandardDeviationAngularRateZ());
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
@@ -1087,8 +1053,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return estimated standard deviation triad of angular speed measurements.
      */
     public AngularSpeedTriad getStandardDeviationAngularSpeedTriad() {
-        return new AngularSpeedTriad(
-                AngularSpeedUnit.RADIANS_PER_SECOND,
+        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,
                 getStandardDeviationAngularRateX(),
                 getStandardDeviationAngularRateY(),
                 getStandardDeviationAngularRateZ());
@@ -1100,10 +1065,8 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @param result instance where estimated standard deviation triad of
      *               gyroscope measurements will be stored.
      */
-    public void getStandardDeviationAngularSpeedTriad(
-            final AngularSpeedTriad result) {
-        result.setValueCoordinatesAndUnit(
-                getStandardDeviationAngularRateX(),
+    public void getStandardDeviationAngularSpeedTriad(final AngularSpeedTriad result) {
+        result.setValueCoordinatesAndUnit(getStandardDeviationAngularRateX(),
                 getStandardDeviationAngularRateY(),
                 getStandardDeviationAngularRateZ(),
                 AngularSpeedUnit.RADIANS_PER_SECOND);
@@ -1129,8 +1092,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return norm of estimated standard deviation of measurements.
      */
     public AngularSpeed getStandardDeviationAngularSpeedNormAsMeasurement() {
-        return new AngularSpeed(getStandardDeviationAngularSpeedNorm(),
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(getStandardDeviationAngularSpeedNorm(), AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -1139,8 +1101,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @param result instance where norm of estimated standard deviation will be
      *               stored.
      */
-    public void getStandardDeviationAngularSpeedNormAsMeasurement(
-            final AngularSpeed result) {
+    public void getStandardDeviationAngularSpeedNormAsMeasurement(final AngularSpeed result) {
         result.setValue(getStandardDeviationAngularSpeedNorm());
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
@@ -1165,8 +1126,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return average of estimated standard deviation coordinates.
      */
     public AngularSpeed getAverageStandardDeviationAngularSpeedAsMeasurement() {
-        return new AngularSpeed(getAverageStandardDeviationAngularSpeed(),
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(getAverageStandardDeviationAngularSpeed(), AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -1176,8 +1136,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @param result instance where average of estimated standard deviation coordinates
      *               will be stored.
      */
-    public void getAverageStandardDeviationAngularSpeedAsMeasurement(
-            final AngularSpeed result) {
+    public void getAverageStandardDeviationAngularSpeedAsMeasurement(final AngularSpeed result) {
         result.setValue(getAverageStandardDeviationAngularSpeed());
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
     }
@@ -1339,9 +1298,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return average accelerometer noise PSD.
      */
     public double getAvgSpecificForceNoisePsd() {
-        return (getSpecificForcePsdX()
-                + getSpecificForcePsdY()
-                + getSpecificForcePsdZ()) / 3.0;
+        return (getSpecificForcePsdX() + getSpecificForcePsdY() + getSpecificForcePsdZ()) / 3.0;
     }
 
     /**
@@ -1351,9 +1308,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return norm of noise root PSD.
      */
     public double getSpecificForceNoiseRootPsdNorm() {
-        return Math.sqrt(getSpecificForcePsdX()
-                + getSpecificForcePsdY()
-                + getSpecificForcePsdZ());
+        return Math.sqrt(getSpecificForcePsdX() + getSpecificForcePsdY() + getSpecificForcePsdZ());
     }
 
     /**
@@ -1363,9 +1318,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return average gyroscope noise PSD.
      */
     public double getAvgAngularRateNoisePsd() {
-        return (getAngularRatePsdX()
-                + getAngularRatePsdY()
-                + getAngularRatePsdZ()) / 3.0;
+        return (getAngularRatePsdX() + getAngularRatePsdY() + getAngularRatePsdZ()) / 3.0;
     }
 
     /**
@@ -1375,9 +1328,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @return norm of noise root PSD.
      */
     public double getAngularRateNoiseRootPsdNorm() {
-        return Math.sqrt(getAngularRatePsdX()
-                + getAngularRatePsdY()
-                + getAngularRatePsdZ());
+        return Math.sqrt(getAngularRatePsdX() + getAngularRatePsdY() + getAngularRatePsdZ());
     }
 
     /**
@@ -1431,10 +1382,8 @@ public class WindowedBodyKinematicsNoiseEstimator
      */
     public boolean addBodyKinematicsAndProcess(
             final double specificForceX, final double specificForceY, final double specificForceZ,
-            final double angularRateX, final double angularRateY, final double angularRateZ)
-            throws LockedException {
-        return addBodyKinematicsAndProcess(new BodyKinematics(
-                specificForceX, specificForceY, specificForceZ,
+            final double angularRateX, final double angularRateY, final double angularRateZ) throws LockedException {
+        return addBodyKinematicsAndProcess(new BodyKinematics(specificForceX, specificForceY, specificForceZ,
                 angularRateX, angularRateY, angularRateZ));
     }
 
@@ -1452,15 +1401,10 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @throws LockedException if estimator is currently running.
      */
     public boolean addBodyKinematicsAndProcess(
-            final Acceleration specificForceX,
-            final Acceleration specificForceY,
-            final Acceleration specificForceZ,
-            final AngularSpeed angularRateX,
-            final AngularSpeed angularRateY,
-            final AngularSpeed angularRateZ)
+            final Acceleration specificForceX, final Acceleration specificForceY, final Acceleration specificForceZ,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws LockedException {
-        return addBodyKinematicsAndProcess(new BodyKinematics(
-                specificForceX, specificForceY, specificForceZ,
+        return addBodyKinematicsAndProcess(new BodyKinematics(specificForceX, specificForceY, specificForceZ,
                 angularRateX, angularRateY, angularRateZ));
     }
 
@@ -1474,8 +1418,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @throws LockedException if estimator is currently running.
      */
     public boolean addBodyKinematicsAndProcess(
-            final AccelerationTriad specificForce,
-            final AngularSpeedTriad angularSpeed) throws LockedException {
+            final AccelerationTriad specificForce, final AngularSpeedTriad angularSpeed) throws LockedException {
         return addBodyKinematicsAndProcess(new BodyKinematics(specificForce, angularSpeed));
     }
 
@@ -1487,8 +1430,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * been ignored.
      * @throws LockedException if estimator is currently running.
      */
-    public boolean addBodyKinematicsAndProcess(final BodyKinematics kinematics)
-            throws LockedException {
+    public boolean addBodyKinematicsAndProcess(final BodyKinematics kinematics) throws LockedException {
         return internalAdd(kinematics, true);
     }
 
@@ -1505,10 +1447,8 @@ public class WindowedBodyKinematicsNoiseEstimator
      */
     public void addBodyKinematics(
             final double specificForceX, final double specificForceY, final double specificForceZ,
-            final double angularRateX, final double angularRateY, final double angularRateZ)
-            throws LockedException {
-        addBodyKinematics(new BodyKinematics(
-                specificForceX, specificForceY, specificForceZ,
+            final double angularRateX, final double angularRateY, final double angularRateZ) throws LockedException {
+        addBodyKinematics(new BodyKinematics(specificForceX, specificForceY, specificForceZ,
                 angularRateX, angularRateY, angularRateZ));
     }
 
@@ -1524,15 +1464,10 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @throws LockedException if estimator is currently running.
      */
     public void addBodyKinematics(
-            final Acceleration specificForceX,
-            final Acceleration specificForceY,
-            final Acceleration specificForceZ,
-            final AngularSpeed angularRateX,
-            final AngularSpeed angularRateY,
-            final AngularSpeed angularRateZ)
+            final Acceleration specificForceX, final Acceleration specificForceY, final Acceleration specificForceZ,
+            final AngularSpeed angularRateX, final AngularSpeed angularRateY, final AngularSpeed angularRateZ)
             throws LockedException {
-        addBodyKinematics(new BodyKinematics(
-                specificForceX, specificForceY, specificForceZ,
+        addBodyKinematics(new BodyKinematics(specificForceX, specificForceY, specificForceZ,
                 angularRateX, angularRateY, angularRateZ));
     }
 
@@ -1544,8 +1479,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @throws LockedException if estimator is currently running.
      */
     public void addBodyKinematics(
-            final AccelerationTriad specificForce,
-            final AngularSpeedTriad angularSpeed) throws LockedException {
+            final AccelerationTriad specificForce, final AngularSpeedTriad angularSpeed) throws LockedException {
         addBodyKinematics(new BodyKinematics(specificForce, angularSpeed));
     }
 
@@ -1555,8 +1489,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * @param kinematics body kinematics to be added.
      * @throws LockedException if estimator is currently running.
      */
-    public void addBodyKinematics(final BodyKinematics kinematics)
-            throws LockedException {
+    public void addBodyKinematics(final BodyKinematics kinematics) throws LockedException {
         internalAdd(kinematics, false);
     }
 
@@ -1606,8 +1539,7 @@ public class WindowedBodyKinematicsNoiseEstimator
      * and no average or variance values have been computed yet.
      * @throws LockedException if estimator is currently running.
      */
-    private boolean internalAdd(final BodyKinematics kinematics, boolean process)
-            throws LockedException {
+    private boolean internalAdd(final BodyKinematics kinematics, boolean process) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }

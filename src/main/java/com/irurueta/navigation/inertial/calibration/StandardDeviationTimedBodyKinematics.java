@@ -24,6 +24,7 @@ import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
 import com.irurueta.units.Time;
 
+import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -41,6 +42,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -94,9 +96,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      * @param kinematics       current body kinematics measurement.
      * @param timestampSeconds timestamp value expressed in seconds.
      */
-    public StandardDeviationTimedBodyKinematics(
-            final BodyKinematics kinematics,
-            final double timestampSeconds) {
+    public StandardDeviationTimedBodyKinematics(final BodyKinematics kinematics, final double timestampSeconds) {
         super(kinematics, timestampSeconds);
     }
 
@@ -106,9 +106,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      * @param kinematics current body kinematics measurement.
      * @param timestamp  timestamp value.
      */
-    public StandardDeviationTimedBodyKinematics(
-            final BodyKinematics kinematics,
-            final Time timestamp) {
+    public StandardDeviationTimedBodyKinematics(final BodyKinematics kinematics, final Time timestamp) {
         super(kinematics, timestamp);
     }
 
@@ -124,8 +122,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      *                                  angular rate standard deviation is negative.
      */
     public StandardDeviationTimedBodyKinematics(
-            final double specificForceStandardDeviation,
-            final double angularRateStandardDeviation) {
+            final double specificForceStandardDeviation, final double angularRateStandardDeviation) {
         super();
         setSpecificForceStandardDeviation(specificForceStandardDeviation);
         setAngularRateStandardDeviation(angularRateStandardDeviation);
@@ -144,8 +141,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      *                                  angular rate standard deviation is negative.
      */
     public StandardDeviationTimedBodyKinematics(
-            final BodyKinematics kinematics,
-            final double specificForceStandardDeviation,
+            final BodyKinematics kinematics, final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
         super(kinematics);
         setSpecificForceStandardDeviation(specificForceStandardDeviation);
@@ -165,8 +161,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      *                                  angular rate standard deviation is negative.
      */
     public StandardDeviationTimedBodyKinematics(
-            final double timestampSeconds,
-            final double specificForceStandardDeviation,
+            final double timestampSeconds, final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
         super(timestampSeconds);
         setSpecificForceStandardDeviation(specificForceStandardDeviation);
@@ -186,8 +181,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      *                                  angular rate standard deviation is negative.
      */
     public StandardDeviationTimedBodyKinematics(
-            final Time timestamp,
-            final double specificForceStandardDeviation,
+            final Time timestamp, final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
         super(timestamp);
         setSpecificForceStandardDeviation(specificForceStandardDeviation);
@@ -208,9 +202,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      *                                  angular rate standard deviation is negative.
      */
     public StandardDeviationTimedBodyKinematics(
-            final BodyKinematics kinematics,
-            final double timestampSeconds,
-            final double specificForceStandardDeviation,
+            final BodyKinematics kinematics, final double timestampSeconds, final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
         super(kinematics, timestampSeconds);
         setSpecificForceStandardDeviation(specificForceStandardDeviation);
@@ -231,9 +223,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      *                                  angular rate standard deviation is negative.
      */
     public StandardDeviationTimedBodyKinematics(
-            final BodyKinematics kinematics,
-            final Time timestamp,
-            final double specificForceStandardDeviation,
+            final BodyKinematics kinematics, final Time timestamp, final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
         super(kinematics, timestamp);
         setSpecificForceStandardDeviation(specificForceStandardDeviation);
@@ -251,10 +241,8 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      *                                  angular rate standard deviation is negative.
      */
     public StandardDeviationTimedBodyKinematics(
-            final Acceleration specificForceStandardDeviation,
-            final AngularSpeed angularRateStandardDeviation) {
-        this(convertAcceleration(specificForceStandardDeviation),
-                convertAngularSpeed(angularRateStandardDeviation));
+            final Acceleration specificForceStandardDeviation, final AngularSpeed angularRateStandardDeviation) {
+        this(convertAcceleration(specificForceStandardDeviation), convertAngularSpeed(angularRateStandardDeviation));
     }
 
     /**
@@ -269,8 +257,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      *                                  angular rate standard deviation is negative.
      */
     public StandardDeviationTimedBodyKinematics(
-            final BodyKinematics kinematics,
-            final Acceleration specificForceStandardDeviation,
+            final BodyKinematics kinematics, final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
         this(kinematics, convertAcceleration(specificForceStandardDeviation),
                 convertAngularSpeed(angularRateStandardDeviation));
@@ -288,8 +275,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      *                                  angular rate standard deviation is negative.
      */
     public StandardDeviationTimedBodyKinematics(
-            final double timestampSeconds,
-            final Acceleration specificForceStandardDeviation,
+            final double timestampSeconds, final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
         this(timestampSeconds, convertAcceleration(specificForceStandardDeviation),
                 convertAngularSpeed(angularRateStandardDeviation));
@@ -307,8 +293,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      *                                  angular rate standard deviation is negative.
      */
     public StandardDeviationTimedBodyKinematics(
-            final Time timestamp,
-            final Acceleration specificForceStandardDeviation,
+            final Time timestamp, final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
         this(timestamp, convertAcceleration(specificForceStandardDeviation),
                 convertAngularSpeed(angularRateStandardDeviation));
@@ -327,10 +312,8 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      *                                  angular rate standard deviation is negative.
      */
     public StandardDeviationTimedBodyKinematics(
-            final BodyKinematics kinematics,
-            final double timestampSeconds,
-            final Acceleration specificForceStandardDeviation,
-            final AngularSpeed angularRateStandardDeviation) {
+            final BodyKinematics kinematics, final double timestampSeconds,
+            final Acceleration specificForceStandardDeviation, final AngularSpeed angularRateStandardDeviation) {
         this(kinematics, timestampSeconds, convertAcceleration(specificForceStandardDeviation),
                 convertAngularSpeed(angularRateStandardDeviation));
     }
@@ -348,10 +331,8 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      *                                  angular rate standard deviation is negative.
      */
     public StandardDeviationTimedBodyKinematics(
-            final BodyKinematics kinematics,
-            final Time timestamp,
-            final Acceleration specificForceStandardDeviation,
-            final AngularSpeed angularRateStandardDeviation) {
+            final BodyKinematics kinematics, final Time timestamp,
+            final Acceleration specificForceStandardDeviation, final AngularSpeed angularRateStandardDeviation) {
         this(kinematics, timestamp, convertAcceleration(specificForceStandardDeviation),
                 convertAngularSpeed(angularRateStandardDeviation));
     }
@@ -361,8 +342,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      *
      * @param input instance to copy data from.
      */
-    public StandardDeviationTimedBodyKinematics(
-            final StandardDeviationTimedBodyKinematics input) {
+    public StandardDeviationTimedBodyKinematics(final StandardDeviationTimedBodyKinematics input) {
         copyFrom(input);
     }
 
@@ -383,8 +363,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      * @param specificForceStandardDeviation standard deviation of measured specific force.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    public void setSpecificForceStandardDeviation(
-            final double specificForceStandardDeviation) {
+    public void setSpecificForceStandardDeviation(final double specificForceStandardDeviation) {
         if (specificForceStandardDeviation < 0.0) {
             throw new IllegalArgumentException();
         }
@@ -398,8 +377,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      * @return standard deviation of measured specific force.
      */
     public Acceleration getSpecificForceStandardDeviationAsAcceleration() {
-        return new Acceleration(mSpecificForceStandardDeviation,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return new Acceleration(mSpecificForceStandardDeviation, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -408,8 +386,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      * @param result instance where standard deviation of measured specific force will be
      *               stored.
      */
-    public void getSpecificForceStandardDeviationAsAcceleration(
-            final Acceleration result) {
+    public void getSpecificForceStandardDeviationAsAcceleration(final Acceleration result) {
         result.setValue(mSpecificForceStandardDeviation);
         result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
@@ -420,10 +397,8 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      * @param specificForceStandardDeviation standard deviation of measured specific force.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    public void setSpecificForceStandardDeviation(
-            final Acceleration specificForceStandardDeviation) {
-        setSpecificForceStandardDeviation(convertAcceleration(
-                specificForceStandardDeviation));
+    public void setSpecificForceStandardDeviation(final Acceleration specificForceStandardDeviation) {
+        setSpecificForceStandardDeviation(convertAcceleration(specificForceStandardDeviation));
     }
 
     /**
@@ -455,8 +430,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      * @return standard deviation of measured angular rate.
      */
     public AngularSpeed getAngularRateStandardDeviationAsAngularSpeed() {
-        return new AngularSpeed(mAngularRateStandardDeviation,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(mAngularRateStandardDeviation, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -476,10 +450,8 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      * @param angularRateStandardDeviation standard deviation of measured angular rate.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    public void setAngularRateStandardDeviation(
-            final AngularSpeed angularRateStandardDeviation) {
-        setAngularRateStandardDeviation(convertAngularSpeed(
-                angularRateStandardDeviation));
+    public void setAngularRateStandardDeviation(final AngularSpeed angularRateStandardDeviation) {
+        setAngularRateStandardDeviation(convertAngularSpeed(angularRateStandardDeviation));
     }
 
     /**
@@ -529,8 +501,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      * @return true if both instances are considered to be equal (up to provided
      * threshold), false otherwise.
      */
-    public boolean equals(final StandardDeviationTimedBodyKinematics other,
-                          final double threshold) {
+    public boolean equals(final StandardDeviationTimedBodyKinematics other, final double threshold) {
         if (other == null) {
             return false;
         }
@@ -568,8 +539,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final StandardDeviationTimedBodyKinematics other =
-                (StandardDeviationTimedBodyKinematics) obj;
+        final StandardDeviationTimedBodyKinematics other = (StandardDeviationTimedBodyKinematics) obj;
         return equals(other);
     }
 
@@ -580,8 +550,8 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      * @return converted value.
      */
     private static double convertAcceleration(final Acceleration acceleration) {
-        return AccelerationConverter.convert(acceleration.getValue().doubleValue(),
-                acceleration.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);
+        return AccelerationConverter.convert(acceleration.getValue().doubleValue(), acceleration.getUnit(),
+                AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -591,7 +561,7 @@ public class StandardDeviationTimedBodyKinematics extends TimedBodyKinematics {
      * @return converted value.
      */
     private static double convertAngularSpeed(final AngularSpeed angularSpeed) {
-        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(),
-                angularSpeed.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
+        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(), angularSpeed.getUnit(),
+                AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 }

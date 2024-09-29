@@ -52,8 +52,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
 
     @Test
     public void testConstructor1() {
-        final AccumulatedAngularSpeedTriadNoiseEstimator estimator =
-                new AccumulatedAngularSpeedTriadNoiseEstimator();
+        final AccumulatedAngularSpeedTriadNoiseEstimator estimator = new AccumulatedAngularSpeedTriadNoiseEstimator();
 
         // check default values
         assertEquals(AccumulatedAngularSpeedTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
@@ -72,24 +71,21 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed avgX1 = estimator.getAvgXAsMeasurement();
         assertEquals(0.0, avgX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgX1.getUnit());
-        final AngularSpeed avgX2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed avgX2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getAvgXAsMeasurement(avgX2);
         assertEquals(avgX1, avgX2);
         assertEquals(0.0, estimator.getAvgY(), 0.0);
         final AngularSpeed avgY1 = estimator.getAvgYAsMeasurement();
         assertEquals(0.0, avgY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgY1.getUnit());
-        final AngularSpeed avgY2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed avgY2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getAvgYAsMeasurement(avgY2);
         assertEquals(avgY1, avgY2);
         assertEquals(0.0, estimator.getAvgZ(), 0.0);
         final AngularSpeed avgZ1 = estimator.getAvgZAsMeasurement();
         assertEquals(0.0, avgZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgZ1.getUnit());
-        final AngularSpeed avgZ2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed avgZ2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getAvgZAsMeasurement(avgZ2);
         assertEquals(avgZ1, avgZ2);
         final AngularSpeedTriad triad1 = estimator.getAvgTriad();
@@ -104,8 +100,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed norm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(0.0, norm1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, norm1.getUnit());
-        final AngularSpeed norm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed norm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgNormAsMeasurement(norm2);
         assertEquals(norm1, norm2);
         assertEquals(0.0, estimator.getVarianceX(), 0.0);
@@ -115,24 +110,21 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(0.0, stdX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdX1.getUnit());
-        final AngularSpeed stdX2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdX2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
         assertEquals(0.0, estimator.getStandardDeviationY(), 0.0);
         final AngularSpeed stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(0.0, stdY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdY1.getUnit());
-        final AngularSpeed stdY2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdY2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
         assertEquals(0.0, estimator.getStandardDeviationZ(), 0.0);
         final AngularSpeed stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(0.0, stdZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdZ1.getUnit());
-        final AngularSpeed stdZ2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed stdZ2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
         final AngularSpeedTriad stdTriad1 = estimator.getStandardDeviationTriad();
@@ -147,16 +139,14 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(0.0, stdNorm1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdNorm1.getUnit());
-        final AngularSpeed stdNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
         assertEquals(0.0, estimator.getAverageStandardDeviation(), 0.0);
         final AngularSpeed avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(0.0, avgStd1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgStd1.getUnit());
-        final AngularSpeed avgStd2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgStd2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
         assertEquals(0.0, estimator.getPsdX(), 0.0);
@@ -174,8 +164,8 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
 
     @Test
     public void testConstructor2() {
-        final AccumulatedAngularSpeedTriadNoiseEstimator estimator =
-                new AccumulatedAngularSpeedTriadNoiseEstimator(this);
+        final AccumulatedAngularSpeedTriadNoiseEstimator estimator = new AccumulatedAngularSpeedTriadNoiseEstimator(
+                this);
 
         // check default values
         assertEquals(AccumulatedAngularSpeedTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
@@ -194,24 +184,21 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed avgX1 = estimator.getAvgXAsMeasurement();
         assertEquals(0.0, avgX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgX1.getUnit());
-        final AngularSpeed avgX2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed avgX2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getAvgXAsMeasurement(avgX2);
         assertEquals(avgX1, avgX2);
         assertEquals(0.0, estimator.getAvgY(), 0.0);
         final AngularSpeed avgY1 = estimator.getAvgYAsMeasurement();
         assertEquals(0.0, avgY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgY1.getUnit());
-        final AngularSpeed avgY2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed avgY2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getAvgYAsMeasurement(avgY2);
         assertEquals(avgY1, avgY2);
         assertEquals(0.0, estimator.getAvgZ(), 0.0);
         final AngularSpeed avgZ1 = estimator.getAvgZAsMeasurement();
         assertEquals(0.0, avgZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgZ1.getUnit());
-        final AngularSpeed avgZ2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed avgZ2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getAvgZAsMeasurement(avgZ2);
         assertEquals(avgZ1, avgZ2);
         final AngularSpeedTriad triad1 = estimator.getAvgTriad();
@@ -226,8 +213,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed norm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(0.0, norm1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, norm1.getUnit());
-        final AngularSpeed norm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed norm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgNormAsMeasurement(norm2);
         assertEquals(norm1, norm2);
         assertEquals(0.0, estimator.getVarianceX(), 0.0);
@@ -237,24 +223,21 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(0.0, stdX1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdX1.getUnit());
-        final AngularSpeed stdX2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdX2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
         assertEquals(0.0, estimator.getStandardDeviationY(), 0.0);
         final AngularSpeed stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(0.0, stdY1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdY1.getUnit());
-        final AngularSpeed stdY2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdY2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
         assertEquals(0.0, estimator.getStandardDeviationZ(), 0.0);
         final AngularSpeed stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(0.0, stdZ1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdZ1.getUnit());
-        final AngularSpeed stdZ2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed stdZ2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
         final AngularSpeedTriad stdTriad1 = estimator.getStandardDeviationTriad();
@@ -269,16 +252,14 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(0.0, stdNorm1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdNorm1.getUnit());
-        final AngularSpeed stdNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
         assertEquals(0.0, estimator.getAverageStandardDeviation(), 0.0);
         final AngularSpeed avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(0.0, avgStd1.getValue().doubleValue(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgStd1.getUnit());
-        final AngularSpeed avgStd2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgStd2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
         assertEquals(0.0, estimator.getPsdX(), 0.0);
@@ -296,8 +277,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
 
     @Test
     public void testGetSetTimeInterval() throws LockedException {
-        final AccumulatedAngularSpeedTriadNoiseEstimator estimator =
-                new AccumulatedAngularSpeedTriadNoiseEstimator();
+        final AccumulatedAngularSpeedTriadNoiseEstimator estimator = new AccumulatedAngularSpeedTriadNoiseEstimator();
 
         // check default value
         assertEquals(AccumulatedAngularSpeedTriadNoiseEstimator.DEFAULT_TIME_INTERVAL_SECONDS,
@@ -310,17 +290,12 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         assertEquals(1.0, estimator.getTimeInterval(), 0.0);
 
         // Force IllegalArgumentException
-        try {
-            estimator.setTimeInterval(-1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setTimeInterval(-1.0));
     }
 
     @Test
     public void testGetSetTimeIntervalAsTime() throws LockedException {
-        final AccumulatedAngularSpeedTriadNoiseEstimator estimator =
-                new AccumulatedAngularSpeedTriadNoiseEstimator();
+        final AccumulatedAngularSpeedTriadNoiseEstimator estimator = new AccumulatedAngularSpeedTriadNoiseEstimator();
 
         // check default value
         final Time time1 = estimator.getTimeIntervalAsTime();
@@ -343,8 +318,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
 
     @Test
     public void testGetSetListener() throws LockedException {
-        final AccumulatedAngularSpeedTriadNoiseEstimator estimator =
-                new AccumulatedAngularSpeedTriadNoiseEstimator();
+        final AccumulatedAngularSpeedTriadNoiseEstimator estimator = new AccumulatedAngularSpeedTriadNoiseEstimator();
 
         // check default value
         assertNull(estimator.getListener());
@@ -368,8 +342,8 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
@@ -380,17 +354,16 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final AccumulatedAngularSpeedTriadNoiseEstimator estimator =
-                new AccumulatedAngularSpeedTriadNoiseEstimator(this);
+        final AccumulatedAngularSpeedTriadNoiseEstimator estimator = new AccumulatedAngularSpeedTriadNoiseEstimator(
+                this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mTriadAdded, 0);
-        assertEquals(mReset, 0);
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mTriadAdded);
+        assertEquals(0, mReset);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getLastTriad());
         assertFalse(estimator.getLastTriad(null));
         assertFalse(estimator.isRunning());
@@ -414,8 +387,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
                 assertEquals(lastTriad, triad);
             }
 
-            BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                    errors, random, kinematics);
+            BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
             kinematics.getAngularRateTriad(triad);
 
             valueX = triad.getValueX();
@@ -446,11 +418,11 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
             varZ = varZ * (double) i / (double) j + diffZ2 / j;
         }
 
-        assertEquals(estimator.getNumberOfProcessedSamples(), N_SAMPLES);
+        assertEquals(N_SAMPLES, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, N_SAMPLES);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(N_SAMPLES, mTriadAdded);
+        assertEquals(0, mReset);
 
         assertEquals(avgX, estimator.getAvgX(), ABSOLUTE_ERROR);
         assertEquals(avgY, estimator.getAvgY(), ABSOLUTE_ERROR);
@@ -459,24 +431,21 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed avgX1 = estimator.getAvgXAsMeasurement();
         assertEquals(avgX, avgX1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgX1.getUnit());
-        final AngularSpeed avgX2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgX2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgXAsMeasurement(avgX2);
         assertEquals(avgX1, avgX2);
 
         final AngularSpeed avgY1 = estimator.getAvgYAsMeasurement();
         assertEquals(avgY, avgY1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgY1.getUnit());
-        final AngularSpeed avgY2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgY2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgYAsMeasurement(avgY2);
         assertEquals(avgY1, avgY2);
 
         final AngularSpeed avgZ1 = estimator.getAvgZAsMeasurement();
         assertEquals(avgZ, avgZ1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgZ1.getUnit());
-        final AngularSpeed avgZ2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgZ2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgZAsMeasurement(avgZ2);
         assertEquals(avgZ1, avgZ2);
 
@@ -495,8 +464,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed avgNorm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(avgNorm, avgNorm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgNorm1.getUnit());
-        final AngularSpeed avgNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed avgNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getAvgNormAsMeasurement(avgNorm2);
         assertEquals(avgNorm1, avgNorm2);
 
@@ -515,24 +483,21 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(stdX, stdX1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdX1.getUnit());
-        final AngularSpeed stdX2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdX2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
 
         final AngularSpeed stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(stdY, stdY1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdY1.getUnit());
-        final AngularSpeed stdY2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed stdY2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
 
         final AngularSpeed stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(stdZ, stdZ1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdZ1.getUnit());
-        final AngularSpeed stdZ2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdZ2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
 
@@ -551,8 +516,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(stdNorm, stdNorm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdNorm1.getUnit());
-        final AngularSpeed stdNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
 
@@ -562,8 +526,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(avgStd, avgStd1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgStd1.getUnit());
-        final AngularSpeed avgStd2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgStd2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
 
@@ -587,17 +550,15 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
 
         assertEquals(avgPsd, estimator.getAvgNoisePsd(), ABSOLUTE_ERROR);
 
-        final double rootPsdNorm = Math.sqrt(rootPsdX * rootPsdX + rootPsdY * rootPsdY
-                + rootPsdZ * rootPsdZ);
+        final double rootPsdNorm = Math.sqrt(rootPsdX * rootPsdX + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
 
         assertEquals(rootPsdNorm, estimator.getNoiseRootPsdNorm(), ABSOLUTE_ERROR);
-        assertEquals(estimator.getNoiseRootPsdNorm(),
-                estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
+        assertEquals(estimator.getNoiseRootPsdNorm(), estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
 
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(mReset, 1);
+        assertEquals(1, mReset);
 
         assertNull(estimator.getLastTriad());
         assertFalse(estimator.getLastTriad(null));
@@ -636,8 +597,8 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
@@ -648,17 +609,16 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final AccumulatedAngularSpeedTriadNoiseEstimator estimator =
-                new AccumulatedAngularSpeedTriadNoiseEstimator(this);
+        final AccumulatedAngularSpeedTriadNoiseEstimator estimator = new AccumulatedAngularSpeedTriadNoiseEstimator(
+                this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mTriadAdded, 0);
-        assertEquals(mReset, 0);
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mTriadAdded);
+        assertEquals(0, mReset);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getLastTriad());
         assertFalse(estimator.getLastTriad(null));
         assertFalse(estimator.isRunning());
@@ -682,8 +642,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
                 assertEquals(lastTriad, triad);
             }
 
-            BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                    errors, random, kinematics);
+            BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
             kinematics.getAngularRateTriad(triad);
 
             valueX = triad.getValueX();
@@ -714,11 +673,11 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
             varZ = varZ * (double) i / (double) j + diffZ2 / j;
         }
 
-        assertEquals(estimator.getNumberOfProcessedSamples(), N_SAMPLES);
+        assertEquals(N_SAMPLES, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, N_SAMPLES);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(N_SAMPLES, mTriadAdded);
+        assertEquals(0, mReset);
 
         assertEquals(avgX, estimator.getAvgX(), ABSOLUTE_ERROR);
         assertEquals(avgY, estimator.getAvgY(), ABSOLUTE_ERROR);
@@ -727,24 +686,21 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed avgX1 = estimator.getAvgXAsMeasurement();
         assertEquals(avgX, avgX1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgX1.getUnit());
-        final AngularSpeed avgX2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgX2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgXAsMeasurement(avgX2);
         assertEquals(avgX1, avgX2);
 
         final AngularSpeed avgY1 = estimator.getAvgYAsMeasurement();
         assertEquals(avgY, avgY1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgY1.getUnit());
-        final AngularSpeed avgY2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgY2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgYAsMeasurement(avgY2);
         assertEquals(avgY1, avgY2);
 
         final AngularSpeed avgZ1 = estimator.getAvgZAsMeasurement();
         assertEquals(avgZ, avgZ1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgZ1.getUnit());
-        final AngularSpeed avgZ2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgZ2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgZAsMeasurement(avgZ2);
         assertEquals(avgZ1, avgZ2);
 
@@ -763,8 +719,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed avgNorm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(avgNorm, avgNorm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgNorm1.getUnit());
-        final AngularSpeed avgNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed avgNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getAvgNormAsMeasurement(avgNorm2);
         assertEquals(avgNorm1, avgNorm2);
 
@@ -783,24 +738,21 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(stdX, stdX1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdX1.getUnit());
-        final AngularSpeed stdX2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdX2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
 
         final AngularSpeed stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(stdY, stdY1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdY1.getUnit());
-        final AngularSpeed stdY2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed stdY2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
 
         final AngularSpeed stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(stdZ, stdZ1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdZ1.getUnit());
-        final AngularSpeed stdZ2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdZ2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
 
@@ -819,8 +771,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(stdNorm, stdNorm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdNorm1.getUnit());
-        final AngularSpeed stdNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
 
@@ -830,8 +781,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(avgStd, avgStd1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgStd1.getUnit());
-        final AngularSpeed avgStd2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgStd2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
 
@@ -855,17 +805,15 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
 
         assertEquals(avgPsd, estimator.getAvgNoisePsd(), ABSOLUTE_ERROR);
 
-        final double rootPsdNorm = Math.sqrt(rootPsdX * rootPsdX + rootPsdY * rootPsdY
-                + rootPsdZ * rootPsdZ);
+        final double rootPsdNorm = Math.sqrt(rootPsdX * rootPsdX + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
 
         assertEquals(rootPsdNorm, estimator.getNoiseRootPsdNorm(), ABSOLUTE_ERROR);
-        assertEquals(estimator.getNoiseRootPsdNorm(),
-                estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
+        assertEquals(estimator.getNoiseRootPsdNorm(), estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
 
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(mReset, 1);
+        assertEquals(1, mReset);
 
         assertNull(estimator.getLastTriad());
         assertFalse(estimator.getLastTriad(null));
@@ -904,8 +852,8 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final double accelQuantLevel = 0.0;
         final double gyroQuantLevel = 0.0;
 
-        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+        final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
+                gyroQuantLevel);
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
@@ -916,17 +864,16 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final double omegaY = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
         final double omegaZ = randomizer.nextDouble(MIN_GYRO_VALUE, MAX_GYRO_VALUE);
 
-        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz,
-                omegaX, omegaY, omegaZ);
+        final BodyKinematics trueKinematics = new BodyKinematics(fx, fy, fz, omegaX, omegaY, omegaZ);
 
-        final AccumulatedAngularSpeedTriadNoiseEstimator estimator =
-                new AccumulatedAngularSpeedTriadNoiseEstimator(this);
+        final AccumulatedAngularSpeedTriadNoiseEstimator estimator = new AccumulatedAngularSpeedTriadNoiseEstimator(
+                this);
 
         reset();
-        assertEquals(mStart, 0);
-        assertEquals(mTriadAdded, 0);
-        assertEquals(mReset, 0);
-        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertEquals(0, mStart);
+        assertEquals(0, mTriadAdded);
+        assertEquals(0, mReset);
+        assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getLastTriad());
         assertFalse(estimator.getLastTriad(null));
         assertFalse(estimator.isRunning());
@@ -950,16 +897,14 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
                 assertEquals(lastTriad, triad);
             }
 
-            BodyKinematicsGenerator.generate(timeInterval, trueKinematics,
-                    errors, random, kinematics);
+            BodyKinematicsGenerator.generate(timeInterval, trueKinematics, errors, random, kinematics);
             kinematics.getAngularRateTriad(triad);
 
             valueX = triad.getValueX();
             valueY = triad.getValueY();
             valueZ = triad.getValueZ();
 
-            estimator.addTriad(
-                    triad.getMeasurementX(), triad.getMeasurementY(), triad.getMeasurementZ());
+            estimator.addTriad(triad.getMeasurementX(), triad.getMeasurementY(), triad.getMeasurementZ());
 
             assertTrue(estimator.getLastTriad(lastTriad));
             assertEquals(lastTriad, triad);
@@ -983,11 +928,11 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
             varZ = varZ * (double) i / (double) j + diffZ2 / j;
         }
 
-        assertEquals(estimator.getNumberOfProcessedSamples(), N_SAMPLES);
+        assertEquals(N_SAMPLES, estimator.getNumberOfProcessedSamples());
         assertFalse(estimator.isRunning());
-        assertEquals(mStart, 1);
-        assertEquals(mTriadAdded, N_SAMPLES);
-        assertEquals(mReset, 0);
+        assertEquals(1, mStart);
+        assertEquals(N_SAMPLES, mTriadAdded);
+        assertEquals(0, mReset);
 
         assertEquals(avgX, estimator.getAvgX(), ABSOLUTE_ERROR);
         assertEquals(avgY, estimator.getAvgY(), ABSOLUTE_ERROR);
@@ -996,24 +941,21 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed avgX1 = estimator.getAvgXAsMeasurement();
         assertEquals(avgX, avgX1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgX1.getUnit());
-        final AngularSpeed avgX2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgX2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgXAsMeasurement(avgX2);
         assertEquals(avgX1, avgX2);
 
         final AngularSpeed avgY1 = estimator.getAvgYAsMeasurement();
         assertEquals(avgY, avgY1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgY1.getUnit());
-        final AngularSpeed avgY2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgY2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgYAsMeasurement(avgY2);
         assertEquals(avgY1, avgY2);
 
         final AngularSpeed avgZ1 = estimator.getAvgZAsMeasurement();
         assertEquals(avgZ, avgZ1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgZ1.getUnit());
-        final AngularSpeed avgZ2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgZ2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAvgZAsMeasurement(avgZ2);
         assertEquals(avgZ1, avgZ2);
 
@@ -1032,8 +974,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed avgNorm1 = estimator.getAvgNormAsMeasurement();
         assertEquals(avgNorm, avgNorm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgNorm1.getUnit());
-        final AngularSpeed avgNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed avgNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getAvgNormAsMeasurement(avgNorm2);
         assertEquals(avgNorm1, avgNorm2);
 
@@ -1052,24 +993,21 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed stdX1 = estimator.getStandardDeviationXAsMeasurement();
         assertEquals(stdX, stdX1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdX1.getUnit());
-        final AngularSpeed stdX2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdX2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationXAsMeasurement(stdX2);
         assertEquals(stdX1, stdX2);
 
         final AngularSpeed stdY1 = estimator.getStandardDeviationYAsMeasurement();
         assertEquals(stdY, stdY1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdY1.getUnit());
-        final AngularSpeed stdY2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
+        final AngularSpeed stdY2 = new AngularSpeed(1.0, AngularSpeedUnit.RADIANS_PER_SECOND);
         estimator.getStandardDeviationYAsMeasurement(stdY2);
         assertEquals(stdY1, stdY2);
 
         final AngularSpeed stdZ1 = estimator.getStandardDeviationZAsMeasurement();
         assertEquals(stdZ, stdZ1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdZ1.getUnit());
-        final AngularSpeed stdZ2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdZ2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationZAsMeasurement(stdZ2);
         assertEquals(stdZ1, stdZ2);
 
@@ -1088,8 +1026,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed stdNorm1 = estimator.getStandardDeviationNormAsMeasurement();
         assertEquals(stdNorm, stdNorm1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, stdNorm1.getUnit());
-        final AngularSpeed stdNorm2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed stdNorm2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getStandardDeviationNormAsMeasurement(stdNorm2);
         assertEquals(stdNorm1, stdNorm2);
 
@@ -1099,8 +1036,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         final AngularSpeed avgStd1 = estimator.getAverageStandardDeviationAsMeasurement();
         assertEquals(avgStd, avgStd1.getValue().doubleValue(), ABSOLUTE_ERROR);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, avgStd1.getUnit());
-        final AngularSpeed avgStd2 = new AngularSpeed(
-                1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
+        final AngularSpeed avgStd2 = new AngularSpeed(1.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         estimator.getAverageStandardDeviationAsMeasurement(avgStd2);
         assertEquals(avgStd1, avgStd2);
 
@@ -1124,17 +1060,15 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
 
         assertEquals(avgPsd, estimator.getAvgNoisePsd(), ABSOLUTE_ERROR);
 
-        final double rootPsdNorm = Math.sqrt(rootPsdX * rootPsdX + rootPsdY * rootPsdY
-                + rootPsdZ * rootPsdZ);
+        final double rootPsdNorm = Math.sqrt(rootPsdX * rootPsdX + rootPsdY * rootPsdY + rootPsdZ * rootPsdZ);
 
         assertEquals(rootPsdNorm, estimator.getNoiseRootPsdNorm(), ABSOLUTE_ERROR);
-        assertEquals(estimator.getNoiseRootPsdNorm(),
-                estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
+        assertEquals(estimator.getNoiseRootPsdNorm(), estimator.getGyroscopeBaseNoiseLevelRootPsd(), 0.0);
 
         // reset
         assertTrue(estimator.reset());
 
-        assertEquals(mReset, 1);
+        assertEquals(1, mReset);
 
         assertNull(estimator.getLastTriad());
         assertFalse(estimator.getLastTriad(null));
@@ -1185,59 +1119,31 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
 
     private void checkLocked(final AccumulatedAngularSpeedTriadNoiseEstimator estimator) {
         assertTrue(estimator.isRunning());
-        try {
-            estimator.setTimeInterval(0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setTimeInterval(new Time(0.0, TimeUnit.SECOND));
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setListener(this);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.addTriad(0.0, 0.0, 0.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.addTriad(new AngularSpeedTriad());
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
+        assertThrows(LockedException.class, () -> estimator.setTimeInterval(0.0));
+        assertThrows(LockedException.class, () -> estimator.setTimeInterval(new Time(0.0, TimeUnit.SECOND)));
+        assertThrows(LockedException.class, () -> estimator.setListener(this));
+        assertThrows(LockedException.class, () -> estimator.addTriad(0.0, 0.0, 0.0));
+        assertThrows(LockedException.class, () -> estimator.addTriad(new AngularSpeedTriad()));
         final AngularSpeed w = new AngularSpeed(0.0, AngularSpeedUnit.RADIANS_PER_SECOND);
-        try {
-            estimator.addTriad(w, w, w);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.reset();
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
+        assertThrows(LockedException.class, () -> estimator.addTriad(w, w, w));
+        assertThrows(LockedException.class, estimator::reset);
     }
 
-    private Matrix generateBa() {
+    private static Matrix generateBa() {
         return Matrix.newFromArray(new double[]{
                 900 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 -1300 * MICRO_G_TO_METERS_PER_SECOND_SQUARED,
                 800 * MICRO_G_TO_METERS_PER_SECOND_SQUARED});
     }
 
-    private Matrix generateBg() {
+    private static Matrix generateBg() {
         return Matrix.newFromArray(new double[]{
                 -9 * DEG_TO_RAD / 3600.0,
                 13 * DEG_TO_RAD / 3600.0,
                 -8 * DEG_TO_RAD / 3600.0});
     }
 
-    private Matrix generateMa() throws WrongSizeException {
+    private static Matrix generateMa() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 500e-6, -300e-6, 200e-6,
@@ -1248,7 +1154,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         return result;
     }
 
-    private Matrix generateMg() throws WrongSizeException {
+    private static Matrix generateMg() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         result.fromArray(new double[]{
                 400e-6, -300e-6, 250e-6,
@@ -1259,7 +1165,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         return result;
     }
 
-    private Matrix generateGg() throws WrongSizeException {
+    private static Matrix generateGg() throws WrongSizeException {
         final Matrix result = new Matrix(3, 3);
         final double tmp = DEG_TO_RAD / (3600 * 9.80665);
         result.fromArray(new double[]{
@@ -1271,11 +1177,11 @@ public class AccumulatedAngularSpeedTriadNoiseEstimatorTest implements
         return result;
     }
 
-    private double getAccelNoiseRootPsd() {
+    private static double getAccelNoiseRootPsd() {
         return 100.0 * MICRO_G_TO_METERS_PER_SECOND_SQUARED;
     }
 
-    private double getGyroNoiseRootPsd() {
+    private static double getGyroNoiseRootPsd() {
         return 0.01 * DEG_TO_RAD / 60.0;
     }
 }

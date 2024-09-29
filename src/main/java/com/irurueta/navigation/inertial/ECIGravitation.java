@@ -17,6 +17,8 @@ package com.irurueta.navigation.inertial;
 
 import com.irurueta.units.Acceleration;
 
+import java.io.Serial;
+
 /**
  * Contains acceleration due to gravity resolved about ECI frame.
  */
@@ -26,6 +28,7 @@ public class ECIGravitation extends GravityOrGravitation<ECIGravitation> {
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -53,8 +56,7 @@ public class ECIGravitation extends GravityOrGravitation<ECIGravitation> {
      * @param gy acceleration due to gravity through ECI y-axis to be set.
      * @param gz acceleration due to gravity through ECI z-axis to be set.
      */
-    public ECIGravitation(final Acceleration gx, final Acceleration gy,
-                          final Acceleration gz) {
+    public ECIGravitation(final Acceleration gx, final Acceleration gy, final Acceleration gz) {
         super(gx, gy, gz);
     }
 
@@ -86,6 +88,7 @@ public class ECIGravitation extends GravityOrGravitation<ECIGravitation> {
             return false;
         }
 
+        //noinspection PatternVariableCanBeUsed
         final ECIGravitation other = (ECIGravitation) obj;
         return equals(other);
     }

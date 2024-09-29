@@ -71,8 +71,7 @@ public class AngularRateFixer {
     /**
      * Measured angular rate to be reused.
      */
-    private final double[] mMeasuredAngularRate =
-            new double[BodyKinematics.COMPONENTS];
+    private final double[] mMeasuredAngularRate = new double[BodyKinematics.COMPONENTS];
 
     /**
      * True specific force to be reused.
@@ -104,22 +103,17 @@ public class AngularRateFixer {
      */
     public AngularRateFixer() {
         try {
-            mIdentity = Matrix.identity(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
-            mTmp1 = Matrix.identity(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
-            mTmp2 = Matrix.identity(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            mIdentity = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            mTmp1 = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            mTmp2 = Matrix.identity(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
             mTmp3 = new Matrix(BodyKinematics.COMPONENTS, 1);
             mTmp4 = new Matrix(BodyKinematics.COMPONENTS, 1);
             mDiff = new Matrix(BodyKinematics.COMPONENTS, 1);
             mTmp5 = new Matrix(BodyKinematics.COMPONENTS, 1);
 
             mBias = new Matrix(BodyKinematics.COMPONENTS, 1);
-            mCrossCouplingErrors = new Matrix(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
-            mGDependantCrossBias = new Matrix(BodyKinematics.COMPONENTS,
-                    BodyKinematics.COMPONENTS);
+            mCrossCouplingErrors = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
+            mGDependantCrossBias = new Matrix(BodyKinematics.COMPONENTS, BodyKinematics.COMPONENTS);
         } catch (final WrongSizeException ignore) {
             // never happens
         }
@@ -304,8 +298,7 @@ public class AngularRateFixer {
      * @param biasY y-coordinate of bias.
      * @param biasZ z-coordinate of bias.
      */
-    public void setBias(
-            final double biasX, final double biasY, final double biasZ) {
+    public void setBias(final double biasX, final double biasY, final double biasZ) {
         setBiasX(biasX);
         setBiasY(biasY);
         setBiasZ(biasZ);
@@ -317,8 +310,7 @@ public class AngularRateFixer {
      * @return x-coordinate of bias.
      */
     public AngularSpeed getBiasXAsAngularSpeed() {
-        return new AngularSpeed(getBiasX(),
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(getBiasX(), AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -346,8 +338,7 @@ public class AngularRateFixer {
      * @return y-coordinate of bias.
      */
     public AngularSpeed getBiasYAsAngularSpeed() {
-        return new AngularSpeed(getBiasY(),
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(getBiasY(), AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -375,8 +366,7 @@ public class AngularRateFixer {
      * @return z-coordinate of bias.
      */
     public AngularSpeed getBiasZAsAngularSpeed() {
-        return new AngularSpeed(getBiasZ(),
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+        return new AngularSpeed(getBiasZ(), AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -405,10 +395,7 @@ public class AngularRateFixer {
      * @param biasY y-coordinate of bias.
      * @param biasZ z-coordinate of bias.
      */
-    public void setBias(
-            final AngularSpeed biasX,
-            final AngularSpeed biasY,
-            final AngularSpeed biasZ) {
+    public void setBias(final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) {
         setBiasX(biasX);
         setBiasY(biasY);
         setBiasZ(biasZ);
@@ -439,8 +426,7 @@ public class AngularRateFixer {
      * @throws AlgebraException         if provided matrix cannot be inverted.
      * @throws IllegalArgumentException if provided matrix is not 3x3.
      */
-    public void setCrossCouplingErrors(final Matrix crossCouplingErrors)
-            throws AlgebraException {
+    public void setCrossCouplingErrors(final Matrix crossCouplingErrors) throws AlgebraException {
         if (crossCouplingErrors.getRows() != BodyKinematics.COMPONENTS
                 || crossCouplingErrors.getColumns() != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
@@ -470,8 +456,7 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setSx(final double sx) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(0, 0, sx);
         setCrossCouplingErrors(m);
@@ -494,8 +479,7 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setSy(final double sy) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(1, 1, sy);
         setCrossCouplingErrors(m);
@@ -518,8 +502,7 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setSz(final double sz) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(2, 2, sz);
         setCrossCouplingErrors(m);
@@ -542,8 +525,7 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setMxy(final double mxy) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(0, 1, mxy);
         setCrossCouplingErrors(m);
@@ -566,8 +548,7 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setMxz(final double mxz) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(0, 2, mxz);
         setCrossCouplingErrors(m);
@@ -590,8 +571,7 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setMyx(final double myx) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(1, 0, myx);
         setCrossCouplingErrors(m);
@@ -614,8 +594,7 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setMyz(final double myz) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(1, 2, myz);
         setCrossCouplingErrors(m);
@@ -638,8 +617,7 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setMzx(final double mzx) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(2, 0, mzx);
         setCrossCouplingErrors(m);
@@ -662,8 +640,7 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setMzy(final double mzy) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(2, 1, mzy);
         setCrossCouplingErrors(m);
@@ -679,10 +656,8 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setScalingFactors(
-            final double sx, final double sy, final double sz)
-            throws AlgebraException {
-        final Matrix m = new Matrix(
-                AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
+            final double sx, final double sy, final double sz) throws AlgebraException {
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(0, 0, sx);
         m.setElementAt(1, 1, sy);
@@ -703,12 +678,9 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setCrossCouplingErrors(
-            final double mxy, final double mxz,
-            final double myx, final double myz,
-            final double mzx, final double mzy)
-            throws AlgebraException {
-        final Matrix m = new Matrix(
-                AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
+            final double mxy, final double mxz, final double myx,
+            final double myz, final double mzx, final double mzy) throws AlgebraException {
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(0, 1, mxy);
         m.setElementAt(0, 2, mxz);
@@ -736,11 +708,9 @@ public class AngularRateFixer {
      */
     public void setScalingFactorsAndCrossCouplingErrors(
             final double sx, final double sy, final double sz,
-            final double mxy, final double mxz,
-            final double myx, final double myz,
-            final double mzx, final double mzy) throws AlgebraException {
-        final Matrix m = new Matrix(
-                AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
+            final double mxy, final double mxz, final double myx,
+            final double myz, final double mzx, final double mzy) throws AlgebraException {
+        final Matrix m = new Matrix(Triad.COMPONENTS, Triad.COMPONENTS);
         m.copyFrom(mCrossCouplingErrors);
         m.setElementAt(0, 0, sx);
         m.setElementAt(1, 1, sy);
@@ -800,25 +770,19 @@ public class AngularRateFixer {
      * @throws IllegalArgumentException if length of provided result array is
      *                                  not 3.
      */
-    public void fix(final AngularSpeedTriad measuredAngularRate,
-                    final AccelerationTriad trueF,
-                    final double[] result) throws AlgebraException {
-        if (result.length != AngularSpeedTriad.COMPONENTS) {
+    public void fix(
+            final AngularSpeedTriad measuredAngularRate, final AccelerationTriad trueF, final double[] result)
+            throws AlgebraException {
+        if (result.length != Triad.COMPONENTS) {
             throw new IllegalArgumentException();
         }
 
-        final double wX = convertAngularSpeed(measuredAngularRate.getValueX(),
-                measuredAngularRate.getUnit());
-        final double wY = convertAngularSpeed(measuredAngularRate.getValueY(),
-                measuredAngularRate.getUnit());
-        final double wZ = convertAngularSpeed(measuredAngularRate.getValueZ(),
-                measuredAngularRate.getUnit());
-        final double trueFx = convertAcceleration(trueF.getValueX(),
-                trueF.getUnit());
-        final double trueFy = convertAcceleration(trueF.getValueY(),
-                trueF.getUnit());
-        final double trueFz = convertAcceleration(trueF.getValueZ(),
-                trueF.getUnit());
+        final double wX = convertAngularSpeed(measuredAngularRate.getValueX(), measuredAngularRate.getUnit());
+        final double wY = convertAngularSpeed(measuredAngularRate.getValueY(), measuredAngularRate.getUnit());
+        final double wZ = convertAngularSpeed(measuredAngularRate.getValueZ(), measuredAngularRate.getUnit());
+        final double trueFx = convertAcceleration(trueF.getValueX(), trueF.getUnit());
+        final double trueFy = convertAcceleration(trueF.getValueY(), trueF.getUnit());
+        final double trueFz = convertAcceleration(trueF.getValueZ(), trueF.getUnit());
         fix(wX, wY, wZ, trueFx, trueFy, trueFz, result);
     }
 
@@ -834,11 +798,10 @@ public class AngularRateFixer {
      * @throws AlgebraException         if there are numerical instabilities.
      * @throws IllegalArgumentException if result matrix is not 3x1.
      */
-    public void fix(final AngularSpeedTriad measuredAngularRate,
-                    final AccelerationTriad trueF,
-                    final Matrix result) throws AlgebraException {
-        if (result.getRows() != AngularSpeedTriad.COMPONENTS
-                || result.getColumns() != 1) {
+    public void fix(
+            final AngularSpeedTriad measuredAngularRate, final AccelerationTriad trueF, final Matrix result)
+            throws AlgebraException {
+        if (result.getRows() != Triad.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -855,9 +818,9 @@ public class AngularRateFixer {
      * @param result              instance where restored true angular rate will be stored.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    public void fix(final AngularSpeedTriad measuredAngularRate,
-                    final AccelerationTriad trueF,
-                    final AngularSpeedTriad result) throws AlgebraException {
+    public void fix(
+            final AngularSpeedTriad measuredAngularRate, final AccelerationTriad trueF, final AngularSpeedTriad result)
+            throws AlgebraException {
         fix(measuredAngularRate, trueF, mResult);
         result.setValueCoordinates(mResult);
         result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);
@@ -877,13 +840,10 @@ public class AngularRateFixer {
      * @param result               instance where restored true angular rate will be stored.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    public void fix(final AngularSpeed measuredAngularRateX,
-                    final AngularSpeed measuredAngularRateY,
-                    final AngularSpeed measuredAngularRateZ,
-                    final Acceleration trueFx,
-                    final Acceleration trueFy,
-                    final Acceleration trueFz,
-                    final AngularSpeedTriad result) throws AlgebraException {
+    public void fix(
+            final AngularSpeed measuredAngularRateX, final AngularSpeed measuredAngularRateY,
+            final AngularSpeed measuredAngularRateZ, final Acceleration trueFx, final Acceleration trueFy,
+            final Acceleration trueFz, final AngularSpeedTriad result) throws AlgebraException {
         final double wX = convertAngularSpeed(measuredAngularRateX);
         final double wY = convertAngularSpeed(measuredAngularRateY);
         final double wZ = convertAngularSpeed(measuredAngularRateZ);
@@ -913,9 +873,7 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public void fix(
-            final double[] measuredAngularRate,
-            final double[] trueF,
-            final double[] result) throws AlgebraException {
+            final double[] measuredAngularRate, final double[] trueF, final double[] result) throws AlgebraException {
         if (measuredAngularRate.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
@@ -935,9 +893,8 @@ public class AngularRateFixer {
         mGDependantCrossBias.multiply(mTmp3, mTmp4);
 
         for (int i = 0; i < BodyKinematics.COMPONENTS; i++) {
-            mDiff.setElementAtIndex(i,
-                    measuredAngularRate[i] - mBias.getElementAtIndex(i)
-                            - mTmp4.getElementAtIndex(i));
+            mDiff.setElementAtIndex(i, measuredAngularRate[i] - mBias.getElementAtIndex(i)
+                    - mTmp4.getElementAtIndex(i));
         }
 
         mTmp2.multiply(mDiff, mTmp5);
@@ -963,15 +920,11 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public void fix(
-            final Matrix measuredAngularRate,
-            final Matrix trueF,
-            final double[] result) throws AlgebraException {
-        if (measuredAngularRate.getRows() != BodyKinematics.COMPONENTS
-                || measuredAngularRate.getColumns() != 1) {
+            final Matrix measuredAngularRate, final Matrix trueF, final double[] result) throws AlgebraException {
+        if (measuredAngularRate.getRows() != BodyKinematics.COMPONENTS || measuredAngularRate.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
-        if (trueF.getRows() != BodyKinematics.COMPONENTS
-                || trueF.getColumns() != 1) {
+        if (trueF.getRows() != BodyKinematics.COMPONENTS || trueF.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -996,12 +949,9 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public void fix(
-            final Matrix measuredAngularRate,
-            final Matrix trueF,
-            final Matrix result) throws AlgebraException {
+            final Matrix measuredAngularRate, final Matrix trueF, final Matrix result) throws AlgebraException {
 
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
@@ -1036,13 +986,9 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public void fix(
-            final double measuredAngularRateX,
-            final double measuredAngularRateY,
-            final double measuredAngularRateZ,
-            final double trueFx,
-            final double trueFy,
-            final double trueFz,
-            final double[] result) throws AlgebraException {
+            final double measuredAngularRateX, final double measuredAngularRateY, final double measuredAngularRateZ,
+            final double trueFx, final double trueFy, final double trueFz, final double[] result)
+            throws AlgebraException {
 
         mMeasuredAngularRate[0] = measuredAngularRateX;
         mMeasuredAngularRate[1] = measuredAngularRateY;
@@ -1083,21 +1029,16 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public void fix(
-            final double measuredAngularRateX,
-            final double measuredAngularRateY,
-            final double measuredAngularRateZ,
-            final double trueFx,
-            final double trueFy,
-            final double trueFz,
-            final Matrix result) throws AlgebraException {
+            final double measuredAngularRateX, final double measuredAngularRateY, final double measuredAngularRateZ,
+            final double trueFx, final double trueFy, final double trueFz, final Matrix result)
+            throws AlgebraException {
 
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, result.getBuffer());
+        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz,
+                result.getBuffer());
     }
 
     /**
@@ -1122,12 +1063,9 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public void fix(
-            final double[] measuredAngularRate,
-            final double[] trueF,
-            final Matrix bias,
-            final Matrix crossCouplingErrors,
-            final Matrix gDependantCrossBias,
-            final double[] result) throws AlgebraException {
+            final double[] measuredAngularRate, final double[] trueF, final Matrix bias,
+            final Matrix crossCouplingErrors, final Matrix gDependantCrossBias, final double[] result)
+            throws AlgebraException {
         if (measuredAngularRate.length != BodyKinematics.COMPONENTS) {
             throw new IllegalArgumentException();
         }
@@ -1161,9 +1099,8 @@ public class AngularRateFixer {
         gDependantCrossBias.multiply(mTmp3, mTmp4);
 
         for (int i = 0; i < BodyKinematics.COMPONENTS; i++) {
-            mDiff.setElementAtIndex(i,
-                    measuredAngularRate[i] - bias.getElementAtIndex(i)
-                            - mTmp4.getElementAtIndex(i));
+            mDiff.setElementAtIndex(i, measuredAngularRate[i] - bias.getElementAtIndex(i)
+                    - mTmp4.getElementAtIndex(i));
         }
 
         mTmp2.multiply(mDiff, mTmp5);
@@ -1193,24 +1130,17 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public void fix(
-            final Matrix measuredAngularRate,
-            final Matrix trueF,
-            final Matrix bias,
-            final Matrix crossCouplingErrors,
-            final Matrix gDependantCrossBias,
-            final double[] result) throws AlgebraException {
+            final Matrix measuredAngularRate, final Matrix trueF, final Matrix bias, final Matrix crossCouplingErrors,
+            final Matrix gDependantCrossBias, final double[] result) throws AlgebraException {
 
-        if (measuredAngularRate.getRows() != BodyKinematics.COMPONENTS
-                || measuredAngularRate.getColumns() != 1) {
+        if (measuredAngularRate.getRows() != BodyKinematics.COMPONENTS || measuredAngularRate.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
-        if (trueF.getRows() != BodyKinematics.COMPONENTS
-                || trueF.getColumns() != 1) {
+        if (trueF.getRows() != BodyKinematics.COMPONENTS || trueF.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredAngularRate.getBuffer(), trueF.getBuffer(),
-                bias, crossCouplingErrors, gDependantCrossBias, result);
+        fix(measuredAngularRate.getBuffer(), trueF.getBuffer(), bias, crossCouplingErrors, gDependantCrossBias, result);
     }
 
     /**
@@ -1235,20 +1165,14 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public void fix(
-            final Matrix measuredAngularRate,
-            final Matrix trueF,
-            final Matrix bias,
-            final Matrix crossCouplingErrors,
-            final Matrix gDependantCrossBias,
-            final Matrix result) throws AlgebraException {
+            final Matrix measuredAngularRate, final Matrix trueF, final Matrix bias, final Matrix crossCouplingErrors,
+            final Matrix gDependantCrossBias, final Matrix result) throws AlgebraException {
 
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
-        fix(measuredAngularRate, trueF, bias, crossCouplingErrors,
-                gDependantCrossBias, result.getBuffer());
+        fix(measuredAngularRate, trueF, bias, crossCouplingErrors, gDependantCrossBias, result.getBuffer());
     }
 
     /**
@@ -1287,16 +1211,10 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public void fix(
-            final double measuredAngularRateX,
-            final double measuredAngularRateY,
-            final double measuredAngularRateZ,
-            final double trueFx,
-            final double trueFy,
-            final double trueFz,
-            final double biasX, final double biasY, final double biasZ,
-            final Matrix crossCouplingErrors,
-            final Matrix gDependantCrossBias,
-            final double[] result) throws AlgebraException {
+            final double measuredAngularRateX, final double measuredAngularRateY, final double measuredAngularRateZ,
+            final double trueFx, final double trueFy, final double trueFz,
+            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrors,
+            final Matrix gDependantCrossBias, final double[] result) throws AlgebraException {
 
         mMeasuredAngularRate[0] = measuredAngularRateX;
         mMeasuredAngularRate[1] = measuredAngularRateY;
@@ -1310,8 +1228,7 @@ public class AngularRateFixer {
         mBias.setElementAtIndex(1, biasY);
         mBias.setElementAtIndex(2, biasZ);
 
-        fix(mMeasuredAngularRate, mTrueF, mBias, crossCouplingErrors,
-                gDependantCrossBias, result);
+        fix(mMeasuredAngularRate, mTrueF, mBias, crossCouplingErrors, gDependantCrossBias, result);
     }
 
     /**
@@ -1350,25 +1267,17 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public void fix(
-            final double measuredAngularRateX,
-            final double measuredAngularRateY,
-            final double measuredAngularRateZ,
-            final double trueFx,
-            final double trueFy,
-            final double trueFz,
-            final double biasX, final double biasY, final double biasZ,
-            final Matrix crossCouplingErrors,
-            final Matrix gDependantCrossBias,
-            final Matrix result) throws AlgebraException {
+            final double measuredAngularRateX, final double measuredAngularRateY, final double measuredAngularRateZ,
+            final double trueFx, final double trueFy, final double trueFz,
+            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrors,
+            final Matrix gDependantCrossBias, final Matrix result) throws AlgebraException {
 
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
         fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, biasX, biasY, biasZ,
-                crossCouplingErrors, gDependantCrossBias,
+                trueFx, trueFy, trueFz, biasX, biasY, biasZ, crossCouplingErrors, gDependantCrossBias,
                 result.getBuffer());
     }
 
@@ -1423,21 +1332,15 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public void fix(
-            final double measuredAngularRateX,
-            final double measuredAngularRateY,
-            final double measuredAngularRateZ,
-            final double trueFx,
-            final double trueFy,
-            final double trueFz,
+            final double measuredAngularRateX, final double measuredAngularRateY, final double measuredAngularRateZ,
+            final double trueFx, final double trueFy, final double trueFz,
             final double biasX, final double biasY, final double biasZ,
             final double sx, final double sy, final double sz,
-            final double mxy, final double mxz,
-            final double myx, final double myz,
-            final double mzx, final double mzy,
+            final double mxy, final double mxz, final double myx,
+            final double myz, final double mzx, final double mzy,
             final double g11, final double g21, final double g31,
             final double g12, final double g22, final double g32,
-            final double g13, final double g23, final double g33,
-            final double[] result) throws AlgebraException {
+            final double g13, final double g23, final double g33, final double[] result) throws AlgebraException {
 
         mCrossCouplingErrors.setElementAt(0, 0, sx);
         mCrossCouplingErrors.setElementAt(1, 1, sy);
@@ -1459,9 +1362,8 @@ public class AngularRateFixer {
         mGDependantCrossBias.setElementAt(1, 2, g23);
         mGDependantCrossBias.setElementAt(2, 2, g33);
 
-        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, biasX, biasY, biasZ,
-                mCrossCouplingErrors, mGDependantCrossBias, result);
+        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz,
+                biasX, biasY, biasZ, mCrossCouplingErrors, mGDependantCrossBias, result);
     }
 
     /**
@@ -1515,32 +1417,24 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public void fix(
-            final double measuredAngularRateX,
-            final double measuredAngularRateY,
-            final double measuredAngularRateZ,
-            final double trueFx,
-            final double trueFy,
-            final double trueFz,
+            final double measuredAngularRateX, final double measuredAngularRateY, final double measuredAngularRateZ,
+            final double trueFx, final double trueFy, final double trueFz,
             final double biasX, final double biasY, final double biasZ,
             final double sx, final double sy, final double sz,
-            final double mxy, final double mxz,
-            final double myx, final double myz,
-            final double mzx, final double mzy,
+            final double mxy, final double mxz, final double myx,
+            final double myz, final double mzx, final double mzy,
             final double g11, final double g21, final double g31,
             final double g12, final double g22, final double g32,
-            final double g13, final double g23, final double g33,
-            final Matrix result) throws AlgebraException {
+            final double g13, final double g23, final double g33, final Matrix result) throws AlgebraException {
 
-        if (result.getRows() != BodyKinematics.COMPONENTS
-                || result.getColumns() != 1) {
+        if (result.getRows() != BodyKinematics.COMPONENTS || result.getColumns() != 1) {
             throw new IllegalArgumentException();
         }
 
         fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
                 trueFx, trueFy, trueFz, biasX, biasY, biasZ,
                 sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
-                g11, g21, g31, g12, g22, g32, g13, g23, g33,
-                result.getBuffer());
+                g11, g21, g31, g12, g22, g32, g13, g23, g33, result.getBuffer());
     }
 
     /**
@@ -1554,8 +1448,7 @@ public class AngularRateFixer {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public AngularSpeedTriad fixAndReturnNew(
-            final AngularSpeedTriad measuredAngularRate,
-            final AccelerationTriad trueF) throws AlgebraException {
+            final AngularSpeedTriad measuredAngularRate, final AccelerationTriad trueF) throws AlgebraException {
         final AngularSpeedTriad result = new AngularSpeedTriad();
         fix(measuredAngularRate, trueF, result);
         return result;
@@ -1576,15 +1469,11 @@ public class AngularRateFixer {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public AngularSpeedTriad fixAndReturnNew(
-            final AngularSpeed measuredAngularRateX,
-            final AngularSpeed measuredAngularRateY,
-            final AngularSpeed measuredAngularRateZ,
-            final Acceleration trueFx,
-            final Acceleration trueFy,
+            final AngularSpeed measuredAngularRateX, final AngularSpeed measuredAngularRateY,
+            final AngularSpeed measuredAngularRateZ, final Acceleration trueFx, final Acceleration trueFy,
             final Acceleration trueFz) throws AlgebraException {
         final AngularSpeedTriad result = new AngularSpeedTriad();
-        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, result);
+        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, result);
         return result;
     }
 
@@ -1605,8 +1494,7 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public double[] fixAndReturnNew(
-            final double[] measuredAngularRate,
-            final double[] trueF) throws AlgebraException {
+            final double[] measuredAngularRate, final double[] trueF) throws AlgebraException {
         final double[] result = new double[BodyKinematics.COMPONENTS];
         fix(measuredAngularRate, trueF, result);
         return result;
@@ -1629,8 +1517,7 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public double[] fixAndReturnNew(
-            final Matrix measuredAngularRate,
-            final Matrix trueF) throws AlgebraException {
+            final Matrix measuredAngularRate, final Matrix trueF) throws AlgebraException {
 
         final double[] result = new double[BodyKinematics.COMPONENTS];
         fix(measuredAngularRate, trueF, result);
@@ -1654,11 +1541,9 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public Matrix fixAndReturnNewMatrix(
-            final Matrix measuredAngularRate,
-            final Matrix trueF) throws AlgebraException {
+            final Matrix measuredAngularRate, final Matrix trueF) throws AlgebraException {
 
-        final Matrix result = new Matrix(
-                BodyKinematics.COMPONENTS, 1);
+        final Matrix result = new Matrix(BodyKinematics.COMPONENTS, 1);
         fix(measuredAngularRate, trueF, result);
         return result;
     }
@@ -1688,16 +1573,11 @@ public class AngularRateFixer {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public double[] fixAndReturnNew(
-            final double measuredAngularRateX,
-            final double measuredAngularRateY,
-            final double measuredAngularRateZ,
-            final double trueFx,
-            final double trueFy,
-            final double trueFz) throws AlgebraException {
+            final double measuredAngularRateX, final double measuredAngularRateY, final double measuredAngularRateZ,
+            final double trueFx, final double trueFy, final double trueFz) throws AlgebraException {
 
         final double[] result = new double[BodyKinematics.COMPONENTS];
-        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, result);
+        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, result);
         return result;
     }
 
@@ -1726,17 +1606,11 @@ public class AngularRateFixer {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public Matrix fixAndReturnNewMatrix(
-            final double measuredAngularRateX,
-            final double measuredAngularRateY,
-            final double measuredAngularRateZ,
-            final double trueFx,
-            final double trueFy,
-            final double trueFz) throws AlgebraException {
+            final double measuredAngularRateX, final double measuredAngularRateY, final double measuredAngularRateZ,
+            final double trueFx, final double trueFy, final double trueFz) throws AlgebraException {
 
-        final Matrix result = new Matrix(
-                BodyKinematics.COMPONENTS, 1);
-        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, result);
+        final Matrix result = new Matrix(BodyKinematics.COMPONENTS, 1);
+        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ, trueFx, trueFy, trueFz, result);
         return result;
     }
 
@@ -1762,15 +1636,11 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public double[] fixAndReturnNew(
-            final double[] measuredAngularRate,
-            final double[] trueF,
-            final Matrix bias,
-            final Matrix crossCouplingErrors,
-            final Matrix gDependantCrossBias) throws AlgebraException {
+            final double[] measuredAngularRate, final double[] trueF, final Matrix bias,
+            final Matrix crossCouplingErrors, final Matrix gDependantCrossBias) throws AlgebraException {
 
         final double[] result = new double[BodyKinematics.COMPONENTS];
-        fix(measuredAngularRate, trueF, bias, crossCouplingErrors,
-                gDependantCrossBias, result);
+        fix(measuredAngularRate, trueF, bias, crossCouplingErrors, gDependantCrossBias, result);
         return result;
     }
 
@@ -1795,15 +1665,11 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public double[] fixAndReturnNew(
-            final Matrix measuredAngularRate,
-            final Matrix trueF,
-            final Matrix bias,
-            final Matrix crossCouplingErrors,
-            final Matrix gDependantCrossBias) throws AlgebraException {
+            final Matrix measuredAngularRate, final Matrix trueF, final Matrix bias,
+            final Matrix crossCouplingErrors, final Matrix gDependantCrossBias) throws AlgebraException {
 
         final double[] result = new double[BodyKinematics.COMPONENTS];
-        fix(measuredAngularRate, trueF, bias, crossCouplingErrors,
-                gDependantCrossBias, result);
+        fix(measuredAngularRate, trueF, bias, crossCouplingErrors, gDependantCrossBias, result);
         return result;
     }
 
@@ -1828,16 +1694,11 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public Matrix fixAndReturnNewMatrix(
-            final Matrix measuredAngularRate,
-            final Matrix trueF,
-            final Matrix bias,
-            final Matrix crossCouplingErrors,
-            final Matrix gDependantCrossBias) throws AlgebraException {
+            final Matrix measuredAngularRate, final Matrix trueF, final Matrix bias,
+            final Matrix crossCouplingErrors, final Matrix gDependantCrossBias) throws AlgebraException {
 
-        final Matrix result = new Matrix(
-                BodyKinematics.COMPONENTS, 1);
-        fix(measuredAngularRate, trueF, bias, crossCouplingErrors,
-                gDependantCrossBias, result);
+        final Matrix result = new Matrix(BodyKinematics.COMPONENTS, 1);
+        fix(measuredAngularRate, trueF, bias, crossCouplingErrors, gDependantCrossBias, result);
         return result;
     }
 
@@ -1876,20 +1737,14 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public double[] fixAndReturnNew(
-            final double measuredAngularRateX,
-            final double measuredAngularRateY,
-            final double measuredAngularRateZ,
-            final double trueFx,
-            final double trueFy,
-            final double trueFz,
-            final double biasX, final double biasY, final double biasZ,
-            final Matrix crossCouplingErrors,
+            final double measuredAngularRateX, final double measuredAngularRateY, final double measuredAngularRateZ,
+            final double trueFx, final double trueFy, final double trueFz,
+            final double biasX, final double biasY, final double biasZ, final Matrix crossCouplingErrors,
             final Matrix gDependantCrossBias) throws AlgebraException {
 
         final double[] result = new double[BodyKinematics.COMPONENTS];
         fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, biasX, biasY, biasZ,
-                crossCouplingErrors, gDependantCrossBias, result);
+                trueFx, trueFy, trueFz, biasX, biasY, biasZ, crossCouplingErrors, gDependantCrossBias, result);
         return result;
     }
 
@@ -1928,21 +1783,14 @@ public class AngularRateFixer {
      *                                  does not have proper size.
      */
     public Matrix fixAndReturnNewMatrix(
-            final double measuredAngularRateX,
-            final double measuredAngularRateY,
-            final double measuredAngularRateZ,
-            final double trueFx,
-            final double trueFy,
-            final double trueFz,
+            final double measuredAngularRateX, final double measuredAngularRateY, final double measuredAngularRateZ,
+            final double trueFx, final double trueFy, final double trueFz,
             final double biasX, final double biasY, final double biasZ,
-            final Matrix crossCouplingErrors,
-            final Matrix gDependantCrossBias) throws AlgebraException {
+            final Matrix crossCouplingErrors, final Matrix gDependantCrossBias) throws AlgebraException {
 
-        final Matrix result = new Matrix(
-                BodyKinematics.COMPONENTS, 1);
+        final Matrix result = new Matrix(BodyKinematics.COMPONENTS, 1);
         fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, biasX, biasY, biasZ,
-                crossCouplingErrors, gDependantCrossBias, result);
+                trueFx, trueFy, trueFz, biasX, biasY, biasZ, crossCouplingErrors, gDependantCrossBias, result);
         return result;
     }
 
@@ -1994,28 +1842,20 @@ public class AngularRateFixer {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public double[] fixAndReturnNew(
-            final double measuredAngularRateX,
-            final double measuredAngularRateY,
-            final double measuredAngularRateZ,
-            final double trueFx,
-            final double trueFy,
-            final double trueFz,
+            final double measuredAngularRateX, final double measuredAngularRateY, final double measuredAngularRateZ,
+            final double trueFx, final double trueFy, final double trueFz,
             final double biasX, final double biasY, final double biasZ,
             final double sx, final double sy, final double sz,
-            final double mxy, final double mxz,
-            final double myx, final double myz,
-            final double mzx, final double mzy,
+            final double mxy, final double mxz, final double myx,
+            final double myz, final double mzx, final double mzy,
             final double g11, final double g21, final double g31,
             final double g12, final double g22, final double g32,
-            final double g13, final double g23, final double g33)
-            throws AlgebraException {
+            final double g13, final double g23, final double g33) throws AlgebraException {
 
         final double[] result = new double[BodyKinematics.COMPONENTS];
         fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, biasX, biasY, biasZ,
-                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
-                g11, g21, g31, g12, g22, g32,
-                g13, g23, g33, result);
+                trueFx, trueFy, trueFz, biasX, biasY, biasZ, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
+                g11, g21, g31, g12, g22, g32, g13, g23, g33, result);
         return result;
     }
 
@@ -2067,29 +1907,20 @@ public class AngularRateFixer {
      * @throws AlgebraException if there are numerical instabilities.
      */
     public Matrix fixAndReturnNewMatrix(
-            final double measuredAngularRateX,
-            final double measuredAngularRateY,
-            final double measuredAngularRateZ,
-            final double trueFx,
-            final double trueFy,
-            final double trueFz,
+            final double measuredAngularRateX, final double measuredAngularRateY, final double measuredAngularRateZ,
+            final double trueFx, final double trueFy, final double trueFz,
             final double biasX, final double biasY, final double biasZ,
             final double sx, final double sy, final double sz,
-            final double mxy, final double mxz,
-            final double myx, final double myz,
-            final double mzx, final double mzy,
+            final double mxy, final double mxz, final double myx,
+            final double myz, final double mzx, final double mzy,
             final double g11, final double g21, final double g31,
             final double g12, final double g22, final double g32,
-            final double g13, final double g23, final double g33)
-            throws AlgebraException {
+            final double g13, final double g23, final double g33) throws AlgebraException {
 
-        final Matrix result = new Matrix(
-                BodyKinematics.COMPONENTS, 1);
+        final Matrix result = new Matrix(BodyKinematics.COMPONENTS, 1);
         fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,
-                trueFx, trueFy, trueFz, biasX, biasY, biasZ,
-                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
-                g11, g21, g31, g12, g22, g32, g13, g23, g33,
-                result);
+                trueFx, trueFy, trueFz, biasX, biasY, biasZ, sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
+                g11, g21, g31, g12, g22, g32, g13, g23, g33, result);
         return result;
     }
 
@@ -2100,10 +1931,8 @@ public class AngularRateFixer {
      * @param unit  unit of value to be converted.
      * @return converted value.
      */
-    private static double convertAngularSpeed(
-            final double value, final AngularSpeedUnit unit) {
-        return AngularSpeedConverter.convert(value, unit,
-                AngularSpeedUnit.RADIANS_PER_SECOND);
+    private static double convertAngularSpeed(final double value, final AngularSpeedUnit unit) {
+        return AngularSpeedConverter.convert(value, unit, AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
     /**
@@ -2113,8 +1942,7 @@ public class AngularRateFixer {
      * @return converted value.
      */
     private static double convertAngularSpeed(final AngularSpeed angularSpeed) {
-        return convertAngularSpeed(angularSpeed.getValue().doubleValue(),
-                angularSpeed.getUnit());
+        return convertAngularSpeed(angularSpeed.getValue().doubleValue(), angularSpeed.getUnit());
     }
 
     /**
@@ -2124,10 +1952,8 @@ public class AngularRateFixer {
      * @param unit  unit of value to be converted.
      * @return converted value.
      */
-    private static double convertAcceleration(
-            final double value, final AccelerationUnit unit) {
-        return AccelerationConverter.convert(value, unit,
-                AccelerationUnit.METERS_PER_SQUARED_SECOND);
+    private static double convertAcceleration(final double value, final AccelerationUnit unit) {
+        return AccelerationConverter.convert(value, unit, AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
     /**
@@ -2137,7 +1963,6 @@ public class AngularRateFixer {
      * @return converted value.
      */
     private static double convertAcceleration(final Acceleration acceleration) {
-        return convertAcceleration(acceleration.getValue().doubleValue(),
-                acceleration.getUnit());
+        return convertAcceleration(acceleration.getValue().doubleValue(), acceleration.getUnit());
     }
 }

@@ -238,8 +238,8 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * @throws LockedException if estimator is currently running.
      */
     public void setTimeInterval(final Time timeInterval) throws LockedException {
-        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(),
-                timeInterval.getUnit(), TimeUnit.SECOND));
+        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(), timeInterval.getUnit(),
+                TimeUnit.SECOND));
     }
 
     /**

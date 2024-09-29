@@ -140,8 +140,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-    public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final boolean commonAxisUsed) {
+    public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final boolean commonAxisUsed) {
         super(commonAxisUsed);
     }
 
@@ -151,8 +150,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      * @param magneticModel Earth's magnetic model. If null, a default model
      *                      will be used instead.
      */
-    public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final WorldMagneticModel magneticModel) {
+    public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final WorldMagneticModel magneticModel) {
         super(magneticModel);
     }
 
@@ -163,8 +161,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final double[] hardIron) {
+    public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final double[] hardIron) {
         super(hardIron);
     }
 
@@ -175,8 +172,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final Matrix hardIron) {
+    public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final Matrix hardIron) {
         super(hardIron);
     }
 
@@ -201,8 +197,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      * @param position position where body magnetic flux density measurements
      *                 have been taken.
      */
-    public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position) {
+    public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final NEDPosition position) {
         super(position);
     }
 
@@ -218,8 +213,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                     orientations.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         super(position, measurements);
     }
 
@@ -236,8 +230,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      * @param listener     listener to handle events raised by this calibrator.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, listener);
     }
@@ -256,8 +249,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
         super(position, measurements, commonAxisUsed);
     }
@@ -277,8 +269,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      * @param listener       listener to handle events raised by this calibrator.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, listener);
@@ -299,8 +290,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  not have length 3.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron) {
         super(position, measurements, hardIron);
     }
@@ -321,8 +311,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  not have length 3.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, hardIron, listener);
@@ -345,8 +334,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  not have length 3.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron) {
         super(position, measurements, commonAxisUsed, hardIron);
     }
@@ -369,8 +357,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  not have length 3.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, hardIron, listener);
@@ -391,8 +378,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  3x1.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron) {
         super(position, measurements, hardIron);
     }
@@ -413,10 +399,8 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  3x1.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final Matrix hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, hardIron, listener);
     }
 
@@ -437,8 +421,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  3x1.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron) {
         super(position, measurements, commonAxisUsed, hardIron);
     }
@@ -461,8 +444,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  3x1.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, hardIron, listener);
@@ -486,8 +468,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  3x3.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm) {
         super(position, measurements, hardIron, initialMm);
     }
@@ -511,8 +492,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  3x3.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, hardIron, initialMm, listener);
@@ -538,10 +518,8 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  3x3.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm) {
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm) {
         super(position, measurements, commonAxisUsed, hardIron, initialMm);
     }
 
@@ -566,10 +544,8 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  3x3.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final NEDPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final NEDPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, hardIron, initialMm, listener);
     }
@@ -580,8 +556,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      * @param position position where body magnetic flux density measurements
      *                 have been taken.
      */
-    public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position) {
+    public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(final ECEFPosition position) {
         super(position);
     }
 
@@ -597,8 +572,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                     orientations.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         super(position, measurements);
     }
 
@@ -615,8 +589,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      * @param listener     listener to handle events raised by this calibrator.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, listener);
     }
@@ -635,8 +608,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
         super(position, measurements, commonAxisUsed);
     }
@@ -656,8 +628,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      * @param listener       listener to handle events raised by this calibrator.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, listener);
@@ -678,8 +649,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  not have length 3.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron) {
         super(position, measurements, hardIron);
     }
@@ -700,8 +670,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  not have length 3.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, hardIron, listener);
@@ -724,8 +693,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  not have length 3.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron) {
         super(position, measurements, commonAxisUsed, hardIron);
     }
@@ -748,8 +716,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  not have length 3.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, hardIron, listener);
@@ -770,8 +737,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  3x1.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron) {
         super(position, measurements, hardIron);
     }
@@ -792,10 +758,8 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  3x1.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final Matrix hardIron,
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final Matrix hardIron, final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, hardIron, listener);
     }
 
@@ -816,8 +780,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  3x1.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron) {
         super(position, measurements, commonAxisUsed, hardIron);
     }
@@ -840,8 +803,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  3x1.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, commonAxisUsed, hardIron, listener);
@@ -865,8 +827,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  3x3.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm) {
         super(position, measurements, hardIron, initialMm);
     }
@@ -890,8 +851,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  3x3.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
         super(position, measurements, hardIron, initialMm, listener);
@@ -917,10 +877,8 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  3x3.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm) {
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm) {
         super(position, measurements, commonAxisUsed, hardIron, initialMm);
     }
 
@@ -945,13 +903,10 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                  3x3.
      */
     public RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
-            final ECEFPosition position,
-            final List<StandardDeviationBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed, final Matrix hardIron,
-            final Matrix initialMm,
+            final ECEFPosition position, final List<StandardDeviationBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-        super(position, measurements, commonAxisUsed, hardIron, initialMm,
-                listener);
+        super(position, measurements, commonAxisUsed, hardIron, initialMm, listener);
     }
 
     /**
@@ -1001,8 +956,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                              false if inliers only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers)
-            throws LockedException {
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1026,8 +980,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
      *                                false if residuals only need to be computed but not kept.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals)
-            throws LockedException {
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -1053,7 +1006,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
         }
 
         final RANSACRobustEstimator<Matrix> innerEstimator =
-                new RANSACRobustEstimator<>(new RANSACRobustEstimatorListener<Matrix>() {
+                new RANSACRobustEstimator<>(new RANSACRobustEstimatorListener<>() {
                     @Override
                     public double getThreshold() {
                         return mThreshold;
@@ -1070,16 +1023,12 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
                     }
 
                     @Override
-                    public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List<Matrix> solutions) {
+                    public void estimatePreliminarSolutions(final int[] samplesIndices, final List<Matrix> solutions) {
                         computePreliminarySolutions(samplesIndices, solutions);
                     }
 
                     @Override
-                    public double computeResidual(
-                            final Matrix currentEstimation,
-                            final int i) {
+                    public double computeResidual(final Matrix currentEstimation, final int i) {
                         return computeError(mMeasurements.get(i), currentEstimation);
                     }
 
@@ -1089,21 +1038,17 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
                     }
 
                     @Override
-                    public void onEstimateStart(
-                            final RobustEstimator<Matrix> estimator) {
+                    public void onEstimateStart(final RobustEstimator<Matrix> estimator) {
                         // no action needed
                     }
 
                     @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator<Matrix> estimator) {
+                    public void onEstimateEnd(final RobustEstimator<Matrix> estimator) {
                         // no action needed
                     }
 
                     @Override
-                    public void onEstimateNextIteration(
-                            final RobustEstimator<Matrix> estimator,
-                            final int iteration) {
+                    public void onEstimateNextIteration(final RobustEstimator<Matrix> estimator, final int iteration) {
                         if (mListener != null) {
                             mListener.onCalibrateNextIteration(
                                     RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this,
@@ -1113,8 +1058,7 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
 
                     @Override
                     public void onEstimateProgressChange(
-                            final RobustEstimator<Matrix> estimator,
-                            final float progress) {
+                            final RobustEstimator<Matrix> estimator, final float progress) {
                         if (mListener != null) {
                             mListener.onCalibrateProgressChange(
                                     RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this,
@@ -1134,10 +1078,8 @@ public class RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator e
 
             initialize();
 
-            innerEstimator.setComputeAndKeepInliersEnabled(
-                    mComputeAndKeepInliers || mRefineResult);
-            innerEstimator.setComputeAndKeepResidualsEnabled(
-                    mComputeAndKeepResiduals || mRefineResult);
+            innerEstimator.setComputeAndKeepInliersEnabled(mComputeAndKeepInliers || mRefineResult);
+            innerEstimator.setComputeAndKeepResidualsEnabled(mComputeAndKeepResiduals || mRefineResult);
             innerEstimator.setConfidence(mConfidence);
             innerEstimator.setMaxIterations(mMaxIterations);
             innerEstimator.setProgressDelta(mProgressDelta);

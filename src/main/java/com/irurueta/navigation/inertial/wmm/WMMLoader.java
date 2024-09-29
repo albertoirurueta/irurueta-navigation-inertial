@@ -28,7 +28,7 @@ import java.net.URL;
 /**
  * Loads a WWM from a file of coefficients.
  * The file of coefficients is updated every 5 years and can be obtained
- * at: https://www.ngdc.noaa.gov/geomag/WMM/
+ * at: <a href="https://www.ngdc.noaa.gov/geomag/WMM/">https://www.ngdc.noaa.gov/geomag/WMM/</a>
  *
  * @see WorldMagneticModel
  */
@@ -86,8 +86,7 @@ public class WMMLoader {
      * @return a World Magnetic Model containing all required coefficients.
      * @throws IOException if an I/O error occurs.
      */
-    public static WorldMagneticModel loadFromFile(final String filePath)
-            throws IOException {
+    public static WorldMagneticModel loadFromFile(final String filePath) throws IOException {
 
         try (final FileInputStream stream = new FileInputStream(filePath)) {
             return load(stream);
@@ -103,8 +102,7 @@ public class WMMLoader {
      * @throws IOException if an I/O error occurs.
      */
     public static WorldMagneticModel load(final URL url) throws IOException {
-        final HttpURLConnection connection =
-                (HttpURLConnection) url.openConnection();
+        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         try (final InputStream stream = connection.getInputStream()) {
             return load(stream);
@@ -118,8 +116,7 @@ public class WMMLoader {
      * @return a World Magnetic Model containing all required coefficients.
      * @throws IOException if an I/O error occurs.
      */
-    public static WorldMagneticModel load(final File file)
-            throws IOException {
+    public static WorldMagneticModel load(final File file) throws IOException {
 
         try (final FileInputStream stream = new FileInputStream(file)) {
             return load(stream);
@@ -133,8 +130,7 @@ public class WMMLoader {
      * @return a World Magnetic Model containing all required coefficients.
      * @throws IOException if an I/O error occurs.
      */
-    public static WorldMagneticModel load(final InputStream stream)
-            throws IOException {
+    public static WorldMagneticModel load(final InputStream stream) throws IOException {
 
         try (final Reader reader = new InputStreamReader(stream)) {
             WorldMagneticModel result = new WorldMagneticModel();

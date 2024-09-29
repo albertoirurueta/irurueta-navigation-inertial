@@ -21,8 +21,7 @@ import com.irurueta.navigation.LockedException;
  * Indicates that an accelerometer calibrator can accept quality scores for
  * each measurement being provided.
  */
-public interface QualityScoredAccelerometerCalibrator extends
-        AccelerometerCalibrator {
+public interface QualityScoredAccelerometerCalibrator extends AccelerometerCalibrator {
 
     /**
      * Returns quality scores corresponding to each measurement.

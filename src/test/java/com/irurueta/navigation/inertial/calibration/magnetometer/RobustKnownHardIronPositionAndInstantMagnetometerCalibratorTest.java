@@ -43,36 +43,31 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
     public void testCreate1() {
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
@@ -82,131 +77,130 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
     public void testCreate2() {
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        this, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(this,
+                        RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(this,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(this,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
     public void testCreate3() {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        measurements, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(measurements,
+                        RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // LMedS
         calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                measurements, RobustEstimatorMethod.LMedS);
+                measurements, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                measurements, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(measurements,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                measurements, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(measurements,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                measurements, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(measurements,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
     }
 
     @Test
     public void testCreate4() {
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        true, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(true,
+                        RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(true, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(true,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(true, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(true,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(true, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(true,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(true, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(true,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
@@ -219,44 +213,44 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        magneticModel, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(magneticModel,
+                        RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMagneticModel(), magneticModel);
+        assertSame(magneticModel, calibrator.getMagneticModel());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(magneticModel, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(magneticModel,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMagneticModel(), magneticModel);
+        assertSame(magneticModel, calibrator.getMagneticModel());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(magneticModel, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(magneticModel,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMagneticModel(), magneticModel);
+        assertSame(magneticModel, calibrator.getMagneticModel());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(magneticModel, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(magneticModel,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMagneticModel(), magneticModel);
+        assertSame(magneticModel, calibrator.getMagneticModel());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(magneticModel, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(magneticModel,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMagneticModel(), magneticModel);
+        assertSame(magneticModel, calibrator.getMagneticModel());
     }
 
     @Test
@@ -265,44 +259,44 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        initialHardIron, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(initialHardIron,
+                        RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron, 0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(initialHardIron, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(initialHardIron,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron, 0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(initialHardIron, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(initialHardIron,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron, 0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(initialHardIron, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(initialHardIron,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron, 0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(initialHardIron, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(initialHardIron,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron, 0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
     }
 
     @Test
@@ -311,44 +305,44 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        initialHardIron, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(initialHardIron,
+                        RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(initialHardIron, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(initialHardIron,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(initialHardIron, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(initialHardIron,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(initialHardIron, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(initialHardIron,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(initialHardIron, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(initialHardIron,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
     }
 
     @Test
@@ -358,54 +352,49 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        initialHardIron, initialMm,
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(initialHardIron, initialMm,
                         RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(initialHardIron, initialMm,
-                        RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(initialHardIron, initialMm,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(initialHardIron, initialMm,
-                        RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(initialHardIron, initialMm,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(initialHardIron, initialMm,
-                        RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(initialHardIron, initialMm,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(initialHardIron, initialMm,
-                        RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(initialHardIron, initialMm,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
     }
 
     @Test
@@ -414,1208 +403,1052 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position,
+                        RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
+        assertSame(position, calibrator.getNedPosition());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
+        assertSame(position, calibrator.getNedPosition());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
+        assertSame(position, calibrator.getNedPosition());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
+        assertSame(position, calibrator.getNedPosition());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
+        assertSame(position, calibrator.getNedPosition());
     }
 
     @Test
     public void testCreate10() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
     }
 
     @Test
     public void testCreate11() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, this,
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements, this,
                         RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
     public void testCreate12() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
     }
 
     @Test
     public void testCreate13() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        this, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true,
-                this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true,
-                this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true,
-                this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true,
-                this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
     public void testCreate14() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
     }
 
     @Test
     public void testCreate15() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(calibrator.getHardIron(), initialHardIron, 0.0);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron, this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
     public void testCreate16() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
     }
 
     @Test
     public void testCreate17() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
     public void testCreate18() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
     }
 
     @Test
     public void testCreate19() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron,
-                        this, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron, this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
     public void testCreate20() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
     }
 
     @Test
     public void testCreate21() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
     public void testCreate22() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron,
-                        initialMm, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, initialMm, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                initialMm, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, initialMm, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                initialMm, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, initialMm, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                initialMm, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, initialMm, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                initialMm, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, initialMm, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
     }
 
     @Test
     public void testCreate23() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron,
-                        initialMm, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, initialMm, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, initialMm, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, initialMm, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, initialMm, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, initialMm, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
     public void testCreate24() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, initialMm,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, initialMm, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                initialMm, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, initialMm, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                initialMm, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, initialMm, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                initialMm, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, initialMm, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                initialMm, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, initialMm, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
     }
 
     @Test
     public void testCreate25() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, initialMm, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, initialMm, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, initialMm, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, initialMm, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, initialMm, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, initialMm, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -1625,45 +1458,44 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position,
+                        RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
@@ -1677,57 +1509,55 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
     }
 
     @Test
@@ -1737,67 +1567,60 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, this,
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements, this,
                         RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -1807,66 +1630,59 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
     }
 
@@ -1877,72 +1693,65 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        this, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true,
-                this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true,
-                this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true,
-                this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true,
-                this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -1952,73 +1761,61 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(calibrator.getHardIron(), initialHardIron, 0.0);
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(calibrator.getHardIron(), initialHardIron, 0.0);
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
     }
 
     @Test
@@ -2028,78 +1825,66 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron, this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -2109,78 +1894,66 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
     }
 
     @Test
@@ -2190,84 +1963,71 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -2277,73 +2037,61 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
     }
 
     @Test
@@ -2353,78 +2101,66 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron,
-                        this, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron, this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -2434,78 +2170,66 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
     }
 
     @Test
@@ -2515,84 +2239,71 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -2602,79 +2313,67 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron,
-                        initialMm, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, initialMm, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                initialMm, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, initialMm, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                initialMm, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, initialMm, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                initialMm, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, initialMm, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                initialMm, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, initialMm, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
     }
 
     @Test
@@ -2684,85 +2383,72 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron,
-                        initialMm, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, initialMm, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, initialMm, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, initialMm, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, initialMm, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                initialHardIron, initialMm, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -2772,85 +2458,72 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, initialMm,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, initialMm, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                initialMm, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, initialMm, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                initialMm, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, initialMm, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                initialMm, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, initialMm, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                initialMm, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, initialMm, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
     }
 
     @Test
@@ -2860,144 +2533,129 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, initialMm, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, initialMm, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, initialMm, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, initialMm, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, initialMm, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                position, measurements, true, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                true, initialHardIron, initialMm, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
     public void testCreate43() {
         final double[] qualityScores = new double[10];
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, measurements,
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, measurements,
                         RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, measurements, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, measurements,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, measurements, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, measurements,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, measurements, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, measurements,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, measurements, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, measurements,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -3006,8 +2664,7 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, true,
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, true,
                         RobustEstimatorMethod.RANSAC);
 
         // check
@@ -3016,9 +2673,8 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, true,
-                        RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores,
+                true, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
@@ -3026,9 +2682,8 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, true,
-                        RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores,
+                true, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
@@ -3036,24 +2691,22 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, true,
-                        RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores,
+                true, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, true,
-                        RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores,
+                true, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -3063,54 +2716,49 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, magneticModel,
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, magneticModel,
                         RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMagneticModel(), magneticModel);
+        assertSame(magneticModel, calibrator.getMagneticModel());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, magneticModel,
-                        RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, magneticModel,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMagneticModel(), magneticModel);
+        assertSame(magneticModel, calibrator.getMagneticModel());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, magneticModel,
-                        RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, magneticModel,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMagneticModel(), magneticModel);
+        assertSame(magneticModel, calibrator.getMagneticModel());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, magneticModel,
-                        RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, magneticModel,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMagneticModel(), magneticModel);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(magneticModel, calibrator.getMagneticModel());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, magneticModel,
-                        RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, magneticModel,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getMagneticModel(), magneticModel);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(magneticModel, calibrator.getMagneticModel());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -3120,54 +2768,49 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, initialHardIron,
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, initialHardIron,
                         RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron, 0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, initialHardIron,
-                        RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, initialHardIron,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron, 0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, initialHardIron,
-                        RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, initialHardIron,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron, 0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, initialHardIron,
-                        RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, initialHardIron,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron, 0.0);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, initialHardIron,
-                        RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, initialHardIron,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron, 0.0);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -3177,54 +2820,49 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, initialHardIron,
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, initialHardIron,
                         RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, initialHardIron,
-                        RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, initialHardIron,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, initialHardIron,
-                        RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, initialHardIron,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, initialHardIron,
-                        RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, initialHardIron,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, initialHardIron,
-                        RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, initialHardIron,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -3235,59 +2873,54 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, initialHardIron, initialMm,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, initialHardIron,
+                        initialMm, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, initialHardIron, initialMm,
-                        RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, initialHardIron,
+                initialMm, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, initialHardIron, initialMm,
-                        RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, initialHardIron,
+                initialMm, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, initialHardIron, initialMm,
-                        RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, initialHardIron,
+                initialMm, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator
-                .create(qualityScores, initialHardIron, initialMm,
-                        RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, initialHardIron,
+                initialMm, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -3297,662 +2930,590 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position,
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
                         RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
+        assertSame(position, calibrator.getNedPosition());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
+        assertSame(position, calibrator.getNedPosition());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
+        assertSame(position, calibrator.getNedPosition());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
     public void testCreate50() {
         final double[] qualityScores = new double[10];
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
     public void testCreate51() {
         final double[] qualityScores = new double[10];
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
     public void testCreate52() {
         final double[] qualityScores = new double[10];
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        true, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, true, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
     public void testCreate53() {
         final double[] qualityScores = new double[10];
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        true, this, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, true, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
     public void testCreate54() {
         final double[] qualityScores = new double[10];
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        initialHardIron, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, initialHardIron, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
     public void testCreate55() {
         final double[] qualityScores = new double[10];
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        initialHardIron, this, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, initialHardIron, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
     public void testCreate56() {
         final double[] qualityScores = new double[10];
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements, true,
-                        initialHardIron, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, true, initialHardIron, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
     public void testCreate57() {
         final double[] qualityScores = new double[10];
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        true, initialHardIron, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, true, initialHardIron, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
     public void testCreate58() {
         final double[] qualityScores = new double[10];
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        initialHardIron, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, initialHardIron, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
@@ -3965,653 +3526,564 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         // LMedS
         calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
                 qualityScores, position, measurements, initialHardIron,
-                RobustEstimatorMethod.LMedS);
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
     public void testCreate59() {
         final double[] qualityScores = new double[10];
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        initialHardIron, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, initialHardIron, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
     public void testCreate60() {
         final double[] qualityScores = new double[10];
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements, true,
-                        initialHardIron, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, true, initialHardIron, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
     public void testCreate61() {
         final double[] qualityScores = new double[10];
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements, true,
-                        initialHardIron, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, true, initialHardIron, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
     public void testCreate62() {
         final double[] qualityScores = new double[10];
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        initialHardIron, initialMm,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, initialHardIron, initialMm, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                initialMm, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, initialMm, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                initialMm, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, initialMm, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                initialMm, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, initialMm, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                initialMm, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, initialMm, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
     public void testCreate63() {
         final double[] qualityScores = new double[10];
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        initialHardIron, initialMm, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, initialHardIron, initialMm, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, initialMm, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, initialMm, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, initialMm, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, initialMm, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
     public void testCreate64() {
         final double[] qualityScores = new double[10];
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        true, initialHardIron, initialMm,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, true, initialHardIron, initialMm, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, initialMm, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, initialMm, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, initialMm, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, initialMm, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, initialMm, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, initialMm, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, initialMm, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, initialMm, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
     public void testCreate65() {
         final double[] qualityScores = new double[10];
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        true, initialHardIron, initialMm, this,
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, true, initialHardIron, initialMm, this,
                         RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, initialMm, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, initialMm, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, initialMm, this,
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, initialMm, this,
                 RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, initialMm, this,
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, initialMm, this,
                 RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, initialMm, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, initialMm, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -4622,13 +4094,11 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position,
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
                         RobustEstimatorMethod.RANSAC);
 
         // check
@@ -4637,8 +4107,8 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
@@ -4646,8 +4116,8 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
@@ -4655,22 +4125,22 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -4681,67 +4151,60 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -4752,72 +4215,65 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, this,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, this,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -4828,72 +4284,65 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        true, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, true, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -4904,78 +4353,70 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        true, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, true, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -4986,78 +4427,66 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        initialHardIron, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, initialHardIron, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -5068,84 +4497,71 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        initialHardIron, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, initialHardIron, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -5156,83 +4572,71 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        true, initialHardIron, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, true, initialHardIron, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -5243,90 +4647,77 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        true, initialHardIron, this,
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, true, initialHardIron, this,
                         RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron,
-                this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -5337,78 +4728,66 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        initialHardIron, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, initialHardIron, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -5419,84 +4798,71 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        initialHardIron, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, initialHardIron, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -5507,83 +4873,71 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        true, initialHardIron, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, true, initialHardIron, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -5594,89 +4948,76 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements, true,
-                        initialHardIron, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, true, initialHardIron, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true, initialHardIron,
-                this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -5687,84 +5028,72 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements, initialHardIron,
-                        initialMm, RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, initialHardIron, initialMm, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                initialMm, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, initialMm, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                initialMm, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, initialMm, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                initialMm, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, initialMm, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                initialMm, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, initialMm, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -5775,90 +5104,77 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements, initialHardIron,
-                        initialMm, this,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, initialHardIron, initialMm, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, initialMm, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, initialMm, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, initialMm, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, initialHardIron,
-                initialMm, this, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, initialHardIron, initialMm, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -5869,92 +5185,77 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        true, initialHardIron, initialMm,
-                        RobustEstimatorMethod.RANSAC);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, true, initialHardIron, initialMm, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements,
-                true, initialHardIron, initialMm,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, initialMm, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements,
-                true, initialHardIron, initialMm,
-                RobustEstimatorMethod.MSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, initialMm, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, initialMm, RobustEstimatorMethod.PROSAC);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, initialMm, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, initialMm, RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, initialMm, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -5965,99 +5266,87 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         // RANSAC
         RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        qualityScores, position, measurements,
-                        true, initialHardIron, initialMm, this,
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                        measurements, true, initialHardIron, initialMm, this,
                         RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(calibrator instanceof RANSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // LMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, initialMm, this,
-                RobustEstimatorMethod.LMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, initialMm, this,
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // MSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, initialMm, this,
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, initialMm, this,
                 RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(calibrator instanceof MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
         assertNull(calibrator.getQualityScores());
 
         // PROSAC
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, initialMm, this,
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, initialMm, this,
                 RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
 
         // PROMedS
-        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                qualityScores, position, measurements, true,
-                initialHardIron, initialMm, this,
-                RobustEstimatorMethod.PROMedS);
+        calibrator = RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(qualityScores, position,
+                measurements, true, initialHardIron, initialMm, this,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
-        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
+        assertSame(qualityScores, calibrator.getQualityScores());
     }
 
     @Test
@@ -6067,7 +5356,7 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
     }
 
     @Test
@@ -6077,23 +5366,21 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
     public void testCreateWithDefaultMethod3() {
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        measurements);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(measurements);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(measurements, calibrator.getMeasurements());
     }
 
     @Test
@@ -6103,7 +5390,7 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.isCommonAxisUsed());
     }
 
@@ -6112,13 +5399,12 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final WorldMagneticModel magneticModel = new WorldMagneticModel();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        magneticModel);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(magneticModel);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getMagneticModel(), magneticModel);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(magneticModel, calibrator.getMagneticModel());
     }
 
     @Test
@@ -6126,13 +5412,12 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final double[] initialHardIron = generateHardIron();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        initialHardIron);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(initialHardIron);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron, 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
     }
 
     @Test
@@ -6140,13 +5425,12 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final Matrix initialHardIron = generateHardIronMatrix();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        initialHardIron);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(initialHardIron);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
     }
 
     @Test
@@ -6155,14 +5439,13 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final Matrix initialMm = generateMm();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        initialHardIron, initialMm);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(initialHardIron, initialMm);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(calibrator.getHardIronMatrix(), initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
     }
 
     @Test
@@ -6170,355 +5453,315 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final NEDPosition position = new NEDPosition();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getNedPosition(), position);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(position, calibrator.getNedPosition());
     }
 
     @Test
     public void testCreateWithDefaultMethod10() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
     }
 
     @Test
     public void testCreateWithDefaultMethod11() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, this);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        this);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
     public void testCreateWithDefaultMethod12() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
     }
 
     @Test
     public void testCreateWithDefaultMethod13() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        this);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, this);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
     public void testCreateWithDefaultMethod14() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
     }
 
     @Test
     public void testCreateWithDefaultMethod15() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron, this);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, this);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
     public void testCreateWithDefaultMethod16() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
     }
 
     @Test
     public void testCreateWithDefaultMethod17() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, this);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, this);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
     public void testCreateWithDefaultMethod18() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
     }
 
     @Test
     public void testCreateWithDefaultMethod19() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron,
-                        this);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, this);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
     public void testCreateWithDefaultMethod20() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
     }
 
     @Test
     public void testCreateWithDefaultMethod21() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, this);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, this);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
     public void testCreateWithDefaultMethod22() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron,
-                        initialMm);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, initialMm);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
     }
 
     @Test
     public void testCreateWithDefaultMethod23() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron,
-                        initialMm, this);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, initialMm, this);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
     public void testCreateWithDefaultMethod24() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, initialMm);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, initialMm);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
     }
 
     @Test
     public void testCreateWithDefaultMethod25() {
         final NEDPosition position = new NEDPosition();
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, initialMm, this);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, initialMm, this);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertSame(calibrator.getNedPosition(), position);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
+        assertSame(position, calibrator.getNedPosition());
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -6528,16 +5771,14 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
     }
 
@@ -6548,21 +5789,18 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
     }
 
     @Test
@@ -6572,22 +5810,20 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, this);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        this);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -6597,21 +5833,19 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
     }
 
@@ -6622,24 +5856,21 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        this);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, this);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -6649,24 +5880,21 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
     }
 
     @Test
@@ -6676,25 +5904,22 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron, this);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, this);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -6704,26 +5929,22 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
     }
 
     @Test
@@ -6733,27 +5954,23 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final double[] initialHardIron = generateHardIron();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, this);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, this);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertArrayEquals(calibrator.getHardIron(), initialHardIron,
-                0.0);
-        assertSame(calibrator.getListener(), this);
+        assertArrayEquals(initialHardIron, calibrator.getHardIron(), 0.0);
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -6763,24 +5980,21 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
     }
 
     @Test
@@ -6790,26 +6004,22 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron,
-                        this);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, this);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -6819,26 +6029,22 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
     }
 
     @Test
@@ -6848,27 +6054,23 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, this);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, this);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -6878,27 +6080,23 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron,
-                        initialMm);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, initialMm);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
     }
 
     @Test
@@ -6908,28 +6106,24 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, initialHardIron,
-                        initialMm, this);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        initialHardIron, initialMm, this);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
     }
 
     @Test
@@ -6939,28 +6133,24 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, initialMm);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, initialMm);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
     }
 
     @Test
@@ -6970,56 +6160,51 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         final ECEFVelocity ecefVelocity = new ECEFVelocity();
         final ECEFPosition position = new ECEFPosition();
 
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, position, ecefVelocity);
+        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(nedPosition, nedVelocity, position, ecefVelocity);
 
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements = Collections.emptyList();
         final Matrix initialHardIron = generateHardIronMatrix();
         final Matrix initialMm = generateMm();
 
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        position, measurements, true,
-                        initialHardIron, initialMm, this);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(position, measurements,
+                        true, initialHardIron, initialMm, this);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
-        assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(RobustEstimatorMethod.LMEDS, calibrator.getMethod());
         assertTrue(calibrator.getEcefPosition().equals(position, ABSOLUTE_ERROR));
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertEquals(calibrator.getHardIronMatrix(),
-                initialHardIron);
-        assertEquals(calibrator.getInitialMm(), initialMm);
-        assertSame(calibrator.getListener(), this);
+        assertEquals(initialHardIron, calibrator.getHardIronMatrix());
+        assertEquals(initialMm, calibrator.getInitialMm());
+        assertSame(this, calibrator.getListener());
     }
 
     @Override
-    public void onCalibrateStart(
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator) {
+    public void onCalibrateStart(final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator) {
+        // no action needed
     }
 
     @Override
-    public void onCalibrateEnd(
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator) {
+    public void onCalibrateEnd(final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator) {
+        // no action needed
     }
 
     @Override
     public void onCalibrateNextIteration(
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator,
-            final int iteration) {
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator, final int iteration) {
+        // no action needed
     }
 
     @Override
     public void onCalibrateProgressChange(
-            final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator,
-            final float progress) {
+            final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator, final float progress) {
+        // no action needed
     }
 
-    private double[] generateHardIron() {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
+    private static double[] generateHardIron() {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         final double[] result = new double[3];
         randomizer.fill(result);
@@ -7027,11 +6212,11 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
         return result;
     }
 
-    private Matrix generateHardIronMatrix() {
+    private static Matrix generateHardIronMatrix() {
         return Matrix.newFromArray(generateHardIron());
     }
 
-    private Matrix generateMm() {
+    private static Matrix generateMm() {
         try {
             return Matrix.createWithUniformRandomValues(
                     3, 3, -1.0, 1.0);

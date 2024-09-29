@@ -56,8 +56,7 @@ import java.util.List;
  * - ftrue is ground-truth specific force. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
-public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
-        RobustKnownFrameGyroscopeCalibrator {
+public class PROMedSRobustKnownFrameGyroscopeCalibrator extends RobustKnownFrameGyroscopeCalibrator {
 
     /**
      * Default value to be used for stop threshold. Stop threshold can be used to
@@ -119,8 +118,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    public PROMedSRobustKnownFrameGyroscopeCalibrator(
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
+    public PROMedSRobustKnownFrameGyroscopeCalibrator(final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(listener);
     }
 
@@ -131,8 +129,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
      *                     deviations taken at different frames (positions, orientations
      *                     and velocities).
      */
-    public PROMedSRobustKnownFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements) {
+    public PROMedSRobustKnownFrameGyroscopeCalibrator(final List<StandardDeviationFrameBodyKinematics> measurements) {
         super(measurements);
     }
 
@@ -168,8 +165,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public PROMedSRobustKnownFrameGyroscopeCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(commonAxisUsed, listener);
     }
 
@@ -183,8 +179,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public PROMedSRobustKnownFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -199,8 +194,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public PROMedSRobustKnownFrameGyroscopeCalibrator(
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyKinematics> measurements, final boolean commonAxisUsed,
             final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
     }
@@ -214,8 +208,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
      * @throws IllegalArgumentException if provided quality scores length
      *                                  is smaller than 7 samples.
      */
-    public PROMedSRobustKnownFrameGyroscopeCalibrator(
-            final double[] qualityScores) {
+    public PROMedSRobustKnownFrameGyroscopeCalibrator(final double[] qualityScores) {
         internalSetQualityScores(qualityScores);
     }
 
@@ -231,8 +224,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
+            final double[] qualityScores, final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(listener);
         internalSetQualityScores(qualityScores);
     }
@@ -250,8 +242,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements) {
         super(measurements);
         internalSetQualityScores(qualityScores);
     }
@@ -270,8 +261,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(measurements, listener);
         internalSetQualityScores(qualityScores);
@@ -288,8 +278,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
      * @throws IllegalArgumentException if provided quality scores length
      *                                  is smaller than 7 samples.
      */
-    public PROMedSRobustKnownFrameGyroscopeCalibrator(final double[] qualityScores,
-                                                      final boolean commonAxisUsed) {
+    public PROMedSRobustKnownFrameGyroscopeCalibrator(final double[] qualityScores, final boolean commonAxisUsed) {
         super(commonAxisUsed);
         internalSetQualityScores(qualityScores);
     }
@@ -307,8 +296,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final boolean commonAxisUsed,
             final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
@@ -329,8 +317,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
         internalSetQualityScores(qualityScores);
@@ -352,10 +339,8 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
      *                                  is smaller than 7 samples.
      */
     public PROMedSRobustKnownFrameGyroscopeCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownFrameGyroscopeCalibratorListener listener) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownFrameGyroscopeCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
     }
@@ -436,8 +421,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setQualityScores(final double[] qualityScores)
-            throws LockedException {
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -451,8 +435,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
      */
     @Override
     public boolean isReady() {
-        return super.isReady() && mQualityScores != null &&
-                mQualityScores.length == mMeasurements.size();
+        return super.isReady() && mQualityScores != null && mQualityScores.length == mMeasurements.size();
     }
 
     /**
@@ -465,8 +448,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
      */
     @SuppressWarnings("DuplicatedCode")
     @Override
-    public void calibrate() throws LockedException, NotReadyException,
-            CalibrationException {
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -476,7 +458,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
 
         final PROMedSRobustEstimator<PreliminaryResult> innerEstimator =
                 new PROMedSRobustEstimator<>(
-                        new PROMedSRobustEstimatorListener<PreliminaryResult>() {
+                        new PROMedSRobustEstimatorListener<>() {
                             @Override
                             public double[] getQualityScores() {
                                 return mQualityScores;
@@ -499,14 +481,12 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
 
                             @Override
                             public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<PreliminaryResult> solutions) {
+                                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                                 computePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override
-                            public double computeResidual(
-                                    final PreliminaryResult currentEstimation, final int i) {
+                            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
                                 return computeError(mMeasurements.get(i), currentEstimation);
                             }
 
@@ -516,36 +496,30 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
                             }
 
                             @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
                             public void onEstimateNextIteration(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final int iteration) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                                 if (mListener != null) {
                                     mListener.onCalibrateNextIteration(
-                                            PROMedSRobustKnownFrameGyroscopeCalibrator.this,
-                                            iteration);
+                                            PROMedSRobustKnownFrameGyroscopeCalibrator.this, iteration);
                                 }
                             }
 
                             @Override
                             public void onEstimateProgressChange(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final float progress) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                                 if (mListener != null) {
                                     mListener.onCalibrateProgressChange(
-                                            PROMedSRobustKnownFrameGyroscopeCalibrator.this,
-                                            progress);
+                                            PROMedSRobustKnownFrameGyroscopeCalibrator.this, progress);
                                 }
                             }
                         });
@@ -589,7 +563,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.PROMedS;
+        return RobustEstimatorMethod.PROMEDS;
     }
 
     /**
@@ -613,8 +587,7 @@ public class PROMedSRobustKnownFrameGyroscopeCalibrator extends
      *                                  is smaller than 3 samples.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-        if (qualityScores == null ||
-                qualityScores.length < MINIMUM_MEASUREMENTS) {
+        if (qualityScores == null || qualityScores.length < MINIMUM_MEASUREMENTS) {
             throw new IllegalArgumentException();
         }
 

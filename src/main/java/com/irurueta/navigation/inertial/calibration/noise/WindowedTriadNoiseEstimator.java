@@ -258,8 +258,8 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * @throws LockedException if estimator is currently running.
      */
     public void setTimeInterval(final Time timeInterval) throws LockedException {
-        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(),
-                timeInterval.getUnit(), TimeUnit.SECOND));
+        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(), timeInterval.getUnit(),
+                TimeUnit.SECOND));
     }
 
     /**
@@ -632,11 +632,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * @return estimated standard deviation triad of measurement.
      */
     public T getStandardDeviationTriad() {
-        return createTriad(
-                getStandardDeviationX(),
-                getStandardDeviationY(),
-                getStandardDeviationZ(),
-                getDefaultUnit());
+        return createTriad(getStandardDeviationX(), getStandardDeviationY(), getStandardDeviationZ(), getDefaultUnit());
     }
 
     /**
@@ -646,10 +642,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      *               measurement will be stored.
      */
     public void getStandardDeviationTriad(final T result) {
-        result.setValueCoordinatesAndUnit(
-                getStandardDeviationX(),
-                getStandardDeviationY(),
-                getStandardDeviationZ(),
+        result.setValueCoordinatesAndUnit(getStandardDeviationX(), getStandardDeviationY(), getStandardDeviationZ(),
                 getDefaultUnit());
     }
 
@@ -681,8 +674,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      *
      * @param result instance where norm of estimated standard deviation will be stored.
      */
-    public void getStandardDeviationNormAsMeasurement(
-            final M result) {
+    public void getStandardDeviationNormAsMeasurement(final M result) {
         result.setValue(getStandardDeviationNorm());
         result.setUnit(getDefaultUnit());
     }
@@ -873,8 +865,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * @param valueZ z coordinate of measurement to be added and processed.
      * @throws LockedException if estimator is currently running.
      */
-    public void addTriadAndProcess(
-            final double valueX, final double valueY, final double valueZ)
+    public void addTriadAndProcess(final double valueX, final double valueY, final double valueZ)
             throws LockedException {
         addTriadAndProcess(createTriad(valueX, valueY, valueZ, getDefaultUnit()));
     }
@@ -890,9 +881,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * @param valueZ z coordinate of measurement to be added and processed.
      * @throws LockedException if estimator is currently running.
      */
-    public void addTriadAndProcess(
-            final M valueX, final M valueY, final M valueZ)
-            throws LockedException {
+    public void addTriadAndProcess(final M valueX, final M valueY, final M valueZ) throws LockedException {
         addTriadAndProcess(createTriad(valueX, valueY, valueZ));
     }
 
@@ -924,8 +913,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * @param valueZ z coordinate of measurement to be added.
      * @throws LockedException if estimator is currently running.
      */
-    public void addTriad(final double valueX, final double valueY, final double valueZ)
-            throws LockedException {
+    public void addTriad(final double valueX, final double valueY, final double valueZ) throws LockedException {
         addTriad(createTriad(valueX, valueY, valueZ, getDefaultUnit()));
     }
 
@@ -941,8 +929,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * @param valueZ z coordinate of measurement to be added.
      * @throws LockedException if estimator is currently running.
      */
-    public void addTriad(final M valueX, final M valueY, final M valueZ)
-            throws LockedException {
+    public void addTriad(final M valueX, final M valueY, final M valueZ) throws LockedException {
         addTriad(createTriad(valueX, valueY, valueZ));
     }
 
@@ -995,8 +982,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * @param unit   unit.
      * @return created triad.
      */
-    protected abstract T createTriad(
-            final double valueX, final double valueY, final double valueZ, final U unit);
+    protected abstract T createTriad(final double valueX, final double valueY, final double valueZ, final U unit);
 
     /**
      * Creates a triad with provided values.
@@ -1031,8 +1017,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      * @param process true if window of samples must also be processed, false otherwise.
      * @throws LockedException if estimator is currently running.
      */
-    private void internalAdd(final T triad, final boolean process)
-            throws LockedException {
+    private void internalAdd(final T triad, final boolean process) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }

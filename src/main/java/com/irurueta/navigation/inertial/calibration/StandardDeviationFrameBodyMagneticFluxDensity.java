@@ -19,6 +19,7 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.NEDFrame;
 import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 
+import java.io.Serial;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Objects;
@@ -28,13 +29,13 @@ import java.util.Objects;
  * measured magnetic flux densities besides their corresponding frame (position
  * and orientation) and timestamp where measurement was made.
  */
-public class StandardDeviationFrameBodyMagneticFluxDensity extends
-        FrameBodyMagneticFluxDensity {
+public class StandardDeviationFrameBodyMagneticFluxDensity extends FrameBodyMagneticFluxDensity {
 
     /**
      * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
      * instances.
      */
+    @Serial
     private static final long serialVersionUID = 0L;
 
     /**
@@ -54,8 +55,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *
      * @param magneticFluxDensity current body magnetic flux density.
      */
-    public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity) {
+    public StandardDeviationFrameBodyMagneticFluxDensity(final BodyMagneticFluxDensity magneticFluxDensity) {
         super(magneticFluxDensity);
     }
 
@@ -64,8 +64,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *
      * @param frame current ECEF frame associated to measurement.
      */
-    public StandardDeviationFrameBodyMagneticFluxDensity(
-            final ECEFFrame frame) {
+    public StandardDeviationFrameBodyMagneticFluxDensity(final ECEFFrame frame) {
         super(frame);
     }
 
@@ -75,8 +74,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      * @param frame current NED frame associated to measurement. Internally it
      *              will be converted to its corresponding ECEF frame.
      */
-    public StandardDeviationFrameBodyMagneticFluxDensity(
-            final NEDFrame frame) {
+    public StandardDeviationFrameBodyMagneticFluxDensity(final NEDFrame frame) {
         super(frame);
     }
 
@@ -87,8 +85,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      * @param frame               current ECEF frame associated to measurement.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final ECEFFrame frame) {
+            final BodyMagneticFluxDensity magneticFluxDensity, final ECEFFrame frame) {
         super(magneticFluxDensity, frame);
     }
 
@@ -101,8 +98,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                            corresponding ECEF frame.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final NEDFrame frame) {
+            final BodyMagneticFluxDensity magneticFluxDensity, final NEDFrame frame) {
         super(magneticFluxDensity, frame);
     }
 
@@ -111,8 +107,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *
      * @param year time expressed as decimal year.
      */
-    public StandardDeviationFrameBodyMagneticFluxDensity(
-            final double year) {
+    public StandardDeviationFrameBodyMagneticFluxDensity(final double year) {
         super(year);
     }
 
@@ -123,8 +118,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      * @param year                time expressed as decimal year.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final double year) {
+            final BodyMagneticFluxDensity magneticFluxDensity, final double year) {
         super(magneticFluxDensity, year);
     }
 
@@ -134,9 +128,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      * @param frame current ECEF frame associated to measurement.
      * @param year  time expressed as decimal year.
      */
-    public StandardDeviationFrameBodyMagneticFluxDensity(
-            final ECEFFrame frame,
-            final double year) {
+    public StandardDeviationFrameBodyMagneticFluxDensity(final ECEFFrame frame, final double year) {
         super(frame, year);
     }
 
@@ -147,8 +139,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *              will be converted to its corresponding ECEF frame.
      * @param year  time expressed as decimal year.
      */
-    public StandardDeviationFrameBodyMagneticFluxDensity(
-            final NEDFrame frame, final double year) {
+    public StandardDeviationFrameBodyMagneticFluxDensity(final NEDFrame frame, final double year) {
         super(frame, year);
     }
 
@@ -160,9 +151,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      * @param year                time expressed as decimal year.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final ECEFFrame frame,
-            final double year) {
+            final BodyMagneticFluxDensity magneticFluxDensity, final ECEFFrame frame, final double year) {
         super(magneticFluxDensity, frame, year);
     }
 
@@ -176,9 +165,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      * @param year                time expressed as decimal year.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final NEDFrame frame,
-            final double year) {
+            final BodyMagneticFluxDensity magneticFluxDensity, final NEDFrame frame, final double year) {
         super(magneticFluxDensity, frame, year);
     }
 
@@ -187,8 +174,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *
      * @param time a timestamp.
      */
-    public StandardDeviationFrameBodyMagneticFluxDensity(
-            final Date time) {
+    public StandardDeviationFrameBodyMagneticFluxDensity(final Date time) {
         super(time);
     }
 
@@ -199,8 +185,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      * @param time                a timestamp.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final Date time) {
+            final BodyMagneticFluxDensity magneticFluxDensity, final Date time) {
         super(magneticFluxDensity, time);
     }
 
@@ -210,9 +195,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      * @param frame current ECEF frame associated to measurement.
      * @param time  a timestamp.
      */
-    public StandardDeviationFrameBodyMagneticFluxDensity(
-            final ECEFFrame frame,
-            final Date time) {
+    public StandardDeviationFrameBodyMagneticFluxDensity(final ECEFFrame frame, final Date time) {
         super(frame, time);
     }
 
@@ -223,8 +206,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *              will be converted to its corresponding ECEF frame.
      * @param time  a timestamp.
      */
-    public StandardDeviationFrameBodyMagneticFluxDensity(
-            final NEDFrame frame, final Date time) {
+    public StandardDeviationFrameBodyMagneticFluxDensity(final NEDFrame frame, final Date time) {
         super(frame, time);
     }
 
@@ -236,9 +218,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      * @param time                a timestamp.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final ECEFFrame frame,
-            final Date time) {
+            final BodyMagneticFluxDensity magneticFluxDensity, final ECEFFrame frame, final Date time) {
         super(magneticFluxDensity, frame, time);
     }
 
@@ -252,9 +232,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      * @param time                a timestamp.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final NEDFrame frame,
-            final Date time) {
+            final BodyMagneticFluxDensity magneticFluxDensity, final NEDFrame frame, final Date time) {
         super(magneticFluxDensity, frame, time);
     }
 
@@ -263,8 +241,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *
      * @param calendar calendar containing a timestamp.
      */
-    public StandardDeviationFrameBodyMagneticFluxDensity(
-            final GregorianCalendar calendar) {
+    public StandardDeviationFrameBodyMagneticFluxDensity(final GregorianCalendar calendar) {
         super(calendar);
     }
 
@@ -275,8 +252,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      * @param calendar            calendar containing a timestamp.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final GregorianCalendar calendar) {
+            final BodyMagneticFluxDensity magneticFluxDensity, final GregorianCalendar calendar) {
         super(magneticFluxDensity, calendar);
     }
 
@@ -286,9 +262,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      * @param frame    current ECEF frame associated to measurement.
      * @param calendar calendar containing a timestamp.
      */
-    public StandardDeviationFrameBodyMagneticFluxDensity(
-            final ECEFFrame frame,
-            final GregorianCalendar calendar) {
+    public StandardDeviationFrameBodyMagneticFluxDensity(final ECEFFrame frame, final GregorianCalendar calendar) {
         super(frame, calendar);
     }
 
@@ -299,8 +273,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                 will be converted to its corresponding ECEF frame.
      * @param calendar calendar containing a timestamp.
      */
-    public StandardDeviationFrameBodyMagneticFluxDensity(
-            final NEDFrame frame, final GregorianCalendar calendar) {
+    public StandardDeviationFrameBodyMagneticFluxDensity(final NEDFrame frame, final GregorianCalendar calendar) {
         super(frame, calendar);
     }
 
@@ -312,8 +285,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      * @param calendar            calendar containing a timestamp.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final ECEFFrame frame,
+            final BodyMagneticFluxDensity magneticFluxDensity, final ECEFFrame frame,
             final GregorianCalendar calendar) {
         super(magneticFluxDensity, frame, calendar);
     }
@@ -328,9 +300,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      * @param calendar            calendar containing a timestamp.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final NEDFrame frame,
-            final GregorianCalendar calendar) {
+            final BodyMagneticFluxDensity magneticFluxDensity, final NEDFrame frame, final GregorianCalendar calendar) {
         super(magneticFluxDensity, frame, calendar);
     }
 
@@ -346,8 +316,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                  negative.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final double year,
-            final double magneticFluxDensityStandardDeviation) {
+            final double year, final double magneticFluxDensityStandardDeviation) {
         super(year);
         setMagneticFluxDensityStandardDeviation(
                 magneticFluxDensityStandardDeviation);
@@ -367,12 +336,10 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                  negative.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final double year,
+            final BodyMagneticFluxDensity magneticFluxDensity, final double year,
             final double magneticFluxDensityStandardDeviation) {
         super(magneticFluxDensity, year);
-        setMagneticFluxDensityStandardDeviation(
-                magneticFluxDensityStandardDeviation);
+        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -389,12 +356,9 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                  negative.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final ECEFFrame frame,
-            final double year,
-            final double magneticFluxDensityStandardDeviation) {
+            final ECEFFrame frame, final double year, final double magneticFluxDensityStandardDeviation) {
         super(frame, year);
-        setMagneticFluxDensityStandardDeviation(
-                magneticFluxDensityStandardDeviation);
+        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -414,11 +378,9 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                  negative.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final NEDFrame frame, final double year,
-            final double magneticFluxDensityStandardDeviation) {
+            final NEDFrame frame, final double year, final double magneticFluxDensityStandardDeviation) {
         super(frame, year);
-        setMagneticFluxDensityStandardDeviation(
-                magneticFluxDensityStandardDeviation);
+        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -437,13 +399,10 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                  negative.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final ECEFFrame frame,
-            final double year,
+            final BodyMagneticFluxDensity magneticFluxDensity, final ECEFFrame frame, final double year,
             final double magneticFluxDensityStandardDeviation) {
         super(magneticFluxDensity, frame, year);
-        setMagneticFluxDensityStandardDeviation(
-                magneticFluxDensityStandardDeviation);
+        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -464,13 +423,10 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                  negative.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final NEDFrame frame,
-            final double year,
+            final BodyMagneticFluxDensity magneticFluxDensity, final NEDFrame frame, final double year,
             final double magneticFluxDensityStandardDeviation) {
         super(magneticFluxDensity, frame, year);
-        setMagneticFluxDensityStandardDeviation(
-                magneticFluxDensityStandardDeviation);
+        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -484,11 +440,9 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                  negative.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final Date time,
-            final double magneticFluxDensityStandardDeviation) {
+            final Date time, final double magneticFluxDensityStandardDeviation) {
         super(time);
-        setMagneticFluxDensityStandardDeviation(
-                magneticFluxDensityStandardDeviation);
+        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -503,12 +457,10 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                  negative.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final Date time,
+            final BodyMagneticFluxDensity magneticFluxDensity, final Date time,
             final double magneticFluxDensityStandardDeviation) {
         super(magneticFluxDensity, time);
-        setMagneticFluxDensityStandardDeviation(
-                magneticFluxDensityStandardDeviation);
+        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -524,12 +476,9 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                  negative.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final ECEFFrame frame,
-            final Date time,
-            final double magneticFluxDensityStandardDeviation) {
+            final ECEFFrame frame, final Date time, final double magneticFluxDensityStandardDeviation) {
         super(frame, time);
-        setMagneticFluxDensityStandardDeviation(
-                magneticFluxDensityStandardDeviation);
+        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -547,11 +496,9 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                  negative.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final NEDFrame frame, final Date time,
-            final double magneticFluxDensityStandardDeviation) {
+            final NEDFrame frame, final Date time, final double magneticFluxDensityStandardDeviation) {
         super(frame, time);
-        setMagneticFluxDensityStandardDeviation(
-                magneticFluxDensityStandardDeviation);
+        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -569,13 +516,10 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                  negative.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final ECEFFrame frame,
-            final Date time,
+            final BodyMagneticFluxDensity magneticFluxDensity, final ECEFFrame frame, final Date time,
             final double magneticFluxDensityStandardDeviation) {
         super(magneticFluxDensity, frame, time);
-        setMagneticFluxDensityStandardDeviation(
-                magneticFluxDensityStandardDeviation);
+        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -596,13 +540,10 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                  negative.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final NEDFrame frame,
-            final Date time,
+            final BodyMagneticFluxDensity magneticFluxDensity, final NEDFrame frame, final Date time,
             final double magneticFluxDensityStandardDeviation) {
         super(magneticFluxDensity, frame, time);
-        setMagneticFluxDensityStandardDeviation(
-                magneticFluxDensityStandardDeviation);
+        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -617,11 +558,9 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                  negative.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final GregorianCalendar calendar,
-            final double magneticFluxDensityStandardDeviation) {
+            final GregorianCalendar calendar, final double magneticFluxDensityStandardDeviation) {
         super(calendar);
-        setMagneticFluxDensityStandardDeviation(
-                magneticFluxDensityStandardDeviation);
+        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -638,12 +577,10 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                  negative.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final GregorianCalendar calendar,
+            final BodyMagneticFluxDensity magneticFluxDensity, final GregorianCalendar calendar,
             final double magneticFluxDensityStandardDeviation) {
         super(magneticFluxDensity, calendar);
-        setMagneticFluxDensityStandardDeviation(
-                magneticFluxDensityStandardDeviation);
+        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -660,12 +597,10 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                  negative.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final ECEFFrame frame,
-            final GregorianCalendar calendar,
+            final ECEFFrame frame, final GregorianCalendar calendar,
             final double magneticFluxDensityStandardDeviation) {
         super(frame, calendar);
-        setMagneticFluxDensityStandardDeviation(
-                magneticFluxDensityStandardDeviation);
+        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -685,11 +620,9 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                  negative.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final NEDFrame frame, final GregorianCalendar calendar,
-            final double magneticFluxDensityStandardDeviation) {
+            final NEDFrame frame, final GregorianCalendar calendar, final double magneticFluxDensityStandardDeviation) {
         super(frame, calendar);
-        setMagneticFluxDensityStandardDeviation(
-                magneticFluxDensityStandardDeviation);
+        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -708,13 +641,10 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                  negative.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final ECEFFrame frame,
-            final GregorianCalendar calendar,
+            final BodyMagneticFluxDensity magneticFluxDensity, final ECEFFrame frame, final GregorianCalendar calendar,
             final double magneticFluxDensityStandardDeviation) {
         super(magneticFluxDensity, frame, calendar);
-        setMagneticFluxDensityStandardDeviation(
-                magneticFluxDensityStandardDeviation);
+        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -736,13 +666,10 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                  negative.
      */
     public StandardDeviationFrameBodyMagneticFluxDensity(
-            final BodyMagneticFluxDensity magneticFluxDensity,
-            final NEDFrame frame,
-            final GregorianCalendar calendar,
-            final double magneticFluxDensityStandardDeviation) {
+            final BodyMagneticFluxDensity magneticFluxDensity, final NEDFrame frame,
+            final GregorianCalendar calendar, final double magneticFluxDensityStandardDeviation) {
         super(magneticFluxDensity, frame, calendar);
-        setMagneticFluxDensityStandardDeviation(
-                magneticFluxDensityStandardDeviation);
+        setMagneticFluxDensityStandardDeviation(magneticFluxDensityStandardDeviation);
     }
 
     /**
@@ -773,14 +700,12 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      *                                             density.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    public void setMagneticFluxDensityStandardDeviation(
-            final double magneticFluxDensityStandardDeviation) {
+    public void setMagneticFluxDensityStandardDeviation(final double magneticFluxDensityStandardDeviation) {
         if (magneticFluxDensityStandardDeviation < 0.0) {
             throw new IllegalArgumentException();
         }
 
-        mMagneticFluxDensityStandardDeviation =
-                magneticFluxDensityStandardDeviation;
+        mMagneticFluxDensityStandardDeviation = magneticFluxDensityStandardDeviation;
     }
 
     /**
@@ -822,8 +747,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      * @param other instance to be compared.
      * @return true if both instances are considered to be equal, false otherwise.
      */
-    public boolean equals(
-            final StandardDeviationFrameBodyMagneticFluxDensity other) {
+    public boolean equals(final StandardDeviationFrameBodyMagneticFluxDensity other) {
         return equals(other, 0.0);
     }
 
@@ -837,8 +761,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
      * threshold), false otherwise.
      */
     public boolean equals(
-            final StandardDeviationFrameBodyMagneticFluxDensity other,
-            final double threshold) {
+            final StandardDeviationFrameBodyMagneticFluxDensity other, final double threshold) {
         return super.equals(other, threshold) &&
                 Math.abs(mMagneticFluxDensityStandardDeviation
                         - other.mMagneticFluxDensityStandardDeviation) <= threshold;
@@ -881,8 +804,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        final StandardDeviationFrameBodyMagneticFluxDensity other =
-                (StandardDeviationFrameBodyMagneticFluxDensity) obj;
+        final StandardDeviationFrameBodyMagneticFluxDensity other = (StandardDeviationFrameBodyMagneticFluxDensity) obj;
         return equals(other);
     }
 

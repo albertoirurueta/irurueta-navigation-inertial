@@ -29,6 +29,29 @@ import com.irurueta.units.Acceleration;
 
 import java.util.List;
 
+/**
+ * Robustly estimates accelerometer cross couplings and scaling factors
+ * using MSAC algorithm to discard outliers.
+ * <p>
+ * To use this calibrator at least 7 measurements taken at a single position
+ * where gravity norm is known must be taken at 7 different unknown
+ * orientations and zero velocity when common z-axis
+ * is assumed, otherwise at least 10 measurements are required.
+ * <p>
+ * Measured specific force is assumed to follow the model shown below:
+ * <pre>
+ *     fmeas = ba + (I + Ma) * ftrue + w
+ * </pre>
+ * Where:
+ * - fmeas is the measured specific force. This is a 3x1 vector.
+ * - ba is accelerometer bias. Ideally, on a perfect accelerometer, this should be a
+ * 3x1 zero vector.
+ * - I is the 3x3 identity matrix.
+ * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on
+ * a perfect accelerometer, this should be a 3x3 zero matrix.
+ * - ftrue is ground-truth specific force.
+ * - w is measurement noise.
+ */
 public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
         RobustKnownBiasAndGravityNormAccelerometerCalibrator {
 
@@ -87,8 +110,7 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final boolean commonAxisUsed) {
+    public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(final boolean commonAxisUsed) {
         super(commonAxisUsed);
     }
 
@@ -99,8 +121,7 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *             in meters per squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final double[] bias) {
+    public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(final double[] bias) {
         super(bias);
     }
 
@@ -110,8 +131,7 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param bias known accelerometer bias.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Matrix bias) {
+    public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(final Matrix bias) {
         super(bias);
     }
 
@@ -123,8 +143,7 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Matrix bias, final Matrix initialMa) {
+    public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(final Matrix bias, final Matrix initialMa) {
         super(bias, initialMa);
     }
 
@@ -135,8 +154,7 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                               squared second (m/s^2).
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm) {
+    public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(final Double groundTruthGravityNorm) {
         super(groundTruthGravityNorm);
     }
 
@@ -151,8 +169,7 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements) {
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements) {
         super(groundTruthGravityNorm, measurements);
     }
 
@@ -169,8 +186,7 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, listener);
     }
@@ -188,8 +204,7 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         super(groundTruthGravityNorm, measurements, commonAxisUsed);
     }
@@ -209,10 +224,8 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, commonAxisUsed, listener);
     }
 
@@ -230,8 +243,7 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final double[] bias) {
         super(groundTruthGravityNorm, measurements, bias);
     }
@@ -251,10 +263,8 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] bias, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, bias, listener);
     }
 
@@ -274,11 +284,9 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias);
     }
 
     /**
@@ -298,12 +306,10 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, listener);
     }
 
     /**
@@ -319,8 +325,7 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias) {
         super(groundTruthGravityNorm, measurements, bias);
     }
@@ -339,10 +344,8 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix bias, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, bias, listener);
     }
 
@@ -361,11 +364,9 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias);
     }
 
     /**
@@ -384,12 +385,10 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, listener);
     }
 
     /**
@@ -407,8 +406,7 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa) {
         super(groundTruthGravityNorm, measurements, bias, initialMa);
     }
@@ -429,12 +427,10 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, bias, initialMa,
-                listener);
+        super(groundTruthGravityNorm, measurements, bias, initialMa, listener);
     }
 
     /**
@@ -454,12 +450,9 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, initialMa);
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, initialMa);
     }
 
     /**
@@ -480,13 +473,10 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Double groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa,
+            final Double groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, initialMa, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, initialMa, listener);
     }
 
     /**
@@ -495,8 +485,7 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @param groundTruthGravityNorm ground truth gravity norm.
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm) {
+    public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(final Acceleration groundTruthGravityNorm) {
         super(groundTruthGravityNorm);
     }
 
@@ -510,8 +499,7 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements) {
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements) {
         super(groundTruthGravityNorm, measurements);
     }
 
@@ -527,11 +515,9 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                listener);
+        super(groundTruthGravityNorm, measurements, listener);
     }
 
     /**
@@ -546,11 +532,9 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed);
     }
 
     /**
@@ -567,12 +551,9 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, listener);
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, listener);
     }
 
     /**
@@ -588,11 +569,9 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final double[] bias) {
-        super(groundTruthGravityNorm, measurements,
-                bias);
+        super(groundTruthGravityNorm, measurements, bias);
     }
 
     /**
@@ -609,12 +588,9 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final double[] bias,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                bias, listener);
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final double[] bias, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+        super(groundTruthGravityNorm, measurements, bias, listener);
     }
 
     /**
@@ -632,11 +608,9 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, bias);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias);
     }
 
     /**
@@ -655,12 +629,10 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, bias, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, listener);
     }
 
     /**
@@ -675,8 +647,7 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias) {
         super(groundTruthGravityNorm, measurements, bias);
     }
@@ -694,10 +665,8 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final Matrix bias,
-            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final Matrix bias, final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         super(groundTruthGravityNorm, measurements, bias, listener);
     }
 
@@ -715,8 +684,7 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias) {
         super(groundTruthGravityNorm, measurements, commonAxisUsed, bias);
     }
@@ -736,12 +704,10 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements,
-                commonAxisUsed, bias, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, listener);
     }
 
     /**
@@ -758,8 +724,7 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa) {
         super(groundTruthGravityNorm, measurements, bias, initialMa);
     }
@@ -779,12 +744,10 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, bias, initialMa,
-                listener);
+        super(groundTruthGravityNorm, measurements, bias, initialMa, listener);
     }
 
     /**
@@ -803,12 +766,9 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, initialMa);
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa) {
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, initialMa);
     }
 
     /**
@@ -828,13 +788,10 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
      *                                  if provided gravity norm value is negative.
      */
     public MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-            final Acceleration groundTruthGravityNorm,
-            final List<StandardDeviationBodyKinematics> measurements,
-            final boolean commonAxisUsed, final Matrix bias,
-            final Matrix initialMa,
+            final Acceleration groundTruthGravityNorm, final List<StandardDeviationBodyKinematics> measurements,
+            final boolean commonAxisUsed, final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
-        super(groundTruthGravityNorm, measurements, commonAxisUsed,
-                bias, initialMa, listener);
+        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias, initialMa, listener);
     }
 
     /**
@@ -883,7 +840,7 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
         }
 
         final MSACRobustEstimator<PreliminaryResult> innerEstimator =
-                new MSACRobustEstimator<>(new MSACRobustEstimatorListener<PreliminaryResult>() {
+                new MSACRobustEstimator<>(new MSACRobustEstimatorListener<>() {
                     @Override
                     public double getThreshold() {
                         return mThreshold;
@@ -901,14 +858,12 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
 
                     @Override
                     public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List<PreliminaryResult> solutions) {
+                            final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                         computePreliminarySolutions(samplesIndices, solutions);
                     }
 
                     @Override
-                    public double computeResidual(
-                            final PreliminaryResult currentEstimation, final int i) {
+                    public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
                         return computeError(mMeasurements.get(i), currentEstimation);
                     }
 
@@ -918,36 +873,30 @@ public class MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
                     }
 
                     @Override
-                    public void onEstimateStart(
-                            final RobustEstimator<PreliminaryResult> estimator) {
+                    public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                         // no action needed
                     }
 
                     @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator<PreliminaryResult> estimator) {
+                    public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                         // no action needed
                     }
 
                     @Override
-                    public void onEstimateNextIteration(
-                            final RobustEstimator<PreliminaryResult> estimator,
+                    public void onEstimateNextIteration(final RobustEstimator<PreliminaryResult> estimator,
                             final int iteration) {
                         if (mListener != null) {
                             mListener.onCalibrateNextIteration(
-                                    MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator.this,
-                                    iteration);
+                                    MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator.this, iteration);
                         }
                     }
 
                     @Override
                     public void onEstimateProgressChange(
-                            final RobustEstimator<PreliminaryResult> estimator,
-                            final float progress) {
+                            final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                         if (mListener != null) {
                             mListener.onCalibrateProgressChange(
-                                    MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator.this,
-                                    progress);
+                                    MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator.this, progress);
                         }
                     }
                 });

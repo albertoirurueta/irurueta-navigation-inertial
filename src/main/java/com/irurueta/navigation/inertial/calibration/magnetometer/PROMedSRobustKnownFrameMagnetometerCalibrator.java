@@ -52,8 +52,7 @@ import java.util.List;
  * - mBtrue is ground-truth magnetic flux density. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
-public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
-        RobustKnownFrameMagnetometerCalibrator {
+public class PROMedSRobustKnownFrameMagnetometerCalibrator extends RobustKnownFrameMagnetometerCalibrator {
 
     /**
      * Default value to be used for stop threshold. Stop threshold can be used to
@@ -153,8 +152,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-    public PROMedSRobustKnownFrameMagnetometerCalibrator(
-            final boolean commonAxisUsed) {
+    public PROMedSRobustKnownFrameMagnetometerCalibrator(final boolean commonAxisUsed) {
         super(commonAxisUsed);
     }
 
@@ -166,8 +164,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public PROMedSRobustKnownFrameMagnetometerCalibrator(
-            final boolean commonAxisUsed,
-            final RobustKnownFrameMagnetometerCalibratorListener listener) {
+            final boolean commonAxisUsed, final RobustKnownFrameMagnetometerCalibratorListener listener) {
         super(commonAxisUsed, listener);
     }
 
@@ -181,8 +178,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     public PROMedSRobustKnownFrameMagnetometerCalibrator(
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed) {
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
     }
 
@@ -197,8 +193,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
      * @param listener       listener to handle events raised by this calibrator.
      */
     public PROMedSRobustKnownFrameMagnetometerCalibrator(
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements, final boolean commonAxisUsed,
             final RobustKnownFrameMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
     }
@@ -212,8 +207,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
      * @throws IllegalArgumentException if provided quality scores length
      *                                  is smaller than 4 samples.
      */
-    public PROMedSRobustKnownFrameMagnetometerCalibrator(
-            final double[] qualityScores) {
+    public PROMedSRobustKnownFrameMagnetometerCalibrator(final double[] qualityScores) {
         super();
         internalSetQualityScores(qualityScores);
     }
@@ -230,8 +224,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
      *                                  is smaller than 4 samples.
      */
     public PROMedSRobustKnownFrameMagnetometerCalibrator(
-            final double[] qualityScores,
-            final RobustKnownFrameMagnetometerCalibratorListener listener) {
+            final double[] qualityScores, final RobustKnownFrameMagnetometerCalibratorListener listener) {
         super(listener);
         internalSetQualityScores(qualityScores);
     }
@@ -249,8 +242,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
      *                                  is smaller than 4 samples.
      */
     public PROMedSRobustKnownFrameMagnetometerCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements) {
         super(measurements);
         internalSetQualityScores(qualityScores);
     }
@@ -269,8 +261,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
      *                                  is smaller than 4 samples.
      */
     public PROMedSRobustKnownFrameMagnetometerCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final RobustKnownFrameMagnetometerCalibratorListener listener) {
         super(measurements, listener);
         internalSetQualityScores(qualityScores);
@@ -287,9 +278,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
      * @throws IllegalArgumentException if provided quality scores length
      *                                  is smaller than 4 samples.
      */
-    public PROMedSRobustKnownFrameMagnetometerCalibrator(
-            final double[] qualityScores,
-            final boolean commonAxisUsed) {
+    public PROMedSRobustKnownFrameMagnetometerCalibrator(final double[] qualityScores, final boolean commonAxisUsed) {
         super(commonAxisUsed);
         internalSetQualityScores(qualityScores);
     }
@@ -307,8 +296,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
      *                                  is smaller than 4 samples.
      */
     public PROMedSRobustKnownFrameMagnetometerCalibrator(
-            final double[] qualityScores,
-            final boolean commonAxisUsed,
+            final double[] qualityScores, final boolean commonAxisUsed,
             final RobustKnownFrameMagnetometerCalibratorListener listener) {
         super(commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
@@ -329,8 +317,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
      *                                  is smaller than 4 samples.
      */
     public PROMedSRobustKnownFrameMagnetometerCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
+            final double[] qualityScores, final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
         super(measurements, commonAxisUsed);
         internalSetQualityScores(qualityScores);
@@ -352,10 +339,8 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
      *                                  is smaller than 4 samples.
      */
     public PROMedSRobustKnownFrameMagnetometerCalibrator(
-            final double[] qualityScores,
-            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
-            final boolean commonAxisUsed,
-            final RobustKnownFrameMagnetometerCalibratorListener listener) {
+            final double[] qualityScores, final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
+            final boolean commonAxisUsed, final RobustKnownFrameMagnetometerCalibratorListener listener) {
         super(measurements, commonAxisUsed, listener);
         internalSetQualityScores(qualityScores);
     }
@@ -436,8 +421,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     @Override
-    public void setQualityScores(final double[] qualityScores)
-            throws LockedException {
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -465,8 +449,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
      */
     @SuppressWarnings("DuplicatedCode")
     @Override
-    public void calibrate() throws LockedException, NotReadyException,
-            CalibrationException {
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -476,7 +459,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
 
         final PROMedSRobustEstimator<PreliminaryResult> innerEstimator =
                 new PROMedSRobustEstimator<>(
-                        new PROMedSRobustEstimatorListener<PreliminaryResult>() {
+                        new PROMedSRobustEstimatorListener<>() {
                             @Override
                             public double[] getQualityScores() {
                                 return mQualityScores;
@@ -499,15 +482,12 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
 
                             @Override
                             public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<PreliminaryResult> solutions) {
+                                    final int[] samplesIndices, final List<PreliminaryResult> solutions) {
                                 computePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override
-                            public double computeResidual(
-                                    final PreliminaryResult currentEstimation,
-                                    final int i) {
+                            public double computeResidual(final PreliminaryResult currentEstimation, final int i) {
                                 return computeError(mMeasurements.get(i), currentEstimation);
                             }
 
@@ -517,36 +497,30 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
                             }
 
                             @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateStart(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<PreliminaryResult> estimator) {
+                            public void onEstimateEnd(final RobustEstimator<PreliminaryResult> estimator) {
                                 // no action needed
                             }
 
                             @Override
                             public void onEstimateNextIteration(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final int iteration) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final int iteration) {
                                 if (mListener != null) {
                                     mListener.onCalibrateNextIteration(
-                                            PROMedSRobustKnownFrameMagnetometerCalibrator.this,
-                                            iteration);
+                                            PROMedSRobustKnownFrameMagnetometerCalibrator.this, iteration);
                                 }
                             }
 
                             @Override
                             public void onEstimateProgressChange(
-                                    final RobustEstimator<PreliminaryResult> estimator,
-                                    final float progress) {
+                                    final RobustEstimator<PreliminaryResult> estimator, final float progress) {
                                 if (mListener != null) {
                                     mListener.onCalibrateProgressChange(
-                                            PROMedSRobustKnownFrameMagnetometerCalibrator.this,
-                                            progress);
+                                            PROMedSRobustKnownFrameMagnetometerCalibrator.this, progress);
                                 }
                             }
                         });
@@ -593,7 +567,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.PROMedS;
+        return RobustEstimatorMethod.PROMEDS;
     }
 
     /**
@@ -617,8 +591,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibrator extends
      *                                  is smaller than 4 samples.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-        if (qualityScores == null ||
-                qualityScores.length < MINIMUM_MEASUREMENTS) {
+        if (qualityScores == null || qualityScores.length < MINIMUM_MEASUREMENTS) {
             throw new IllegalArgumentException();
         }
 

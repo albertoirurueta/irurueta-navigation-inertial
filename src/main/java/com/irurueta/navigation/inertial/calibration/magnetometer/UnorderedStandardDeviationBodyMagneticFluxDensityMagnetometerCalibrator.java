@@ -48,7 +48,6 @@ public interface UnorderedStandardDeviationBodyMagneticFluxDensityMagnetometerCa
      * @throws LockedException if calibrator is currently running.
      */
     void setMeasurements(
-            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements)
-            throws LockedException;
+            final Collection<StandardDeviationBodyMagneticFluxDensity> measurements) throws LockedException;
 
 }

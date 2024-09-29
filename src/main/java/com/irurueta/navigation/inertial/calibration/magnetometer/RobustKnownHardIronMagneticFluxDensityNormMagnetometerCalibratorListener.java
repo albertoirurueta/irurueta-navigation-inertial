@@ -26,16 +26,14 @@ public interface RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrato
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateStart(
-            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator);
+    void onCalibrateStart(final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator);
 
     /**
      * Called when calibration ends.
      *
      * @param calibrator calibrator that raised the event.
      */
-    void onCalibrateEnd(
-            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator);
+    void onCalibrateEnd(final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator);
 
     /**
      * Called when calibrator iterates to refine a possible solution.
@@ -44,8 +42,7 @@ public interface RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrato
      * @param iteration  current iteration.
      */
     void onCalibrateNextIteration(
-            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator,
-            final int iteration);
+            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator, final int iteration);
 
     /**
      * Called when calibration progress changes significantly.
@@ -54,6 +51,5 @@ public interface RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrato
      * @param progress   progress of calibration expressed as a value between 0.0 and 1.0.
      */
     void onCalibrateProgressChange(
-            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator,
-            final float progress);
+            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator, final float progress);
 }

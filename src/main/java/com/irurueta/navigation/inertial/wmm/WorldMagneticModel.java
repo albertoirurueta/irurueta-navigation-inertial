@@ -72,8 +72,18 @@ public class WorldMagneticModel {
      */
     final double[] snorm = new double[N2];
 
+    /**
+     * The sine of (m*spherical coord. longitude).
+     */
     final double[][] k = new double[N][N];
 
+    /**
+     * The cosine of (m*spherical coord. longitude).
+     */
     final double[] fn = new double[N];
+
+    /**
+     * The sine of (m*spherical coord. latitude).
+     */
     final double[] fm = new double[N];
 }
