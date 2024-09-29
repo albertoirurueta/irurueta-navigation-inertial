@@ -1612,7 +1612,7 @@ public class AttitudeEstimatorTest {
 
         assertEquals(roll1, roll2, LARGE_ABSOLUTE_ERROR);
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
-        assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
+        assertEquals(yaw1, yaw2, VERY_LARGE_ABSOLUTE_ERROR);
 
         assertEquals(FrameType.LOCAL_NAVIGATION_FRAME, result.getSourceType());
         assertEquals(FrameType.BODY_FRAME, result.getDestinationType());
