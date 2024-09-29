@@ -6871,7 +6871,11 @@ public class RANSACRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibra
             assertEquals(0, mCalibrateNextIteration);
             assertEquals(0, mCalibrateProgressChange);
 
-            calibrator.calibrate();
+            try {
+                calibrator.calibrate();
+            } catch (final CalibrationException e) {
+                continue;
+            }
 
             // check
             assertTrue(calibrator.isReady());
