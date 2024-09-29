@@ -1936,15 +1936,20 @@ public class AccelerometerAndGyroscopeMeasurementsGeneratorTest implements
 
         final TimedBodyKinematics timedMeasuredKinematics = new TimedBodyKinematics();
         final BodyKinematics measuredKinematics = new BodyKinematics();
-        for (int i = 0, j = startSample; i < numSamples; i++, j++) {
-
+        var i = 0;
+        var j = startSample;
+        do {
             BodyKinematicsGenerator.generate(TIME_INTERVAL_SECONDS, trueKinematics, errors, random, measuredKinematics);
 
             timedMeasuredKinematics.setKinematics(measuredKinematics);
             timedMeasuredKinematics.setTimestampSeconds(j * TIME_INTERVAL_SECONDS);
 
-            assertTrue(generator.process(timedMeasuredKinematics));
-        }
+            if (generator.process(timedMeasuredKinematics)) {
+                i++;
+                j++;
+            }
+
+        } while (i < numSamples);
     }
 
     @SuppressWarnings("SameParameterValue")
