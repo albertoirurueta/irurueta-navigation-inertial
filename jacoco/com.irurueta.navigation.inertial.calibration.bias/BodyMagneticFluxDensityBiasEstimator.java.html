@@ -1,0 +1,3395 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BodyMagneticFluxDensityBiasEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.bias</a> &gt; <span class="el_source">BodyMagneticFluxDensityBiasEstimator.java</span></div><h1>BodyMagneticFluxDensityBiasEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.bias;
+
+import com.irurueta.geometry.Point3D;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.frames.CoordinateTransformation;
+import com.irurueta.navigation.frames.ECEFFrame;
+import com.irurueta.navigation.frames.ECEFPosition;
+import com.irurueta.navigation.frames.FrameType;
+import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
+import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.frames.converters.ECEFtoNEDFrameConverter;
+import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
+import com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
+import com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
+import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
+import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
+import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
+import com.irurueta.units.Angle;
+import com.irurueta.units.Distance;
+import com.irurueta.units.MagneticFluxDensity;
+import com.irurueta.units.MagneticFluxDensityUnit;
+import com.irurueta.units.Time;
+import com.irurueta.units.TimeConverter;
+import com.irurueta.units.TimeUnit;
+
+import java.io.IOException;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+/**
+ * Approximately estimated magnetometer biases (hard iron) and noise PSD's by
+ * averaging all provided samples when instant, body position and orientation
+ * is known while assuming that any soft iron cross coupling errors can be
+ * neglected.
+ * &lt;p&gt;
+ * The estimator must be used when the body where the magnetometer is attached to
+ * remains static on the same position with zero velocity and no rotation speed
+ * while capturing data.
+ * &lt;p&gt;
+ * To compute PSD's this estimator assumes that magnetometer samples are obtained at
+ * a constant provided rate equal to {@link #getTimeInterval()} seconds.
+ * If not available, magnetometer sampling rate average can be estimated using
+ * {@link com.irurueta.navigation.inertial.calibration.TimeIntervalEstimator}.
+ * &lt;p&gt;
+ * Notice that in order to compute magnetometer biases (hard iron), instant, body
+ * position and orientation must be known to account for expected magnetic field
+ * to be sensed.
+ * &lt;p&gt;
+ * Even though this estimator obtains approximate bias values, the obtained
+ * result can be used to initialize some non-linear calibrators to obtain
+ * more accurate results, by using bias values as initial hard iron values.
+ * Such calibrators are:
+ * - com.irurueta.navigation.inertial.calibration.magnetometer.KnownFrameMagnetometerNonLinearLeastSquaresCalibrator
+ * - com.irurueta.navigation.inertial.calibration.magnetometer.KnownPositionAndInstantMagnetometerCalibrator
+ * - com.irurueta.navigation.inertial.calibration.magnetometer.RobustKnownFrameMagnetometerCalibrator and any
+ * of its subclasses.
+ * - com.irurueta.navigation.inertial.calibration.magnetometer.RobustKnownPositionAndInstantMagnetometerCalibrator
+ * and any of its subclasses.
+ * &lt;p&gt;
+ * Even though this estimator can compute noise PSD's, if only noise PSD's levels
+ * are required, estimators in {@link com.irurueta.navigation.inertial.calibration.noise} package should
+ * be used instead.
+ * &lt;p&gt;
+ * This estimator does NOT compute average bias values over a period of time, it only
+ * computes accumulated averages.
+ */
+public class BodyMagneticFluxDensityBiasEstimator {
+
+    /**
+     * Default time interval between accelerometer samples expressed in seconds (s).
+     */
+    public static final double DEFAULT_TIME_INTERVAL_SECONDS = 0.02;
+
+    /**
+     * Time interval expressed in seconds (s) between body kinematics samples.
+     */
+<span class="fc" id="L94">    private double mTimeInterval = DEFAULT_TIME_INTERVAL_SECONDS;</span>
+
+    /**
+     * Contains body position, velocity (which will always be zero) and orientation
+     * resolved around ECEF axes.
+     * By default it is assumed that body is located at zero NED coordinates (latitude,
+     * longitude and height) and with zero Euler angles representing rotation (roll = 0,
+     * pith = 0, yaw = 0), which for Android devices it means that the device is flat
+     * on a horizontal surface with the screen facing down.
+     */
+    private final ECEFFrame mFrame;
+
+    /**
+     * Contains year expressed in decimal format.
+     */
+    private double mYear;
+
+    /**
+     * Listener to handle events raised by this estimator.
+     */
+    private BodyMagneticFluxDensityBiasEstimatorListener mListener;
+
+    /**
+     * Contains Earth's magnetic model.
+     */
+    private WorldMagneticModel mMagneticModel;
+
+    /**
+     * World Magnetic Model of Earth.
+     */
+    private WMMEarthMagneticFluxDensityEstimator mWmmEstimator;
+
+    /**
+     * Last provided body magnetic flux density values.
+     */
+    private BodyMagneticFluxDensity mLastBodyMagneticFluxDensity;
+
+    /**
+     * Contains estimated bias of x coordinate of body magnetic flux density
+     * expressed in Teslas (T). Notice that bias is equivalent to hard iron
+     * component on a magnetometer calibrator.
+     */
+    private double mBiasX;
+
+    /**
+     * Contains estimated bias of y coordinate of body magnetic flux density
+     * expressed in Teslas (T). Notice that bias is equivalent to hard iron
+     * component on a magnetometer calibrator.
+     */
+    private double mBiasY;
+
+    /**
+     * Contains estimated bias of z coordinate of body magnetic flux density
+     * expressed in Teslas (T). Notice that bias is equivalent to hard iron
+     * component on a magnetometer calibrator.
+     */
+    private double mBiasZ;
+
+    /**
+     * Contains estimated variance of x coordinate of body magnetic flux density
+     * expressed in squared Teslas (T^2).
+     */
+    private double mVarianceX;
+
+    /**
+     * Contains estimated variance of y coordinate of body magnetic flux density
+     * expressed in squared Teslas (T^2).
+     */
+    private double mVarianceY;
+
+    /**
+     * Contains estimated variance of z coordinate of body magnetic flux density
+     * expressed in squared Teslas (T^2).
+     */
+    private double mVarianceZ;
+
+    /**
+     * Number of processed magnetometer samples.
+     */
+    private int mNumberOfProcessedSamples;
+
+    /**
+     * Number of processed magnetometer samples plus one.
+     */
+<span class="fc" id="L178">    private int mNumberOfProcessedSamplesPlusOne = 1;</span>
+
+    /**
+     * Indicates that estimator is running.
+     */
+    private boolean mRunning;
+
+    /**
+     * Theoretical expected body magnetic flux density for provided instant,
+     * body position and orientation, assuming that body remains at the same
+     * position (zero velocity).
+     * When body remains static, sensed magnetic flux density will remain constant
+     * for a few minutes respect to provided time instant.
+     */
+    private BodyMagneticFluxDensity mExpectedBodyMagneticFluxDensity;
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0 and height = 0) and with zero Euler angles representing rotation
+     * (roll = 0, pith = 0, yaw = 0), which for Android devices it means that the
+     * device is flat on a horizontal surface with the screen facing down.
+     * This constructor assumes that time is current time instant.
+     *
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator() throws IOException {
+<span class="fc" id="L205">        this(new Date(), (WorldMagneticModel) null);</span>
+<span class="fc" id="L206">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0, and height = 0) with provided orientation.
+     * This constructor assumes that time is current time instant.
+     *
+     * @param nedC coordinate transformation from body to local navigation
+     *             (NED) coordinates. This contains orientation respect the horizon
+     *             at current body location.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(final CoordinateTransformation nedC)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L227">        this(nedC, new Date(), (WorldMagneticModel) null);</span>
+<span class="fc" id="L228">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     * This constructor assumes that time is current time instant.
+     *
+     * @param latitude  latitude expressed in radians (rad).
+     * @param longitude longitude expressed in radians (rad).
+     * @param height    height expressed in meters (m).
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final double latitude, final double longitude, final double height) throws IOException {
+<span class="fc" id="L245">        this(latitude, longitude, height, new Date(), (WorldMagneticModel) null);</span>
+<span class="fc" id="L246">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     * This constructor assumes that time is current time instant.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height expressed in meters (m).
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final double height) throws IOException {
+<span class="fc" id="L263">        this(latitude, longitude, height, new Date(), (WorldMagneticModel) null);</span>
+<span class="fc" id="L264">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     * This constructor assumes that time is current time instant.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final Distance height) throws IOException {
+<span class="fc" id="L281">        this(latitude, longitude, height, new Date(), (WorldMagneticModel) null);</span>
+<span class="fc" id="L282">    }</span>
+
+    /**
+     * Constructor.
+     * This constructor assumes that time is current time instant.
+     *
+     * @param position body position expressed in NED coordinates.
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final NEDPosition position, final CoordinateTransformation nedC)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L303">        this(position, nedC, new Date(), (WorldMagneticModel) null);</span>
+<span class="fc" id="L304">    }</span>
+
+    /**
+     * Constructor.
+     * This constructor assumes that time is current time instant.
+     *
+     * @param position body position expressed in ECEF coordinates.
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final ECEFPosition position, final CoordinateTransformation nedC)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L325">        this(position, nedC, new Date(), (WorldMagneticModel) null);</span>
+<span class="fc" id="L326">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0 and height = 0) and with zero Euler angles representing rotation
+     * (roll = 0, pith = 0, yaw = 0), which for Android devices it means that the
+     * device is flat on a horizontal surface with the screen facing down.
+     * This constructor assumes that time is current time instant.
+     *
+     * @param listener listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+<span class="fc" id="L341">        this(new Date());</span>
+<span class="fc" id="L342">        mListener = listener;</span>
+<span class="fc" id="L343">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0, and height = 0) with provided orientation.
+     * This constructor assumes that time is current time instant.
+     *
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @param listener listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final CoordinateTransformation nedC, final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L366">        this(nedC, new Date());</span>
+<span class="fc" id="L367">        mListener = listener;</span>
+<span class="fc" id="L368">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     * This constructor assumes that time is current time instant.
+     *
+     * @param latitude  latitude expressed in radians (rad).
+     * @param longitude longitude expressed in radians (rad).
+     * @param height    height expressed in meters (m).
+     * @param listener  listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final double latitude, final double longitude, final double height,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+<span class="fc" id="L387">        this(latitude, longitude, height, new Date());</span>
+<span class="fc" id="L388">        mListener = listener;</span>
+<span class="fc" id="L389">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     * This constructor assumes that time is current time instant.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height expressed in meters (m).
+     * @param listener  listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final double height,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+<span class="fc" id="L408">        this(latitude, longitude, height, new Date());</span>
+<span class="fc" id="L409">        mListener = listener;</span>
+<span class="fc" id="L410">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     * This constructor assumes that time is current time instant.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height.
+     * @param listener  listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final Distance height,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+<span class="fc" id="L429">        this(latitude, longitude, height, new Date());</span>
+<span class="fc" id="L430">        mListener = listener;</span>
+<span class="fc" id="L431">    }</span>
+
+    /**
+     * Constructor.
+     * This constructor assumes that time is current time instant.
+     *
+     * @param position body position expressed in NED coordinates.
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @param listener listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final NEDPosition position, final CoordinateTransformation nedC,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L454">        this(position, nedC, new Date());</span>
+<span class="fc" id="L455">        mListener = listener;</span>
+<span class="fc" id="L456">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position body position expressed in ECEF coordinates.
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @param listener listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final ECEFPosition position, final CoordinateTransformation nedC,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L478">        this(position, nedC, new Date());</span>
+<span class="fc" id="L479">        mListener = listener;</span>
+<span class="fc" id="L480">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0 and height = 0) and with zero Euler angles representing rotation
+     * (roll = 0, pith = 0, yaw = 0), which for Android devices it means that the
+     * device is flat on a horizontal surface with the screen facing down.
+     *
+     * @param year time expressed as decimal year.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(final double year) throws IOException {
+<span class="fc" id="L493">        this(year, (WorldMagneticModel) null);</span>
+<span class="fc" id="L494">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0, and height = 0) with provided orientation.
+     *
+     * @param nedC coordinate transformation from body to local navigation
+     *             (NED) coordinates. This contains orientation respect the horizon
+     *             at current body location.
+     * @param year time expressed as decimal year.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(final CoordinateTransformation nedC, final double year)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L515">        this(nedC, year, (WorldMagneticModel) null);</span>
+<span class="fc" id="L516">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude  latitude expressed in radians (rad).
+     * @param longitude longitude expressed in radians (rad).
+     * @param height    height expressed in meters (m).
+     * @param year      time expressed as decimal year.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final double latitude, final double longitude, final double height, final double year) throws IOException {
+<span class="fc" id="L533">        this(latitude, longitude, height, year, (WorldMagneticModel) null);</span>
+<span class="fc" id="L534">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height expressed in meters (m).
+     * @param year      time expressed as decimal year.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final double height, final double year) throws IOException {
+<span class="fc" id="L551">        this(latitude, longitude, height, year, (WorldMagneticModel) null);</span>
+<span class="fc" id="L552">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height.
+     * @param year      time expressed as decimal year.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final Distance height, final double year) throws IOException {
+<span class="fc" id="L569">        this(latitude, longitude, height, year, (WorldMagneticModel) null);</span>
+<span class="fc" id="L570">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position body position expressed in NED coordinates.
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @param year     time expressed as decimal year.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final NEDPosition position, final CoordinateTransformation nedC, final double year)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L591">        this(position, nedC, year, (WorldMagneticModel) null);</span>
+<span class="fc" id="L592">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position body position expressed in ECEF coordinates.
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @param year     time expressed as decimal year.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final ECEFPosition position, final CoordinateTransformation nedC, final double year)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L613">        this(position, nedC, year, (WorldMagneticModel) null);</span>
+<span class="fc" id="L614">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0 and height = 0) and with zero Euler angles representing rotation
+     * (roll = 0, pith = 0, yaw = 0), which for Android devices it means that the
+     * device is flat on a horizontal surface with the screen facing down.
+     *
+     * @param year     time expressed as decimal year.
+     * @param listener listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final double year, final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+<span class="fc" id="L629">        this(year);</span>
+<span class="fc" id="L630">        mListener = listener;</span>
+<span class="fc" id="L631">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0, and height = 0) with provided orientation.
+     *
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @param year     time expressed as decimal year.
+     * @param listener listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final CoordinateTransformation nedC, final double year,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L655">        this(nedC, year);</span>
+<span class="fc" id="L656">        mListener = listener;</span>
+<span class="fc" id="L657">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude  latitude expressed in radians (rad).
+     * @param longitude longitude expressed in radians (rad).
+     * @param height    height expressed in meters (m).
+     * @param year      time expressed as decimal year.
+     * @param listener  listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final double latitude, final double longitude, final double height, final double year,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+<span class="fc" id="L676">        this(latitude, longitude, height, year);</span>
+<span class="fc" id="L677">        mListener = listener;</span>
+<span class="fc" id="L678">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height expressed in meters (m).
+     * @param year      time expressed as decimal year.
+     * @param listener  listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final double height, final double year,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+<span class="fc" id="L697">        this(latitude, longitude, height, year);</span>
+<span class="fc" id="L698">        mListener = listener;</span>
+<span class="fc" id="L699">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height.
+     * @param year      time expressed as decimal year.
+     * @param listener  listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final Distance height,
+            final double year, final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+<span class="fc" id="L718">        this(latitude, longitude, height, year);</span>
+<span class="fc" id="L719">        mListener = listener;</span>
+<span class="fc" id="L720">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position body position expressed in NED coordinates.
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @param year     time expressed as decimal year.
+     * @param listener listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final NEDPosition position, final CoordinateTransformation nedC, final double year,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L743">        this(position, nedC, year);</span>
+<span class="fc" id="L744">        mListener = listener;</span>
+<span class="fc" id="L745">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position body position expressed in ECEF coordinates.
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @param year     time expressed as decimal year.
+     * @param listener listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final ECEFPosition position, final CoordinateTransformation nedC,
+            final double year, final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L768">        this(position, nedC, year);</span>
+<span class="fc" id="L769">        mListener = listener;</span>
+<span class="fc" id="L770">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0 and height = 0) and with zero Euler angles representing rotation
+     * (roll = 0, pith = 0, yaw = 0), which for Android devices it means that the
+     * device is flat on a horizontal surface with the screen facing down.
+     *
+     * @param date a time instance to be converted.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(final Date date) throws IOException {
+<span class="fc" id="L783">        this(convertTime(date));</span>
+<span class="fc" id="L784">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0, and height = 0) with provided orientation.
+     *
+     * @param nedC coordinate transformation from body to local navigation
+     *             (NED) coordinates. This contains orientation respect the horizon
+     *             at current body location.
+     * @param date a time instance to be converted.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(final CoordinateTransformation nedC, final Date date)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L805">        this(nedC, convertTime(date));</span>
+<span class="fc" id="L806">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude  latitude expressed in radians (rad).
+     * @param longitude longitude expressed in radians (rad).
+     * @param height    height expressed in meters (m).
+     * @param date      a time instance to be converted.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final double latitude, final double longitude, final double height, final Date date) throws IOException {
+<span class="fc" id="L823">        this(latitude, longitude, height, convertTime(date));</span>
+<span class="fc" id="L824">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height expressed in meters (m).
+     * @param date      a time instance to be converted.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final double height, final Date date) throws IOException {
+<span class="fc" id="L841">        this(latitude, longitude, height, convertTime(date));</span>
+<span class="fc" id="L842">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height.
+     * @param date      a time instance to be converted.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final Distance height, final Date date) throws IOException {
+<span class="fc" id="L859">        this(latitude, longitude, height, convertTime(date));</span>
+<span class="fc" id="L860">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position body position expressed in NED coordinates.
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @param date     a time instance to be converted.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final NEDPosition position, final CoordinateTransformation nedC,
+            final Date date) throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L881">        this(position, nedC, convertTime(date));</span>
+<span class="fc" id="L882">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position body position expressed in ECEF coordinates.
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @param date     a time instance to be converted.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final ECEFPosition position, final CoordinateTransformation nedC,
+            final Date date) throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L903">        this(position, nedC, convertTime(date));</span>
+<span class="fc" id="L904">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0 and height = 0) and with zero Euler angles representing rotation
+     * (roll = 0, pith = 0, yaw = 0), which for Android devices it means that the
+     * device is flat on a horizontal surface with the screen facing down.
+     *
+     * @param date     a time instance to be converted.
+     * @param listener listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Date date, final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+<span class="fc" id="L919">        this(convertTime(date), listener);</span>
+<span class="fc" id="L920">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0, and height = 0) with provided orientation.
+     *
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @param date     a time instance to be converted.
+     * @param listener listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final CoordinateTransformation nedC, final Date date,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L944">        this(nedC, convertTime(date), listener);</span>
+<span class="fc" id="L945">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude  latitude expressed in radians (rad).
+     * @param longitude longitude expressed in radians (rad).
+     * @param height    height expressed in meters (m).
+     * @param date      a time instance to be converted.
+     * @param listener  listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final double latitude, final double longitude, final double height,
+            final Date date, final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+<span class="fc" id="L964">        this(latitude, longitude, height, convertTime(date), listener);</span>
+<span class="fc" id="L965">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height expressed in meters (m).
+     * @param date      a time instance to be converted.
+     * @param listener  listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final double height, final Date date,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+<span class="fc" id="L984">        this(latitude, longitude, height, convertTime(date), listener);</span>
+<span class="fc" id="L985">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height.
+     * @param date      a time instance to be converted.
+     * @param listener  listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final Distance height, final Date date,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+<span class="fc" id="L1004">        this(latitude, longitude, height, convertTime(date), listener);</span>
+<span class="fc" id="L1005">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position body position expressed in NED coordinates.
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @param date     a time instance to be converted.
+     * @param listener listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final NEDPosition position, final CoordinateTransformation nedC, final Date date,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L1028">        this(position, nedC, convertTime(date), listener);</span>
+<span class="fc" id="L1029">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position body position expressed in ECEF coordinates.
+     * @param nedC     coordinate transformation from body to local navigation
+     *                 (NED) coordinates. This contains orientation respect the
+     *                 horizon at current body location.
+     * @param date     a time instance to be converted.
+     * @param listener listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final ECEFPosition position, final CoordinateTransformation nedC, final Date date,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L1052">        this(position, nedC, convertTime(date), listener);</span>
+<span class="fc" id="L1053">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0 and height = 0) and with zero Euler angles representing rotation
+     * (roll = 0, pith = 0, yaw = 0), which for Android devices it means that the
+     * device is flat on a horizontal surface with the screen facing down.
+     *
+     * @param year          time expressed as decimal year.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+<span class="fc" id="L1068">            final double year, final WorldMagneticModel magneticModel) throws IOException {</span>
+<span class="fc" id="L1069">        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame());</span>
+<span class="fc" id="L1070">        mYear = year;</span>
+<span class="fc" id="L1071">        mMagneticModel = magneticModel;</span>
+<span class="fc" id="L1072">        initialize();</span>
+<span class="fc" id="L1073">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0, and height = 0) with provided orientation.
+     *
+     * @param nedC          coordinate transformation from body to local navigation
+     *                      (NED) coordinates. This contains orientation respect the horizon
+     *                      at current body location.
+     * @param year          time expressed as decimal year.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final CoordinateTransformation nedC, final double year, final WorldMagneticModel magneticModel)
+<span class="fc" id="L1095">            throws InvalidSourceAndDestinationFrameTypeException, IOException {</span>
+<span class="fc" id="L1096">        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(nedC));</span>
+<span class="fc" id="L1097">        mYear = year;</span>
+<span class="fc" id="L1098">        mMagneticModel = magneticModel;</span>
+<span class="fc" id="L1099">        initialize();</span>
+<span class="fc" id="L1100">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude      latitude expressed in radians (rad).
+     * @param longitude     longitude expressed in radians (rad).
+     * @param height        height expressed in meters (m).
+     * @param year          time expressed as decimal year.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final double latitude, final double longitude, final double height,
+<span class="fc" id="L1119">            final double year, final WorldMagneticModel magneticModel) throws IOException {</span>
+<span class="fc" id="L1120">        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));</span>
+<span class="fc" id="L1121">        mYear = year;</span>
+<span class="fc" id="L1122">        mMagneticModel = magneticModel;</span>
+<span class="fc" id="L1123">        initialize();</span>
+<span class="fc" id="L1124">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude      latitude.
+     * @param longitude     longitude.
+     * @param height        height expressed in meters (m).
+     * @param year          time expressed as decimal year.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final double height,
+<span class="fc" id="L1143">            final double year, final WorldMagneticModel magneticModel) throws IOException {</span>
+<span class="fc" id="L1144">        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));</span>
+<span class="fc" id="L1145">        mYear = year;</span>
+<span class="fc" id="L1146">        mMagneticModel = magneticModel;</span>
+<span class="fc" id="L1147">        initialize();</span>
+<span class="fc" id="L1148">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude      latitude.
+     * @param longitude     longitude.
+     * @param height        height.
+     * @param year          time expressed as decimal year.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final Distance height,
+<span class="fc" id="L1167">            final double year, final WorldMagneticModel magneticModel) throws IOException {</span>
+<span class="fc" id="L1168">        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(latitude, longitude, height));</span>
+<span class="fc" id="L1169">        mYear = year;</span>
+<span class="fc" id="L1170">        mMagneticModel = magneticModel;</span>
+<span class="fc" id="L1171">        initialize();</span>
+<span class="fc" id="L1172">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position      body position expressed in NED coordinates.
+     * @param nedC          coordinate transformation from body to local navigation
+     *                      (NED) coordinates. This contains orientation respect the
+     *                      horizon at current body location.
+     * @param year          time expressed as decimal year.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final NEDPosition position, final CoordinateTransformation nedC,
+            final double year, final WorldMagneticModel magneticModel)
+<span class="fc" id="L1195">            throws InvalidSourceAndDestinationFrameTypeException, IOException {</span>
+<span class="fc" id="L1196">        mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(new NEDFrame(position, nedC));</span>
+<span class="fc" id="L1197">        mYear = year;</span>
+<span class="fc" id="L1198">        mMagneticModel = magneticModel;</span>
+<span class="fc" id="L1199">        initialize();</span>
+<span class="fc" id="L1200">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position      body position expressed in ECEF coordinates.
+     * @param nedC          coordinate transformation from body to local navigation
+     *                      (NED) coordinates. This contains orientation respect the
+     *                      horizon at current body location.
+     * @param year          time expressed as decimal year.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final ECEFPosition position, final CoordinateTransformation nedC,
+            final double year, final WorldMagneticModel magneticModel)
+<span class="fc" id="L1223">            throws InvalidSourceAndDestinationFrameTypeException, IOException {</span>
+<span class="fc" id="L1224">        mFrame = new ECEFFrame(position);</span>
+<span class="fc" id="L1225">        final NEDFrame nedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mFrame);</span>
+<span class="fc" id="L1226">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L1227">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+<span class="fc" id="L1228">        mYear = year;</span>
+<span class="fc" id="L1229">        mMagneticModel = magneticModel;</span>
+<span class="fc" id="L1230">        initialize();</span>
+<span class="fc" id="L1231">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0 and height = 0) and with zero Euler angles representing rotation
+     * (roll = 0, pith = 0, yaw = 0), which for Android devices it means that the
+     * device is flat on a horizontal surface with the screen facing down.
+     *
+     * @param year          time expressed as decimal year.
+     * @param listener      listener to handle events raised by this estimator.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final double year, final WorldMagneticModel magneticModel,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+<span class="fc" id="L1249">        this(year, magneticModel);</span>
+<span class="fc" id="L1250">        mListener = listener;</span>
+<span class="fc" id="L1251">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0, and height = 0) with provided orientation.
+     *
+     * @param nedC          coordinate transformation from body to local navigation
+     *                      (NED) coordinates. This contains orientation respect the
+     *                      horizon at current body location.
+     * @param year          time expressed as decimal year.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @param listener      listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final CoordinateTransformation nedC, final double year, final WorldMagneticModel magneticModel,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L1277">        this(nedC, year, magneticModel);</span>
+<span class="fc" id="L1278">        mListener = listener;</span>
+<span class="fc" id="L1279">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude      latitude expressed in radians (rad).
+     * @param longitude     longitude expressed in radians (rad).
+     * @param height        height expressed in meters (m).
+     * @param year          time expressed as decimal year.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @param listener      listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final double latitude, final double longitude, final double height,
+            final double year, final WorldMagneticModel magneticModel,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+<span class="fc" id="L1301">        this(latitude, longitude, height, year, magneticModel);</span>
+<span class="fc" id="L1302">        mListener = listener;</span>
+<span class="fc" id="L1303">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude      latitude.
+     * @param longitude     longitude.
+     * @param height        height expressed in meters (m).
+     * @param year          time expressed as decimal year.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @param listener      listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final double height, final double year,
+            final WorldMagneticModel magneticModel,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+<span class="fc" id="L1325">        this(latitude, longitude, height, year, magneticModel);</span>
+<span class="fc" id="L1326">        mListener = listener;</span>
+<span class="fc" id="L1327">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude      latitude.
+     * @param longitude     longitude.
+     * @param height        height.
+     * @param year          time expressed as decimal year.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @param listener      listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final Distance height,
+            final double year, final WorldMagneticModel magneticModel,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+<span class="fc" id="L1349">        this(latitude, longitude, height, year, magneticModel);</span>
+<span class="fc" id="L1350">        mListener = listener;</span>
+<span class="fc" id="L1351">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position      body position expressed in NED coordinates.
+     * @param nedC          coordinate transformation from body to local navigation
+     *                      (NED) coordinates. This contains orientation respect the
+     *                      horizon at current body location.
+     * @param year          time expressed as decimal year.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @param listener      listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final NEDPosition position, final CoordinateTransformation nedC, final double year,
+            final WorldMagneticModel magneticModel, final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L1376">        this(position, nedC, year, magneticModel);</span>
+<span class="fc" id="L1377">        mListener = listener;</span>
+<span class="fc" id="L1378">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position      body position expressed in ECEF coordinates.
+     * @param nedC          coordinate transformation from body to local navigation
+     *                      (NED) coordinates. This contains orientation respect the
+     *                      horizon at current body location.
+     * @param year          time expressed as decimal year.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @param listener      listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final ECEFPosition position, final CoordinateTransformation nedC,
+            final double year, final WorldMagneticModel magneticModel,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L1404">        this(position, nedC, year, magneticModel);</span>
+<span class="fc" id="L1405">        mListener = listener;</span>
+<span class="fc" id="L1406">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0 and height = 0) and with zero Euler angles representing rotation
+     * (roll = 0, pith = 0, yaw = 0), which for Android devices it means that the
+     * device is flat on a horizontal surface with the screen facing down.
+     *
+     * @param date          a time instance to be converted.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Date date, final WorldMagneticModel magneticModel) throws IOException {
+<span class="fc" id="L1422">        this(convertTime(date), magneticModel);</span>
+<span class="fc" id="L1423">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0, and height = 0) with provided orientation.
+     *
+     * @param nedC          coordinate transformation from body to local navigation
+     *                      (NED) coordinates. This contains orientation respect the horizon
+     *                      at current body location.
+     * @param date          a time instance to be converted.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final CoordinateTransformation nedC, final Date date, final WorldMagneticModel magneticModel)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L1447">        this(nedC, convertTime(date), magneticModel);</span>
+<span class="fc" id="L1448">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude      latitude expressed in radians (rad).
+     * @param longitude     longitude expressed in radians (rad).
+     * @param height        height expressed in meters (m).
+     * @param date          a time instance to be converted.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final double latitude, final double longitude, final double height,
+            final Date date, final WorldMagneticModel magneticModel) throws IOException {
+<span class="fc" id="L1468">        this(latitude, longitude, height, convertTime(date), magneticModel);</span>
+<span class="fc" id="L1469">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude      latitude.
+     * @param longitude     longitude.
+     * @param height        height expressed in meters (m).
+     * @param date          a time instance to be converted.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final double height,
+            final Date date, final WorldMagneticModel magneticModel) throws IOException {
+<span class="fc" id="L1489">        this(latitude, longitude, height, convertTime(date), magneticModel);</span>
+<span class="fc" id="L1490">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude      latitude.
+     * @param longitude     longitude.
+     * @param height        height.
+     * @param date          a time instance to be converted.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final Distance height,
+            final Date date, final WorldMagneticModel magneticModel) throws IOException {
+<span class="fc" id="L1510">        this(latitude, longitude, height, convertTime(date), magneticModel);</span>
+<span class="fc" id="L1511">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position      body position expressed in NED coordinates.
+     * @param nedC          coordinate transformation from body to local navigation
+     *                      (NED) coordinates. This contains orientation respect the
+     *                      horizon at current body location.
+     * @param date          a time instance to be converted.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final NEDPosition position, final CoordinateTransformation nedC, final Date date,
+            final WorldMagneticModel magneticModel) throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L1534">        this(position, nedC, convertTime(date), magneticModel);</span>
+<span class="fc" id="L1535">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position      body position expressed in ECEF coordinates.
+     * @param nedC          coordinate transformation from body to local navigation
+     *                      (NED) coordinates. This contains orientation respect the
+     *                      horizon at current body location.
+     * @param date          a time instance to be converted.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final ECEFPosition position, final CoordinateTransformation nedC, final Date date,
+            final WorldMagneticModel magneticModel) throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L1558">        this(position, nedC, convertTime(date), magneticModel);</span>
+<span class="fc" id="L1559">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0 and height = 0) and with zero Euler angles representing rotation
+     * (roll = 0, pith = 0, yaw = 0), which for Android devices it means that the
+     * device is flat on a horizontal surface with the screen facing down.
+     *
+     * @param date          a time instance to be converted.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @param listener      listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Date date, final WorldMagneticModel magneticModel,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+<span class="fc" id="L1577">        this(convertTime(date), magneticModel, listener);</span>
+<span class="fc" id="L1578">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body is located at zero NED coordinates (latitude = 0,
+     * longitude = 0, and height = 0) with provided orientation.
+     *
+     * @param nedC          coordinate transformation from body to local navigation
+     *                      (NED) coordinates. This contains orientation respect the
+     *                      horizon at current body location.
+     * @param date          a time instance to be converted.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @param listener      listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final CoordinateTransformation nedC, final Date date, final WorldMagneticModel magneticModel,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L1604">        this(nedC, convertTime(date), magneticModel, listener);</span>
+<span class="fc" id="L1605">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude      latitude expressed in radians (rad).
+     * @param longitude     longitude expressed in radians (rad).
+     * @param height        height expressed in meters (m).
+     * @param date          a time instance to be converted.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @param listener      listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final double latitude, final double longitude, final double height,
+            final Date date, final WorldMagneticModel magneticModel,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws IOException {
+<span class="fc" id="L1627">        this(latitude, longitude, height, convertTime(date), magneticModel, listener);</span>
+<span class="fc" id="L1628">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude      latitude.
+     * @param longitude     longitude.
+     * @param height        height expressed in meters (m).
+     * @param date          a time instance to be converted.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @param listener      listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final double height, final Date date,
+            final WorldMagneticModel magneticModel, final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            throws IOException {
+<span class="fc" id="L1650">        this(latitude, longitude, height, convertTime(date), magneticModel, listener);</span>
+<span class="fc" id="L1651">    }</span>
+
+    /**
+     * Constructor.
+     * It is assumed that body has zero Euler angles representing rotation (roll = 0,
+     * pitch = 0, yaw = 0) respect the horizon at provided body location.
+     * For Android devices this means that the device is flat on a horizontal surface
+     * with the screen facing down.
+     *
+     * @param latitude      latitude.
+     * @param longitude     longitude.
+     * @param height        height.
+     * @param date          a time instance to be converted.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @param listener      listener to handle events raised by this estimator.
+     * @throws IOException if initialization of world magnetic model fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final Angle latitude, final Angle longitude, final Distance height, final Date date,
+            final WorldMagneticModel magneticModel, final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            throws IOException {
+<span class="fc" id="L1673">        this(latitude, longitude, height, convertTime(date), magneticModel, listener);</span>
+<span class="fc" id="L1674">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position      body position expressed in NED coordinates.
+     * @param nedC          coordinate transformation from body to local navigation
+     *                      (NED) coordinates. This contains orientation respect the
+     *                      horizon at current body location.
+     * @param date          a time instance to be converted.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @param listener      listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final NEDPosition position, final CoordinateTransformation nedC,
+            final Date date, final WorldMagneticModel magneticModel,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L1700">        this(position, nedC, convertTime(date), magneticModel, listener);</span>
+<span class="fc" id="L1701">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param position      body position expressed in ECEF coordinates.
+     * @param nedC          coordinate transformation from body to local navigation
+     *                      (NED) coordinates. This contains orientation respect the
+     *                      horizon at current body location.
+     * @param date          a time instance to be converted.
+     * @param magneticModel world magnetic model of Earth or null if default
+     *                      model is used.
+     * @param listener      listener to handle events raised by this estimator.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not
+     *                                                       from body to local
+     *                                                       navigation coordinates.
+     * @throws IOException                                   if initialization of
+     *                                                       world magnetic model
+     *                                                       fails.
+     */
+    public BodyMagneticFluxDensityBiasEstimator(
+            final ECEFPosition position, final CoordinateTransformation nedC,
+            final Date date, final WorldMagneticModel magneticModel,
+            final BodyMagneticFluxDensityBiasEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException, IOException {
+<span class="fc" id="L1727">        this(position, nedC, convertTime(date), magneticModel, listener);</span>
+<span class="fc" id="L1728">    }</span>
+
+
+    /**
+     * Gets time interval between body kinematics (IMU acceleration + gyroscope)
+     * samples expressed in seconds (s).
+     *
+     * @return time interval between body kinematics samples.
+     */
+    public double getTimeInterval() {
+<span class="fc" id="L1738">        return mTimeInterval;</span>
+    }
+
+    /**
+     * Sets time interval between body kinematics (IMU acceleration + gyroscope)
+     * samples expressed in seconds (s).
+     *
+     * @param timeInterval time interval between body kinematics samples.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setTimeInterval(final double timeInterval) throws LockedException {
+<span class="fc bfc" id="L1749" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1750">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L1753" title="All 2 branches covered.">        if (timeInterval &lt; 0.0) {</span>
+<span class="fc" id="L1754">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1757">        mTimeInterval = timeInterval;</span>
+<span class="fc" id="L1758">    }</span>
+
+    /**
+     * Gets time interval between body kinematics (IMU acceleration + gyroscope)
+     * samples.
+     *
+     * @return time interval between body kinematics samples.
+     */
+    public Time getTimeIntervalAsTime() {
+<span class="fc" id="L1767">        return new Time(mTimeInterval, TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Gets time interval between body kinematics (IMU acceleration + gyroscope)
+     * samples.
+     *
+     * @param result instance where time interval will be stored.
+     */
+    public void getTimeIntervalAsTime(final Time result) {
+<span class="fc" id="L1777">        result.setValue(mTimeInterval);</span>
+<span class="fc" id="L1778">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L1779">    }</span>
+
+    /**
+     * Sets time interval between body kinematics (IMU acceleration + gyroscope)
+     * samples.
+     *
+     * @param timeInterval time interval between body kinematics samples.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setTimeInterval(final Time timeInterval) throws LockedException {
+<span class="fc" id="L1789">        setTimeInterval(convertTime(timeInterval));</span>
+<span class="fc" id="L1790">    }</span>
+
+    /**
+     * Gets current body position expressed in ECEF coordinates.
+     *
+     * @return current body position expressed in ECEF coordinates.
+     */
+    public ECEFPosition getEcefPosition() {
+<span class="fc" id="L1798">        return mFrame.getECEFPosition();</span>
+    }
+
+    /**
+     * Gets current body position expressed in ECEF coordinates.
+     *
+     * @param result instance where current body position will be stored.
+     */
+    public void getEcefPosition(final ECEFPosition result) {
+<span class="fc" id="L1807">        mFrame.getECEFPosition(result);</span>
+<span class="fc" id="L1808">    }</span>
+
+    /**
+     * Sets current body position expressed in ECEF coordinates.
+     *
+     * @param position current body position to be set.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setEcefPosition(final ECEFPosition position) throws LockedException {
+<span class="fc bfc" id="L1817" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1818">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1821">        mFrame.setPosition(position);</span>
+
+<span class="fc" id="L1823">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L1824">    }</span>
+
+    /**
+     * Sets current body position expressed in ECEF coordinates.
+     *
+     * @param x x position resolved around ECEF axes and expressed in meters (m).
+     * @param y y position resolved around ECEF axes and expressed in meters (m).
+     * @param z z position resolved around ECEF axes and expressed in meters (m).
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setEcefPosition(final double x, final double y, final double z) throws LockedException {
+<span class="fc bfc" id="L1835" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1836">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1839">        mFrame.setCoordinates(x, y, z);</span>
+
+<span class="fc" id="L1841">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L1842">    }</span>
+
+    /**
+     * Sets current body position expressed in ECEF coordinates.
+     *
+     * @param x x position resolved around ECEF axes.
+     * @param y y position resolved around ECEF axes.
+     * @param z z position resolved around ECEF axes.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setEcefPosition(
+            final Distance x, final Distance y, final Distance z) throws LockedException {
+<span class="fc bfc" id="L1854" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1855">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1858">        mFrame.setPositionCoordinates(x, y, z);</span>
+
+<span class="fc" id="L1860">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L1861">    }</span>
+
+    /**
+     * Sets current body position expressed in ECEF coordinates.
+     *
+     * @param position position resolved around ECEF axes and expressed in meters (m).
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setEcefPosition(final Point3D position) throws LockedException {
+<span class="fc bfc" id="L1870" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1871">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1874">        mFrame.setPosition(position);</span>
+
+<span class="fc" id="L1876">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L1877">    }</span>
+
+    /**
+     * Gets ECEF frame containing current body position and orientation expressed
+     * in ECEF coordinates. Frame also contains body velocity, but it is always
+     * assumed to be zero during calibration.
+     *
+     * @return ECEF frame containing current body position and orientation resolved
+     * around ECEF axes.
+     */
+    public ECEFFrame getEcefFrame() {
+<span class="fc" id="L1888">        return new ECEFFrame(mFrame);</span>
+    }
+
+    /**
+     * Gets ECEF frame containing current body position and orientation expressed
+     * in ECEF coordinates. Frame also contains body velocity, but it is always
+     * assumed to be zero during calibration.
+     *
+     * @param result instance where ECEF frame containing current body position and
+     *               orientation resolved around ECEF axes will be stored.
+     */
+    public void getEcefFrame(final ECEFFrame result) {
+<span class="fc" id="L1900">        mFrame.copyTo(result);</span>
+<span class="fc" id="L1901">    }</span>
+
+    /**
+     * Gets NED frame containing current body position and orientation expressed
+     * in NED coordinates. Frame also contains body velocity, but it is always
+     * assumed to be zero during calibration.
+     *
+     * @return NED frame containing current body position and orientation resolved
+     * around NED axes.
+     */
+    public NEDFrame getNedFrame() {
+<span class="fc" id="L1912">        return ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mFrame);</span>
+    }
+
+    /**
+     * Gets NED frame containing current body position and orientation expressed
+     * in NED coordinates. Frame also contains body velocity, but it is always
+     * assumed to be zero during calibration.
+     *
+     * @param result instance where NED frame containing current body position and
+     *               orientation resolved around NED axes will be stored.
+     */
+    public void getNedFrame(final NEDFrame result) {
+<span class="fc" id="L1924">        ECEFtoNEDFrameConverter.convertECEFtoNED(mFrame, result);</span>
+<span class="fc" id="L1925">    }</span>
+
+    /**
+     * Gets current body position expressed in NED coordinates.
+     *
+     * @return current body position expressed in NED coordinates.
+     */
+    public NEDPosition getNedPosition() {
+<span class="fc" id="L1933">        return getNedFrame().getPosition();</span>
+    }
+
+    /**
+     * Gets current body position expressed in NED coordinates.
+     *
+     * @param result instance where current body position will be stored.
+     */
+    public void getNedPosition(final NEDPosition result) {
+<span class="fc" id="L1942">        getNedFrame().getPosition(result);</span>
+<span class="fc" id="L1943">    }</span>
+
+    /**
+     * Sets current body position expressed in NED coordinates.
+     *
+     * @param position current body position to be set.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setNedPosition(final NEDPosition position) throws LockedException {
+<span class="fc bfc" id="L1952" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1953">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1956">        final NEDFrame nedFrame = getNedFrame();</span>
+<span class="fc" id="L1957">        nedFrame.setPosition(position);</span>
+<span class="fc" id="L1958">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+
+<span class="fc" id="L1960">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L1961">    }</span>
+
+    /**
+     * Sets current body position expressed in NED coordinates.
+     *
+     * @param latitude  latitude NED coordinate expressed in radians (rad).
+     * @param longitude longitude NED coordinate expressed in radians (rad).
+     * @param height    height NED coordinate expressed in meters (m).
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setNedPosition(final double latitude, final double longitude, final double height)
+            throws LockedException {
+<span class="fc bfc" id="L1973" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1974">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1977">        final NEDFrame nedFrame = getNedFrame();</span>
+<span class="fc" id="L1978">        nedFrame.setPosition(latitude, longitude, height);</span>
+<span class="fc" id="L1979">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+
+<span class="fc" id="L1981">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L1982">    }</span>
+
+    /**
+     * Sets current body position expressed in NED coordinates.
+     *
+     * @param latitude  latitude NED coordinate.
+     * @param longitude longitude NED coordinate.
+     * @param height    height NED coordinate expressed in meters (m).
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setNedPosition(
+            final Angle latitude, final Angle longitude, final double height) throws LockedException {
+<span class="fc bfc" id="L1994" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1995">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1998">        final NEDFrame nedFrame = getNedFrame();</span>
+<span class="fc" id="L1999">        nedFrame.setPosition(latitude, longitude, height);</span>
+<span class="fc" id="L2000">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+
+<span class="fc" id="L2002">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2003">    }</span>
+
+    /**
+     * Sets current body position expressed in NED coordinates.
+     *
+     * @param latitude  latitude NED coordinate.
+     * @param longitude longitude NED coordinate.
+     * @param height    height NED coordinate.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void setNedPosition(
+            final Angle latitude, final Angle longitude, final Distance height) throws LockedException {
+<span class="fc bfc" id="L2015" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2016">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2019">        final NEDFrame nedFrame = getNedFrame();</span>
+<span class="fc" id="L2020">        nedFrame.setPosition(latitude, longitude, height);</span>
+<span class="fc" id="L2021">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+
+<span class="fc" id="L2023">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2024">    }</span>
+
+    /**
+     * Gets current body orientation as a transformation from body to ECEF coordinates.
+     * Notice that returned orientation refers to ECEF Earth axes, which means that
+     * orientation is not relative to the ground or horizon at current body position.
+     * Typically it is more convenient to use {@link #getNedC()} to obtain orientation
+     * relative to the ground or horizon at current body position. For instance, on
+     * Android devices a NED orientation with Euler angles (roll = 0, pitch = 0,
+     * yaw = 0) means that the device is laying flat on a horizontal surface with the
+     * screen facing down towards the ground.
+     *
+     * @return current body orientation resolved on ECEF axes.
+     */
+    public CoordinateTransformation getEcefC() {
+<span class="fc" id="L2039">        return mFrame.getCoordinateTransformation();</span>
+    }
+
+    /**
+     * Gets current body orientation as a transformation from body to ECEF coordinates.
+     * Notice that returned orientation refers to ECEF Earth axes, which means that
+     * orientation is not relative to the ground or horizon at current body position.
+     * Typically it is more convenient to use {@link #getNedC()} to obtain orientation
+     * relative to the ground or horizon at current body position. For instance, on
+     * Android devices a NED orientation with Euler angles (roll = 0, pitch = 0,
+     * yaw = 0) means that the device is laying flat on a horizontal surface with the
+     * screen facing down towards the ground.
+     *
+     * @param result instance where current body orientation resolved on ECEF axes
+     *               will be stored.
+     */
+    public void getEcefC(final CoordinateTransformation result) {
+<span class="fc" id="L2056">        mFrame.getCoordinateTransformation(result);</span>
+<span class="fc" id="L2057">    }</span>
+
+    /**
+     * Sets current body orientation as a transformation from body to ECEF coordinates.
+     * Notice that ECEF orientation refers to ECEF Earth axes, which means that
+     * orientation is not relative to the ground or horizon at current body position.
+     * Typically it is more convenient to use
+     * {@link #setNedC(CoordinateTransformation)} to specify orientation relative to
+     * the ground or horizon at current body position.
+     * For instance, on Android devices a NED orientation with Euler angles (roll = 0,
+     * pitch = 0, yaw = 0) means that the device is laying flat on a horizontal surface
+     * with the screen facing down towards the ground.
+     *
+     * @param ecefC body orientation resolved on ECEF axes to be set.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to ECEF coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     */
+    public void setEcefC(final CoordinateTransformation ecefC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L2079" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2080">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2083">        mFrame.setCoordinateTransformation(ecefC);</span>
+
+<span class="fc" id="L2085">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2086">    }</span>
+
+    /**
+     * Gets current body orientation as a transformation from body to NED coordinates.
+     * Notice that returned orientation refers to current local position. This means
+     * that two equal NED orientations will transform into different ECEF orientations
+     * if the body is located at different positions.
+     * As a reference, on Android devices a NED orientation with Euler angles
+     * (roll = 0, pitch = 0, yaw = 0) means that the device is laying flat on a
+     * horizontal surface with the screen facing down towards the ground.
+     *
+     * @return current body orientation resolved on NED axes.
+     */
+    public CoordinateTransformation getNedC() {
+<span class="fc" id="L2100">        return getNedFrame().getCoordinateTransformation();</span>
+    }
+
+    /**
+     * Gets current body orientation as a transformation from body to NED coordinates.
+     * Notice that returned orientation refers to current local position. This means
+     * that two equal NED orientations will transform into different ECEF orientations
+     * if the body is located at different positions.
+     * As a reference, on Android devices a NED orientation with Euler angles
+     * (roll = 0, pitch = 0, yaw = 0) means that the device is laying flat on a
+     * horizontal surface with the screen facing down towards the ground.
+     *
+     * @param result instance where current body orientation resolved on NED axes
+     *               will be stored.
+     */
+    public void getNedC(final CoordinateTransformation result) {
+<span class="fc" id="L2116">        getNedFrame().getCoordinateTransformation(result);</span>
+<span class="fc" id="L2117">    }</span>
+
+    /**
+     * Sets current body orientation as a transformation from body to NED coordinates.
+     * Notice that provided orientation refers to current local position. This means
+     * that two equal NED orientations will transform into different ECEF orientations
+     * if the body is located at different positions.
+     * As a reference, on Android devices a NED orientation with Euler angles
+     * (roll = 0, pitch = 0, yaw = 0) means that the device is laying flat on a
+     * horizontal surface with the screen facing down towards the ground.
+     *
+     * @param nedC orientation resolved on NED axes to be set.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to NED coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     */
+    public void setNedC(final CoordinateTransformation nedC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L2137" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2138">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2141">        final NEDFrame nedFrame = getNedFrame();</span>
+<span class="fc" id="L2142">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L2143">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+
+<span class="fc" id="L2145">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2146">    }</span>
+
+    /**
+     * Sets position and orientation both expressed on NED coordinates.
+     *
+     * @param nedPosition position expressed on NED coordinates.
+     * @param nedC        body to NED coordinate transformation indicating
+     *                    body orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to NED coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setNedPosition(NEDPosition)
+     * @see #setNedC(CoordinateTransformation)
+     */
+    public void setNedPositionAndNedOrientation(
+            final NEDPosition nedPosition, final CoordinateTransformation nedC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L2165" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2166">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2169">        final NEDFrame nedFrame = getNedFrame();</span>
+<span class="fc" id="L2170">        nedFrame.setPosition(nedPosition);</span>
+<span class="fc" id="L2171">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L2172">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+
+<span class="fc" id="L2174">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2175">    }</span>
+
+    /**
+     * Sets position and orientation both expressed on NED coordinates.
+     *
+     * @param latitude  latitude expressed in radians (rad).
+     * @param longitude longitude expressed in radians (rad).
+     * @param height    height expressed in meters (m).
+     * @param nedC      body to NED coordinate transformation indicating
+     *                  body orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to NED coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setNedPosition(double, double, double)
+     * @see #setNedC(CoordinateTransformation)
+     */
+    public void setNedPositionAndNedOrientation(
+            final double latitude, final double longitude, final double height, final CoordinateTransformation nedC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L2196" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2197">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2200">        final NEDFrame nedFrame = getNedFrame();</span>
+<span class="fc" id="L2201">        nedFrame.setPosition(latitude, longitude, height);</span>
+<span class="fc" id="L2202">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L2203">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+
+<span class="fc" id="L2205">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2206">    }</span>
+
+    /**
+     * Sets position and orientation both expressed on NED coordinates.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height expressed in meters (m).
+     * @param nedC      body to NED coordinate transformation indicating
+     *                  body orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to NED coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setNedPosition(Angle, Angle, double)
+     * @see #setNedC(CoordinateTransformation)
+     */
+    public void setNedPositionAndNedOrientation(
+            final Angle latitude, final Angle longitude, final double height, final CoordinateTransformation nedC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L2227" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2228">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2231">        final NEDFrame nedFrame = getNedFrame();</span>
+<span class="fc" id="L2232">        nedFrame.setPosition(latitude, longitude, height);</span>
+<span class="fc" id="L2233">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L2234">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+
+<span class="fc" id="L2236">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2237">    }</span>
+
+    /**
+     * Sets position and orientation both expressed on NED coordinates.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height.
+     * @param nedC      body to NED coordinate transformation indicating
+     *                  body orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to NED coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setNedPosition(Angle, Angle, Distance)
+     * @see #setNedC(CoordinateTransformation)
+     */
+    public void setNedPositionAndNedOrientation(
+            final Angle latitude, final Angle longitude, final Distance height, final CoordinateTransformation nedC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L2258" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2259">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2262">        final NEDFrame nedFrame = getNedFrame();</span>
+<span class="fc" id="L2263">        nedFrame.setPosition(latitude, longitude, height);</span>
+<span class="fc" id="L2264">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L2265">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+
+<span class="fc" id="L2267">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2268">    }</span>
+
+    /**
+     * Sets position and orientation both expressed on ECEF coordinates.
+     *
+     * @param ecefPosition position expressed on ECEF coordinates.
+     * @param ecefC        body to ECEF coordinate transformation indicating body
+     *                     orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to ECEF coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setEcefPosition(ECEFPosition)
+     * @see #setEcefC(CoordinateTransformation)
+     */
+    public void setEcefPositionAndEcefOrientation(
+            final ECEFPosition ecefPosition, final CoordinateTransformation ecefC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L2287" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2288">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2291">        mFrame.setPosition(ecefPosition);</span>
+<span class="fc" id="L2292">        mFrame.setCoordinateTransformation(ecefC);</span>
+
+<span class="fc" id="L2294">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2295">    }</span>
+
+    /**
+     * Sets position and orientation both expressed on ECEF coordinates.
+     *
+     * @param x     x coordinate of ECEF position expressed in meters (m).
+     * @param y     y coordinate of ECEF position expressed in meters (m).
+     * @param z     z coordinate of ECEF position expressed in meters (m).
+     * @param ecefC body to ECEF coordinate transformation indicating body
+     *              orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to ECEF coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setEcefPosition(double, double, double)
+     * @see #setEcefC(CoordinateTransformation)
+     */
+    public void setEcefPositionAndEcefOrientation(
+            final double x, final double y, final double z, final CoordinateTransformation ecefC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L2316" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2317">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2320">        mFrame.setCoordinates(x, y, z);</span>
+<span class="fc" id="L2321">        mFrame.setCoordinateTransformation(ecefC);</span>
+
+<span class="fc" id="L2323">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2324">    }</span>
+
+    /**
+     * Sets position and orientation both expressed on ECEF coordinates.
+     *
+     * @param x     x coordinate of ECEF position.
+     * @param y     y coordinate of ECEF position.
+     * @param z     z coordinate of ECEF position.
+     * @param ecefC body to ECEF coordinate transformation indicating body
+     *              orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to ECEF coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setEcefPosition(Distance, Distance, Distance)
+     * @see #setEcefC(CoordinateTransformation)
+     */
+    public void setEcefPositionAndEcefOrientation(
+            final Distance x, final Distance y, final Distance z, final CoordinateTransformation ecefC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L2345" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2346">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2349">        mFrame.setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L2350">        mFrame.setCoordinateTransformation(ecefC);</span>
+
+<span class="fc" id="L2352">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2353">    }</span>
+
+    /**
+     * Sets position and orientation both expressed on ECEF coordinates.
+     *
+     * @param position position resolved around ECEF axes and expressed in meters (m).
+     * @param ecefC    body to ECEF coordinate transformation indicating body
+     *                 orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to ECEF coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setEcefPosition(Point3D)
+     * @see #setEcefC(CoordinateTransformation)
+     */
+    public void setEcefPositionAndEcefOrientation(
+            final Point3D position, final CoordinateTransformation ecefC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L2372" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2373">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2376">        mFrame.setPosition(position);</span>
+<span class="fc" id="L2377">        mFrame.setCoordinateTransformation(ecefC);</span>
+
+<span class="fc" id="L2379">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2380">    }</span>
+
+    /**
+     * Sets position expressed on NED coordinates and orientation respect to ECEF
+     * axes.
+     *
+     * @param position position expressed on NED coordinates.
+     * @param ecefC    body to ECEF coordinate transformation indicating body
+     *                 orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to ECEF coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setNedPosition(NEDPosition)
+     * @see #setEcefC(CoordinateTransformation)
+     */
+    public void setNedPositionAndEcefOrientation(
+            final NEDPosition position, final CoordinateTransformation ecefC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L2400" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2401">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2404">        final NEDFrame nedFrame = getNedFrame();</span>
+<span class="fc" id="L2405">        nedFrame.setPosition(position);</span>
+<span class="fc" id="L2406">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+<span class="fc" id="L2407">        mFrame.setCoordinateTransformation(ecefC);</span>
+
+<span class="fc" id="L2409">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2410">    }</span>
+
+    /**
+     * Sets position expressed on NED coordinates and orientation respect to ECEF
+     * axes.
+     *
+     * @param latitude  latitude expressed in radians (rad).
+     * @param longitude longitude expressed in radians (rad).
+     * @param height    height expressed in meters (m).
+     * @param ecefC     body to ECEF coordinate transformation indicating body
+     *                  orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to ECEF coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setNedPosition(double, double, double)
+     * @see #setEcefC(CoordinateTransformation)
+     */
+    public void setNedPositionAndEcefOrientation(
+            final double latitude, final double longitude, final double height, final CoordinateTransformation ecefC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L2432" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2433">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2436">        final NEDFrame nedFrame = getNedFrame();</span>
+<span class="fc" id="L2437">        nedFrame.setPosition(latitude, longitude, height);</span>
+<span class="fc" id="L2438">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+<span class="fc" id="L2439">        mFrame.setCoordinateTransformation(ecefC);</span>
+
+<span class="fc" id="L2441">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2442">    }</span>
+
+    /**
+     * Sets position expressed on NED coordinates and orientation respect to ECEF
+     * axes.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height expressed in meters (m).
+     * @param ecefC     body to ECEF coordinate transformation indicating body
+     *                  orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to ECEF coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setNedPosition(Angle, Angle, double)
+     * @see #setEcefC(CoordinateTransformation)
+     */
+    public void setNedPositionAndEcefOrientation(
+            final Angle latitude, final Angle longitude, final double height,
+            final CoordinateTransformation ecefC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L2465" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2466">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2469">        final NEDFrame nedFrame = getNedFrame();</span>
+<span class="fc" id="L2470">        nedFrame.setPosition(latitude, longitude, height);</span>
+<span class="fc" id="L2471">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+<span class="fc" id="L2472">        mFrame.setCoordinateTransformation(ecefC);</span>
+
+<span class="fc" id="L2474">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2475">    }</span>
+
+    /**
+     * Sets position expressed on NED coordinates and orientation respect to ECEF
+     * axes.
+     *
+     * @param latitude  latitude.
+     * @param longitude longitude.
+     * @param height    height.
+     * @param ecefC     body to ECEF coordinate transformation indicating body
+     *                  orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to ECEF coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setNedPosition(Angle, Angle, Distance)
+     * @see #setEcefC(CoordinateTransformation)
+     */
+    public void setNedPositionAndEcefOrientation(
+            final Angle latitude, final Angle longitude, final Distance height,
+            final CoordinateTransformation ecefC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L2498" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2499">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2502">        final NEDFrame nedFrame = getNedFrame();</span>
+<span class="fc" id="L2503">        nedFrame.setPosition(latitude, longitude, height);</span>
+<span class="fc" id="L2504">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+<span class="fc" id="L2505">        mFrame.setCoordinateTransformation(ecefC);</span>
+
+<span class="fc" id="L2507">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2508">    }</span>
+
+    /**
+     * Sets position expressed on ECEF coordinates and orientation respect to
+     * NED axes.
+     * In order to preserve provided orientation, first position is set and
+     * then orientation is applied.
+     *
+     * @param ecefPosition position expressed on ECEF coordinates.
+     * @param nedC         body to NED coordinate transformation indicating body
+     *                     orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to NED coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setEcefPosition(ECEFPosition)
+     * @see #setNedC(CoordinateTransformation)
+     */
+    public void setEcefPositionAndNedOrientation(
+            final ECEFPosition ecefPosition, final CoordinateTransformation nedC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L2530" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2531">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2534">        mFrame.setPosition(ecefPosition);</span>
+
+<span class="fc" id="L2536">        final NEDFrame nedFrame = getNedFrame();</span>
+<span class="fc" id="L2537">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L2538">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+
+<span class="fc" id="L2540">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2541">    }</span>
+
+    /**
+     * Sets position expressed on ECEF coordinates and orientation respect to
+     * NED axes.
+     * In order to preserve provided orientation, first position is set and
+     * then orientation is applied.
+     *
+     * @param x    x coordinate of ECEF position expressed in meters (m).
+     * @param y    y coordinate of ECEF position expressed in meters (m).
+     * @param z    z coordinate of ECEF position expressed in meters (m).
+     * @param nedC body to NED coordinate transformation indicating body
+     *             orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to NED coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setEcefPosition(double, double, double)
+     * @see #setNedC(CoordinateTransformation)
+     */
+    public void setEcefPositionAndNedOrientation(
+            final double x, final double y, final double z,
+            final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L2565" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2566">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2569">        mFrame.setCoordinates(x, y, z);</span>
+
+<span class="fc" id="L2571">        final NEDFrame nedFrame = getNedFrame();</span>
+<span class="fc" id="L2572">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L2573">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+
+<span class="fc" id="L2575">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2576">    }</span>
+
+    /**
+     * Sets position expressed on ECEF coordinates and orientation respect to
+     * NED axes.
+     * In order to preserve provided orientation, first position is set and
+     * then orientation is applied.
+     *
+     * @param x    x coordinate of ECEF position.
+     * @param y    y coordinate of ECEF position.
+     * @param z    z coordinate of ECEF position.
+     * @param nedC body to NED coordinate transformation indicating body
+     *             orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to NED coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setEcefPosition(Distance, Distance, Distance)
+     * @see #setNedC(CoordinateTransformation)
+     */
+    public void setEcefPositionAndNedOrientation(
+            final Distance x, final Distance y, final Distance z,
+            final CoordinateTransformation nedC) throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L2600" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2601">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2604">        mFrame.setPositionCoordinates(x, y, z);</span>
+
+<span class="fc" id="L2606">        final NEDFrame nedFrame = getNedFrame();</span>
+<span class="fc" id="L2607">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L2608">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+
+<span class="fc" id="L2610">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2611">    }</span>
+
+    /**
+     * Sets position expressed on ECEF coordinates and orientation respect to
+     * NED axes.
+     * In order to preserve provided orientation, first position is set and
+     * then orientation is applied.
+     *
+     * @param position position resolved around ECEF axes and expressed in meters (m).
+     * @param nedC     body to NED coordinate transformation indicating body
+     *                 orientation.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not from
+     *                                                       body to NED coordinates.
+     * @throws LockedException                               if estimator is currently
+     *                                                       running.
+     * @see #setEcefPosition(Point3D)
+     * @see #setNedC(CoordinateTransformation)
+     */
+    public void setEcefPositionAndNedOrientation(
+            final Point3D position, final CoordinateTransformation nedC)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L2633" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2634">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2637">        mFrame.setPosition(position);</span>
+
+<span class="fc" id="L2639">        final NEDFrame nedFrame = getNedFrame();</span>
+<span class="fc" id="L2640">        nedFrame.setCoordinateTransformation(nedC);</span>
+<span class="fc" id="L2641">        NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+
+<span class="fc" id="L2643">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2644">    }</span>
+
+    /**
+     * Gets year expressed in decimal format.
+     *
+     * @return year expressed in decimal format.
+     */
+    public double getYear() {
+<span class="fc" id="L2652">        return mYear;</span>
+    }
+
+    /**
+     * Sets year expressed in decimal format.
+     *
+     * @param year year expressed in decimal format.
+     * @throws LockedException if estimator is running.
+     */
+    public void setYear(final double year) throws LockedException {
+<span class="fc bfc" id="L2662" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2663">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2666">        mYear = year;</span>
+
+<span class="fc" id="L2668">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2669">    }</span>
+
+    /**
+     * Sets decimal year from provided date instance.
+     *
+     * @param date a date instance containing a timestamp.
+     * @throws LockedException if estimator is running.
+     */
+    public void setTime(final Date date) throws LockedException {
+<span class="fc bfc" id="L2678" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2679">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2682">        mYear = convertTime(date);</span>
+
+<span class="fc" id="L2684">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2685">    }</span>
+
+    /**
+     * Sets decimal year from provided calendar instance.
+     *
+     * @param calendar a calendar instance containing a timestamp.
+     * @throws LockedException if estimator is running.
+     */
+    public void setTime(final GregorianCalendar calendar) throws LockedException {
+<span class="fc bfc" id="L2694" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2695">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2698">        mYear = convertTime(calendar);</span>
+
+<span class="fc" id="L2700">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L2701">    }</span>
+
+    /**
+     * Gets Earth's magnetic model.
+     *
+     * @return Earth's magnetic model or null if not provided.
+     */
+    public WorldMagneticModel getMagneticModel() {
+<span class="fc" id="L2709">        return mMagneticModel;</span>
+    }
+
+    /**
+     * Sets Earth's magnetic model.
+     * If not provided a default model will be loaded internally.
+     *
+     * @param magneticModel Earth's magnetic model to be set.
+     * @throws LockedException if calibrator is currently running.
+     * @throws IOException     if initialization of world magnetic model fails.
+     */
+    public void setMagneticModel(final WorldMagneticModel magneticModel) throws LockedException, IOException {
+<span class="fc bfc" id="L2721" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2722">            throw new LockedException();</span>
+        }
+<span class="fc" id="L2724">        mMagneticModel = magneticModel;</span>
+<span class="fc" id="L2725">        initialize();</span>
+<span class="fc" id="L2726">    }</span>
+
+    /**
+     * Gets listener to handle events raised by this estimator.
+     *
+     * @return listener to handle events raised by this estimator.
+     */
+    public BodyMagneticFluxDensityBiasEstimatorListener getListener() {
+<span class="fc" id="L2734">        return mListener;</span>
+    }
+
+    /**
+     * Sets listener to handle events raised by this estimator.
+     *
+     * @param listener listener to handle events raised by this estimator.
+     * @throws LockedException if this estimator is running.
+     */
+    public void setListener(
+            final BodyMagneticFluxDensityBiasEstimatorListener listener) throws LockedException {
+<span class="fc bfc" id="L2745" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2746">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2749">        mListener = listener;</span>
+<span class="fc" id="L2750">    }</span>
+
+    /**
+     * Gets last provided body magnetic flux density values or null if not
+     * available.
+     *
+     * @return last provided body magnetic flux density values or null.
+     */
+    public BodyMagneticFluxDensity getLastBodyMagneticFluxDensity() {
+<span class="fc bfc" id="L2759" title="All 2 branches covered.">        return mLastBodyMagneticFluxDensity != null ? new BodyMagneticFluxDensity(mLastBodyMagneticFluxDensity) : null;</span>
+    }
+
+    /**
+     * Gets last provided body magnetic flux density values.
+     *
+     * @param result instance where last provided body magnetic flux density will
+     *               be stored.
+     * @return true if result instance was updated, false otherwise.
+     */
+    public boolean getLastBodyMagneticFluxDensity(final BodyMagneticFluxDensity result) {
+<span class="fc bfc" id="L2770" title="All 2 branches covered.">        if (mLastBodyMagneticFluxDensity != null) {</span>
+<span class="fc" id="L2771">            mLastBodyMagneticFluxDensity.copyTo(result);</span>
+<span class="fc" id="L2772">            return true;</span>
+        } else {
+<span class="fc" id="L2774">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets estimated bias of x coordinate of body magnetic flux density
+     * expressed in Teslas (T). Notice that bias is equivalent to hard iron
+     * component on a magnetometer calibrator.
+     *
+     * @return bias of x coordinate of body magnetic flux density.
+     */
+    public double getBiasX() {
+<span class="fc" id="L2786">        return mBiasX;</span>
+    }
+
+    /**
+     * Gets estimated bias of x coordinate of body magnetic flux density.
+     * Notice that bias is equivalent to hard iron component on a magnetometer
+     * calibrator.
+     *
+     * @return bias of x coordinate of body magnetic flux density.
+     */
+    public MagneticFluxDensity getBiasXAsMagneticFluxDensity() {
+<span class="fc" id="L2797">        return new MagneticFluxDensity(mBiasX, MagneticFluxDensityUnit.TESLA);</span>
+    }
+
+    /**
+     * Gets estimated bias of x coordinate of body magnetic flux density.
+     * Notice that bias is equivalent to hard iron component on a magnetometer
+     * calibrator.
+     *
+     * @param result instance where bias of x coordinate of body magnetic flux
+     *               density will be stored.
+     */
+    public void getBiasXAsMagneticFluxDensity(final MagneticFluxDensity result) {
+<span class="fc" id="L2809">        result.setValue(mBiasX);</span>
+<span class="fc" id="L2810">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L2811">    }</span>
+
+    /**
+     * Gets estimated bias of y coordinate of body magnetic flux density
+     * expressed in Teslas (T). Notice that bias is equivalent to hard iron
+     * component on a magnetometer calibrator.
+     *
+     * @return bias of y coordinate of body magnetic flux density.
+     */
+    public double getBiasY() {
+<span class="fc" id="L2821">        return mBiasY;</span>
+    }
+
+    /**
+     * Gets estimated bias of y coordinate of body magnetic flux density.
+     * Notice that bias is equivalent to hard iron component on a
+     * magnetometer calibrator.
+     *
+     * @return bias of y coordinate of body magnetic flux density.
+     */
+    public MagneticFluxDensity getBiasYAsMagneticFluxDensity() {
+<span class="fc" id="L2832">        return new MagneticFluxDensity(mBiasY, MagneticFluxDensityUnit.TESLA);</span>
+    }
+
+    /**
+     * Gets estimated bias of y coordinate of body magnetic flux density.
+     * Notice that bias is equivalent to hard iron component on a
+     * magnetometer calibrator.
+     *
+     * @param result instance where bias of y coordinate of body magnetic flux
+     *               density will be stored.
+     */
+    public void getBiasYAsMagneticFluxDensity(final MagneticFluxDensity result) {
+<span class="fc" id="L2844">        result.setValue(mBiasY);</span>
+<span class="fc" id="L2845">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L2846">    }</span>
+
+    /**
+     * Gets estimated bias of z coordinate of body magnetic flux density
+     * expressed in Teslas (T). Notice that bias is equivalent to hard iron
+     * component on a magnetometer calibrator.
+     *
+     * @return bias of z coordinate of body magnetic flux density.
+     */
+    public double getBiasZ() {
+<span class="fc" id="L2856">        return mBiasZ;</span>
+    }
+
+    /**
+     * Gets estimated bias of z coordinate of body magnetic flux density.
+     * Notice that bias is equivalent to hard iron component on a magnetometer
+     * calibrator.
+     *
+     * @return bias of z coordinate of body magnetic flux density.
+     */
+    public MagneticFluxDensity getBiasZAsMagneticFluxDensity() {
+<span class="fc" id="L2867">        return new MagneticFluxDensity(mBiasZ, MagneticFluxDensityUnit.TESLA);</span>
+    }
+
+    /**
+     * Gets estimated bias of z coordinate of body magnetic flux density.
+     * Notice that bias is equivalent to hard iron component on a magnetometer
+     * calibrator.
+     *
+     * @param result instance where bias of z coordinate of body magnetic flux
+     *               density will be stored.
+     */
+    public void getBiasZAsMagneticFluxDensity(final MagneticFluxDensity result) {
+<span class="fc" id="L2879">        result.setValue(mBiasZ);</span>
+<span class="fc" id="L2880">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L2881">    }</span>
+
+    /**
+     * Gets estimated bias of body magnetic flux density.
+     *
+     * @return estimated bias of magnetic flux density.
+     */
+    public MagneticFluxDensityTriad getBiasTriad() {
+<span class="fc" id="L2889">        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA, mBiasX, mBiasY, mBiasZ);</span>
+    }
+
+    /**
+     * Gets estimated bias of body magnetic flux density.
+     *
+     * @param result instance where bias of body magnetic flux density will
+     *               be stored.
+     */
+    public void getBiasTriad(final MagneticFluxDensityTriad result) {
+<span class="fc" id="L2899">        result.setValueCoordinatesAndUnit(mBiasX, mBiasY, mBiasZ, MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L2900">    }</span>
+
+    /**
+     * Gets estimated variance of x coordinate of body magnetic flux density
+     * expressed in squared Teslas (T^2).
+     *
+     * @return estimated variance of x coordinate of body magnetic flux density.
+     */
+    public double getVarianceX() {
+<span class="fc" id="L2909">        return mVarianceX;</span>
+    }
+
+    /**
+     * Gets estimated variance of y coordinate of body magnetic flux density
+     * expressed in squared Teslas (T^2).
+     *
+     * @return estimated variance of y coordinate of body magnetic flux density.
+     */
+    public double getVarianceY() {
+<span class="fc" id="L2919">        return mVarianceY;</span>
+    }
+
+    /**
+     * Gets estimated variance of z coordinate of body magnetic flux density
+     * expressed in squared Teslas (T^2).
+     *
+     * @return estimated variance of z coordinate of body magnetic flux density.
+     */
+    public double getVarianceZ() {
+<span class="fc" id="L2929">        return mVarianceZ;</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of x coordinate of body magnetic flux
+     * density expressed in Teslas (T).
+     *
+     * @return estimated standard deviation of x coordinate of body magnetic
+     * flux density.
+     */
+    public double getStandardDeviationX() {
+<span class="fc" id="L2940">        return Math.sqrt(mVarianceX);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of x coordinate of body magnetic flux
+     * density.
+     *
+     * @return estimated standard deviation of x coordinate of body magnetic
+     * flux density.
+     */
+    public MagneticFluxDensity getStandardDeviationXAsMagneticFluxDensity() {
+<span class="fc" id="L2951">        return new MagneticFluxDensity(getStandardDeviationX(), MagneticFluxDensityUnit.TESLA);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of x coordinate of body magnetic flux
+     * density.
+     *
+     * @param result instance where estimated standard deviation of x coordinate
+     *               of body magnetic flux density will be stored.
+     */
+    public void getStandardDeviationXAsMagneticFluxDensity(
+            final MagneticFluxDensity result) {
+<span class="fc" id="L2963">        result.setValue(getStandardDeviationX());</span>
+<span class="fc" id="L2964">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L2965">    }</span>
+
+    /**
+     * Gets estimated standard deviation of y coordinate of body magnetic flux
+     * density expressed in Teslas (T).
+     *
+     * @return estimated standard deviation of y coordinate of body magnetic
+     * flux density.
+     */
+    public double getStandardDeviationY() {
+<span class="fc" id="L2975">        return Math.sqrt(mVarianceY);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of y coordinate of body magnetic flux
+     * density.
+     *
+     * @return estimated standard deviation of y coordinate of body magnetic
+     * flux density.
+     */
+    public MagneticFluxDensity getStandardDeviationYAsMagneticFluxDensity() {
+<span class="fc" id="L2986">        return new MagneticFluxDensity(getStandardDeviationY(), MagneticFluxDensityUnit.TESLA);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of y coordinate of body magnetic flux
+     * density.
+     *
+     * @param result instance where estimated standard deviation of y coordinate
+     *               of body magnetic flux density will be stored.
+     */
+    public void getStandardDeviationYAsMagneticFluxDensity(
+            final MagneticFluxDensity result) {
+<span class="fc" id="L2998">        result.setValue(getStandardDeviationY());</span>
+<span class="fc" id="L2999">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L3000">    }</span>
+
+    /**
+     * Gets estimated standard deviation of z coordinate of body magnetic flux
+     * density expressed in Teslas (T).
+     *
+     * @return estimated standard deviation of z coordinate of body magnetic
+     * flux density.
+     */
+    public double getStandardDeviationZ() {
+<span class="fc" id="L3010">        return Math.sqrt(mVarianceZ);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of z coordinate of body magnetic flux
+     * density.
+     *
+     * @return estimated standard deviation of z coordinate of body magnetic
+     * flux density.
+     */
+    public MagneticFluxDensity getStandardDeviationZAsMagneticFluxDensity() {
+<span class="fc" id="L3021">        return new MagneticFluxDensity(getStandardDeviationZ(), MagneticFluxDensityUnit.TESLA);</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of z coordinate of body magnetic flux
+     * density.
+     *
+     * @param result instance where estimated standard deviation of z coordinate
+     *               of body magnetic flux density will be stored.
+     */
+    public void getStandardDeviationZAsMagneticFluxDensity(
+            final MagneticFluxDensity result) {
+<span class="fc" id="L3033">        result.setValue(getStandardDeviationZ());</span>
+<span class="fc" id="L3034">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L3035">    }</span>
+
+    /**
+     * Gets estimated standard deviation of body magnetic flux density.
+     *
+     * @return estimated standard deviation of body magnetic flux density.
+     */
+    public MagneticFluxDensityTriad getStandardDeviationTriad() {
+<span class="fc" id="L3043">        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,</span>
+<span class="fc" id="L3044">                getStandardDeviationX(), getStandardDeviationY(), getStandardDeviationZ());</span>
+    }
+
+    /**
+     * Gets estimated standard deviation of body magnetic flux density.
+     *
+     * @param result instance where estimated standard deviation of body magnetic
+     *               flux density will be stored.
+     */
+    public void getStandardDeviationTriad(final MagneticFluxDensityTriad result) {
+<span class="fc" id="L3054">        result.setValueCoordinatesAndUnit(getStandardDeviationX(), getStandardDeviationY(), getStandardDeviationZ(),</span>
+                MagneticFluxDensityUnit.TESLA);
+<span class="fc" id="L3056">    }</span>
+
+    /**
+     * Gets average of estimated standard deviation of body magnetic flux density
+     * expressed in Teslas (T).
+     *
+     * @return average of estimated standard deviation of body magnetic flux
+     * density.
+     */
+    public double getAverageStandardDeviation() {
+<span class="fc" id="L3066">        return (getStandardDeviationX() + getStandardDeviationY() + getStandardDeviationZ()) / 3.0;</span>
+    }
+
+    /**
+     * Gets average of estimated standard deviation of body magnetic flux density.
+     *
+     * @return average of estimated standard deviation of body magnetic flux
+     * density.
+     */
+    public MagneticFluxDensity getAverageStandardDeviationAsMagneticFluxDensity() {
+<span class="fc" id="L3076">        return new MagneticFluxDensity(getAverageStandardDeviation(), MagneticFluxDensityUnit.TESLA);</span>
+    }
+
+    /**
+     * Gets average of estimated standard deviation of body magnetic flux density.
+     *
+     * @param result instance where average of estimated standard deviation of
+     *               body magnetic flux density will be stored.
+     */
+    public void getAverageStandardDeviationAsMagneticFluxDensity(
+            final MagneticFluxDensity result) {
+<span class="fc" id="L3087">        result.setValue(getAverageStandardDeviation());</span>
+<span class="fc" id="L3088">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L3089">    }</span>
+
+    /**
+     * Gets magnetometer noise PSD (Power Spectral Density) on x axis expressed
+     * in (T^2 * s).
+     *
+     * @return magnetometer noise PSD on x axis.
+     */
+    public double getPsdX() {
+<span class="fc" id="L3098">        return mVarianceX * mTimeInterval;</span>
+    }
+
+    /**
+     * Gets magnetometer noise PSD (Power Spectral Density) on y axis expressed
+     * in (T^2 * s).
+     *
+     * @return magnetometer noise PSD on y axis.
+     */
+    public double getPsdY() {
+<span class="fc" id="L3108">        return mVarianceY * mTimeInterval;</span>
+    }
+
+    /**
+     * Gets magnetometer noise PSD (Power Spectral Density) on z axis expressed
+     * in (T^2 * s).
+     *
+     * @return magnetometer noise PSD on z axis.
+     */
+    public double getPsdZ() {
+<span class="fc" id="L3118">        return mVarianceZ * mTimeInterval;</span>
+    }
+
+    /**
+     * Gets magnetometer noise root PSD (Power Spectral Density) on x axis
+     * expressed in (T * s^0.5).
+     *
+     * @return magnetometer noise root PSD on x axis.
+     */
+    public double getRootPsdX() {
+<span class="fc" id="L3128">        return Math.sqrt(getPsdX());</span>
+    }
+
+    /**
+     * Gets magnetometer noise root PSD (Power Spectral Density) on y axis
+     * expressed in (T * s^0.5).
+     *
+     * @return magnetometer noise root PSD on y axis.
+     */
+    public double getRootPsdY() {
+<span class="fc" id="L3138">        return Math.sqrt(getPsdY());</span>
+    }
+
+    /**
+     * Gets magnetometer noise root PSD (Power Spectral Density) on z axis
+     * expressed in (T * s^0.5).
+     *
+     * @return magnetometer noise root PSD on z axis.
+     */
+    public double getRootPsdZ() {
+<span class="fc" id="L3148">        return Math.sqrt(getPsdZ());</span>
+    }
+
+    /**
+     * Gets average magnetometer noise PSD (Power Spectral Density) among
+     * x,y,z components expressed as (T^2 * s).
+     *
+     * @return average magnetometer noise PSD.
+     */
+    public double getAvgPsd() {
+<span class="fc" id="L3158">        return (getPsdX() + getPsdY() + getPsdZ()) / 3.0;</span>
+    }
+
+    /**
+     * Gets magnetometer root noise root PSD (Power Spectral Density) which is
+     * the norm of root PSD components expressed as (T * s^0.5).
+     *
+     * @return average magnetometer noise root PSD.
+     */
+    public double getRootPsd() {
+<span class="fc" id="L3168">        return Math.sqrt(getPsdX() + getPsdY() + getPsdZ());</span>
+    }
+
+    /**
+     * Gets number of samples that have been processed so far.
+     *
+     * @return number of samples that have been processed so far.
+     */
+    public int getNumberOfProcessedSamples() {
+<span class="fc" id="L3177">        return mNumberOfProcessedSamples;</span>
+    }
+
+    /**
+     * Indicates whether estimator is currently running or not.
+     *
+     * @return true if estimator is running, false otherwise.
+     */
+    public boolean isRunning() {
+<span class="fc" id="L3186">        return mRunning;</span>
+    }
+
+    /**
+     * Gets theoretically expected body magnetic flux density for provided instant,
+     * body position and orientation, assuming that body remains at the same
+     * position (zero velocity).
+     * When body remains static, sensed magnetic flux density will remain constant
+     * for a few minutes respect to provided time instant.
+     *
+     * @return expected body magnetic flux density.
+     */
+    public BodyMagneticFluxDensity getExpectedBodyMagneticFluxDensity() {
+<span class="fc" id="L3199">        return new BodyMagneticFluxDensity(mExpectedBodyMagneticFluxDensity);</span>
+    }
+
+    /**
+     * Gets theoretically expected body magnetic flux density for provided instant,
+     * body position and orientation, assuming that body remains at the same
+     * position (zero velocity).
+     * When body remains static, sensed magnetic flux density will remain constant
+     * for a few minutes respect to provided time instant.
+     *
+     * @param result instance where expected body magnetic flux density will be
+     *               stored.
+     */
+    public void getExpectedBodyMagneticFluxDensity(final BodyMagneticFluxDensity result) {
+<span class="fc" id="L3213">        mExpectedBodyMagneticFluxDensity.copyTo(result);</span>
+<span class="fc" id="L3214">    }</span>
+
+    /**
+     * Adds a sample of body magnetic flux density. If estimator is already
+     *
+     * @param bodyMagneticFluxDensity body magnetic flux density to be added
+     *                                and processed.
+     * @throws LockedException if estimator is currently running.
+     */
+    public void addBodyMagneticFluxDensity(final BodyMagneticFluxDensity bodyMagneticFluxDensity)
+            throws LockedException {
+
+<span class="pc bpc" id="L3226" title="1 of 2 branches missed.">        if (mRunning) {</span>
+<span class="nc" id="L3227">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L3230">        mRunning = true;</span>
+
+<span class="pc bpc" id="L3232" title="1 of 4 branches missed.">        if (mLastBodyMagneticFluxDensity == null &amp;&amp; mListener != null) {</span>
+<span class="fc" id="L3233">            mListener.onStart(this);</span>
+        }
+
+<span class="fc" id="L3236">        final double bx = bodyMagneticFluxDensity.getBx();</span>
+<span class="fc" id="L3237">        final double by = bodyMagneticFluxDensity.getBy();</span>
+<span class="fc" id="L3238">        final double bz = bodyMagneticFluxDensity.getBz();</span>
+
+<span class="fc" id="L3240">        final double expectedBx = mExpectedBodyMagneticFluxDensity.getBx();</span>
+<span class="fc" id="L3241">        final double expectedBy = mExpectedBodyMagneticFluxDensity.getBy();</span>
+<span class="fc" id="L3242">        final double expectedBz = mExpectedBodyMagneticFluxDensity.getBz();</span>
+
+<span class="fc" id="L3244">        final double diffBx = bx - expectedBx;</span>
+<span class="fc" id="L3245">        final double diffBy = by - expectedBy;</span>
+<span class="fc" id="L3246">        final double diffBz = bz - expectedBz;</span>
+
+        // compute biases
+<span class="fc" id="L3249">        final double tmp = (double) mNumberOfProcessedSamples / (double) mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3250">        mBiasX = mBiasX * tmp + diffBx / mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3251">        mBiasY = mBiasY * tmp + diffBy / mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3252">        mBiasZ = mBiasZ * tmp + diffBz / mNumberOfProcessedSamplesPlusOne;</span>
+
+        // compute variances
+<span class="fc" id="L3255">        final double diffBiasX = diffBx - mBiasX;</span>
+<span class="fc" id="L3256">        final double diffBiasY = diffBy - mBiasY;</span>
+<span class="fc" id="L3257">        final double diffBiasZ = diffBz - mBiasZ;</span>
+
+<span class="fc" id="L3259">        final double diffBiasX2 = diffBiasX * diffBiasX;</span>
+<span class="fc" id="L3260">        final double diffBiasY2 = diffBiasY * diffBiasY;</span>
+<span class="fc" id="L3261">        final double diffBiasZ2 = diffBiasZ * diffBiasZ;</span>
+
+<span class="fc" id="L3263">        mVarianceX = mVarianceX * tmp + diffBiasX2 / mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3264">        mVarianceY = mVarianceY * tmp + diffBiasY2 / mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3265">        mVarianceZ = mVarianceZ * tmp + diffBiasZ2 / mNumberOfProcessedSamplesPlusOne;</span>
+
+<span class="fc" id="L3267">        mLastBodyMagneticFluxDensity = bodyMagneticFluxDensity;</span>
+
+<span class="fc" id="L3269">        mNumberOfProcessedSamples++;</span>
+<span class="fc" id="L3270">        mNumberOfProcessedSamplesPlusOne++;</span>
+
+<span class="pc bpc" id="L3272" title="1 of 2 branches missed.">        if (mListener != null) {</span>
+<span class="fc" id="L3273">            mListener.onBodyMagneticFluxDensityAdded(this);</span>
+        }
+
+<span class="fc" id="L3276">        mRunning = false;</span>
+<span class="fc" id="L3277">    }</span>
+
+    /**
+     * Resets current estimator.
+     *
+     * @return true if estimator was successfully reset, false if no reset
+     * was needed.
+     * @throws LockedException if estimator is currently running.
+     */
+    public boolean reset() throws LockedException {
+<span class="pc bpc" id="L3287" title="1 of 2 branches missed.">        if (mRunning) {</span>
+<span class="nc" id="L3288">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L3291" title="All 2 branches covered.">        if (mNumberOfProcessedSamples == 0) {</span>
+<span class="fc" id="L3292">            return false;</span>
+        }
+
+<span class="fc" id="L3295">        mRunning = true;</span>
+<span class="fc" id="L3296">        mLastBodyMagneticFluxDensity = null;</span>
+<span class="fc" id="L3297">        mBiasX = 0.0;</span>
+<span class="fc" id="L3298">        mBiasY = 0.0;</span>
+<span class="fc" id="L3299">        mBiasZ = 0.0;</span>
+<span class="fc" id="L3300">        mVarianceX = 0.0;</span>
+<span class="fc" id="L3301">        mVarianceY = 0.0;</span>
+<span class="fc" id="L3302">        mVarianceZ = 0.0;</span>
+<span class="fc" id="L3303">        mNumberOfProcessedSamples = 0;</span>
+<span class="fc" id="L3304">        mNumberOfProcessedSamplesPlusOne = 1;</span>
+
+<span class="pc bpc" id="L3306" title="1 of 2 branches missed.">        if (mListener != null) {</span>
+<span class="fc" id="L3307">            mListener.onReset(this);</span>
+        }
+
+<span class="fc" id="L3310">        mRunning = false;</span>
+
+<span class="fc" id="L3312">        return true;</span>
+    }
+
+    /**
+     * Converts a time instant contained ina date object to a
+     * decimal year.
+     *
+     * @param date a time instance to be converted.
+     * @return converted value expressed in decimal years.
+     */
+    public static double convertTime(final Date date) {
+<span class="fc" id="L3323">        final GregorianCalendar calendar = new GregorianCalendar();</span>
+<span class="fc" id="L3324">        calendar.setTime(date);</span>
+<span class="fc" id="L3325">        return convertTime(calendar);</span>
+    }
+
+    /**
+     * Converts a time instant contained in a gregorian calendar to a
+     * decimal year.
+     *
+     * @param calendar calendar containing a specific instant to be
+     *                 converted.
+     * @return converted value expressed in decimal years.
+     */
+    public static double convertTime(final GregorianCalendar calendar) {
+<span class="fc" id="L3337">        return WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);</span>
+    }
+
+    /**
+     * Converts provided time instance to seconds.
+     *
+     * @param time instance to be converted.
+     * @return obtained conversion in seconds.
+     */
+    private static double convertTime(final Time time) {
+<span class="fc" id="L3347">        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Initializes world magnetic model and estimates expected body magnetic flux
+     * density.
+     *
+     * @throws IOException if world magnetic model loading fails.
+     */
+    private void initialize() throws IOException {
+<span class="fc bfc" id="L3357" title="All 2 branches covered.">        if (mMagneticModel != null) {</span>
+<span class="fc" id="L3358">            mWmmEstimator = new WMMEarthMagneticFluxDensityEstimator(mMagneticModel);</span>
+        } else {
+<span class="fc" id="L3360">            mWmmEstimator = new WMMEarthMagneticFluxDensityEstimator();</span>
+        }
+
+<span class="fc" id="L3363">        rebuildExpectedBodyMagneticFluxDensity();</span>
+<span class="fc" id="L3364">    }</span>
+
+    /**
+     * Rebuilds expected body magnetic flux density based on current instant,
+     * location and body orientation.
+     */
+    private void rebuildExpectedBodyMagneticFluxDensity() {
+<span class="fc" id="L3371">        final NEDFrame nedFrame = ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mFrame);</span>
+
+<span class="fc" id="L3373">        final double latitude = nedFrame.getLatitude();</span>
+<span class="fc" id="L3374">        final double longitude = nedFrame.getLongitude();</span>
+<span class="fc" id="L3375">        final double height = nedFrame.getHeight();</span>
+
+<span class="fc" id="L3377">        final CoordinateTransformation cbn = new CoordinateTransformation(</span>
+                FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+<span class="fc" id="L3379">        final CoordinateTransformation cnb = new CoordinateTransformation(</span>
+                FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+<span class="fc" id="L3381">        nedFrame.getCoordinateTransformation(cbn);</span>
+<span class="fc" id="L3382">        cbn.inverse(cnb);</span>
+
+<span class="fc" id="L3384">        final NEDMagneticFluxDensity earthB = mWmmEstimator.estimate(latitude, longitude, height, mYear);</span>
+
+        // estimate expected body magnetic flux density taking into
+        // account body attitude (inverse of frame orientation) and
+        // estimated Earth magnetic flux density
+<span class="fc bfc" id="L3389" title="All 2 branches covered.">        if (mExpectedBodyMagneticFluxDensity == null) {</span>
+<span class="fc" id="L3390">            mExpectedBodyMagneticFluxDensity = new BodyMagneticFluxDensity();</span>
+        }
+<span class="fc" id="L3392">        BodyMagneticFluxDensityEstimator.estimate(earthB, cnb, mExpectedBodyMagneticFluxDensity);</span>
+<span class="fc" id="L3393">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
